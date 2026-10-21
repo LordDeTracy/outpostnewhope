@@ -4,7 +4,7 @@
 
 You lead the last of humanity to a new star system after an asteroid ends life on Earth. Choose a star, pack the ship, pick a planet and landing site, put down the Seed, and grow a colony that can survive: power, life support, food, mines, factories, research, morale, and rebels who have plans of their own.
 
-*Outpost: New Hope* plays like the original Outpost 1.51. Its game rules come from the decompiled OUTPOST.EXE, not from guesses. Where the original game was left unfinished, the rebuild finishes it, and every such change is documented.
+*Outpost: New Hope* plays like the original Outpost 1.51. Its game rules come from the decompiled version of the original game, not from guesses. Where the original game was left unfinished, the rebuild finishes it, and every such change is documented.
 
 ---
 
