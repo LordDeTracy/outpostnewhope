@@ -1,0 +1,40 @@
+[Ident]
+Title=Sierra Outpost 1.5
+ShortTitle=Outpost 1.5
+Version=150
+DirName=OUTPOST
+
+[Strings]
+OK=OK
+CANCEL=Cancel
+NONE=None
+YES=Yes
+NO=No
+SIZETITLE=Size of Outpost?
+SIZE1=Small, 5Mb
+SIZE2=Large, 40Mb
+SIZETXT=Selecting Large Install takes more disk space, but will cause Outpost to run faster on systems with more memory.
+SUCCESSTITLE=Outpost 1.5
+SUCCESS1=To run Outpost, double-click on the icon in the Sierra group in Program Manager.
+HELPTITLE=If You Need Help
+HELP1=If you encounter problems running Outpost, please run setup.exe again and choose the Test Hardware option to make sure your system is properly configured.
+HELP2=Outpost's performance depends upon your system's memory configuration, video card performance and CD-ROM speed.
+HELP3=If you need further help, check 'read.me' on the CD-ROM by opening it in an editor such as Notepad.
+SIERRAGROUP=Sierra
+LONGTITLE=Sierra Outpost 1.5
+SIERRASETUP=Sierra Setup
+ACCESSORIES=Accessories
+MPLAYER=Media Player
+RESTARTTITLE=Restart Windows?
+RESTARTPROMPT=You must restart Windows before you can run Outpost.
+RESTARTPROMPT2=Do you want to restart Windows now?
+INNTITLE=INN Install
+HINTTITLE=Outpost Hints
+TUTTXTTITLE=Outpost Tutorial
+READMETITLE=Outpost Read Me
+MANUELTITLE=Outpost Manual
+ACROTITLE=Acrobat Reader 2.1
+ACRO1=To use the manual, you will need to have previously
+ACRO2=installed your Acrobat Reader 2.1 software. To do
+ACRO3=this, start the "Acroread.exe" program in Windows
+ACRO4=as from the CD-ROM "MANUAL" directory.

@@ -1,0 +1,516 @@
+rem This is the install script
+rem MAKE SURE YOU UPDATE THE INSTALL.SCR IN ..\CC1DISK!!!
+rem Or tell Bill so he can update it!!!!
+
+echo Setting up the directory for ImagiNation
+godir %1:%6 CantCreate
+godir %1:%6\VMF CantCreate
+godir %1:%6
+del *.so
+del *.to
+del *.p56
+del *.v56
+del *.snd
+del resource.*
+del *.drv
+del *.dll
+del *.exe
+del hostaddr.tim
+del *.prf
+rem del *.bbs
+godir %1:%6\SL CantSL
+godir %1:%6\SL\VMF CantSL
+godir %1:%6\SL
+del *.so
+del *.to
+del *.p56
+del *.v56
+del *.snd
+del *.pbm
+del resource.*
+del *.drv
+del *.dll
+del *.exe
+del *.CFG
+godir %1:%6\LL CantLL
+godir %1:%6\LL\VMF CantLL
+godir %1:%6\LL
+del *.so
+del *.to
+del *.p56
+del *.v56
+del *.snd
+del resource.*
+del *.drv
+del *.dll
+del *.exe
+del *.CFG
+godir %1:%6\SHOPADV CantCUC
+godir %1:%6\SHOPADV\VMF CantCUC
+godir %1:%6\SHOPADV
+del *.so
+del *.to
+del *.p56
+del *.v56
+del *.snd
+del resource.*
+del *.drv
+del *.dll
+del *.exe
+del *.CFG
+godir %1:%6\BARON CantBaron
+del volume.*
+del *.exe
+godir %1:%6\GOLF CantGolf
+del *.*
+godir %1:%6\YSERBIUS CantYserbius
+godir %1:%6\YSERBIUS\SAVE CantYserbius
+copy ..\mychars.dat /q
+copy ..\automaps.dat /q
+godir %1:%6\YSERBIUS CantYserbius
+rem del *.*
+rem Changed to not kill off-line yserbius installations
+del AD09.XMI
+del AD10.XMI
+del AD11.XMI
+del AD12.XMI
+del AD13.XMI
+del AD14.XMI
+del AD15.XMI
+del AD16.XMI
+del AD17.XMI
+del AD18.XMI
+del AD19.XMI
+del AD20.XMI
+del AD21.XMI
+del AD22.XMI
+del AD23.XMI
+del AD24.XMI
+del AD25.XMI
+del AD26.XMI
+del ADLIB.ADV
+del ADTIMBRE.GTL
+del ANIM_SEQ
+del AUTOMAPS.NEW
+del CGENN.EXE
+del HELP.DAT
+del IMAGES.DAT
+del MAIN.TSU
+del MT00.XMI
+del MT01.XMI
+del MT02.XMI
+del MT04.XMI
+del MT05.XMI
+del MT06.XMI
+del MT07.XMI
+del MT08.XMI
+del MT09.XMI
+del MT10.XMI
+del MT11.XMI
+del MT12.XMI
+del MT13.XMI
+del MT14.XMI
+del MT15.XMI
+del MT16.XMI
+del MT17.XMI
+del RESOURCE.031
+del RESOURCE.032
+del RESOURCE.033
+del RESOURCE.034
+del RESOURCE.036
+del RESOURCE.037
+del RESOURCE.038
+del RESOURCE.039
+del RESOURCE.040
+del WALLS.DAT
+del DARKSTRT.EXE
+del SBFM.ADV
+del MT18.XMI
+del MT19.XMI
+del MT20.XMI
+del MT21.XMI
+del MT22.XMI
+del MT23.XMI
+del MT24.XMI
+del MT25.XMI
+del MT26.XMI
+del MT32MPU.ADV
+del MYCHARS.NEW
+del PALETTE.DAT
+del RESOURCE.003
+del RESOURCE.004
+del RESOURCE.005
+del RESOURCE.006
+del RESOURCE.008
+del RESOURCE.009
+del RESOURCE.010
+del RESOURCE.011
+del RESOURCE.012
+del RESOURCE.014
+del RESOURCE.015
+del RESOURCE.019
+del RESOURCE.020
+del RESOURCE.022
+del RESOURCE.024
+del RESOURCE.025
+del RESOURCE.026
+del RESOURCE.027
+del RESOURCE.028
+del RESOURCE.030
+del RESOURCE.035
+del RESOURCE.029
+del RESOURCE.016
+del RESOURCE.002
+del RESOURCE.023
+del RESOURCE.021
+del RESOURCE.018
+del RESOURCE.017
+del RESOURCE.013
+del RESOURCE.007
+del RESOURCE.001
+del MYCHARS .DAT
+del AUTOMAPS.DAT
+del AD00.XMI
+del AD01.XMI
+del AD02.XMI
+del AD04.XMI
+del AD05.XMI
+del AD06.XMI
+del AD07.XMI
+del AD08.XMI
+godir %1:%6\TWINION CantTwinion
+godir %1:%6\TWINION\SAVE CantTwinion
+copy ..\twinchar.dat /q
+copy ..\automaps.dat /q
+godir %1:%6\TWINION CantTwinion
+rem del *.*
+rem Changed to not kill off-line yserbius installations
+del TIMBRE.AD
+del SBFM.ADV
+del TWINION.DOC
+del RESOURCE.038
+del RESOURCE.033
+del RESOURCE.034
+del RESOURCE.022
+del RESOURCE.037
+del RESOURCE.024
+del RESOURCE.026
+del RESOURCE.040
+del TWINCHAR.DAT
+del AUTOMAPS.DAT
+del IMAGES.DAT
+del PALETTE.DAT
+del WALLS.DAT
+del HELP.DAT
+del MAIN.TSU
+del ADLIB.ADV
+del MT32MPU.ADV
+del AD06.XMI
+del ANIM_SEQ
+del ADTIMBRE.GTL
+del AUTOMAPS.NEW
+del TWINCHAR.NEW
+del AD00.XMI
+del AD02.XMI
+del AD03.XMI
+del AD01.XMI
+del AD05.XMI
+del AD12.XMI
+del RESOURCE.039
+del RESOURCE.031
+del MT02.XMI
+del MT04.XMI
+del MT05.XMI
+del MT06.XMI
+del MT12.XMI
+del MT13.XMI
+del MT03.XMI
+del FX10.XMI
+del FX11.XMI
+del FX12.XMI
+del FX13.XMI
+del FX14.XMI
+del FX15.XMI
+del FX16.XMI
+del FX17.XMI
+del FX18.XMI
+del FX19.XMI
+del FX20.XMI
+del FX21.XMI
+del FX22.XMI
+del FX23.XMI
+del FX24.XMI
+del FX25.XMI
+del FX26.XMI
+del FX27.XMI
+del FX28.XMI
+del FX29.XMI
+del FX30.XMI
+del FX31.XMI
+del FATES.EXE
+del AD13.XMI
+del AD04.XMI
+del MT00.XMI
+del MT01.XMI
+del RESOURCE.025
+del RESOURCE.009
+del RESOURCE.002
+del RESOURCE.003
+del RESOURCE.004
+del RESOURCE.005
+del RESOURCE.006
+del RESOURCE.007
+del RESOURCE.008
+del RESOURCE.010
+del RESOURCE.011
+del RESOURCE.012
+del RESOURCE.013
+del RESOURCE.014
+del RESOURCE.015
+del RESOURCE.016
+del RESOURCE.017
+del RESOURCE.018
+del RESOURCE.019
+del RESOURCE.023
+del RESOURCE.020
+del RESOURCE.021
+del RESOURCE.036
+del RESOURCE.001
+del RESOURCE.035
+del RESOURCE.032
+del RESOURCE.029
+del RESOURCE.027
+del RESOURCE.028
+del RESOURCE.030
+del TWGENN.EXE
+
+godir %1:%6
+
+rem	Is there space?
+space %1: 15400 NoSpace
+if errorlevel 1 goto NoSpace
+
+echo Copying files...
+
+copy	%2:READ.ME /q
+echo	Installing Re-Install
+copy	%2:INSTTSN.EXE
+copy	%2:BOOTDISK.EXE
+rem copy	%2:puff.exe
+copy	%2:REINST.BAT install.bat
+copy	%2:LSCIGET.EXE
+copy	%2:INSTALL.TXT
+copy	%2:DRIVERS.TXT
+copy	%2:INSTALL.HLP
+copy	%2:INSTTSN.TXT
+copy	%2:INSTTSN.HLP
+copy	%2:MODEM.TXT
+copy	%2:PHONE.TXT
+copy	%2:RBJOY.EXE
+copy	%2:ID.EXE /q
+
+echo	Installing ImagiNation executive
+copy	%2:TSNEXEC.EXE
+rem echo Decompressing executive
+rem puff	/D _SNEXEC.EXE
+copy	%2:TSN.PRG
+copy	%2:MODEM.DRV
+copy	%2:NOBRK.DRV
+copy	%2:INN.ICO
+copy	%2:INN.PIF
+copy	%2:PATCHPIF.EXE
+patchpif %1 %6 > nul
+copy	%2:HOSTADDR
+copy	%2:tsnver
+echo	@echo off>INN.BAT
+echo	tsnexec DEFAULT>>INN.BAT
+
+echo	Installing SCI and Drivers
+copy	%2:LSCITV.EXE
+rem echo Decompressing interpreter
+rem puff	/D _SCITV.EXE
+copy	%2:GAME.CFG
+copy  %2:LAND.CFG
+copy	%2:LLSYSTEM.DAT
+copy	%2:TWEAKER.DRV
+copy	%2:MT32.DRV
+copy	%2:MT32.NL
+copy	%2:ADL.DRV
+copy	%2:SNDBLAST.DRV
+copy	%2:TANDYXL.DRV
+copy	%2:IBMKBD.DRV
+copy	%2:_LNULL.DLL
+rem echo Decompressing null-dll
+puff	/D _LNULL.DLL
+copy	%2:VGA320.DRV /q
+copy	%2:_RAPH256.DLL /q
+rem echo Decompressing graph256 dll
+puff	/D _RAPH256.DLL
+copy	%2:EGA640.DRV /q
+
+echo %3>lsci.cfg
+echo %4>%1:%6\tsn.cfg
+echo %5>%1:%6\PASS_SET.DTA
+
+rem Get the volumes installed from their blender file
+rem ALSO round-about method for finding out installed video config
+
+echo	Setting Up Video Drivers
+echo  dll = graph256.dll>>lsci.cfg
+echo  dll = nlnull.dll>>lsci.cfg
+echo  pathStr = .\>>lsci.cfg
+echo  hostID = SIERRA>>lsci.cfg
+echo  virtualDir = VMF>>lsci.cfg
+echo  swapSize = 100>>lsci.cfg
+
+rem start the de-archiver
+defuse %2 %1 part %6
+
+godir %1:%6
+
+echo  pathStr = ..\>>sl\lsci.cfg
+lsciget lsci.cfg sl\lsci.cfg -t video ..\ keyboard ..\ music ..\ dll ..\ >NUL
+lsciget lsci.cfg sl\lsci.cfg mouseDrv prefix id modem pFlag prodPath virtualDir swapSize LOGONVOL SEASONS>NUL
+echo  hostID = SIERRA>>sl\lsci.cfg
+
+echo  pathStr = ..\>>ll\lsci.cfg
+lsciget lsci.cfg ll\lsci.cfg -t video ..\ keyboard ..\ music ..\ dll ..\ >NUL
+lsciget lsci.cfg ll\lsci.cfg mouseDrv prefix id modem pFlag prodPath virtualDir swapSize LOGONVOL SEASONS>NUL
+echo  hostID = SIERRA>>ll\lsci.cfg
+
+rem rem Copy any patches which have found their way onto the final disk
+copy 	%2:ccPatch\*.* /q
+if exist _*.* puff /D _*.*
+rem rem Copy the second resource file
+copy %2:resource.002
+
+godir %1:%6\SL
+copy 	%2:slPatch\*.* /q
+if exist _*.* puff /D _*.*
+copy %2:resource.002
+
+godir %1:%6\LL
+copy 	%2:llPatch\*.* /q
+if exist _*.* puff /D _*.*
+copy %2:resource.002
+
+godir %1:%6\SHOPADV
+copy 	%2:cucpatch\*.* /q
+if exist _*.* puff /D _*.*
+
+echo UnCompressing "Red Baron"
+godir %1:%6\BARON
+rem puff /D _*.*
+rem Copy RBJOY.EXE from CC directory to BARON directory
+copy ..\rbjoy.exe /q
+
+copy 	%2:redpatch\*.* /q
+if exist _*.* puff /D _*.*
+
+echo UnCompressing "3-D Golf"
+godir %1:%6\GOLF
+rem puff /D _*.*
+
+copy 	%2:glfPatch\*.* /q
+if exist _*.* puff /D _*.*
+
+echo UnCompressing "The Shadow of Yserbius"
+godir %1:%6\YSERBIUS
+rem puff /D _*.*
+rem del _*.*
+
+copy 	%2:ysPatch\*.* /q
+if exist _*.* puff /D _*.*
+copy save\*.dat /q
+
+echo UnCompressing "The Fates of Twinion"
+godir %1:%6\TWINION
+copy 	%2:\TWPatch\*.* /q
+if exist _*.* puff /D _*.*
+copy save\*.dat /q
+rem twinion.doc is in the resources, copy it up
+rem and then delete it.  Add it to the list with
+rem the other documents down below.
+copy twinion.doc ..
+del twinion.doc
+
+
+godir %1:%6
+
+echo Installing ImagiNation Documentation
+copy	%2:_ENERAL.DOC
+copy	%2:_IERRLND.DOC
+copy	%2:_ASLAND.DOC
+copy	%2:_SERBIUS.DOC
+copy	%2:_LUBHOUS.DOC
+puff	/D _*.DOC
+rem puff  /D _?.p56
+rem copy 5?.p56 sl
+rem copy 5?.p56 ll
+rem Are the other lands part of 2.3/2.4 slipstreamed?  They'd copy here
+
+echo General.doc>doc.lst
+echo Clubhous.doc>>doc.lst
+echo Sierrlnd.doc>>doc.lst
+echo Casland.doc>>doc.lst
+echo Yserbius.doc>>doc.lst
+echo Twinion.doc>>..\doc.lst
+
+cls
+echo Installation complete.
+echo 
+echo 
+echo To run The ImagiNation Network, type
+echo      "cd %6"
+echo      "INN"
+echo 
+end
+
+:NoSpace
+cls
+echo There is not enough space on %1: to install ImagiNation!
+echo 15.7 Megabytes are required.  ImagiNation may require
+echo significantly more space if installed to a compressed
+echo disk. Please delete some files you are no longer using.
+pause
+end
+
+:CantCreate
+Alert Unable to create %1:%6
+cls
+echo	There may already be a file called %1:%6.
+echo
+echo	If there is, rename it or install ImagiNation on another hard
+echo	disk partition.
+echo
+pause
+end
+
+:CantSL
+Alert Unable to create %1:%6\SL
+end
+
+:CantLL
+Alert Unable to create %1:%6\LL
+end
+
+:CantCUC
+Alert Unable to create %1:%6\SHOPADV
+end
+
+:CantYserbius
+Alert Unable to create %1:%6\YSERBIUS
+end
+
+:CantTwinion
+Alert Unable to create %1:%6\TWINION
+end
+
+:CantBaron
+Alert Unable to create %1:%6\BARON
+
+:CantGolf
+Alert Unable to create %1:%6\GOLF
+
+end
+

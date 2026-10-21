@@ -1,0 +1,5 @@
+# MMSYSTEM ordinals used by Outpost-era binaries (subset of Wine dlls/*16/*.spec)
+701 pascal mciSendCommand()
+702 pascal mciSendString()
+703 pascal mciGetDeviceID()
+706 pascal mciGetErrorString()

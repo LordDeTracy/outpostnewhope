@@ -1,0 +1,252 @@
+Drivers 2
+1 MODEM.DRV
+2 NOBRK.DRV
+
+Strings 34
+ 1 +++~~~ATZ!~~~~AT&D2!~AT&C1!~ATV1!~
+ 2 +++~~~AT&F!~~~~AT&D2!~AT&C1!~ATV1!~
+ 3 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT\N0!~
+ 4 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&Q0!~AT\N0!~
+ 5 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&Q0!~
+ 6 +++~~~AT&F!~~~~AT&D2!~AT&C1!~
+ 7 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT\N0!~AT\Q0!~
+ 8 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT%M0!~AT\N0!~AT&K0!~
+ 9 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT\N0!~AT&K0!~
+10 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT%C0!~AT&K0!~
+11 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT\N0!~AT\G0!~
+12 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT%M0\N0\K1!~
+13 +++~~~AT&F!~~~~AT&D2!~AT&C1!~ATV1!~ATS7=60!~
+14 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT*E0!~AT*F0!~
+15 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT*E0!~
+16 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT\N0!~AT&K0!~AT\Q0!~
+17 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&K0!~
+18 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT\N0\X1!~
+19 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&Q0!~AT&K0!~
+20 +++~~~AT&F!~~~~AT%C0!~AT\Q0!~
+21 +++~~~AT&F!~~~~AT\N0!~AT\Q0!~ 
+22 +++~~~AT&F!~~~~AT&D2!~AT&C1!
+23 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&Q1!~
+24 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&Q1&E0!~
+25 +++~~~AT&F!~~~~AD&D2!~AT&C1!~AT%M0!~AT\N0!~AT&K0!~
+26 +++~~~AT&F!~~~~AT*E0!~AT*F0!~
+27 +++~~~ATZ!~~~~AT&D2!~AT&C1!~
+28 +++~~~AT&F!~~~~AT&D2!~AT&C1!~ATS58=0S61=0S180=0!~
+29 +++~~~AT&F!~~~~AT&D2!~AT&C1!~ATS58=0S54=3!~
+30 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&Q6!~
+31 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT&M0&K0!~
+32 +++~~~AT&F!~~~~AT&D2!~AT&C1!~AT%M0\N0\G0!~
+33 +++~~~AT&F!~~~~AT&D2!~AT&C1!~ATS7=60!~
+34 +++~~~AT&F!~~~~AT&K0!~AT&H0!~
+
+Modems 211
+0 1  1 0 ImagiNationÿNetworkÿDefaultÿSettings
+0 1  1 0 GenericÿHayes-compatibleÿ(w/switches)
+0 1  2 0 GenericÿHayes-compatibleÿ(switchless)
+0 2  2 0 Genericÿswitchlessÿ(alternate)
+0 1  3 0 Aceexÿ14.4ÿv.42bisÿfax
+R 1  4 0 Aceexÿ2400ÿint
+0 1  5 0 Acerÿ9624ÿint
+0 1  6 0 AdtechÿSmartConnectÿ24i
+0 1  3 0 AdtechÿSmartConnectÿ9624
+0 1  3 0 AMTÿStarÿ14.4ÿ2F
+0 1  3 0 AMTÿStarÿ8624i
+0 1  3 0 AnchorÿAutomationÿ9600
+0 1  3 0 AnchorÿAutomationÿ96i
+R 1  6 0 ArchtekÿSmartlink
+0 1  7 0 ArchtekÿSmartlinkÿ14.4I
+0 1  6 0 AT&Tÿ4024
+0 1  1 0 AT&TÿDataPhoneÿII
+0 1  7 0 AT&TÿDataPortÿ14.4I
+0 1  6 0 BestDataÿSmartOneÿ2400ÿext
+0 1  6 0 BestDataÿSmartOneÿ2400ÿint
+R 1  6 0 BestDataÿSmartOneÿ9624FQÿint
+0 1  8 0 BestDataÿSmartOneÿv.32bisÿext
+0 2  8 0 BestDataÿSmartOneÿv.32bisÿint
+0 1  9 0 Bocamodemÿ14.4Eÿv.42bis/fax
+0 2  9 0 Bocamodemÿ14.4Iÿv.42bis/fax
+0 2 10 0 Bocamodemÿ14.4Iÿ(alternate)
+0 1  3 0 Bocamodemÿ2400EÿMNP5
+0 1  3 0 Bocamodemÿ2400Eÿv.42bis
+0 2  3 0 Bocamodemÿ2400IÿMNP5
+0 2  3 0 Bocamodemÿ2400Iÿv.42bis
+0 1  3 0 CALPACÿMX2400ÿv.42bis
+0 1  6 0 Cardinalÿ2400i
+0 2 11 0 Cardinalÿ9600ÿv.42bis
+0 1  6 0 CardinalÿFLASHlink
+0 1  9 0 CardinalÿSoftModem
+0 1  6 0 CMSÿEnhancements
+0 2  3 0 Compaqÿ9696ÿMNP5
+0 1  6 0 CompleteÿPC
+0 1 11 0 CompleteÿPCÿTurboÿModemÿPlusÿ14.4ÿext
+0 1 11 0 CompleteÿPCÿTurboÿModemÿPlusÿ14.4ÿint
+0 1 12 0 CompuComÿSpeedModemÿ9600
+0 1  6 0 Compudyneÿ2400ÿint
+0 1 12 0 CompudyneÿSpeedmodemÿ9600ÿint
+R 1  6 0 ComputerÿPeripheralsÿHighÿFidelityÿHookÿUpÿ2400s
+0 1  8 0 ComputerÿPeripheralsÿVivaÿ14.4ÿv.42ÿbisÿext
+0 2  8 0 ComputerÿPeripheralsÿVivaÿ14.4ÿv.42ÿbisÿint
+0 1  3 0 ComputerÿPeripheralsÿVivaÿ2400ÿMNP5
+0 1  3 0 ComputerÿPeripheralsÿVivaÿ2442efÿv.42ÿbis
+0 1  3 0 ComputerÿPeripheralsÿVivaÿ2442ifÿv.42ÿbis
+0 1  6 0 ComputerÿPeripheralsÿVivaÿ24e
+0 1  6 0 ComputerÿPeripheralsÿVivaÿ24i
+0 1  3 0 ComputerÿPeripheralsÿVivaÿ24i/fx
+0 2  8 0 DallasÿFaxÿDF9696
+0 1 13 0 Designerÿ2400ÿint
+0 1  9 0 DigicomÿConnection+
+0 1  9 0 DigicomÿChameleon
+0 1 14 0 DigicomÿEagle+ÿv.42bis/fax
+0 1 14 0 DigicomÿScout+ÿv.42bis/fax
+0 1  6 0 Digitanÿ2400ÿint
+0 1  3 0 Edisonÿ2400
+0 2  8 0 Edisonÿv.32bis/fax
+0 1  6 0 EricssonÿTAU-2620
+R 1  3 0 EverexÿEvercomÿ24
+R 1  3 0 EverexÿEvercomÿ24e
+0 1  3 0 EverexÿEvercomÿ24e+
+0 1  9 0 Fountainÿ14.4I
+0 1 15 0 Freemontÿ9600ÿfax
+0 1 16 0 GalaxyÿNetworkÿ14.4
+0 1 17 0 GalaxyÿNetworkÿ9600
+0 1  6 0 Gatewayÿ2000ÿTelepathÿ2400
+0 2  8 0 Gatewayÿ2000ÿTelepathÿv.32
+0 1  9 0 Gatewayÿ2000ÿPCMCIAÿv.32bis
+0 1 18 0 GVCÿ9600ÿv.42bis\MNP5
+0 1  6 0 HayesÿAccuraÿ2400ÿext
+0 1  6 0 HayesÿPersonalÿModemÿ1200
+0 1  6 0 HayesÿPersonalÿModemÿ2400
+0 1  6 0 HayesÿPersonalÿModemÿ2400+
+0 1  6 0 HayesÿSmartmodemÿ2400Bÿext
+0 1  6 0 HayesÿSmartmodemÿ2400Bÿint
+0 1 19 0 HayesÿSmartmodemÿOptimaÿ14.4
+0 1 19 0 HayesÿSmartmodemÿOptimaÿ9600
+0 1 19 0 HayesÿV-seriesÿSmartmodemÿ2400
+0 1 19 0 HayesÿV-seriesÿSmartmodemÿ9600
+0 1  6 0 IBMÿPS/1ÿint
+C 1 13 0 IdentityÿSuperModemÿ2400ext
+C 1 13 0 IdentityÿSuperModemÿ2400int
+0 1  3 0 Infinityÿ2400Fax
+C 1 13 0 Infinityÿ2400int
+C 1  6 0 Infotelÿ9600
+0 1  7 0 Infotelÿ9600ÿv.42bis
+0 1  7 0 InfotelÿFM144/144HVIÿintÿFAX
+0 2 20 0 Intelÿ14.4ÿinternal
+0 1 20 0 Intelÿ14.4ex
+0 2 21 0 Intelÿ14.4ÿ(alternate)
+0 1 22 0 Intelÿ2400ex
+0 1 20 0 Intelÿ9600ex
+0 1 20 0 IntelÿSatisFaxion
+0 2 20 0 IntelÿSatisFaxionÿ100
+0 2 20 0 IntelÿSatisFaxionÿ200
+0 2 20 0 IntelÿSatisFaxionÿ400
+0 1  3 0 LightCOMÿLightningÿ14.4
+0 1  3 0 LightCOMÿLightningÿ96
+0 1  6 0 LogicodeÿQUICKTELÿ2400ÿint
+0 1  3 0 LogicodeÿQUICKTELÿ9600ÿv.42
+0 1  6 0 LogicodeÿQUICKTELÿ9624
+0 1  6 0 Magnavoxÿ2400
+0 1  3 0 MegahurstÿC5144
+0 1  3 0 MicrocomÿAX-2400C
+0 1  3 0 MicrocomÿQX-4232
+0 1  3 0 MicrocomÿQX-V.32C
+0 2  3 0 MotorolaÿUDSÿv.32ÿlcd
+0 1 23 0 MultiTechÿMultiModemÿ224E
+0 1 24 0 MultiTechÿMultiModemÿ696E
+0 1  6 0 Nuvotelÿ2400i
+0 1  3 0 Nuvotelÿ2400iÿErrorÿCorrecting
+0 1  3 0 ODEÿ2400intÿMNP5
+R 1  6 0 OmniTelÿEncoreÿ2400hbÿint
+0 1  6 0 OmniTelÿPCÿModemÿ2400ÿint
+0 1  6 0 PackardÿBellÿ2400
+0 1  6 0 PackardÿBellÿ2400/fax
+0 1  6 0 PCÿLogicÿ2400
+0 1  6 0 PCÿLogicÿ24ip
+0 1  6 0 PCÿLogicÿFaxÿ24i
+0 1 25 0 PCÿLogicÿv.32bisÿext
+0 1  6 0 PracticalÿModemÿ1200SAÿMini
+0 1 19 0 PracticalÿModemÿ14400FXÿPocket
+0 1 19 0 PracticalÿModemÿ14400FXÿPS/2
+0 1 19 0 PracticalÿModemÿ14400FXÿV.32
+0 1 19 0 PracticalÿModemÿ14400FXMT
+0 1 19 0 PracticalÿModemÿ14400FXSAÿV.32
+0 1  6 0 PracticalÿModemÿ2400
+0 1  6 0 PracticalÿModemÿ2400ÿPS/2
+0 1 19 0 PracticalÿModemÿ2400ÿV.42bis
+0 1 19 0 PracticalÿModemÿ2400EFX
+0 1 19 0 PracticalÿModemÿ2400EFXÿSA
+0 1  6 0 PracticalÿModemÿ2400F
+0 1  6 0 PracticalÿModemÿ2400FÿMini
+0 1  6 0 PracticalÿModemÿ2400FÿPocket
+0 1  6 0 PracticalÿModemÿ2400FX96
+0 1  6 0 PracticalÿModemÿ2400FX96SA
+0 1  6 0 PracticalÿModemÿ2400PPM
+0 1 19 0 PracticalÿModemÿ2400PPMÿV.42
+0 1  6 0 PracticalÿModemÿ2400SA
+0 1 19 0 PracticalÿModemÿ2400SAÿV.42bis
+0 1 19 0 PracticalÿModemÿ9600
+0 1 19 0 PracticalÿModemÿ9600FX
+0 1 19 0 PracticalÿModemÿ9600FXMT
+0 1 19 0 PracticalÿModemÿ9600SA
+0 1 26 0 PrometheusÿPromodemÿUltima
+0 1 19 0 RevealÿUHSÿv.32bisÿPM500
+0 1 27 0 RixonÿR212A
+0 1 20 0 Spartacusÿ14.4ÿv42bis/faxÿext
+0 1  3 0 Spartanÿv.32ÿv.42bis
+0 1  3 0 SpectrumÿEnvoy
+0 1 15 0 Spirit
+0 1 15 0 SpiritÿII
+0 1 17 0 StarLitÿ2400ÿintÿ/fax
+0 1  6 0 SupraFAXModemÿ24/96i
+0 1  3 0 SupraFAXModemÿPlus
+0 1  3 0 SupraFAXModemÿv.32
+0 1  8 0 SupraFAXModemÿv.32bisÿext
+0 2  8 0 SupraFAXModemÿv.32bisÿint
+0 1  9 0 SupraFAXModemÿ(Alternate)
+0 1  6 0 SupraModemÿ2400ÿext
+0 1  6 0 SupraModemÿ2400ÿint
+0 1  6 0 TandyÿSensation
+0 1 28 0 TelebitÿQBlazer
+0 1 29 0 TelebitÿT1000
+R 1 28 0 TelebitÿT1600
+0 1 29 0 TelebitÿT2500
+0 1 28 0 TelebitÿT3000
+0 1 29 0 TelebitÿTrailBlazer
+0 1 29 0 TelebitÿTrailBlazerÿPlus
+0 1 28 0 TelebitÿWorldBlazer
+0 1  3 0 Tornadoÿ9600
+0 1  3 0 Toshibaÿ24/96ÿFAX
+0 1  4 0 ToshibaÿLaptop
+0 1  3 0 TwinComÿ14.4ÿv.42ÿfaxÿint
+0 2 30 0 TwinComÿ9600ÿv.42ÿint
+0 1  6 0 USRÿCourierÿ2400
+0 1 31 0 USRÿCourierÿHST
+0 1 31 0 USRÿCourierÿHSTÿDualÿStandard
+0 1 31 0 USRÿCourierÿv.32ÿorÿfaster
+0 1 31 0 USRÿSportsterÿ14.4
+0 1 31 0 USRÿSportsterÿ2400
+0 1 31 0 USRÿSportsterÿ9600
+0 2  8 0 Wangÿ14/14i
+0 1  8 0 Wangÿ14/14e
+0 1  6 0 Wangÿ2400i
+0 1  8 0 Wangÿ9600eÿv.42ÿext
+0 2 32 0 YokohamaÿTelecomÿ14.4/faxÿint
+0 2  3 0 Zoltrixÿ14.4ÿv.42bis/faxÿint
+0 1  3 0 Zoltrixÿ14.4ÿ(alternate)
+0 1  6 0 Zoltrixÿ2400
+C 1 13 0 Zoltrixÿ2496ÿfax
+0 1  8 0 Zoomÿ14.4ÿv.42bis/faxÿext
+0 1  8 0 Zoomÿ14.4ÿv.42bis/faxÿint
+0 2  8 0 Zoomÿ14.4ÿ(Alternate)
+0 1  6 0 Zoomÿ2400ÿext
+0 1  6 0 Zoomÿ2400ÿoldÿintÿmodels
+0 1 33 0 Zoomÿ2400AFC
+0 1  3 0 Zoomÿ9600ÿv.42bis/fax
+0 1  5 0 Zoomÿ9624ÿext
+0 1  3 0 Zoomÿ9624ÿv.42bisÿext
+0 1  3 0 Zoomÿ9624ÿv.42bisÿint
+0 1  5 0 ZoomÿFC9624ÿint
+0 1  6 0 ZoomÿHC2400Rÿint
+0 1  6 0 ZoomÿMX2400Rÿext
+0 1 34 0 ZyXELÿU-1496ÿext
+0 1 34 0 ZyXELÿU-1496ÿint
+0 1  0 0 Custom

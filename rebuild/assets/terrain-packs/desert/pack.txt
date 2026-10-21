@@ -1,0 +1,7 @@
+name Desert
+templates 4
+kind 1 0 1
+kind 2 2 3 4 5
+kind 3 6 7 8
+kind 4 9 10 11
+kind 5 12

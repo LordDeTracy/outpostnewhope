@@ -1,0 +1,7 @@
+name Volcanic
+templates 2
+kind 1 0 1 2
+kind 2 3 4 5
+kind 3 6 7
+kind 4 8 9
+kind 5 10

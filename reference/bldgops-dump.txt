@@ -1,0 +1,142 @@
+BLDGOPS.DAT: 138 records, 46 fields each
+
+| Idx | Name               | Op Prereqs (field=val)                             |  Pwr |  Mnt | Flag |
+----------------------------------------------------------------------------------------------------
+|   0 | Unknown            | (none)                                             |    0 |    0 |    0 |
+|   1 | Clear              | (none)                                             |    0 |    0 |    0 |
+|   2 | Rough              | (none)                                             |    0 |    0 |    0 |
+|   3 | Hostile            | (none)                                             |    0 |    0 |    0 |
+|   4 | Hopeless           | (none)                                             |    0 |    0 |    0 |
+|   5 | Dozed              | (none)                                             |    0 |    0 |    0 |
+|   6 | UGEasy             | (none)                                             |    0 |    0 |    0 |
+|   7 | UGDiff             | (none)                                             |    0 |    0 |    0 |
+|   8 | UGImposs           | (none)                                             |    0 |    0 |    0 |
+|   9 | UGDozed            | (none)                                             |    0 |    0 |    0 |
+|  10 | Seed               | (none)                                             |    0 |    0 |    0 |
+|  11 | SeedCommand        | (none)                                             |    0 |    0 |    0 |
+|  12 | SeedSmelter        | (none)                                             |    0 |    0 |    0 |
+|  13 | SeedPower          | (none)                                             |    0 |    0 |    0 |
+|  14 | SeedFact           | (none)                                             |    0 |    0 |    0 |
+|  15 | SpacePort          | #25=1, #27=1, #30=1                                |    5 |    4 |    0 |
+|  16 | DisMine            | (none)                                             |    0 |    0 |    0 |
+|  17 | MassDrv            | #25=1                                              |    5 |    4 |    0 |
+|  18 | SolrPwrRecvr       | (none)                                             |    0 |    1 |    0 |
+|  19 | MShipTokamak       | #30=1, #31=1, #32=1                                |    0 |    1 |    0 |
+|  20 | Tokamak            | #30=1, #31=1, #32=1                                |    0 |    1 |    0 |
+|  21 | Tokamak2           | #30=1, #31=1, #32=1                                |    0 |    1 |    0 |
+|  22 | LMono              | (none)                                             |    4 |    1 |    0 |
+|  23 | RMono              | (none)                                             |    4 |    1 |    0 |
+|  24 | XMono              | (none)                                             |    4 |    1 |    0 |
+|  25 | LMonoTrain         | (none)                                             |    4 |    1 |    0 |
+|  26 | RMonoTrain         | (none)                                             |    4 |    1 |    0 |
+|  27 | AgriDome           | #27=1, #28=1, #29=1                                |    2 |    1 |    1 |
+|  28 | AgriDome2          | #27=1, #28=1, #29=1                                |    2 |    1 |    1 |
+|  29 | AgriDome3          | #27=1, #28=1, #29=1                                |    2 |    1 |    1 |
+|  30 | Fact               | #25=1, #26=1, #27=1, #28=1, #29=1, #30=1           |    5 |    1 |    0 |
+|  31 | Fact2              | #25=1, #26=1, #27=1, #28=1, #29=1, #30=1           |    5 |    1 |    0 |
+|  32 | Fact3              | #25=1, #26=1, #27=1, #28=1, #29=1, #30=1           |    5 |    1 |    0 |
+|  33 | Trade              | (none)                                             |    1 |    1 |    0 |
+|  34 | Spew               | #27=1, #28=1, #29=1                                |    3 |    2 |    1 |
+|  35 | Spew2              | #27=1, #28=1, #29=1                                |    3 |    2 |    1 |
+|  36 | Spew3              | #27=1, #28=1, #29=1                                |    3 |    2 |    1 |
+|  37 | CommTwr            | (none)                                             |    4 |    1 |    0 |
+|  38 | CommTwr2           | (none)                                             |    4 |    1 |    0 |
+|  39 | CommTwr3           | (none)                                             |    4 |    1 |    0 |
+|  40 | HotLab             | #25=1, #26=1, #27=1, #28=1, #29=1                  |    4 |    2 |   -1 |
+|  41 | HotLab2            | #25=1, #26=1, #27=1, #28=1, #29=1                  |    4 |    2 |   -1 |
+|  42 | Chap               | #25=1, #27=1, #29=1                                |    5 |    4 |    0 |
+|  43 | Chap2              | #25=1, #27=1, #29=1                                |    5 |    4 |    0 |
+|  44 | Nano               | (none)                                             |    3 |    2 |    1 |
+|  45 | TerraForm          | #27=1, #28=1, #29=1                                |    5 |    4 |    5 |
+|  46 | TerraForm2         | #27=1, #28=1, #29=1                                |    5 |    4 |    5 |
+|  47 | Dirt               | #25=1, #27=1, #28=1                                |    4 |    2 |    1 |
+|  48 | Dirt2              | #25=1, #27=1, #28=1                                |    4 |    2 |    1 |
+|  49 | Cops               | #27=1                                              |    3 |    2 |    0 |
+|  50 | Cops2              | #27=1                                              |    3 |    2 |    0 |
+|  51 | ActiveMine         | (none)                                             |    5 |    1 |    0 |
+|  52 | ActiveMine2        | (none)                                             |    5 |    1 |    0 |
+|  53 | Smelter            | #27=1, #28=1, #29=1                                |    5 |    3 |    0 |
+|  54 | Smelter2           | #27=1, #28=1, #29=1                                |    5 |    3 |    0 |
+|  55 | Command            | (none)                                             |    0 |    1 |    0 |
+|  56 | RoboCmd            | (none)                                             |    3 |    1 |    0 |
+|  57 | RoboCmd2           | (none)                                             |    3 |    1 |    0 |
+|  58 | Warehouse          | (none)                                             |    1 |    1 |    0 |
+|  59 | Warehouse2         | (none)                                             |    1 |    1 |    0 |
+|  60 | Storage            | (none)                                             |    1 |    0 |    0 |
+|  61 | Storage2           | (none)                                             |    1 |    0 |    0 |
+|  62 | ColonistLander     | (none)                                             |    0 |    0 |    0 |
+|  63 | MonoStation        | (none)                                             |    3 |    1 |    0 |
+|  64 | MonoXFormer        | (none)                                             |    1 |    1 |    0 |
+|  65 | CargoLander        | (none)                                             |    0 |    0 |    0 |
+|  66 | Const              | (none)                                             |    0 |    0 |    0 |
+|  67 | LRoadConst         | (none)                                             |    0 |    0 |    0 |
+|  68 | RRoadConst         | (none)                                             |    0 |    0 |    0 |
+|  69 | XRoadConst         | (none)                                             |    0 |    0 |    0 |
+|  70 | ExpDigConst        | (none)                                             |    0 |    0 |    0 |
+|  71 | Core               | (none)                                             |    0 |    0 |    0 |
+|  72 | Destroyed          | (none)                                             |    0 |    0 |    0 |
+|  73 | Destroyed2         | (none)                                             |    0 |    0 |    0 |
+|  74 | Destroyed3         | (none)                                             |    0 |    0 |    0 |
+|  75 | LanderConst        | (none)                                             |    0 |    0 |    0 |
+|  76 | LRoad              | (none)                                             |    0 |    0 |    0 |
+|  77 | RRoad              | (none)                                             |    0 |    0 |    0 |
+|  78 | XRoad              | (none)                                             |    0 |    0 |    0 |
+|  79 | UGResident         | (none)                                             |    2 |    1 |    0 |
+|  80 | UGResident2        | (none)                                             |    2 |    1 |    0 |
+|  81 | UGResident3        | (none)                                             |    2 |    1 |    0 |
+|  82 | UGRec              | (none)                                             |    1 |    1 |    1 |
+|  83 | UGRec2             | (none)                                             |    1 |    1 |    1 |
+|  84 | UGUniv             | #26=1                                              |    2 |    2 |    1 |
+|  85 | UGUniv2            | #26=1                                              |    2 |    2 |    1 |
+|  86 | UGUniv3            | #26=1                                              |    2 |    2 |    1 |
+|  87 | UGCommercial       | (none)                                             |    3 |    2 |    1 |
+|  88 | UGCommercial2      | (none)                                             |    3 |    2 |    1 |
+|  89 | UGCommercial3      | (none)                                             |    3 |    2 |    1 |
+|  90 | UGPark             | (none)                                             |    1 |    0 |    1 |
+|  91 | UGFact             | #27=1, #28=1, #29=1                                |    3 |    2 |    0 |
+|  92 | UGFact2            | #27=1, #28=1, #29=1                                |    3 |    2 |    0 |
+|  93 | UGLab              | #25=1, #26=1, #27=1, #28=1, #29=1                  |    3 |    2 |    0 |
+|  94 | UGLab2             | #25=1, #26=1, #27=1, #28=1, #29=1                  |    3 |    2 |    0 |
+|  95 | UGLab3             | #25=1, #26=1, #27=1, #28=1, #29=1                  |    3 |    2 |    0 |
+|  96 | UGMine             | (none)                                             |    0 |    0 |    0 |
+|  97 | UGMine2            | (none)                                             |    0 |    0 |    0 |
+|  98 | UGTokamak          | (none)                                             |    0 |    0 |    0 |
+|  99 | UGTokamak2         | (none)                                             |    0 |    0 |    0 |
+| 100 | UGSpacePort        | (none)                                             |    1 |    1 |    0 |
+| 101 | UGRed              | (none)                                             |    2 |    2 |    2 |
+| 102 | UGAdmin            | (none)                                             |    1 |    1 |    0 |
+| 103 | UGAdmin2           | (none)                                             |    1 |    1 |    0 |
+| 104 | UGMed              | #26=1                                              |    2 |    2 |    0 |
+| 105 | UGMed2             | #26=1                                              |    2 |    2 |    0 |
+| 106 | UGCore             | (none)                                             |    0 |    0 |    0 |
+| 107 | UGConst            | (none)                                             |    0 |    0 |    0 |
+| 108 | UGCops             | #27=1                                              |    3 |    2 |    0 |
+| 109 | UGCops2            | #27=1                                              |    3 |    2 |    0 |
+| 110 | UGGeoTherm         | (none)                                             |    0 |    1 |    0 |
+| 111 | UGTrade            | (none)                                             |    0 |    0 |    0 |
+| 112 | UGDestroyed        | (none)                                             |    0 |    0 |    0 |
+| 113 | UGDestroyed2       | (none)                                             |    0 |    0 |    0 |
+| 114 | UGDestroyed3       | (none)                                             |    0 |    0 |    0 |
+| 115 | RoboDoze           | (none)                                             |    0 |    0 |    0 |
+| 116 | RoboDig            | (none)                                             |    0 |    0 |    0 |
+| 117 | RoboMine           | (none)                                             |    0 |    0 |    0 |
+| 118 | RoboExplr          | (none)                                             |    0 |    0 |    0 |
+| 119 | UGRoboDoze         | (none)                                             |    0 |    0 |    0 |
+| 120 | UGRoboDig          | (none)                                             |    0 |    0 |    0 |
+| 121 | UGTargetDig        | (none)                                             |    0 |    0 |    0 |
+| 122 | XPipe              | (none)                                             |    0 |    0 |    0 |
+| 123 | LPipe              | (none)                                             |    0 |    0 |    0 |
+| 124 | RPipe              | (none)                                             |    0 |    0 |    0 |
+| 125 | UGRPipe            | (none)                                             |    0 |    0 |    0 |
+| 126 | UGLPipe            | (none)                                             |    0 |    0 |    0 |
+| 127 | UGXPipe            | (none)                                             |    0 |    0 |    0 |
+| 128 | Colonists          | (none)                                             |    0 |    0 |    0 |
+| 129 | Food               | (none)                                             |    0 |    0 |    0 |
+| 130 | LifeSupport        | (none)                                             |    0 |    0 |    0 |
+| 131 | SolarSat           | (none)                                             |    0 |    0 |    0 |
+| 132 | GeoProbe           | (none)                                             |    0 |    0 |    0 |
+| 133 | WeatherSat         | (none)                                             |    0 |    0 |    0 |
+| 134 | InterStellarProbe  | (none)                                             |    0 |    0 |    0 |
+| 135 | CommSat            | (none)                                             |    0 |    0 |    0 |
+| 136 | OrbitObserve       | (none)                                             |    0 |    0 |    0 |
+| 137 | ULBIProbe          | (none)                                             |    0 |    0 |    0 |

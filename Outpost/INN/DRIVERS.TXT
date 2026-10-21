@@ -1,0 +1,46 @@
+\\SNDBLAST.DRV
+Sound Blaster Card
+\\TANDY.DRV
+Tandy 1000 TL series
+\\CMS.DRV
+Game Blaster Card
+\\VGA320.DRV
+VGA or IBM PS2, Models 25 & 30 - 256 Colors
+\\EGA320.DRV
+EGA/VGA with RGB monitor - 16 Colors
+\\CGA320C.DRV
+CGA with RGB monitor - 4 Colors
+\\TANDYXL.DRV
+Tandy 2500 XL (For 80286 Tandy 2500XL ONLY)
+\\HERCMONO.DRV
+Hercules 720 x 348 - monochrome
+\\IBMKBD.DRV
+IBM or IBM-compatible keyboard
+\\CGA320T.DRV
+CGA with RGB monitor - 2 Colors (Preferred)
+\\STD.DRV
+IBM PC or Compatible Internal Speaker
+\\TWEAKER.DRV
+IBM PC or Compatible Internal Speaker
+\\MT32.DRV
+Roland MT-32, MT-100, LAPC-I, CM-32L, or CM-64
+\\MT32NL.DRV
+Not Available
+\\JR.DRV
+IBM PCjr
+\\TANDYKBD.DRV
+Tandy 1000 keyboard
+\\CGA320M.DRV
+CGA with RGB monitor - 2 Colors (Preferred)
+\\MCGA320.DRV
+IBM PS2, Models 25 & 30 - 16 Colors
+\\TANDY3V.DRV
+Tandy 1000 series
+\\TANDY320.DRV
+Tandy 1000 with RGB monitor - 16 Colors
+\\ADL.DRV
+AdLib Music Synthesizer Card
+\\MODEM.DRV
+Modem Driver
+\\NOBRK.DRV
+No-break modem driver

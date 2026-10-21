@@ -1,0 +1,467 @@
+AL 205  Anniston             236-9711 236-9711
+AL 205  Birmingham           328-2310 251-1885 328-5719
+AL 205  Decatur              355-0206 355-0206
+AL 205  Dothan               793-5034 793-5034
+AL 205  Florence             767-7960 767-0497
+AL 205  Huntsville           539-2281 539-1631 533-6787
+AL 205  Mobile               432-1680 438-6881 432-9190
+AL 205  Montgomery           269-0090 832-4314 264-7284
+AL 205  Tuscaloosa           752-1472 758-5799
+AR 501  Fayetteville         442-0212 442-0212
+AR 501  Ft Smith             782-2852 782-2852
+AR 501  Hot Springs          623-3159 623-3159
+AR 501  Little Rock          372-4616 374-2861 375-4177
+AR 501  Texarkana            772-6181 772-6181
+AZ 602  Flagstaff            773-0588 773-0588
+AZ 602  Phoenix              254-0244 256-6955 254-1903
+AZ 602  Tuscon               747-0107 747-9395 620-0658
+CA 209  Fresno               233-0961 441-1861 233-6928
+CA 209  Merced               383-2557 383-2557
+CA 209  Modesto              576-2852 576-2852
+CA 209 *Oakhurst             683-0477 683-0477
+CA 209  Stockton             957-7610 957-7627 478-0402
+CA 209  Visalia              627-1201 627-1201
+CA 213 *Los Angeles          614-6895 614-6895
+CA 213  Los Angeles          624-2251 622-1138 937-5526
+CA 213  Los Angeles          937-3580 622-1138
+CA 310  Compton              516-1007 516-1007
+CA 310  Marina Del Rey       306-2984 306-4922 306-3450
+CA 310  Norwalk              404-2237 802-2275
+CA 310 *San Pedro            548-0189 548-0189
+CA 310  San Pedro            548-6141 514-1590 548-7146
+CA 408  Monterey             646-9092 646-5122
+CA 408  Salinas              443-4940 443-8791
+CA 408 *San Jose             295-9923 295-9923
+CA 408  San Jose             294-9119 286-6340 294-9067
+CA 408  Santa Cruz           429-6937 429-9192 459-7735
+CA 415  Palo Alto            856-9995 856-0484 856-4854
+CA 415  San Carlos           591-0726 595-8870 591-8578
+CA 415 *San Francisco        281-0970 281-0970
+CA 415  San Francisco        247-9890 247-9890 247-9976
+CA 415  San Rafael           472-5360 472-2550 499-1629
+CA 510  Concord              827-3960 674-0127 687-0216
+CA 510  Fremont              490-2050 490-2050 249-9220
+CA 510 *Hayward              733-0208 733-0208
+CA 510  Hayward              881-1382 727-1708 538-0623
+CA 510  Oakland              836-4911 834-3194 836-3844
+CA 510  Pinole               724-4200 724-2225
+CA 510  San Ramon            829-6705 829-6705
+CA 619  Escondido            741-7756 741-9536 738-0203
+CA 619  Oceanside            430-0613 430-0613
+CA 619  Palm Springs         343-3470 343-3470
+CA 619 *San Diego            233-8937 233-8937
+CA 619  San Diego            233-0233 231-1703 233-1025
+CA 619  Victorville          951-2612 951-2612
+CA 707  Eureka               444-3091 444-3091
+CA 707  Santa Rosa           578-4447 578-1055 523-1048
+CA 714  Garden Grove         898-9820 895-1207 898-3132
+CA 714  Saddle Brook Valley  458-0811 458-0811
+CA 714 *Santa Ana            664-0339 664-0339
+CA 714  Santa Ana            558-7078 550-4625 558-1501
+CA 805  Bakersfield          327-8146 327-5321 631-0577
+CA 805  Lancaster            949-7396 949-7396
+CA 805  Santa Barbara        682-5361 564-1158 965-3326
+CA 805  Santa Maria          925-2969 925-2969
+CA 805  Thousand Oaks        495-3588 495-3588
+CA 805  Ventura              656-6760 650-1070 650-9203
+CA 818 *Canoga Park          340-0252 340-0252
+CA 818  Glendale             507-0909 246-3886 507-0511
+CA 818  West Covina          915-5151 915-0349 331-6611
+CA 818  Woodland Hills       887-3160 348-7141 887-7420
+CA 909  Colton               824-9000 824-8976 824-5571
+CA 909  Pomona               626-1284 626-1284
+CA 916  Chico                894-6882 894-6882
+CA 916  Davis                753-4387 753-4387
+CA 916  Redding              243-0690 243-0690
+CA 916  Sacramento           448-6262 443-7434 448-0820
+CO 303  Denver               337-6060 696-0159 745-3285
+CO 303  Ft Collins           493-9131 493-4014
+CO 303  Grand Junction       241-3004 241-3004
+CO 303  Greeley              352-8563 352-8563
+CO 719  Colorado Springs     635-5361 635-2551 632-0278
+CO 719  Pueblo               542-4053 542-4053
+CT 203  Bridgeport           335-5055 367-9130 332-7400
+CT 203  Danbury              794-9075 792-5354 778-2022
+CT 203  Hartford             247-9479 724-9396 560-1385
+CT 203  Middletown           344-8217 344-8217
+CT 203  New Britain          225-7027 225-7027
+CT 203  New Haven            624-5954 773-3569 624-5945
+CT 203  New London           447-8455 437-0909 440-0656
+CT 203  Norwalk              866-7404 866-7404
+CT 203  Stamford             348-0787 359-9404 961-8371
+CT 203  Waterbury            753-4512 756-0342
+DC 202  Washington           429-7800 429-0956 659-2733
+DC 202  Washington           429-7896 429-0956
+DE 302  Dover                678-8328 678-8328
+DE 302  Newark               454-7710 737-4340 477-1745
+FL 305  Ft Lauderdale        764-4505 524-5304 764-0318
+FL 305  Miami                372-0230 372-1355 358-5349
+FL 305  Pompano Beach        941-5445 941-5445
+FL 407  Boca Raton           338-3701 338-3701 367-0732
+FL 407  Cocoa Beach          267-0800 267-0800
+FL 407  Ft Pierce            466-4566 466-4566
+FL 407  Melbourne            242-8247 729-9156 725-9641
+FL 407  Orlando              422-4088 422-8858 246-0851
+FL 407  West Palm Beach      833-6691 655-2993 820-9391
+FL 813  Cape Coral           275-7924 275-4153
+FL 813  Lakeland             683-5461 687-0666
+FL 813  Naples               263-3033 263-3033
+FL 813  Sarasota             923-4563 925-1499 952-1152
+FL 813  St Petersburg        323-4026 327-1163 327-7024
+FL 813  Tampa                224-9920 223-5859 221-3713
+FL 904  Daytona Beach        255-2629 257-4770
+FL 904  Gainesville          338-0220 338-1700 331-3799
+FL 904  Holly Hill           257-4770 257-4770
+FL 904  Jacksonville         353-1818 791-9201 353-1137
+FL 904  Leesburg             787-0799 787-0799
+FL 904  Ocala                351-3790 351-0263
+FL 904  Panama City          763-8377 763-8377
+FL 904  Pensacola            432-1335 434-2103 469-9688
+FL 904  Tallahassee          681-1902 561-8830 222-0533
+FL 904  Valparaiso           897-3421 897-3421
+GA 404  Atlanta              523-0834 584-0212 688-1212
+GA 404  Gainsville           532-9880 532-9880
+GA 706  Athens               548-5590 548-9698
+GA 706  Augusta              724-2752 724-4494
+GA 706  Columbus             571-0556 323-8931
+GA 706  Rome                 234-1428 234-1428
+GA 912  Albany               888-3011 431-9384
+GA 912  Macon                743-8844 741-2108
+GA 912  Savannah             236-2605 236-2875 236-2898
+IA 319  Burlington           752-2516 752-2516
+IA 319  Cedar Rapids         364-0911 362-2764
+IA 319  Davenport            324-2445 324-8902
+IA 319  Dubuque              556-0783 556-0783
+IA 319  Iowa City            351-1421 354-0676
+IA 319  Waterloo             232-5441 232-0195
+IA 515  Ames                 233-6300 233-2603
+IA 515  Des Moines           288-4403 288-6206 288-4626
+IA 712  Sioux City           255-1545 255-1545
+ID 208  Boise                343-0611 343-1272 343-0957
+ID 208  Idaho Falls          529-0406 529-0406
+ID 208  Lewiston             743-0099 743-5885
+ID 208  Pocatella            232-1764 232-1764
+IL 217  Decatur              429-0235 429-6054
+IL 217  Springfield          753-1373 753-1391
+IL 217  Urbana               384-6428 328-0317
+IL 309  Bloomington          827-7000 828-2573
+IL 309  Peoria               637-8570 637-8582
+IL 312  Chicago              938-0600 938-8725 938-5462
+IL 618  Belleville           277-5483 277-5483 277-9551
+IL 708  Arlington Heights    255-6465 255-6465 670-9522
+IL 708  Aurora               896-0620 896-3363 896-9802
+IL 708  Glencoe              835-8037 835-8037 835-1143
+IL 708  Libertyville         362-7838 362-7838 362-5718
+IL 708  Naperville           355-2910 355-2910 355-4449
+IL 815  De Kalb              758-2623 758-5046
+IL 815  Joliet               726-0070 726-8731 722-9652
+IL 815  Rockford             965-0400 965-0696 962-9523
+IN 219  Ft Wayne             426-2268 422-3431 422-8013
+IN 219  Gary                 882-8800 882-1835 881-1020
+IN 219  South Bend           233-7104 233-4031 288-2355
+IN 317  Indianapolis         299-0024 299-6766 299-2593
+IN 317  Kokomo               455-2460 452-0073
+IN 317  Lafayette            742-6000 742-5488
+IN 317  Muncie               282-6418 288-1113
+IN 317  Richmond             935-7532 935-7532
+IN 812  Bloomington          332-1344 331-8890
+IN 812  Evansville           424-7693 428-2522
+IN 812  Terre Haute          232-5329 234-4119
+KS 316  Wichita              262-5669 262-7961 729-9888
+KS 913  Lawrence             843-8124 843-8124
+KS 913  Leavenworth          651-0015 651-0015
+KS 913  Manhattan            537-0948 537-0948
+KS 913  Salina               825-7900 825-7900
+KS 913  Topeka               233-9880 233-4660
+KY 502  Bowling Green        782-7941 782-6380
+KY 502  Frankfort            875-4654 875-1942
+KY 502  Louisville           589-5580 583-1006 583-1209
+KY 502  Owensboro            686-8107 686-8107
+KY 606  Lexington            233-0312 233-7217 231-7717
+LA 318  Alexandria           445-1053 445-1053
+LA 318  Lafayette            233-0002 234-8451 233-6951
+LA 318  Lake Charles         436-0518 436-0518
+LA 318  Monroe               387-6330 322-9826
+LA 318  Shreveport           221-5833 424-2255
+LA 504  Baton Rouge          343-0753 343-0771 293-6010
+LA 504  New Orleans          524-4094 522-3967 524-7442
+MA 413  Northampton          586-0510 586-0510
+MA 413  Pittsfield           499-7741 499-7741
+MA 413  Springfield          781-3811 737-9285 747-3700
+MA 508  Brockton             580-0721 588-3315
+MA 508  Fall River           677-4477 677-4477
+MA 508  Framingham           879-6798 820-0480
+MA 508  Lawrence             975-2273 683-0680
+MA 508  Lowell               937-5214 453-8803
+MA 508  New Bedford          999-2915 999-9667
+MA 508  Salem                744-1559 744-1559
+MA 508  Woods Hole           540-7500 457-9390
+MA 508  Worcester            755-4740 792-1785 791-7630
+MA 617  Boston               292-0662 574-9244 338-0002
+MA 617  Dedham               326-4064 326-4064
+MA 617  Lexington            863-1550 863-1745 862-9124
+MD 301  Frederick            293-9596 293-9596
+MD 410  Annapolis            224-8550 224-0795 266-6851
+MD 410  Baltimore            727-6060 752-5555 244-0470
+ME 207  Augusta              622-3123 622-7364
+ME 207  Brewer               989-3081 989-3081
+ME 207  Lewiston             784-0105 784-0105
+ME 207  Portland             761-4000 761-9029
+MI 313  Ann Arbor            996-5995 665-2900 741-8488
+MI 313  Detroit              964-2988 963-2274 965-3011
+MI 313  Flint                235-8517 235-5477
+MI 313  Pontiac              332-5120 332-5979 858-7109
+MI 313  Port Huron           982-8364 982-8364
+MI 313  Southfield           827-4710 827-4710
+MI 313  Warren               575-9152 558-8460 573-7300
+MI 313  Wayne                326-4210 326-4210
+MI 517  Jackson              782-8111 782-8111
+MI 517  Lansing              484-0062 484-6301 482-0120
+MI 517  Midland              832-7068 832-7068
+MI 517  Saginaw              790-5166 799-3190 797-3822
+MI 616  Battle Creek         968-0929 968-9851
+MI 616  Bridgman             465-3248 465-3248
+MI 616  Grand Rapids         774-0966 774-0131 774-5958
+MI 616  Kalamazoo            345-3088 345-3122 381-3101
+MI 616  Muskegon             726-5723 726-5723
+MI 616  Traverse City        946-2121 946-2121
+MN 218  Duluth               722-1719 722-5032
+MN 507  Mankato              388-3780 388-3780
+MN 507  Rochester            282-5917 282-0253
+MN 612  Minneapolis          341-2459 338-1661 332-0033
+MN 612  St Cloud             253-1264 253-1264
+MO 314  Columbia             449-4404 443-3432
+MO 314  Jefferson City       634-5178 634-8436
+MO 314  St Charles           723-5179 723-5179
+MO 314  St Louis             421-4990 421-0381 421-1376
+MO 417  Springfield          864-4814 864-4945 831-0057
+MO 816  Kansas City          221-9900 472-1430 421-5783
+MO 816  St Joseph            279-4797 279-4797
+MS 601  Gulfport             863-0024 863-0024
+MS 601  Hattiesburg          264-0815 264-0815
+MS 601  Jackson              969-0036 969-0152
+MS 601  Meridian             482-2210 482-2210
+MS 601  Port Gibson          437-8916 437-8916
+MS 601  Starkville           324-2155 324-2155
+MT 406  Billings             245-7649 248-6373
+MT 406  Great Falls          771-0067 771-0067
+MT 406  Helena               443-0000 443-0527
+MT 406  Missoula             721-5900 543-5575
+NC 704  Asheville            252-9134 252-0133
+NC 704  Charlotte            332-3131 333-6204 332-4023
+NC 704  Gastonia             865-4708 865-4708
+NC 704  Hickory              326-9860 326-9860
+NC 919  Burlington           229-0032 229-0032
+NC 919  Fayetteville         323-8165 323-4148 323-5940
+NC 919  Greensboro           273-2851 275-1251 299-6600
+NC 919  High Point           889-7494 889-7494
+NC 919  North Wilkesboro     838-9034 838-1663
+NC 919  Raleigh              834-8254 834-8254 781-9976
+NC 919  Res Tri Park         549-8139 541-9096 549-0542
+NC 919  Tarboro              823-0578 823-7459
+NC 919  Wilmington           763-8313 251-8900
+NC 919  Winston-Salem        725-2126 777-0312 785-9962
+ND 701  Fargo                235-7717 235-9069
+ND 701  Grand Forks          775-7813 775-7813
+ND 701  Mandan               663-2256 663-6339
+NE 308  Grand Island         381-2049 381-2049
+NE 402  Lincoln              475-4964 475-3839
+NE 402  Omaha                341-7733 346-6419 341-4622
+NH 603  Concord              224-1024 225-8710
+NH 603  Durham               868-2924 868-2924
+NH 603  Manchester           627-8725 625-8088 647-2750
+NH 603  Nashua               880-6241 880-3901 880-0118
+NH 603  Portsmouth           431-2302 431-7592
+NJ 201  Hackensack           488-6567 488-2063 488-1726
+NJ 201  Morristown           455-0275 644-4745 605-1836
+NJ 201  Newark               623-0469 623-7122 624-8843
+NJ 201  Passaic              778-5600 773-3674
+NJ 201  Paterson             684-7560 742-4415 279-4515
+NJ 201  Roseland             227-5277 227-6722
+NJ 201  Summit                                 701-0767
+NJ 609  Atlantic City        348-0561 344-8571 348-3233
+NJ 609  Marlton              596-1500 596-8659 424-1144
+NJ 609  Merchantville        663-9297 665-6860 663-7730
+NJ 609  Princeton            799-5587 936-0231 799-2266
+NJ 609  Trenton              989-8847 989-7127
+NJ 908  Freehold             780-5030 780-9122 780-2680
+NJ 908  New Brunswick        745-2900 745-7010 220-0405
+NJ 908  Rahway               815-1885 815-1885 388-5288
+NJ 908  Long Branch          571-0003 571-0003
+NJ 908  Sayreville           525-9507 525-9507
+NJ 908  Summit               273-9619 273-9619
+NM 505  Albuquerque          243-4479 242-1742 246-8950
+NM 505  Las Cruces           526-9191 526-9191
+NM 505  Santa Fe             473-3403 473-3403
+NV 702  Las Vegas            737-6861 737-5466 737-1752
+NV 702  Reno                 827-6900 827-5290 324-1718
+NY 212  New York City        620-6000 645-0560 206-0256
+NY 212  New York City        741-4950 645-0560
+NY 212  New York City        741-8100 645-0560
+NY 315  Syracuse             472-5583 479-5445 448-0021
+NY 315  Utica                797-0920 797-0228
+NY 516  Deer Park            667-5566 243-1105 254-6021
+NY 516  Hempstead            292-3800 485-3380 292-2820
+NY 518  Albany               465-8444 465-8632 433-0092
+NY 518  Plattsburgh          562-1890 562-1890
+NY 607  Binghamton           772-6642 772-9526 773-2244
+NY 607  Ithaca               277-2142 272-9980
+NY 716  Buffalo              847-1440 847-1825 847-8181
+NY 716  Niagara Falls        282-1462 282-3284
+NY 716  Rochester            454-1020 454-5730 546-6998
+NY 914  Poughkeepsie         473-2240 473-3200 471-6728
+NY 914  White Plains         328-9199 682-3505 949-6878
+OH 216  Canton               452-0903 452-6642
+OH 216  Cleveland            575-1658 771-6480 575-0811
+OH 216  Elyria               322-8712 322-8645
+OH 216  Kent                 678-5115 678-5043 678-8330
+OH 216  Lorain               960-1771 960-1771
+OH 216  Warren               394-0041 394-0041
+OH 216  Wooster              264-8920 264-8920
+OH 216  Youngstown           743-1296 743-6843
+OH 419  Findlay              422-8188 422-8188
+OH 419  Mansfield            526-0686 526-0686
+OH 419  Sandusky             627-0050 627-0050
+OH 419  Toledo               255-7881 255-1906 255-7010
+OH 513  Cincinnati           579-0390 241-8008 579-1593
+OH 513  Dayton               461-5254 461-0755 461-4600
+OH 513  Hamilton             863-4116 863-4116
+OH 513  Springfield          324-1520 324-1520
+OH 614  Columbus             463-9340 461-9044 461-8671
+OK 405  Lawton               353-0333 353-0225
+OK 405  Oklahoma City        232-4546 232-9513 270-0028
+OK 405  Stillwater           624-1112 743-1447
+OK 918  Bartlesville         336-3675 336-6362
+OK 918  Tulsa                584-3247 587-2774 584-6935
+OR 503  Corvallis            754-9273 754-0559
+OR 503  Eugene               683-1460 342-6626
+OR 503  Hood River           386-4405 386-4405
+OR 503  Klamath Falls        882-6282 882-6282
+OR 503  Medford              779-6343 773-7601 772-3994
+OR 503  Portland             295-3028 241-0496 295-0337
+OR 503  Salem                378-7712 378-1660
+PA 215  Allentown            435-3330 770-1405 435-8118
+PA 215  King of Prussia      337-4300 337-2850 265-2812
+PA 215  Levittown            946-3469 946-3469
+PA 215  Philadelphia         854-0352 854-0352 854-0589
+PA 215  Reading              376-8750 375-6945
+PA 215  Warrington           343-6010 343-6010
+PA 215  West Chester         436-7406 436-7406
+PA 412  Greensburg           836-4771 836-4771
+PA 412  Monroeville          856-1330 856-1330
+PA 412  Pittsburgh           288-9950 471-6430 281-8326
+PA 412  Pittsburgh           288-9974 471-6430
+PA 717  Carlisle             249-9311 249-9311
+PA 717  Danville             271-0102 271-0102
+PA 717  Harrisburg           236-6882 236-2007 236-1186
+PA 717  Lancaster            295-5405 295-7128
+PA 717  Scranton             961-5321 961-5480
+PA 717  Wilkes-Barre         829-3108 824-8209
+PA 717  Williamsport         494-1796 494-1796
+PA 717  York                 846-6550 843-0039
+PA 814  Altoona              949-0310 949-0310
+PA 814  Erie                 899-2241 453-3793
+PA 814  Johnstown            535-7576 536-3630
+PA 814  State College        231-1510 231-1510
+RI 401  North Kingston       295-7100 295-7100
+RI 401  Providence           751-7912 831-3990 453-5353
+RI 401  Woonsocket           765-0019 765-0019
+SC 803  Charleston           722-4303 577-4710 723-7342
+SC 803  Columbia             254-0695 252-0328 254-0038
+SC 803  Florence             669-0042 669-0042
+SC 803  Greenville           233-3486 271-0231 232-7832
+SC 803  Myrtle Beach         626-9134 626-9134
+SC 803  Spartanburg          585-1637 585-9197
+SD 605  Pierre               224-0481 224-2257
+SD 605  Rapid City           348-2621 348-2048
+SD 605  Sioux Falls          336-8593 336-6438
+TN 615  Bristol              968-1130 968-2480
+TN 615  Chattanooga          756-1161 265-7929 266-3066
+TN 615  Clarksville          552-0032 552-0032
+TN 615  Johnson City         282-6645 282-6645
+TN 615  Knoxville            523-5500 521-5072 523-4031
+TN 615  Nashville            244-3702 255-2608 726-1213
+TN 615  Oak Ridge            481-3590 481-3590
+TN 901  Memphis              521-0215 527-5175 525-5201
+TX 210  Brownsville          542-0367 544-7073
+TX 210  Laredo               724-1791 724-1791
+TX 210  McAllen              686-5360 686-2452
+TX 210  San Antonio          225-8004 225-3444 225-1191
+TX 214  Dallas               748-6371 745-1359 653-0840
+TX 409  Bryan                822-0159 779-0713
+TX 409  Galveston            762-4382 765-7298
+TX 409  Nederland            722-3720 727-4090
+TX 512  Austin               928-1130 929-3622 929-0078
+TX 512  Corpus Christi       884-9030 884-6946 888-7207
+TX 512  Victoria             572-3197 572-3197
+TX 713  Houston              227-1018 227-8208 228-0705
+TX 806  Amarillo             373-0458 373-1833
+TX 806  Lubbock              747-4121 765-9631
+TX 817  Denton               381-1897 381-1897
+TX 817  Ft Worth             332-4307 332-6794 332-1015
+TX 817  Temple               773-9723 773-9723
+TX 817  Waco                 752-9743 752-2681
+TX 817  Wichita Falls        322-3774 322-3774
+TX 903  Athens               677-1712 677-1712
+TX 903  Longview             236-4205 758-1161
+TX 903  Sherman              893-4995 893-4995
+TX 903  Tyler                597-8925 597-8925
+TX 915  Abilene              676-9151 672-2284
+TX 915  El Paso              532-7907 541-1931 532-1912
+TX 915  Midland              561-9811 561-8597
+TX 915  San Angelo           944-7621 949-1231 944-0376
+UT 801  Logan                752-3421 752-3421
+UT 801  Ogden                627-1630 627-1640
+UT 801  Provo                373-0542 375-2084 371-0278
+UT 801  Salt Lake City       359-0149 359-0578 355-9030
+VA 703  Blacksburg           552-9181 552-9181
+VA 703  Covington            962-2217 962-2217
+VA 703  Fredericksburg       371-0188 371-0188
+VA 703  Harrisonburg         434-7121 434-0374
+VA 703  Herndon              435-1800 481-6807 787-6719
+VA 703  Occoquan             494-0836 494-0836
+VA 703  Roanoke              344-2036 344-2404
+VA 804  Charlottesville      977-5330 977-5330
+VA 804  Lynchburg            845-0010 845-0010
+VA 804  Newport News         596-6600 596-2710 596-9232
+VA 804  Norfolk              625-1186 625-2408 340-8930
+VA 804  Richmond             788-9902 343-4140 225-0021
+VT 802  Burlington           864-0808 864-5485
+VT 802  Montpelier           229-4966 223-0758
+VT 802  Rutland              775-1676 775-1676
+VT 802  White River Junction 295-7631 295-7631
+WA 206  Auburn               939-9982 939-9982
+WA 206  Bellingham           733-2720 733-2873
+WA 206  Everett              775-9929 774-7466
+WA 206  Longview             577-5835 577-3992
+WA 206  Lynwood              774-7466 774-7466
+WA 206  Olympia              754-0460 786-5066 705-0769
+WA 206  Seattle              625-9612 623-9951 625-1386
+WA 206  Tacoma               627-1791 383-2233
+WA 206  Vancouver            693-6914 693-6914
+WA 509  Pullman              332-0172 332-0172
+WA 509  Richland             943-0649 946-2350
+WA 509  Spokane              455-4071 838-9065 747-2069
+WA 509  Wenatchee            663-6227 663-9180
+WA 509  Yakima               575-1060 575-1060
+WI 414  Green Bay            432-2815 432-0346
+WI 414  Kenosha              552-9242 552-9242
+WI 414  Milwaukee            271-3914 278-8007 271-2420
+WI 414  Neenah               731-0620 731-1560
+WI 414  Racine               632-6166 632-2174
+WI 414  Sheboygan            452-3995 452-3995
+WI 414  West Bend            334-2206 334-2206
+WI 608  Beloit               362-2433 362-2433
+WI 608  La Crosse            784-0560 784-0560
+WI 608  Madison              257-5010 257-8472 257-8330
+WI 715  Eau Claire           836-9295 836-0097
+WI 715  Wausau               845-9589 845-9589 848-6044
+WV 304  Charleston           345-6471 345-7140
+WV 304  Clarksburg           622-6827 622-6827
+WV 304  Huntington           523-2802 523-2802
+WV 304  Morgantown           292-0104 292-0492
+WV 304  Wheeling             233-7732 233-7732
+WY 307  Casper               265-5167 265-8807
+WY 307  Cheyenne             638-4421 637-3958
+WY 307  Laramie              721-5878 721-5878
+

@@ -1,0 +1,11 @@
+# Builds
+rebuild/build*/
+**/bin/
+**/obj/
+**/__pycache__/
+*.pdb
+*.ilk
+
+# Player data
+rebuild/saves/
+REBUILD.INI

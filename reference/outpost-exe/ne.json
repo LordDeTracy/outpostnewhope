@@ -1,0 +1,5576 @@
+{
+ "header": {
+  "linker": "5.60",
+  "entry_table": 2429,
+  "entry_len": 15,
+  "flags": "0x32a",
+  "autodata_seg": 11,
+  "heap": 4096,
+  "stack": 10240,
+  "cs_ip": "1:2300",
+  "ss_sp": "11:0000",
+  "segments": 11,
+  "modules": 5,
+  "seg_table": 192,
+  "res_table": 280,
+  "resident_names": 2329,
+  "modref_table": 2385,
+  "import_names": 2395,
+  "nonresident_names": 2444,
+  "nonresident_len": 72,
+  "movable_entries": 2,
+  "align_shift": 4,
+  "os": 2,
+  "other_flags": "0x8",
+  "expected_win": "3.10"
+ },
+ "modules": [
+  "KERNEL",
+  "GDI",
+  "USER",
+  "MMSYSTEM",
+  "COMMDLG"
+ ],
+ "segments": [
+  {
+   "index": 1,
+   "file_offset": 2592,
+   "length": 21943,
+   "min_alloc": 21943,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 8545,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 104,
+     "name": "MessageBeep"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 8559,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 9183,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 10456,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 1,
+     "name": "FatalExit"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9016,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 3,
+     "name": "GetVersion"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 10213,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 131,
+     "name": "GetDOSEnvironment"
+    },
+    {
+     "addr": "OFFSET",
+     "type": "IMPORTORDINAL",
+     "offset": 21858,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 113,
+     "name": "__AHSHIFT"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16050,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 137,
+     "name": "FatalAppExit"
+    },
+    {
+     "addr": "OFFSET",
+     "type": "IMPORTORDINAL",
+     "offset": 21715,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 114,
+     "name": "__AHINCR"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16689,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 15,
+     "name": "GlobalAlloc"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 15492,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 16,
+     "name": "GlobalReAlloc"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 8566,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 1,
+     "name": "MessageBox"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16748,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 17,
+     "name": "GlobalFree"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16708,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 18,
+     "name": "GlobalLock"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16743,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 19,
+     "name": "GlobalUnlock"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 15506,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 20,
+     "name": "GlobalSize"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 5434,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 21,
+     "name": "GlobalHandle"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9080,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 5,
+     "name": "InitApp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9011,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 23,
+     "name": "LockSegment"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 8005,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9071,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 30,
+     "name": "WaitEvent"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9809,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 49,
+     "name": "GetModuleFileName"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 5506,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 184,
+     "name": "GlobalDOSAlloc"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 5620,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 185,
+     "name": "GlobalDOSFree"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 5331,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 191,
+     "name": "GlobalPageLock"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 5222,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 192,
+     "name": "GlobalPageUnlock"
+    },
+    {
+     "addr": "OFFSET",
+     "type": "IMPORTORDINAL",
+     "offset": 8950,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 178,
+     "name": "__WINFLAGS"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 8964,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 91,
+     "name": "InitTask"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 21013,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 102,
+     "name": "DOS3Call"
+    }
+   ]
+  },
+  {
+   "index": 2,
+   "file_offset": 24800,
+   "length": 61408,
+   "min_alloc": 61408,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 5254,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 104,
+     "name": "MessageBeep"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40185,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 107,
+     "name": "DefWindowProc"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61327,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38177,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 108,
+     "name": "GetMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41447,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38491,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 111,
+     "name": "SendMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 56201,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 375,
+     "name": "GetSystemPaletteEntries"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61382,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38250,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 113,
+     "name": "TranslateMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38260,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 114,
+     "name": "DispatchMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 371,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 3,
+     "name": "GetVersion"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61346,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55820,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "OFFSET",
+     "type": "IMPORTORDINAL",
+     "offset": 21107,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 113,
+     "name": "__AHSHIFT"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20438,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 1,
+     "name": "SetBkColor"
+    },
+    {
+     "addr": "OFFSET",
+     "type": "IMPORTORDINAL",
+     "offset": 18418,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 114,
+     "name": "__AHINCR"
+    },
+    {
+     "addr": "OFFSET",
+     "type": "IMPORTORDINAL",
+     "offset": 707,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 115,
+     "name": "OutputDebugString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34323,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 124,
+     "name": "UpdateWindow"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 54796,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34315,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 125,
+     "name": "InvalidateRect"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 59656,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 13510,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 1,
+     "name": "MessageBox"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20462,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 9,
+     "name": "SetTextColor"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 59824,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24440,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 133,
+     "name": "GetWindowWord"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 15095,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 6,
+     "name": "PostQuitMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24178,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 134,
+     "name": "SetWindowWord"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34049,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 135,
+     "name": "GetWindowLong"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 59695,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39418,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 136,
+     "name": "SetWindowLong"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37379,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 10,
+     "name": "SetTimer"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33613,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 19,
+     "name": "LineTo"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 39565,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33599,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 20,
+     "name": "MoveTo"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37429,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 12,
+     "name": "KillTimer"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 13391,
+     "additive": false,
+     "module": "COMMDLG",
+     "ordinal": 1,
+     "name": "GetOpenFileName"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 13607,
+     "additive": false,
+     "module": "COMMDLG",
+     "ordinal": 2,
+     "name": "GetSaveFileName"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34331,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 18,
+     "name": "SetCapture"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33586,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 27,
+     "name": "Rectangle"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34136,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 19,
+     "name": "ReleaseCapture"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38641,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 404,
+     "name": "GetClassInfo"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33399,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 277,
+     "name": "GetDlgCtrlID"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 2514,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 150,
+     "name": "LoadMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 3245,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 166,
+     "name": "WinExec"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 1624,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 152,
+     "name": "DestroyMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20507,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 33,
+     "name": "TextOut"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 22261,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 282,
+     "name": "SelectPalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20013,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 283,
+     "name": "RealizePalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 2582,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 28,
+     "name": "ClientToScreen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33897,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 36,
+     "name": "Polygon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 2541,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 159,
+     "name": "GetSubMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 2664,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 31,
+     "name": "IsIconic"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 2612,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 416,
+     "name": "TrackPopupMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34239,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 33,
+     "name": "GetClientRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54823,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 420,
+     "name": "_wsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24733,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 421,
+     "name": "wvsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33544,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 45,
+     "name": "SelectObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38542,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 37,
+     "name": "SetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38873,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 39,
+     "name": "BeginPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38890,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 40,
+     "name": "EndPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24375,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 41,
+     "name": "CreateWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38595,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 42,
+     "name": "ShowWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 3231,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 171,
+     "name": "WinHelp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33085,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 173,
+     "name": "LoadCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 11537,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 45,
+     "name": "BringWindowToTop"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20404,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 53,
+     "name": "CreateDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 1437,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 174,
+     "name": "LoadIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18139,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 439,
+     "name": "StretchDIBits"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39431,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 47,
+     "name": "IsWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 540,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 176,
+     "name": "LoadString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38236,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 178,
+     "name": "TranslateAccelerator"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18001,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 443,
+     "name": "SetDIBitsToDevice"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 13968,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 180,
+     "name": "GetSysColor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 14090,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 181,
+     "name": "SetSysColors"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38563,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 53,
+     "name": "DestroyWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33451,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 61,
+     "name": "CreatePen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38728,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 57,
+     "name": "RegisterClass"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33480,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 66,
+     "name": "CreateSolidBrush"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20559,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 68,
+     "name": "DeleteDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33942,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 69,
+     "name": "DeleteObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 29311,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 81,
+     "name": "_lclose"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 55906,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 66,
+     "name": "GetDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 28882,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 83,
+     "name": "_lcreat"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32027,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 84,
+     "name": "_llseek"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38823,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 452,
+     "name": "CreateWindowEx"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 56348,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 68,
+     "name": "ReleaseDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 12274,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 69,
+     "name": "SetCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 29039,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 85,
+     "name": "_lopen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24028,
+     "additive": false,
+     "module": "MMSYSTEM",
+     "ordinal": 701,
+     "name": "mciSendCommand"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 55917,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 80,
+     "name": "GetDeviceCaps"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 1637,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 457,
+     "name": "DestroyIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 21528,
+     "additive": false,
+     "module": "MMSYSTEM",
+     "ordinal": 706,
+     "name": "mciGetErrorString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 26623,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 348,
+     "name": "hmemcpy"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34562,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 76,
+     "name": "PtInRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32257,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 349,
+     "name": "_hread"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32303,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 350,
+     "name": "_hwrite"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40025,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 87,
+     "name": "GetStockObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25347,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 81,
+     "name": "FillRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38207,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 90,
+     "name": "IsDialogMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "IMPORTORDINAL",
+     "offset": 713,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 115,
+     "name": "OutputDebugString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20206,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 360,
+     "name": "CreatePalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24744,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 115,
+     "name": "OutputDebugString"
+    }
+   ]
+  },
+  {
+   "index": 3,
+   "file_offset": 87072,
+   "length": 61087,
+   "min_alloc": 61087,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60347,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 35881,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32046,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 111,
+     "name": "SendMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60775,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24924,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 128,
+     "name": "GetPrivateProfileString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25244,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 129,
+     "name": "WritePrivateProfileString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 320,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 370,
+     "name": "GetWindowPlacement"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 433,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 371,
+     "name": "SetWindowPlacement"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 59870,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60279,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 58592,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60754,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 35863,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 1,
+     "name": "MessageBox"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20153,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 19,
+     "name": "GlobalUnlock"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60634,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 603,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 133,
+     "name": "GetWindowWord"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 336,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 135,
+     "name": "GetWindowLong"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 59795,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 56577,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 48896,
+     "additive": false,
+     "seg": 10,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18692,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 27,
+     "name": "Rectangle"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31330,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 22,
+     "name": "SetFocus"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18720,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 282,
+     "name": "SelectPalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 622,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 31,
+     "name": "IsIconic"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 471,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 51,
+     "name": "MakeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 496,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 52,
+     "name": "FreeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 48268,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 420,
+     "name": "_wsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18593,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 45,
+     "name": "SelectObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31515,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 42,
+     "name": "ShowWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20211,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 60,
+     "name": "FindResource"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18549,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 53,
+     "name": "CreateDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20221,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 61,
+     "name": "LoadResource"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31338,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 45,
+     "name": "BringWindowToTop"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20238,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 62,
+     "name": "LockResource"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 30497,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 47,
+     "name": "IsWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20169,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 63,
+     "name": "FreeResource"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 34032,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 176,
+     "name": "LoadString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 22684,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 179,
+     "name": "GetSystemMetrics"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31620,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 53,
+     "name": "DestroyWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18399,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 61,
+     "name": "CreatePen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 487,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 55,
+     "name": "EnumChildWindows"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18756,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 68,
+     "name": "DeleteDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18726,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 69,
+     "name": "DeleteObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20052,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 76,
+     "name": "PtInRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18409,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 87,
+     "name": "GetStockObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 35632,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 107,
+     "name": "SetErrorMode"
+    }
+   ]
+  },
+  {
+   "index": 4,
+   "file_offset": 148576,
+   "length": 61034,
+   "min_alloc": 61034,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24552,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 232,
+     "name": "SetWindowPos"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60355,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 59939,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60936,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60949,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60526,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51077,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 1,
+     "name": "SetBkColor"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60839,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 61014,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 125,
+     "name": "InvalidateRect"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 56898,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51054,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 9,
+     "name": "SetTextColor"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 56911,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 59072,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25738,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 19,
+     "name": "LineTo"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 24886,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25715,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 20,
+     "name": "MoveTo"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 9980,
+     "additive": false,
+     "seg": 10,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 57801,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 282,
+     "name": "SelectPalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 26152,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 36,
+     "name": "Polygon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24349,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 33,
+     "name": "GetClientRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24727,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 420,
+     "name": "_wsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24756,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 37,
+     "name": "SetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25481,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 45,
+     "name": "SelectObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 57727,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 39,
+     "name": "BeginPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 57827,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 40,
+     "name": "EndPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20039,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 53,
+     "name": "CreateDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50507,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 47,
+     "name": "IsWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24356,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 179,
+     "name": "GetSystemMetrics"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25469,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 61,
+     "name": "CreatePen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50524,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 53,
+     "name": "DestroyWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53372,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 66,
+     "name": "CreateSolidBrush"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 19800,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 68,
+     "name": "DeleteDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 57810,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 69,
+     "name": "DeleteObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 19903,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 66,
+     "name": "GetDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 27481,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 71,
+     "name": "ShowCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 7287,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 76,
+     "name": "PtInRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53420,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 81,
+     "name": "FillRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51145,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 85,
+     "name": "DrawText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24745,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 91,
+     "name": "GetDlgItem"
+    }
+   ]
+  },
+  {
+   "index": 5,
+   "file_offset": 209952,
+   "length": 61370,
+   "min_alloc": 61370,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 15157,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 232,
+     "name": "SetWindowPos"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61357,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31277,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 28515,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 111,
+     "name": "SendMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61127,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60476,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 57427,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32348,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 1,
+     "name": "SetBkColor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 17863,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 250,
+     "name": "GetMenuState"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16110,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 3,
+     "name": "SetMapMode"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61176,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 28232,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 124,
+     "name": "UpdateWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 36958,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 125,
+     "name": "InvalidateRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16246,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 127,
+     "name": "ValidateRect"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61293,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32362,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 9,
+     "name": "SetTextColor"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61184,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 7732,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 133,
+     "name": "GetWindowWord"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60908,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37928,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 19,
+     "name": "LineTo"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60282,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32206,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 20,
+     "name": "MoveTo"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33114,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 150,
+     "name": "UnrealizeObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16689,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 24,
+     "name": "Ellipse"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 47550,
+     "additive": false,
+     "seg": 10,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 25009,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 18,
+     "name": "SetCapture"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 16792,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 27,
+     "name": "Rectangle"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24187,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 19,
+     "name": "ReleaseCapture"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 28775,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 22,
+     "name": "SetFocus"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31477,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 150,
+     "name": "LoadMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31100,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 152,
+     "name": "DestroyMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32504,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 33,
+     "name": "TextOut"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37608,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 282,
+     "name": "SelectPalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 17951,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 410,
+     "name": "InsertMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 18632,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 154,
+     "name": "CheckMenuItem"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33293,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 283,
+     "name": "RealizePalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 27564,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 155,
+     "name": "EnableMenuItem"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 13838,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 36,
+     "name": "Polygon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31545,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 28,
+     "name": "ClientToScreen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 17887,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 413,
+     "name": "DeleteMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 17840,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 414,
+     "name": "ModifyMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31956,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 31,
+     "name": "IsIconic"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31504,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 159,
+     "name": "GetSubMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32034,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 32,
+     "name": "GetWindowRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31575,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 416,
+     "name": "TrackPopupMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37751,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 33,
+     "name": "GetClientRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 7195,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 34,
+     "name": "EnableWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 6563,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 51,
+     "name": "MakeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 6739,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 52,
+     "name": "FreeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 14138,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 36,
+     "name": "GetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 7490,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 37,
+     "name": "SetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37879,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 45,
+     "name": "SelectObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37667,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 39,
+     "name": "BeginPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37724,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 40,
+     "name": "EndPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 28445,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 41,
+     "name": "CreateWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 29964,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 42,
+     "name": "ShowWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 27037,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 171,
+     "name": "WinHelp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32775,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 173,
+     "name": "LoadCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 21736,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 45,
+     "name": "BringWindowToTop"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 12885,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 53,
+     "name": "CreateDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 27770,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 174,
+     "name": "LoadIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33381,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 47,
+     "name": "IsWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 17039,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 177,
+     "name": "LoadAccelerators"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31896,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 179,
+     "name": "GetSystemMetrics"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33398,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 53,
+     "name": "DestroyWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37870,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 61,
+     "name": "CreatePen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 6730,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 55,
+     "name": "EnumChildWindows"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 28189,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 56,
+     "name": "MoveWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38021,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 66,
+     "name": "CreateSolidBrush"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 13240,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 68,
+     "name": "DeleteDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37999,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 69,
+     "name": "DeleteObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37504,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 66,
+     "name": "GetDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31984,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 67,
+     "name": "GetWindowDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32560,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 68,
+     "name": "ReleaseDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 24984,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 69,
+     "name": "SetCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 27616,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 457,
+     "name": "DestroyIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 17198,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 458,
+     "name": "DestroyCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32371,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 90,
+     "name": "lstrlen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 26929,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 76,
+     "name": "PtInRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32756,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 87,
+     "name": "GetStockObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38061,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 81,
+     "name": "FillRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32387,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 91,
+     "name": "GetTextExtent"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 29731,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 84,
+     "name": "DrawIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 29949,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 91,
+     "name": "GetDlgItem"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37911,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 483,
+     "name": "MoveToEx"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 14272,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 92,
+     "name": "SetDlgItemText"
+    }
+   ]
+  },
+  {
+   "index": 6,
+   "file_offset": 272032,
+   "length": 61374,
+   "min_alloc": 61374,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61212,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 30511,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 57966,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 111,
+     "name": "SendMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60064,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 58004,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 53630,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55191,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55375,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61238,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60953,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    }
+   ]
+  },
+  {
+   "index": 7,
+   "file_offset": 333504,
+   "length": 61302,
+   "min_alloc": 61302,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60651,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61293,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60683,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 31705,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60136,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60779,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60596,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60938,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33873,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 421,
+     "name": "wvsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20250,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 81,
+     "name": "_lclose"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20172,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 85,
+     "name": "_lopen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 20236,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 349,
+     "name": "_hread"
+    }
+   ]
+  },
+  {
+   "index": 8,
+   "file_offset": 394944,
+   "length": 61329,
+   "min_alloc": 61329,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50013,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 232,
+     "name": "SetWindowPos"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61025,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60147,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60988,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 111,
+     "name": "SendMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61044,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61213,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61108,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 44317,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 1,
+     "name": "SetBkColor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53509,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 122,
+     "name": "CallWindowProc"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 29742,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60903,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50882,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 1,
+     "name": "MessageBox"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 44303,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 9,
+     "name": "SetTextColor"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 60919,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 43726,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 133,
+     "name": "GetWindowWord"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61040,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 61258,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 44276,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 277,
+     "name": "GetDlgCtrlID"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50566,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 22,
+     "name": "SetFocus"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53741,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 24,
+     "name": "RemoveProp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53545,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 25,
+     "name": "GetProp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53766,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 26,
+     "name": "SetProp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60008,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 32,
+     "name": "GetWindowRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54311,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 34,
+     "name": "EnableWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 47553,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 35,
+     "name": "IsWindowEnabled"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53163,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 51,
+     "name": "MakeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50648,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 420,
+     "name": "_wsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50627,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 36,
+     "name": "GetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53234,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 52,
+     "name": "FreeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 55880,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 37,
+     "name": "SetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60800,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 42,
+     "name": "ShowWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 56261,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 171,
+     "name": "WinHelp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 46941,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 45,
+     "name": "BringWindowToTop"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 55482,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 173,
+     "name": "LoadCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54904,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 47,
+     "name": "IsWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60025,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 179,
+     "name": "GetSystemMetrics"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 61282,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 53,
+     "name": "DestroyWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40416,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 66,
+     "name": "CreateSolidBrush"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 53729,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 69,
+     "name": "DeleteObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40968,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 66,
+     "name": "GetDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41061,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 68,
+     "name": "ReleaseDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 55491,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 69,
+     "name": "SetCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40010,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 80,
+     "name": "GetDeviceCaps"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 44095,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 87,
+     "name": "GetStockObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60087,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 91,
+     "name": "GetDlgItem"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50792,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 92,
+     "name": "SetDlgItemText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39194,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 94,
+     "name": "SetDlgItemInt"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39151,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 95,
+     "name": "GetDlgItemInt"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 57783,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 96,
+     "name": "CheckRadioButton"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 47607,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 97,
+     "name": "CheckDlgButton"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 59319,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 98,
+     "name": "IsDlgButtonChecked"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54347,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 101,
+     "name": "SendDlgItemMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 60687,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 103,
+     "name": "MapDialogRect"
+    }
+   ]
+  },
+  {
+   "index": 9,
+   "file_offset": 456736,
+   "length": 55668,
+   "min_alloc": 55668,
+   "flags": "0xd50",
+   "kind": "CODE",
+   "attrs": [
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 47953,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 232,
+     "name": "SetWindowPos"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41402,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 107,
+     "name": "DefWindowProc"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55479,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33233,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 108,
+     "name": "GetMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54119,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 110,
+     "name": "PostMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51322,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 111,
+     "name": "SendMessage"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55498,
+     "additive": false,
+     "seg": 2,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55210,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55562,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 46121,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 1,
+     "name": "SetBkColor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 42160,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 122,
+     "name": "CallWindowProc"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39309,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 3,
+     "name": "SetMapMode"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41344,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 124,
+     "name": "UpdateWindow"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 44746,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 49566,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 125,
+     "name": "InvalidateRect"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 11759,
+     "additive": false,
+     "seg": 6,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54516,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 1,
+     "name": "MessageBox"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 46107,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 9,
+     "name": "SetTextColor"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 53843,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40173,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 135,
+     "name": "GetWindowLong"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55530,
+     "additive": false,
+     "seg": 8,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40302,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 136,
+     "name": "SetWindowLong"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51190,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 19,
+     "name": "LineTo"
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 55494,
+     "additive": false,
+     "seg": 9,
+     "target": 0
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51164,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 20,
+     "name": "MoveTo"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 4083,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 17,
+     "name": "GetCursorPos"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40605,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 18,
+     "name": "SetCapture"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40246,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 19,
+     "name": "ReleaseCapture"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51140,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 27,
+     "name": "Rectangle"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39135,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 404,
+     "name": "GetClassInfo"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 46062,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 277,
+     "name": "GetDlgCtrlID"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41234,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 22,
+     "name": "SetFocus"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32678,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 150,
+     "name": "LoadMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37315,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 24,
+     "name": "RemoveProp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 30854,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 152,
+     "name": "DestroyMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38551,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 25,
+     "name": "GetProp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32259,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 33,
+     "name": "TextOut"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51516,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 282,
+     "name": "SelectPalette"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37698,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 26,
+     "name": "SetProp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32743,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 28,
+     "name": "ClientToScreen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33150,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 29,
+     "name": "ScreenToClient"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31679,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 31,
+     "name": "IsIconic"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32703,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 159,
+     "name": "GetSubMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 45743,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 32,
+     "name": "GetWindowRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32772,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 416,
+     "name": "TrackPopupMenu"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 49753,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 33,
+     "name": "GetClientRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54995,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 34,
+     "name": "EnableWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9579,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 35,
+     "name": "IsWindowEnabled"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41576,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 51,
+     "name": "MakeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 52814,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 420,
+     "name": "_wsprintf"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31034,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 36,
+     "name": "GetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41649,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 52,
+     "name": "FreeProcInstance"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51101,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 45,
+     "name": "SelectObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 15229,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 37,
+     "name": "SetWindowText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 49719,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 39,
+     "name": "BeginPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 49913,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 40,
+     "name": "EndPaint"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37653,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 41,
+     "name": "CreateWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 48643,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 42,
+     "name": "ShowWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32843,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 171,
+     "name": "WinHelp"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39061,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 173,
+     "name": "LoadCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 35802,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 174,
+     "name": "LoadIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 48404,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 47,
+     "name": "IsWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 45700,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 179,
+     "name": "GetSystemMetrics"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 48442,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 53,
+     "name": "DestroyWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51087,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 61,
+     "name": "CreatePen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 37842,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 56,
+     "name": "MoveWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39216,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 57,
+     "name": "RegisterClass"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39957,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 185,
+     "name": "GrayString"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 49733,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 66,
+     "name": "CreateSolidBrush"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33290,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 188,
+     "name": "SetSysModalWindow"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51522,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 69,
+     "name": "DeleteObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38487,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 66,
+     "name": "GetDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31697,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 67,
+     "name": "GetWindowDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 38524,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 68,
+     "name": "ReleaseDC"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 1068,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 69,
+     "name": "SetCursor"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 50210,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 78,
+     "name": "GetCurrentPosition"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32156,
+     "additive": false,
+     "module": "KERNEL",
+     "ordinal": 90,
+     "name": "lstrlen"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 40686,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 76,
+     "name": "PtInRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51070,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 87,
+     "name": "GetStockObject"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32042,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 81,
+     "name": "FillRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 32172,
+     "additive": false,
+     "module": "GDI",
+     "ordinal": 91,
+     "name": "GetTextExtent"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 49818,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 83,
+     "name": "FrameRect"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 35453,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 84,
+     "name": "DrawIcon"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 39444,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 85,
+     "name": "DrawText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 31014,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 89,
+     "name": "CreateDialog"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 33254,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 90,
+     "name": "IsDialogMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 54987,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 91,
+     "name": "GetDlgItem"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 46270,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 92,
+     "name": "SetDlgItemText"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 52990,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 94,
+     "name": "SetDlgItemInt"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 51940,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 95,
+     "name": "GetDlgItemInt"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 15903,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 96,
+     "name": "CheckRadioButton"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 7136,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 97,
+     "name": "CheckDlgButton"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 9547,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 98,
+     "name": "IsDlgButtonChecked"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 41225,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 228,
+     "name": "GetNextDlgTabItem"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 55264,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 101,
+     "name": "SendDlgItemMessage"
+    },
+    {
+     "addr": "FAR_ADDR",
+     "type": "IMPORTORDINAL",
+     "offset": 26291,
+     "additive": false,
+     "module": "USER",
+     "ordinal": 103,
+     "name": "MapDialogRect"
+    }
+   ]
+  },
+  {
+   "index": 10,
+   "file_offset": 513216,
+   "length": 16956,
+   "min_alloc": 16956,
+   "flags": "0xd51",
+   "kind": "DATA",
+   "attrs": [
+    "DATA",
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 7572,
+     "additive": false,
+     "seg": 11,
+     "target": 0
+    }
+   ]
+  },
+  {
+   "index": 11,
+   "file_offset": 530208,
+   "length": 26806,
+   "min_alloc": 26806,
+   "flags": "0xd51",
+   "kind": "DATA",
+   "attrs": [
+    "DATA",
+    "MOVEABLE",
+    "PRELOAD",
+    "RELOCINFO"
+   ],
+   "relocs": [
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 24706,
+     "additive": false,
+     "seg": 1,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 25072,
+     "additive": false,
+     "seg": 3,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 25076,
+     "additive": false,
+     "seg": 4,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 25080,
+     "additive": false,
+     "seg": 5,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 25084,
+     "additive": false,
+     "seg": 7,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 25588,
+     "additive": false,
+     "seg": 10,
+     "target": 0
+    },
+    {
+     "addr": "SEGMENT",
+     "type": "INTERNALREF",
+     "offset": 25054,
+     "additive": false,
+     "seg": 11,
+     "target": 0
+    }
+   ]
+  }
+ ],
+ "resources": [
+  {
+   "type": "RT_GROUP_CURSOR",
+   "id": 411,
+   "offset": 557120,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_CURSOR",
+   "id": 412,
+   "offset": 557152,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_CURSOR",
+   "id": 413,
+   "offset": 557184,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_CURSOR",
+   "id": 414,
+   "offset": 557216,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_CURSOR",
+   "id": 415,
+   "offset": 557248,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_ICON",
+   "id": "OP",
+   "offset": 557280,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_ICON",
+   "id": "SITEICON",
+   "offset": 557312,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_ICON",
+   "id": "PLNTICON",
+   "offset": 557344,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_GROUP_ICON",
+   "id": "TILEICON",
+   "offset": 557376,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_MENU",
+   "id": "OPPOPMENU",
+   "offset": 557408,
+   "length": 432,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_MENU",
+   "id": "TILEMENU",
+   "offset": 557840,
+   "length": 128,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_MENU",
+   "id": "TPPOPMENU",
+   "offset": 557968,
+   "length": 80,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_MENU",
+   "id": "SCPOPMENU",
+   "offset": 558048,
+   "length": 144,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_MENU",
+   "id": "PCPOPMENU",
+   "offset": 558192,
+   "length": 128,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_MENU",
+   "id": "REPORTPOPMENU",
+   "offset": 558320,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4026,
+   "offset": 558352,
+   "length": 880,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4028,
+   "offset": 559232,
+   "length": 352,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6234,
+   "offset": 559584,
+   "length": 176,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6227,
+   "offset": 559760,
+   "length": 352,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6224,
+   "offset": 560112,
+   "length": 192,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6220,
+   "offset": 560304,
+   "length": 224,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6213,
+   "offset": 560528,
+   "length": 288,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6208,
+   "offset": 560816,
+   "length": 288,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 497,
+   "offset": 561104,
+   "length": 1120,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 499,
+   "offset": 562224,
+   "length": 768,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 374,
+   "offset": 562992,
+   "length": 336,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 380,
+   "offset": 563328,
+   "length": 208,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 384,
+   "offset": 563536,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 389,
+   "offset": 563808,
+   "length": 368,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 402,
+   "offset": 564176,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4024,
+   "offset": 564448,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4025,
+   "offset": 564768,
+   "length": 144,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4027,
+   "offset": 564912,
+   "length": 384,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4029,
+   "offset": 565296,
+   "length": 736,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4031,
+   "offset": 566032,
+   "length": 720,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4011,
+   "offset": 566752,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4057,
+   "offset": 566784,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4058,
+   "offset": 566816,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4047,
+   "offset": 566848,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4035,
+   "offset": 566880,
+   "length": 32,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4001,
+   "offset": 566912,
+   "length": 512,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4002,
+   "offset": 567424,
+   "length": 1312,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 6034,
+   "offset": 568736,
+   "length": 400,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4003,
+   "offset": 569136,
+   "length": 480,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4004,
+   "offset": 569616,
+   "length": 1248,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4010,
+   "offset": 570864,
+   "length": 2128,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4019,
+   "offset": 572992,
+   "length": 1504,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4020,
+   "offset": 574496,
+   "length": 1472,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4022,
+   "offset": 575968,
+   "length": 1104,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4036,
+   "offset": 577072,
+   "length": 1376,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4034,
+   "offset": 578448,
+   "length": 144,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4032,
+   "offset": 578592,
+   "length": 304,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4033,
+   "offset": 578896,
+   "length": 1584,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4037,
+   "offset": 580480,
+   "length": 512,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4038,
+   "offset": 580992,
+   "length": 96,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4039,
+   "offset": 581088,
+   "length": 240,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4040,
+   "offset": 581328,
+   "length": 128,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4041,
+   "offset": 581456,
+   "length": 144,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4042,
+   "offset": 581600,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4043,
+   "offset": 581872,
+   "length": 368,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4044,
+   "offset": 582240,
+   "length": 304,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4023,
+   "offset": 582544,
+   "length": 96,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4045,
+   "offset": 582640,
+   "length": 784,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 283,
+   "offset": 583424,
+   "length": 352,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 448,
+   "offset": 583776,
+   "length": 160,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 318,
+   "offset": 583936,
+   "length": 752,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 343,
+   "offset": 584688,
+   "length": 672,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 358,
+   "offset": 585360,
+   "length": 592,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4048,
+   "offset": 585952,
+   "length": 720,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 232,
+   "offset": 586672,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4049,
+   "offset": 586992,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4051,
+   "offset": 587264,
+   "length": 192,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 4056,
+   "offset": 587456,
+   "length": 1024,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 451,
+   "offset": 588480,
+   "length": 192,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 455,
+   "offset": 588672,
+   "length": 160,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_DIALOG",
+   "id": 459,
+   "offset": 588832,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 65,
+   "offset": 589152,
+   "length": 208,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 66,
+   "offset": 589360,
+   "length": 192,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 67,
+   "offset": 589552,
+   "length": 240,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 88,
+   "offset": 589792,
+   "length": 176,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 76,
+   "offset": 589968,
+   "length": 224,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 98,
+   "offset": 590192,
+   "length": 224,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 99,
+   "offset": 590416,
+   "length": 416,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 100,
+   "offset": 590832,
+   "length": 864,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 101,
+   "offset": 591696,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 77,
+   "offset": 591968,
+   "length": 208,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 78,
+   "offset": 592176,
+   "length": 256,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 79,
+   "offset": 592432,
+   "length": 288,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 80,
+   "offset": 592720,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 81,
+   "offset": 592992,
+   "length": 288,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 82,
+   "offset": 593280,
+   "length": 240,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 84,
+   "offset": 593520,
+   "length": 48,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 89,
+   "offset": 593568,
+   "length": 224,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 90,
+   "offset": 593792,
+   "length": 240,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 91,
+   "offset": 594032,
+   "length": 528,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 92,
+   "offset": 594560,
+   "length": 144,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 93,
+   "offset": 594704,
+   "length": 112,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 94,
+   "offset": 594816,
+   "length": 256,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 95,
+   "offset": 595072,
+   "length": 416,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 96,
+   "offset": 595488,
+   "length": 240,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 106,
+   "offset": 595728,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 107,
+   "offset": 596048,
+   "length": 592,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 108,
+   "offset": 596640,
+   "length": 384,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 97,
+   "offset": 597024,
+   "length": 208,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 103,
+   "offset": 597232,
+   "length": 256,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 104,
+   "offset": 597488,
+   "length": 352,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 105,
+   "offset": 597840,
+   "length": 288,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 63,
+   "offset": 598128,
+   "length": 128,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 64,
+   "offset": 598256,
+   "length": 272,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 102,
+   "offset": 598528,
+   "length": 208,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 111,
+   "offset": 598736,
+   "length": 608,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 112,
+   "offset": 599344,
+   "length": 1040,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 113,
+   "offset": 600384,
+   "length": 1056,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 114,
+   "offset": 601440,
+   "length": 1280,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 115,
+   "offset": 602720,
+   "length": 1184,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 116,
+   "offset": 603904,
+   "length": 1744,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 117,
+   "offset": 605648,
+   "length": 592,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 118,
+   "offset": 606240,
+   "length": 640,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 109,
+   "offset": 606880,
+   "length": 48,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 110,
+   "offset": 606928,
+   "length": 336,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 119,
+   "offset": 607264,
+   "length": 560,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 120,
+   "offset": 607824,
+   "length": 2000,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 121,
+   "offset": 609824,
+   "length": 3296,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 122,
+   "offset": 613120,
+   "length": 2912,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 123,
+   "offset": 616032,
+   "length": 2480,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 124,
+   "offset": 618512,
+   "length": 2672,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 125,
+   "offset": 621184,
+   "length": 2160,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 126,
+   "offset": 623344,
+   "length": 1984,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 127,
+   "offset": 625328,
+   "length": 2720,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 128,
+   "offset": 628048,
+   "length": 2688,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 129,
+   "offset": 630736,
+   "length": 2688,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 130,
+   "offset": 633424,
+   "length": 544,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 83,
+   "offset": 633968,
+   "length": 192,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 68,
+   "offset": 634160,
+   "length": 256,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 69,
+   "offset": 634416,
+   "length": 432,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_STRING",
+   "id": 70,
+   "offset": 634848,
+   "length": 432,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_ACCELERATOR",
+   "id": "OPACCEL",
+   "offset": 635280,
+   "length": 128,
+   "flags": "0xc30"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 333,
+   "offset": 635408,
+   "length": 96,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 334,
+   "offset": 635504,
+   "length": 112,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 335,
+   "offset": 635616,
+   "length": 96,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 336,
+   "offset": 635712,
+   "length": 80,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 337,
+   "offset": 635792,
+   "length": 80,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 338,
+   "offset": 635872,
+   "length": 96,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 339,
+   "offset": 635968,
+   "length": 80,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 340,
+   "offset": 636048,
+   "length": 96,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 341,
+   "offset": 636144,
+   "length": 64,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_RCDATA",
+   "id": 342,
+   "offset": 636208,
+   "length": 80,
+   "flags": "0xc20"
+  },
+  {
+   "type": "RT_ICON",
+   "id": 1,
+   "offset": 636288,
+   "length": 752,
+   "flags": "0xc00"
+  },
+  {
+   "type": "RT_ICON",
+   "id": 7,
+   "offset": 637040,
+   "length": 752,
+   "flags": "0xc00"
+  },
+  {
+   "type": "RT_ICON",
+   "id": 8,
+   "offset": 637792,
+   "length": 752,
+   "flags": "0xc00"
+  },
+  {
+   "type": "RT_ICON",
+   "id": 9,
+   "offset": 638544,
+   "length": 752,
+   "flags": "0xc00"
+  },
+  {
+   "type": "RT_CURSOR",
+   "id": 2,
+   "offset": 639296,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_CURSOR",
+   "id": 3,
+   "offset": 639616,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_CURSOR",
+   "id": 4,
+   "offset": 639936,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_CURSOR",
+   "id": 5,
+   "offset": 640256,
+   "length": 320,
+   "flags": "0x1c30"
+  },
+  {
+   "type": "RT_CURSOR",
+   "id": 6,
+   "offset": 640576,
+   "length": 320,
+   "flags": "0x1c30"
+  }
+ ],
+ "resident_names": [
+  {
+   "name": "OUTPOST",
+   "ordinal": 0
+  },
+  {
+   "name": "___EXPORTEDSTUB",
+   "ordinal": 1
+  },
+  {
+   "name": "_SHI_INVOKEERRORHANDLER1",
+   "ordinal": 2
+  }
+ ],
+ "nonresident_names": [
+  {
+   "name": "Outpost is Copyright 1994, Sierra On-Line, Inc. All Rights Reserved.",
+   "ordinal": 0
+  }
+ ],
+ "entries": [
+  {
+   "ordinal": 1,
+   "seg": 1,
+   "offset": 10732,
+   "exported": true
+  },
+  {
+   "ordinal": 2,
+   "seg": 1,
+   "offset": 7792,
+   "exported": true
+  }
+ ]
+}

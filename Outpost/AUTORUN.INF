@@ -1,0 +1,15 @@
+[autorun]
+OPEN=AUTOPLAY.EXE
+ICON=AUTOPLAY.ICO
+
+[Sierra]
+Title=Sierra Outpost 1.5
+DirName=OUTPOST
+NecFiles=outpost.exe
+ExeName=outpost.exe
+
+runText1="Run Outpost 1.5?"
+
+installText1="Outpost 1.5 is not installed on your computer."
+installText2=" "
+installText3="               Would you like to install it?"

@@ -1,0 +1,244 @@
+\\prgName
+ImagiNation Network Setup/Install Program
+\\findOld
+Searching for a previous installation...
+\\foundOld
+We have found a previous installation in %s.  Settings from that \
+installation will be used.  You may still change your settings from \
+the menu.
+\\mousePrompt
+Do you wish to use an IBM compatible mouse?
+\\baudPrompt
+Baud rate is a measure of how fast your computer can communicate over \
+the telephone lines.  Pick 1200, 2400 or 9600, depending on the capability \
+of your computer and modem.
+\\baud
+Baud Rate     
+\\mailboxPrompt
+Please enter your mailbox number if you have one
+\\mailbox
+Mailbox
+\\mailboxInpPrompt
+Mailbox number:
+\\commPortPrompt
+Please select the communications port your modem is using.  If you are \
+unsure, start by picking Port 2.  If you have a non-standard port, \
+choose Non-standard Communications Port, and you will be prompted for \
+the address and IRQ settings.
+\\commPort
+COM Port      
+\\commPortChoice
+Communications Port
+\\nsCommPortChoice
+Non-standard Communications Port
+\\nsCommPortIRQPrompt
+Interrupt ReQuest lines (IRQs) are used by various components of your \
+computer to report information to the processor.  Possible settings are \
+from 0 to 15.
+Please enter the IRQ setting of your communications port.  Pressing F1 \
+will give you a list of most common IRQ usages.
+\\nsCommPortIRQInpPrompt
+IRQ setting 
+\\irqRange
+Possible IRQ settings are from 0 to 15.  Please enter a valid number.
+\\nsCommPortAddrPrompt
+Port addresses are usually represented in hexadecimal (base 16).
+Please enter the address of your communications port.  A list of some \
+common ones is available if you press F1.
+\\nsCommPortAddrInpPrompt
+Port address 
+\\setupPrompt
+Most modems will work with the the standard Modem Setup string provided \
+with ImagiNation.  If your modem model is not listed in the Modem Model \
+menu, and the default setup string provided does not seem to work, you \
+may need to turn off certain modem features.  Specifically, owners of \
+modems with error-correction or data-compression must turn off those \
+features before entering ImagiNation.  If you are not sure \
+whether your modem needs a special setup, or if you don't know \
+precisely what to do, please DO NOT MAKE ANY CHANGES, just \
+press ENTER to accept the default setup.
+If you need help making changes, please call 1-800-IMAGIN1 (462-4461)
+\\setup
+Modem Setup   
+\\setupInpPrompt
+Modem Setup   
+\\phonePrompt
+Please enter the closest Local Access Number
+   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ PLEASE NOTE !! ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿ÿÿÿ
+   ³ If you have any questions, PLEASE call our           ³ÿÿÿ
+   ³ Member Service Department at 1-800-IMAGIN-1          ³ÿÿÿ
+   ³                                                      ³ÿÿÿ
+   ³ You will be responsible for any telephone company    ³ÿÿÿ
+   ³ toll or message unit charges incurred while using    ³ÿÿÿ
+   ³ The ImagiNation Network.                             ³ÿÿÿ
+   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙÿÿÿ
+If you have Call Waiting and you are able to turn it off by sending \
+a code to the phone company, please preceed your local access \
+number by that code (example: *70,683-0477).  If you are calling \
+long-distance and need to disable Call Waiting, put the Call Waiting \
+disable code before any long-distance code (example: *70,1-209-683-0477)
+
+(Hit 'F1' to choose a number from our list)
+\\phoneNumber
+Local Access Number
+\\phone2
+2nd Phone
+\\phone
+Access Phone #
+\\touchTonePrompt
+Does your telephone have Touch Tone capability?
+\\touchTone
+Touchtone     
+\\IDPrompt
+          Please type your Member Number.
+
+Press F1 for help with entering your Member Number.
+\\ID
+Member Number
+\\IDInpPrompt
+Member Number:ÿ
+\\idWarn
+WARNING - If you choose "Accept these choices" when this field is blank, \
+you will be unable to enter your member number except by using the ID.EXE \
+program which came on Disk 1.  This program is copied to your hard disk \
+during installation.
+\\pwPrompt
+Enter your password
+\\pwConfirmPrompt
+Re-Enter your password
+\\pwLabel
+Password      
+\\pwFieldPrompt
+Password      
+\\pwMenuPrompt
+To prevent unauthorized access to your membership and account, a \
+password is required to enter ImagiNation. Please select \
+the method below that you \
+wish to use for entering your password.
+
+o  SECURED METHOD - INN will require you to type in your password each time \
+you log on. This is the only method that ensures the security of your \
+INN account.
+
+o  UNSECURED METHOD - Your password will be stored on your hard disk and \
+automatically passed to INN whenever you log on. This method allows anyone \
+who accesses INN from your system, or from a copy of your system, to \
+access your membership and account. You will be responsible for all \
+actions and charges on your account, regardless of who caused or incurred \
+them, if you use this option.
+\\pwMenu
+Password      
+\\pwSecured
+Secured Method
+\\pwUnsecured
+Unsecured Method
+\\pwLengthError
+Password must be at least six characters long
+\\pwWarning
+If you have never accessed ImagiNation before, the password you select here \
+will become your password the first time you log on.  Please write it down \
+and keep it in a safe place.
+
+If you have already logged on to ImagiNation with a password, you \
+can only change your password while on-line. Changing your password here \
+will cause an invalid password error the next time you attempt to log on.
+\\pwIdenticalError
+Passwords were not entered identically.
+\\pwWriteError
+Error creating password file
+\\memWarn
+WARNING - ImagiNation requires at least 585000 bytes of Conventional \
+memory to run properly.  You only have %ld available right now.  \
+You may want to try making a Boot Disk (see the "How to make \
+a Boot Disk" option on the Install menu) to make more memory \
+available.
+
+If your computer has Extended (XMS) or Expanded (EMS) memory, \
+ImagiNation will run significantly smoother and faster, \
+especially in the card and board games. 
+\\toProdWarn
+WARNING - You are about to convert your existing INN installation into a \
+Game Point installation.  This could prevent you from accessing ImagiNation \
+correctly.
+Would you like to:
+  P)roceed with this installation,
+  A)bort this installation, or
+  U)pgrade your existing INN software without converting?
+\\unProdWarn
+WARNING - You are about to convert your existing Game Point installation \
+into an INN-only installation.  Unless you have called 1-800-IMAGIN-1 to \
+convert your account, this could prevent you from accessing ImagiNation \
+correctly.
+Would you like to:
+  P)roceed with this installation,
+  A)bort this installation, or
+  U)pgrade your existing Game Point software without converting?
+\\saveProd
+We have detected The PRODIGY Service in the directory you selected for \
+installation of Game Point.  The two packages must be in separate \
+directories.  Please choose another name.
+\\badProdPath
+Either The PRODIGY Service is not installed on your computer, or you have \
+mistyped the directory name.  If The PRODIGY Service is not installed on \
+your computer, this Game Point software cannot be installed and you will \
+have to exit by pressing the escape key when you are asked to re-enter the \
+directory name.
+\\prodPath
+PRODIGY Service directory
+\\prodPathPrompt
+Please enter the name of the directory where you have installed The PRODIGY \
+Service.
+\\getProdDrive
+Please type the letter of the hard disk on which you have installed The \
+PRODIGY Service.
+\\PhoneMenu
+Phone numbers
+\\areaCodePrompt
+Please enter the area code for which you wish a list of numbers
+\\areaCodeInpPrompt
+Area Code:ÿ
+\\phoneMenu9600Prompt
+Please select a phone number from the menu below.  Numbers where the \
+city has an asterisk (*) next to it are Preferred Access numbers.
+
+ City                            1200        2400        9600
+\\phoneMenuPrompt
+Please select a phone number from the menu below.  Numbers where the \
+city has an asterisk (*) next to it are Preferred Access numbers.
+
+    City                            1200        2400
+\\prodPhoneMenu9600Prompt
+      Please select a phone number from the menu below.
+
+City                            1200        2400        9600  
+\\prodPhoneMenuPrompt
+Please select a phone number from the menu below.  
+
+City                            1200        2400
+\\badAreaCode
+There are no access numbers in area code %s.
+\\onlyOneNumber
+%s is the only access number available in area code %s, so it has been \
+automatically selected for you.
+\\autoBaud
+The number you have selected is a %s baud number, so your baud rate has \
+been adjusted accordingly.
+\\modemModelPrompt
+Please select your modem model from the list below.  If your modem is not \
+on the list, choose ImagiNation Network Default Settings.
+\\modemModel
+Modem model
+\\modemProb.B
+This particular model of modem may have difficulty in connecting to The \
+ImagiNation Network.
+\\modemProb.C
+This particular model of modem may have difficulty in connecting to The \
+ImagiNation Network.
+\\modemProb.R
+This modem will be able to connect to The ImagiNation Network, but you may \
+notice a longer delay than most members when you change places because we \
+may have to hang up the phone line and dial back in.
+\\modemProb.T
+There are two versions of this modem.  One will work with The ImagiNation \
+Network, and the other will not.  Unfortunately, the only way to tell which \
+one you have is to try it.

@@ -1,0 +1,364 @@
+                       ImagiNation Network (INN)
+                      Common Problems & Solutions
+                      ===========================
+
+This following information was developed after the ImagiNation Network
+manual was printed.  If you're having difficulty installing or running
+INN, please read this document carefully.
+
+CAN'T HEAR THE MODEM DIAL -
+-------------------------
+If you can't hear the modem pick up the phone and dial, then INN is
+having trouble finding your modem.  You may need to change the COM port
+setting for INN.  To do this, go into the directory into which you
+installed the INN software, run the Install program, and choose "COM
+Port" from the menu and select a different check marked selection.
+
+NOT ENOUGH MEMORY -
+-----------------
+If you get the message "Not Enough Memory..." before starting INN or
+during game play, you need to make a DOS Boot Disk.  A Boot Disk will
+create an optimal setup for your computer to install and play INN.
+
+To make a INN Boot Disk run the program BOOTDISK.EXE from either the #1
+diskette (if you haven't already installed the software) or from the
+directory into which you installed the INN software.  After creating the
+Boot Disk, restart your computer with the Boot Disk still in the A:
+drive.
+
+INN GIVES AN ERROR #12 -
+----------------------
+Make sure you've chosen the modem brand that you have installed in your
+computer.  You can re-run the Install program to check what brand modem
+you have installed and change it to the correct brand if necessary.  For
+additional information on this problem, see the technical information on
+Error #12 below.
+
+SUFFERING FROM EXCESSIVE DISCONNECTIONS? -
+----------------------------------------
+If you are finding you are getting disconnected from the ImagiNation
+Network an excessive number of times, and specified 9600 baud as your
+communication speed in the Install program, try re-running the Install
+and change your communication speed setting to 2400 baud instead.  More
+times than not, this will solve the problem.
+
+
+                    ADDITIONAL TECHNICAL INFORMATION
+                    ================================
+
+NON-STANDARD IRQ AND COM PORT CONFIGURATIONS -
+--------------------------------------------
+If you have a non-standard IRQ setting for your modem, run the Install
+program and change the COM Port setting by moving the highlight bar to
+the COM Port line, hit Enter, and choose "Non-standard..." at the bottom
+of the COM port list.
+
+Note: You will always be told that your system does not appear to support
+this choice.  This is the nature of a non-standard system and should not
+be cause for alarm.
+
+You will then be prompted for the IRQ and I/O Address settings.  If you 
+are unsure as to what you need to select, just hit F1 for Help and you 
+will be given information that should help you in determining the proper
+answers for these prompts.  
+
+Remember, in most cases you cannot adversely affect your system in any 
+way by making an incorrect selection, at worse you will simply have to 
+re-run this process and indicate a different selection.
+
+MORE ABOUT COM PORTS -
+--------------------
+If you have an internal modem, please examine the COM port settings of
+any previously installed Asynchronous Communications Adapters (ASYNC) or
+multi-function boards, as well as the COM port setting of the internal
+modem, to ensure there are no addressing conflicts.
+
+COM ports 1 and 3 share IRQ #4.  COM ports 2 and 4 share IRQ #3. We
+recommend that if you have a mouse on COM 1 you should set your internal
+modem to COM 2.  If another device in your computer conflicts with COM
+2, try setting your modem to COM 4.  Avoid using COM 3 if you have a
+serial mouse on COM 1.
+
+MORE ABOUT BOOT DISKS -
+---------------------
+A Boot Disk will allow you to bypass your computer's normal
+configuration to create an optimal environment for installing and
+playing INN.  To make a INN Boot Disk, run the BOOTDISK.EXE program from
+either Disk #1 (if you have not already installed INN) or from the
+directory into which INN is installed.  After creating the Boot Disk,
+restart your computer with the Boot Disk in the A: drive.
+
+A Boot Disk will not alter your existing system configuration.  Your
+computer is designed to recognize a Boot Disk in the A: drive as an
+alternate method of starting and configuring itself.  You might think of
+the Boot Disk as your INN Startup Disk.  It's the best method we have of
+ensuring that your memory configuration is set to best run INN.
+
+SOUND BLASTER - ADLIB -
+---------------------
+Since INN uses mostly FM synthesis music, you can eliminate many Sound
+Blaster conflicts by simply choosing AdLib as your music device in the
+Install program.
+
+OF MICE & MODEMS -
+----------------
+If you have an internal modem and a serial mouse you must make sure that
+they aren't both using the same COM port.  Your modem and mouse each
+need their own COM ports and IRQ interrupts.  Setting both mouse and
+modem to the same COM port or interrupt may cause problems.  Changing
+your modem to COM 2 or COM 4 (see your modem instruction manual for
+directions) should resolve most conflicts.
+
+AN ENEMY PLANE SHOT DOWN MY MOUSE -
+---------------------------------
+Occasionally, on a few brands of computers, you might find that your
+mouse is misbehaving after a game of Red Baron.  Perhaps every time you
+click on something, you get help instead of actually doing what you told
+your computer to do.  What's happening is that your computer thinks you
+are pressing one of the shift keys.  You can fix the problem by pressing
+and releasing the two shift keys (you don't have to press them at the
+same time.  Just press and release each one).
+
+I CAN'T GET THERE FROM HERE (Reconnect Failure) -
+-----------------------------------------------
+When you move from one area to another on INN you actually change from
+one host machine to another.  Although you can't see it, your software
+tells the network to disconnect you from your current host machine and
+connect you to another one.  In order for the network to get the message
+to move you, it must receive a break signal from your modem.
+
+If your modem isn't configured properly, the break signal may not be
+passed through to the network properly.  If this occurs you will see a
+"Reconnect failure" error message and INN will automatically re-dial the
+modem to re-establish your connection.  Most often the solution is to
+add a command to the modem initialization string that changes the way
+break signals are handled.
+
+The Install program has a list of initialization strings for various
+makes and models of modems.  Check for yours in the "Modem model"
+section of the program.  If your modem is not listed, start by choosing
+"ImagiNation Network Default Settings".  If that doesn't work with your
+modem, try one of the two "Generic" switchless modems.
+
+Some modems designed with Rockwell ROM chips have problems sending a
+break signal due to the design of the control chips.  The two modems
+best known to exhibit this behavior are the Boca 14.4K internal Fax
+modem and the Gateway Telepath internal 14.4K Fax modem.
+
+Our programmers have designed an alternate modem driver that works
+around this hardware problem.  While this replacement driver was
+designed specifically for the Boca and Gateway modems, other 14.4K
+internal fax modems that use a Rockwell chipset may benefit.  You can
+choose this driver by selecting "Generic switchless (alternate)" in the
+"Modem model" section of the Install program.
+
+9600 BPS V.32 Connections -
+-------------------------
+In order for INN to successfully connect and reconnect you must disable
+MNP 5 error correction.  Our modem initialization strings automatically
+disable MNP.  If your modem isn't listed in our setup strings check your
+modem manual, or call your modem manufacturer, and insert the control
+codes to disable MNP 5 error correction.
+
+A FEW WORDS ABOUT VIRTUAL MEMORY -
+--------------------------------
+With our ever-increasing variety and attention to detail, things just
+got a little big.  So we needed more memory.  Well, we looked really hard,
+and we found a couple of ways to get it.  One way is what we call Virtual
+Memory (VM to its closest friends).
+
+If our software finds that your are running low on available 
+conventional memory (less than 580K), it will attempt to use any 
+available Extended memory (XMS) or Expanded memory (EMS) your computer 
+may have.  The Virtual Memory system requires a minimum of 311,296 bytes 
+of XMS or EMS memory.  It can use up to 1,048,576 bytes of XMS or EMS if 
+available.  Our Boot Disk Maker (BOOTDISK.EXE) will attempt to install an 
+XMS manager if you have DOS 5.0 or higher.
+
+If you do not have enough available XMS or EMS memory, the Virtual
+Memory feature will use some of the space on your hard disk for
+temporary storage, in much the same way that Microsoft Windows (tm)
+uses its temporary swap files.  This works as long as you have at least
+one megabyte of available space on your hard disk.  But it has one 
+drawback - it can seem slow at times.  You'll know that VM is active 
+because your cursor will look like a 3.5" diskette.
+
+
+                               VOLUME CONTROL
+                               ==============
+
+Have you heard the opening music for INN so many times that you're 
+humming it in the shower?  Have the neighbors called asking that you 
+turn down the map music?  Well, now you can either turn the music 
+down, or turn it off altogether.  To accomplish this you simply need to 
+add the line LOGONVOL=0 to the LSCI.CFG file on your hard disk.  This 
+will shut the music off in the dialing screen and the map.  If you wish 
+to lower it, simply increase the number from 0.   The maximum volume is 
+127.  After you are done editing the LSCI.CFG file, run the INSTALL 
+program and choose "Accept these choices and save configuration" 
+without changing any of the values.  From then on, the music and sound 
+effects you hear when logging on will be turned off.
+
+                                  SEASONS
+                                  =======
+
+INN has seasonal maps! If at any time you would like to restore
+the original INN main map, you may add the following line to the
+LSCI.CFG file in your INN directory:
+
+    SEASONS=OFF
+
+To turn seasons back on, either remove that line or replace the word
+OFF with ON.  To force INN to show a particular season, replace the
+word OFF or ON with WINTER, SPRING, SUMMER, or FALL. 
+
+Make sure to run the INSTALL program after making any changes.  When
+you see the main menu of the INSTALL program, select "Accept these
+choices and save configuration" to save the new settings.  This
+will compleate and save the changes you made.  Otherwise you may
+notice that when you go from land to land the map screen changes.
+
+Unless you have specified a particular season, the seasons are
+dependent on your computer's internal clock setting.  If your
+computers' internal clock is wrong, the seasons will not change
+correctly.
+
+                 ERROR MESSAGES AND THEIR MEANINGS
+                 =================================
+
+ERROR #1 -
+--------
+The connection to INN has been lost.  Check to make sure that someone
+else in your household isn't attempting to log on to INN using the same
+Member number.  If two people log on at the same time using the same 
+number they will both be dropped.
+
+ERROR #8 -
+--------
+The system that lets you reach out and touch INN is busy at the phone
+number you chose during the installation process.  If you wait a few
+minutes and try connecting again, you should be able to get through.  
+If the number nearest you is busy on a regular basis, please call
+1-800-462-4461 (between 8:00 am and 10:00 pm PST, seven days a week) and
+report the busy phone number.
+
+In the interim you can try calling another nearby access node, but YOU
+WILL BE RESPONSIBLE FOR ANY TOLL OR LONG-DISTANCE CHARGES. Run the
+Install program from the directory into which you installed INN, choose
+"Access Phone #", and press F1 for a list of local access numbers.
+
+ERROR #9 -
+--------
+First, double-check the Network access number you chose for INN to call.
+Make sure you've selected an access number from the list in the INSTALL
+program.
+
+If you cannot hear your modem pick up the phone and dial, the "COM Port"
+setting in the Install program may be incorrect.  Check which COM port
+your modem is using, re-run Install and choose that COM port.  Also,
+check to make sure your phone line is plugged into the modem.
+
+If you have an internal modem, and if you can hear the modem go off
+hook, dial, and connect, but you still get Error #9, try changing the
+COM port the modem uses.  If your modem is set to COM 2 or COM 3 try
+changing to COM 4.  Check your modem manual for the proper switch
+settings or jumper positions to change the COM port on the modem.
+
+ERROR #10 -
+---------
+Verify the network access number by running the INSTALL program.  If you
+have selected a valid network access number, then the system that lets
+you reach out and touch INN may be experiencing network trouble.  If the
+problem persists for more than a few minutes, call 1-800-462-4461
+(between 8:00 am and 10:00 pm PST, seven days a week) and report the
+problem, including the number you are calling, so that we can get it
+fixed.
+
+In the interim you can try calling another nearby access node, but YOU
+WILL BE RESPONSIBLE FOR ANY TOLL OR LONG-DISTANCE CHARGES.  Run the
+Install program in the directory into which you installed INN directory,
+choose "Access Phone #", and press F1 for a list of local access
+numbers.
+
+ERROR #12 -
+---------
+Your modem initialization string may need modification.  INN works best
+if MNP 5 error correction is disabled.  If your modem is not on the list
+of modem models in the Install program and the default choice gives you
+this error, check your modem manual for the initialization command that
+disables MNP error correction.  While advanced modem commands vary,
+often this command is AT&Q0 or AT\N0.  If you are unable to find the
+commands to disable MNP error correction please call INN Tech Support at
+1-800-462-4461 between 8:00 am and 10:00 pm PST, seven days a week.
+
+ERROR #13 -
+---------
+The system that lets you reach out and touch INN may be experiencing
+network trouble.  If the problem persists for more than a few minutes,
+please call 1-800-462-4461 (between 8:00 am and 10:00 pm PST, seven days a
+week) and report the problem, including the number you are calling, so
+that we can get it fixed.
+
+In the interim you can try calling another nearby access node, but YOU
+WILL BE RESPONSIBLE FOR ANY TOLL OR LONG-DISTANCE CHARGES.  Run the
+Install program in the directory into which you installed INN and press
+F1 in the access number screen for a list of local access numbers.
+
+ERROR #21 -
+---------
+Reconnection Failure can be caused by two conditions.  First, check your
+modem initialization line to make sure that the modem init string
+disables MNP error correction.  Second, if your modem has the Rockwell
+ROM chips you may need to use the alternate modem driver. If you are
+receiving this error and your modem does not appear on the modem model
+list in the Install program, please call 1-800-462-4461 (between 8:00 am
+and 10:00 pm PST, seven days a week).
+
+ERROR #999 -
+----------
+This indicates that you have encountered an unknown problem and the
+system was unable to determine what went wrong.  This error message
+indicates that something unusual that the software cannot identify
+occurred on your system.  Check your system configuration for COM port
+conflicts and available memory.  If you have an external modem your
+serial cable may be defective.  Try switching serial cables and see if
+the problem persists.  If you continue to get this error please call
+1-800-462-4461 (between 8:00 am and 10:00 pm PST, seven days a week).
+
+UNABLE TO LOAD VIDEO DRIVER -
+---------------------------
+This indicates that the LSCI.CFG file in the directory into which you
+have installed the INN software has been damaged.  To fix this run the
+Install program, make sure the Video option is set correctly, and choose
+"Accept these choices".  This will re-write the LSCI.CFG file for the
+INN software.
+
+
+                       INN TECHNICAL SUPPORT
+                       =====================
+
+If you experience problems installing or operating INN, or if you have
+any questions concerning any of the above steps, our Technical Support
+team will be happy to assist you.
+
+CONTACTING INN TECHNICAL SUPPORT - 
+-------------------------------- 
+Please call 1-800-462-4461 between 8:00 am and 10:00 pm PST, seven days a
+week.  You can also reach us on INN at mailbox #950, by fax at (209)
+642-0885, by TTY/TDD (for the hearing impaired) at (209) 658-7977, or by
+mail at the following address:
+
+                        The ImagiNation Network
+                             P.O. BOX 1550
+                           Oakhurst, CA 93644
+                        ATTN: Technical Support
+
+BEFORE YOU CALL -
+---------------
+To help us provide the best service possible please be in front of your
+computer when you call and have the following information ready: What is
+your member number or Mailbox number?  Modem brand name and type
+(internal or external)?  What COM port is the modem is set to?  Do you
+have a Serial or Bus mouse?  Are you getting an Error message?  What
+network access phone number did you choose for the program to call?
+

@@ -1,0 +1,1404 @@
+COMMDLG.GetOpenFileName  (1 functions)
+    FileDialog_s2_3178@s2:3178
+COMMDLG.GetSaveFileName  (1 functions)
+    FileDialog_s2_3178@s2:3178
+GDI.CreateDC  (5 functions)
+    sub_s2:4F20
+    sub_s3:47D0
+    sub_s4:4E04
+    sub_s5:2EDE
+    sub_s5:320E
+GDI.CreatePalette  (1 functions)
+    CreateGamePalette_s2_4E38@s2:4E38
+GDI.CreatePen  (14 functions)
+    sub_s2:8288
+    sub_s3:47D0
+    sub_s4:623E
+    sub_s5:2020
+    sub_s5:2EDE
+    sub_s5:33C0
+    sub_s5:3488
+    sub_s5:40CE
+    sub_s5:7CC8
+    sub_s5:9364
+    sub_s9:5A06
+    sub_s9:7BB2
+    sub_s9:C226
+    sub_s9:C74C
+GDI.CreateSolidBrush  (17 functions)
+    sub_s2:39AC
+    sub_s2:62C0
+    sub_s2:8288
+    sub_s4:623E
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s5:065E
+    sub_s5:2020
+    sub_s5:33C0
+    sub_s5:9364
+    sub_s8:9DCC
+    sub_s9:27CC
+    sub_s9:82EE
+    sub_s9:A67E
+    sub_s9:B372
+    sub_s9:C226
+GDI.DeleteDC  (5 functions)
+    sub_s2:4F20
+    sub_s3:47D0
+    sub_s4:4D22
+    sub_s5:2FEA
+    sub_s5:320E
+GDI.DeleteObject  (40 functions)
+    sub_s2:39AC
+    sub_s2:3C34
+    sub_s2:4F20
+    sub_s2:56E2
+    sub_s2:62C0
+    sub_s2:8288
+    sub_s3:47D0
+    sub_s4:4D22
+    sub_s4:623E
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s4:E16C
+    sub_s5:065E
+    sub_s5:0C3E
+    sub_s5:0CD2
+    sub_s5:150E
+    sub_s5:2020
+    sub_s5:2FEA
+    sub_s5:320E
+    sub_s5:33C0
+    sub_s5:3488
+    sub_s5:3E84
+    sub_s5:40CE
+    sub_s5:7270
+    sub_s5:7CC8
+    sub_s5:81C0
+    sub_s5:92C4
+    sub_s5:9364
+    sub_s9:21D6
+    sub_s9:5A06
+    sub_s9:782C
+    sub_s9:7BB2
+    sub_s9:82EE
+    sub_s9:8A06
+    sub_s9:9458
+    sub_s9:B0F8
+    sub_s9:C226
+    sub_s9:C74C
+    sub_s9:C886
+GDI.Ellipse  (1 functions)
+    sub_s5:40CE
+GDI.GetCurrentPosition  (1 functions)
+    sub_s9:C38E
+GDI.GetDeviceCaps  (2 functions)
+    sub_s2:DA12
+    sub_s8:9BC8
+GDI.GetStockObject  (25 functions)
+    RegisterWindowClass@s2:5E7E
+    sub_s2:0536
+    sub_s2:61B2
+    sub_s2:7F62
+    sub_s2:80EE
+    sub_s2:8288
+    sub_s2:9C56
+    sub_s3:47D0
+    sub_s5:1674
+    sub_s5:2EDE
+    sub_s5:30BE
+    sub_s5:3488
+    sub_s5:3DA4
+    sub_s5:40CE
+    sub_s5:67CE
+    sub_s5:7070
+    sub_s5:737A
+    sub_s5:7CC8
+    sub_s5:7F7A
+    sub_s8:AC38
+    sub_s9:0CC0
+    sub_s9:7BB2
+    sub_s9:7E5E
+    sub_s9:9854
+    sub_s9:C74C
+GDI.GetSystemPaletteEntries  (1 functions)
+    sub_s2:DA12
+GDI.GetTextExtent  (4 functions)
+    sub_s5:7CC8
+    sub_s9:6942
+    sub_s9:70B4
+    sub_s9:7BB2
+GDI.LineTo  (10 functions)
+    sub_s2:8288
+    sub_s4:6444
+    sub_s5:229C
+    sub_s5:7CC8
+    sub_s5:9364
+    sub_s9:5A06
+    sub_s9:7BB2
+    sub_s9:C302
+    sub_s9:C38E
+    sub_s9:C74C
+GDI.MoveTo  (9 functions)
+    sub_s2:8288
+    sub_s4:6444
+    sub_s5:229C
+    sub_s5:7CC8
+    sub_s9:5A06
+    sub_s9:7BB2
+    sub_s9:C302
+    sub_s9:C38E
+    sub_s9:C74C
+GDI.MoveToEx  (1 functions)
+    sub_s5:9364
+GDI.Polygon  (4 functions)
+    sub_s2:8288
+    sub_s4:661C
+    sub_s5:2474
+    sub_s5:3602
+GDI.Rectangle  (5 functions)
+    sub_s2:8288
+    sub_s3:47D0
+    sub_s5:3488
+    sub_s5:40CE
+    sub_s9:C74C
+GDI.SelectObject  (20 functions)
+    sub_s2:8288
+    sub_s3:47D0
+    sub_s4:623E
+    sub_s5:2020
+    sub_s5:2EDE
+    sub_s5:2FEA
+    sub_s5:33C0
+    sub_s5:3488
+    sub_s5:3DA4
+    sub_s5:3E84
+    sub_s5:40CE
+    sub_s5:7CC8
+    sub_s5:9364
+    sub_s9:21D6
+    sub_s9:5A06
+    sub_s9:7BB2
+    sub_s9:8A06
+    sub_s9:8D14
+    sub_s9:C226
+    sub_s9:C74C
+GDI.SetBkColor  (15 functions)
+    sub_s2:4F20
+    sub_s4:C742
+    sub_s5:7070
+    sub_s5:7CC8
+    sub_s8:9DCC
+    sub_s8:AC38
+    sub_s9:0CC0
+    sub_s9:21D6
+    sub_s9:27CC
+    sub_s9:7BB2
+    sub_s9:7E5E
+    sub_s9:8A06
+    sub_s9:94FC
+    sub_s9:A67E
+    sub_s9:B372
+GDI.SetDIBitsToDevice  (1 functions)
+    BlitDib_s2_45D6@s2:45D6
+GDI.SetMapMode  (2 functions)
+    sub_s5:3DA4
+    sub_s5:3E84
+GDI.SetTextColor  (15 functions)
+    sub_s2:4F20
+    sub_s4:C742
+    sub_s5:7070
+    sub_s5:7CC8
+    sub_s8:9DCC
+    sub_s8:AC38
+    sub_s9:0CC0
+    sub_s9:21D6
+    sub_s9:27CC
+    sub_s9:7BB2
+    sub_s9:7E5E
+    sub_s9:8A06
+    sub_s9:94FC
+    sub_s9:A67E
+    sub_s9:B372
+GDI.StretchDIBits  (1 functions)
+    BlitDib_s2_465A@s2:465A
+GDI.TextOut  (3 functions)
+    sub_s2:4F20
+    sub_s5:7CC8
+    sub_s9:7BB2
+GDI.UnrealizeObject  (4 functions)
+    sub_s5:0E46
+    sub_s5:2992
+    sub_s5:6896
+    sub_s5:8128
+KERNEL.DOS3Call  (14 functions)
+    __astart@s1:2300
+    sub_s1:23EA
+    sub_s1:24DB
+    sub_s1:256B
+    sub_s1:3636
+    sub_s1:370A
+    sub_s1:39F2
+    sub_s1:3AD9
+    sub_s1:42DE
+    sub_s1:435C
+    sub_s1:4F2E
+    sub_s1:4F94
+    sub_s1:5174
+    sub_s1:51AA
+KERNEL.FatalAppExit  (2 functions)
+    sub_s1:27D6
+    sub_s1:3E9E
+KERNEL.FindResource  (1 functions)
+    sub_s3:4E9E
+KERNEL.FreeProcInstance  (5 functions)
+    sub_s3:01BE
+    sub_s5:179C
+    sub_s8:CFDA
+    sub_s9:911E
+    sub_s9:A294
+KERNEL.FreeResource  (2 functions)
+    sub_s3:4B3E
+    sub_s3:4E9E
+KERNEL.GetDOSEnvironment  (1 functions)
+    sub_s1:27D6
+KERNEL.GetModuleFileName  (1 functions)
+    sub_s1:262C
+KERNEL.GetPrivateProfileString  (2 functions)
+    IniAccess_s3_5404@s3:5404
+    IniAccess_s3_6132@s3:6132
+KERNEL.GetVersion  (2 functions)
+    __astart@s1:2300
+    sub_s2:016E
+KERNEL.GlobalAlloc  (1 functions)
+    sub_s1:131C
+KERNEL.GlobalDOSAlloc  (1 functions)
+    sub_s1:1558
+KERNEL.GlobalDOSFree  (1 functions)
+    sub_s1:15CE
+KERNEL.GlobalFree  (1 functions)
+    sub_s1:13CE
+KERNEL.GlobalHandle  (3 functions)
+    sub_s1:13CE
+    sub_s1:1408
+    sub_s1:1532
+KERNEL.GlobalLock  (2 functions)
+    sub_s1:131C
+    sub_s1:1408
+KERNEL.GlobalPageLock  (2 functions)
+    sub_s1:131C
+    sub_s1:1408
+KERNEL.GlobalPageUnlock  (1 functions)
+    sub_s1:1408
+KERNEL.GlobalReAlloc  (1 functions)
+    sub_s1:1408
+KERNEL.GlobalSize  (1 functions)
+    sub_s1:1532
+KERNEL.GlobalUnlock  (2 functions)
+    sub_s3:4B3E
+    sub_s3:4E9E
+KERNEL.InitTask  (1 functions)
+    __astart@s1:2300
+KERNEL.LoadResource  (1 functions)
+    sub_s3:4E9E
+KERNEL.LockResource  (1 functions)
+    sub_s3:4E9E
+KERNEL.LockSegment  (1 functions)
+    __astart@s1:2300
+KERNEL.MakeProcInstance  (5 functions)
+    sub_s3:01BE
+    sub_s5:179C
+    sub_s8:CF6C
+    sub_s9:8FB8
+    sub_s9:A234
+KERNEL.OutputDebugString  (2 functions)
+    RegisterWindowClass@s2:5E7E
+    sub_s2:6048
+KERNEL.SetErrorMode  (1 functions)
+    sub_s3:8B14
+KERNEL.WaitEvent  (1 functions)
+    __astart@s1:2300
+KERNEL.WinExec  (1 functions)
+    sub_s2:0C60
+KERNEL.WritePrivateProfileString  (2 functions)
+    IniAccess_s3_5B10@s3:5B10
+    IniAccess_s3_622A@s3:622A
+KERNEL._hread  (6 functions)
+    File_read@s2:7DEE
+    LoadEncodedDataFile@s7:4E70
+    sub_s2:49E8
+    sub_s2:71A0
+    sub_s2:7C6E
+    sub_s2:7CFE
+KERNEL._hwrite  (2 functions)
+    File_write@s2:7E1C
+    sub_s2:70A6
+KERNEL._lclose  (9 functions)
+    LoadEncodedDataFile@s7:4E70
+    sub_s2:496C
+    sub_s2:49E8
+    sub_s2:6DD0
+    sub_s2:6E02
+    sub_s2:6E78
+    sub_s2:70A6
+    sub_s2:7146
+    sub_s2:726C
+KERNEL._lcreat  (1 functions)
+    sub_s2:70A6
+KERNEL._llseek  (2 functions)
+    sub_s2:49E8
+    sub_s2:7CFE
+KERNEL._lopen  (3 functions)
+    LoadEncodedDataFile@s7:4E70
+    sub_s2:49E8
+    sub_s2:7146
+KERNEL.hmemcpy  (2 functions)
+    sub_s2:4274
+    sub_s2:676E
+KERNEL.lstrlen  (2 functions)
+    sub_s5:7CC8
+    sub_s9:7BB2
+MMSYSTEM.mciGetErrorString  (1 functions)
+    Mci_s2_53AE@s2:53AE
+MMSYSTEM.mciSendCommand  (3 functions)
+    Mci_s2_53AE@s2:53AE
+    Mci_s2_5CB6@s2:5CB6
+    Mci_s2_5CFE@s2:5CFE
+USER.BeginPaint  (25 functions)
+    sub_s2:39AC
+    sub_s2:62C0
+    sub_s2:8288
+    sub_s2:97C8
+    sub_s4:5D6C
+    sub_s4:623E
+    sub_s4:6A7A
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s4:E16C
+    sub_s5:0000
+    sub_s5:065E
+    sub_s5:0C3E
+    sub_s5:15DE
+    sub_s5:2020
+    sub_s5:30BE
+    sub_s5:3FA0
+    sub_s5:650C
+    sub_s5:737A
+    sub_s5:9312
+    sub_s9:21D6
+    sub_s9:5A06
+    sub_s9:8A06
+    sub_s9:C226
+USER.BringWindowToTop  (5 functions)
+    sub_s2:2C4E
+    sub_s3:79AA
+    sub_s5:2AAE
+    sub_s5:536E
+    sub_s8:B72E
+USER.CheckDlgButton  (5 functions)
+    sub_s8:B81C
+    sub_s8:B922
+    sub_s9:0F0C
+    sub_s9:1AFE
+    sub_s9:1B8A
+USER.CheckMenuItem  (1 functions)
+    sub_s5:44EC
+USER.CheckRadioButton  (4 functions)
+    sub_s8:C89C
+    sub_s8:E19A
+    sub_s9:3B1E
+    sub_s9:3E08
+USER.ClientToScreen  (4 functions)
+    sub_s2:09BA
+    sub_s5:5BF2
+    sub_s5:7AD2
+    sub_s9:7F86
+USER.CreateDialog  (1 functions)
+    sub_s9:78E2
+USER.CreateWindow  (9 functions)
+    RegisterWindowClass@s2:5E7E
+    sub_s5:6E98
+    sub_s9:20D4
+    sub_s9:6942
+    sub_s9:6EAE
+    sub_s9:70B4
+    sub_s9:7620
+    sub_s9:8BEA
+    sub_s9:92DC
+USER.CreateWindowEx  (1 functions)
+    sub_s2:9760
+USER.DefWindowProc  (2 functions)
+    sub_s2:5F44
+    sub_s2:9CE6
+USER.DeleteMenu  (1 functions)
+    sub_s5:44EC
+USER.DestroyCursor  (1 functions)
+    sub_s5:42F4
+USER.DestroyIcon  (4 functions)
+    sub_s2:0618
+    sub_s5:1038
+    sub_s5:2C88
+    sub_s5:6BD2
+USER.DestroyMenu  (4 functions)
+    sub_s2:0618
+    sub_s5:42F4
+    sub_s5:795C
+    sub_s9:782C
+USER.DestroyWindow  (41 functions)
+    sub_s2:5F44
+    sub_s2:628E
+    sub_s2:9698
+    sub_s3:2FA0
+    sub_s3:305A
+    sub_s3:3202
+    sub_s3:7B26
+    sub_s4:6BB6
+    sub_s4:C518
+    sub_s5:1D4A
+    sub_s5:3B3E
+    sub_s5:694C
+    sub_s5:6AE6
+    sub_s5:6E98
+    sub_s5:8250
+    sub_s8:7D88
+    sub_s8:A072
+    sub_s8:C836
+    sub_s8:C95E
+    sub_s8:CC00
+    sub_s8:CD88
+    sub_s8:D400
+    sub_s8:E1DC
+    sub_s8:E71C
+    sub_s8:EAA2
+    sub_s8:EF3A
+    sub_s9:0170
+    sub_s9:13B2
+    sub_s9:19EA
+    sub_s9:1D7A
+    sub_s9:42B2
+    sub_s9:5256
+    sub_s9:52C0
+    sub_s9:6D1A
+    sub_s9:748C
+    sub_s9:7B98
+    sub_s9:8212
+    sub_s9:8B7E
+    sub_s9:B726
+    sub_s9:BB78
+    sub_s9:BBE2
+USER.DispatchMessage  (2 functions)
+    MessageLoop@s2:9498
+    MessageLoop@s2:9510
+USER.DrawIcon  (4 functions)
+    sub_s5:1674
+    sub_s5:30BE
+    sub_s5:737A
+    sub_s9:8A06
+USER.DrawText  (6 functions)
+    sub_s4:C742
+    sub_s9:21D6
+    sub_s9:8A06
+    sub_s9:8D14
+    sub_s9:94FC
+    sub_s9:9650
+USER.EnableMenuItem  (4 functions)
+    sub_s5:1000
+    sub_s5:2C2A
+    sub_s5:44EC
+    sub_s5:6B9A
+USER.EnableWindow  (39 functions)
+    sub_s5:1BD4
+    sub_s8:806A
+    sub_s8:8F74
+    sub_s8:9A66
+    sub_s8:9CEC
+    sub_s8:A8F8
+    sub_s8:A972
+    sub_s8:B81C
+    sub_s8:B922
+    sub_s8:C294
+    sub_s8:C89C
+    sub_s8:D2A2
+    sub_s8:D400
+    sub_s9:0170
+    sub_s9:0558
+    sub_s9:060E
+    sub_s9:0ACC
+    sub_s9:0F0C
+    sub_s9:2490
+    sub_s9:2512
+    sub_s9:2A64
+    sub_s9:2BB2
+    sub_s9:32A8
+    sub_s9:3590
+    sub_s9:3A36
+    sub_s9:42B2
+    sub_s9:52C0
+    sub_s9:5780
+    sub_s9:5800
+    sub_s9:6880
+    sub_s9:6FF2
+    sub_s9:86DC
+    sub_s9:8EA0
+    sub_s9:9234
+    sub_s9:A784
+    sub_s9:BBE2
+    sub_s9:CF1C
+    sub_s9:D60E
+    sub_s9:D6BE
+USER.EndPaint  (25 functions)
+    sub_s2:39AC
+    sub_s2:62C0
+    sub_s2:8288
+    sub_s2:97C8
+    sub_s4:5D6C
+    sub_s4:623E
+    sub_s4:6A7A
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s4:E16C
+    sub_s5:0000
+    sub_s5:065E
+    sub_s5:0C3E
+    sub_s5:15DE
+    sub_s5:2020
+    sub_s5:30BE
+    sub_s5:3FA0
+    sub_s5:650C
+    sub_s5:737A
+    sub_s5:9312
+    sub_s9:21D6
+    sub_s9:5A06
+    sub_s9:8A06
+    sub_s9:C226
+USER.EnumChildWindows  (2 functions)
+    sub_s3:01BE
+    sub_s5:179C
+USER.FillRect  (12 functions)
+    sub_s2:39AC
+    sub_s2:62C0
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s5:065E
+    sub_s5:1674
+    sub_s5:30BE
+    sub_s5:737A
+    sub_s5:7CC8
+    sub_s5:9364
+    sub_s9:7BB2
+USER.FrameRect  (2 functions)
+    sub_s9:82EE
+    sub_s9:C226
+USER.GetClassInfo  (4 functions)
+    RegisterWindowClass@s2:5E7E
+    RegisterWindowClass@s2:818C
+    RegisterWindowClass@s2:96D2
+    RegisterWindowClass@s9:98C0
+USER.GetClientRect  (20 functions)
+    sub_s2:39AC
+    sub_s2:62C0
+    sub_s2:8288
+    sub_s4:2978
+    sub_s4:4F18
+    sub_s4:5E9A
+    sub_s5:157C
+    sub_s5:1674
+    sub_s5:179C
+    sub_s5:30BE
+    sub_s5:6E98
+    sub_s5:737A
+    sub_s5:9364
+    sub_s9:20D4
+    sub_s9:52C0
+    sub_s9:6D1A
+    sub_s9:748C
+    sub_s9:BBE2
+    sub_s9:C028
+    sub_s9:C226
+USER.GetCursorPos  (1 functions)
+    sub_s9:0F0C
+USER.GetDC  (16 functions)
+    sub_s2:DA12
+    sub_s4:4DB0
+    sub_s5:0CD2
+    sub_s5:1418
+    sub_s5:2992
+    sub_s5:3DA4
+    sub_s5:717E
+    sub_s5:81C0
+    sub_s5:921C
+    sub_s8:9BC8
+    sub_s8:9FFA
+    sub_s9:3D5E
+    sub_s9:6942
+    sub_s9:70B4
+    sub_s9:8C66
+    sub_s9:9650
+USER.GetDlgCtrlID  (4 functions)
+    sub_s8:AC38
+    sub_s9:27CC
+    sub_s9:7E5E
+    sub_s9:B372
+USER.GetDlgItem  (65 functions)
+    sub_s4:6066
+    sub_s4:6086
+    sub_s5:179C
+    sub_s5:1BD4
+    sub_s5:1D2A
+    sub_s5:36F6
+    sub_s5:694C
+    sub_s5:6AE6
+    sub_s5:6E98
+    sub_s5:737A
+    sub_s8:806A
+    sub_s8:8358
+    sub_s8:844A
+    sub_s8:8F74
+    sub_s8:94DA
+    sub_s8:9A66
+    sub_s8:9BC8
+    sub_s8:9CEC
+    sub_s8:A4EE
+    sub_s8:A584
+    sub_s8:A6F4
+    sub_s8:A788
+    sub_s8:A8F8
+    sub_s8:A972
+    sub_s8:ABDC
+    sub_s8:B81C
+    sub_s8:B922
+    sub_s8:BEA4
+    sub_s8:C89C
+    sub_s8:D2A2
+    sub_s8:D400
+    sub_s8:EA18
+    sub_s8:EAA2
+    sub_s9:0170
+    sub_s9:0558
+    sub_s9:060E
+    sub_s9:0ACC
+    sub_s9:0F0C
+    sub_s9:12BC
+    sub_s9:13B2
+    sub_s9:2490
+    sub_s9:2512
+    sub_s9:2BB2
+    sub_s9:2F90
+    sub_s9:3590
+    sub_s9:3B1E
+    sub_s9:410E
+    sub_s9:42B2
+    sub_s9:4A0A
+    sub_s9:4CB2
+    sub_s9:4CF4
+    sub_s9:52C0
+    sub_s9:5780
+    sub_s9:5800
+    sub_s9:6880
+    sub_s9:6FF2
+    sub_s9:86DC
+    sub_s9:8EA0
+    sub_s9:A3D0
+    sub_s9:A784
+    sub_s9:A94A
+    sub_s9:BBE2
+    sub_s9:CF1C
+    sub_s9:D60E
+    sub_s9:D6BE
+USER.GetDlgItemInt  (11 functions)
+    sub_s8:8AFE
+    sub_s8:9294
+    sub_s8:92F6
+    sub_s8:94DA
+    sub_s8:95FC
+    sub_s8:977A
+    sub_s8:9820
+    sub_s8:98B4
+    sub_s9:2D48
+    sub_s9:3C64
+    sub_s9:CACE
+USER.GetMenuState  (1 functions)
+    sub_s5:44EC
+USER.GetMessage  (3 functions)
+    MessageLoop@s2:9498
+    MessageLoop@s2:9510
+    sub_s9:81B6
+USER.GetProp  (6 functions)
+    sub_s9:21D6
+    sub_s9:7BB2
+    sub_s9:8A06
+    sub_s9:8BEA
+    sub_s9:8D14
+    sub_s9:9566
+USER.GetSubMenu  (5 functions)
+    sub_s2:09BA
+    sub_s5:44EC
+    sub_s5:5BF2
+    sub_s5:7AD2
+    sub_s9:7F86
+USER.GetSysColor  (1 functions)
+    sub_s2:357E
+USER.GetSystemMetrics  (20 functions)
+    IniAccess_s3_5404@s3:5404
+    sub_s3:46F6
+    sub_s4:09A8
+    sub_s4:1EA0
+    sub_s4:2F56
+    sub_s4:4B1E
+    sub_s4:5E9A
+    sub_s5:179C
+    sub_s5:7A50
+    sub_s5:7C1A
+    sub_s8:9BC8
+    sub_s8:A18C
+    sub_s8:EA18
+    sub_s9:5A06
+    sub_s9:7728
+    sub_s9:8158
+    sub_s9:826C
+    sub_s9:8C66
+    sub_s9:8D14
+    sub_s9:B230
+USER.GetWindowDC  (2 functions)
+    sub_s5:7CC8
+    sub_s9:7BB2
+USER.GetWindowLong  (4 functions)
+    sub_s3:0070
+    sub_s3:010E
+    sub_s9:78E2
+    sub_s9:7BB2
+USER.GetWindowPlacement  (2 functions)
+    sub_s3:0070
+    sub_s3:010E
+USER.GetWindowRect  (22 functions)
+    sub_s5:179C
+    sub_s5:1FB2
+    sub_s5:38AA
+    sub_s5:7A50
+    sub_s5:7CC8
+    sub_s8:9BC8
+    sub_s8:A18C
+    sub_s8:ABDC
+    sub_s8:C31A
+    sub_s8:EA18
+    sub_s9:0000
+    sub_s9:0F0C
+    sub_s9:162A
+    sub_s9:331A
+    sub_s9:410E
+    sub_s9:43EA
+    sub_s9:4AE4
+    sub_s9:5800
+    sub_s9:5A06
+    sub_s9:7BB2
+    sub_s9:826C
+    sub_s9:B230
+USER.GetWindowText  (9 functions)
+    sub_s5:36F6
+    sub_s8:A584
+    sub_s8:A788
+    sub_s8:BEA4
+    sub_s8:C58E
+    sub_s9:2F90
+    sub_s9:3590
+    sub_s9:3B1E
+    sub_s9:78E2
+USER.GetWindowWord  (5 functions)
+    sub_s2:5F44
+    sub_s8:A3D2
+    sub_s8:A584
+    sub_s8:A788
+    sub_s8:A9FA
+USER.InitApp  (1 functions)
+    __astart@s1:2300
+USER.InsertMenu  (1 functions)
+    sub_s5:44EC
+USER.InvalidateRect  (22 functions)
+    sub_s4:58E2
+    sub_s4:5D32
+    sub_s4:EDD8
+    sub_s5:0CD2
+    sub_s5:157C
+    sub_s5:1FB2
+    sub_s5:2AE4
+    sub_s5:3080
+    sub_s5:36F6
+    sub_s5:3F12
+    sub_s5:65CC
+    sub_s5:735A
+    sub_s5:81C0
+    sub_s5:8D90
+    sub_s5:8FB4
+    sub_s9:3DDC
+    sub_s9:52C0
+    sub_s9:5800
+    sub_s9:6D1A
+    sub_s9:748C
+    sub_s9:BBE2
+    sub_s9:C028
+USER.IsDialogMessage  (3 functions)
+    MessageLoop@s2:9498
+    MessageLoop@s2:9510
+    sub_s9:81B6
+USER.IsDlgButtonChecked  (8 functions)
+    sub_s8:B922
+    sub_s8:C95E
+    sub_s8:CDD6
+    sub_s8:E1DC
+    sub_s8:E7A0
+    sub_s9:19EA
+    sub_s9:1D7A
+    sub_s9:2512
+USER.IsIconic  (9 functions)
+    sub_s2:0A3C
+    sub_s5:157C
+    sub_s5:15DE
+    sub_s5:30BE
+    sub_s5:65CC
+    sub_s5:737A
+    sub_s5:7A50
+    sub_s5:7CC8
+    sub_s9:7BB2
+USER.IsWindow  (14 functions)
+    sub_s2:97F2
+    sub_s3:7300
+    sub_s4:6BB6
+    sub_s4:C518
+    sub_s5:08FE
+    sub_s5:8250
+    sub_s8:D400
+    sub_s9:0ACC
+    sub_s9:5256
+    sub_s9:52C0
+    sub_s9:81B6
+    sub_s9:8212
+    sub_s9:BB78
+    sub_s9:BBE2
+USER.IsWindowEnabled  (2 functions)
+    sub_s8:B922
+    sub_s9:2512
+USER.KillTimer  (1 functions)
+    sub_s2:921C
+USER.LoadAccelerators  (1 functions)
+    sub_s5:41C8
+USER.LoadCursor  (19 functions)
+    sub_s2:0536
+    sub_s2:06C0
+    sub_s2:0C60
+    sub_s2:12DC
+    sub_s2:2C4E
+    sub_s2:2DCC
+    sub_s2:2E9A
+    sub_s2:61B2
+    sub_s2:7F62
+    sub_s2:80EE
+    sub_s5:1294
+    sub_s5:41C8
+    sub_s5:5764
+    sub_s5:67CE
+    sub_s5:7F7A
+    sub_s8:BC30
+    sub_s8:D8AE
+    sub_s9:0170
+    sub_s9:9854
+USER.LoadIcon  (5 functions)
+    sub_s2:0536
+    sub_s5:10A0
+    sub_s5:2CF0
+    sub_s5:6C3A
+    sub_s9:8B92
+USER.LoadMenu  (4 functions)
+    sub_s2:09BA
+    sub_s5:5BF2
+    sub_s5:7AD2
+    sub_s9:7F86
+USER.LoadString  (4 functions)
+    LoadStringRes@s3:847E
+    sub_s2:016E
+    sub_s3:84AC
+    sub_s3:84E0
+USER.MapDialogRect  (7 functions)
+    sub_s8:D2A2
+    sub_s8:D8AE
+    sub_s8:E348
+    sub_s8:EC16
+    sub_s9:0000
+    sub_s9:2A64
+    sub_s9:65BA
+USER.MessageBeep  (3 functions)
+    sub_s1:214C
+    sub_s2:12DC
+    sub_s2:1414
+USER.MessageBox  (22 functions)
+    FileDialog_s2_3178@s2:3178
+    sub_s1:214C
+    sub_s2:016E
+    sub_s2:06C0
+    sub_s2:0C60
+    sub_s2:12DC
+    sub_s2:1414
+    sub_s2:2B54
+    sub_s3:8BB4
+    sub_s8:81BE
+    sub_s8:8A3A
+    sub_s8:8DDA
+    sub_s8:C07A
+    sub_s8:C672
+    sub_s9:07DC
+    sub_s9:37F0
+    sub_s9:64CA
+    sub_s9:A85A
+    sub_s9:AD66
+    sub_s9:CACE
+    sub_s9:CCE4
+    sub_s9:D3D0
+USER.ModifyMenu  (1 functions)
+    sub_s5:44EC
+USER.MoveWindow  (7 functions)
+    sub_s5:10A0
+    sub_s5:179C
+    sub_s5:2CF0
+    sub_s5:38AA
+    sub_s5:6C3A
+    sub_s9:826C
+    sub_s9:93AA
+USER.PostMessage  (63 functions)
+    sub_s2:06C0
+    sub_s2:0A3C
+    sub_s2:0C60
+    sub_s2:2B54
+    sub_s2:2D22
+    sub_s2:2E9A
+    sub_s2:3D20
+    sub_s2:97F2
+    sub_s2:A0E4
+    sub_s3:8BB4
+    sub_s4:58E2
+    sub_s4:6BB6
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s4:EA0A
+    sub_s5:03B2
+    sub_s5:03D6
+    sub_s5:03FA
+    sub_s5:061C
+    sub_s5:0EC4
+    sub_s5:1CA4
+    sub_s5:1D4A
+    sub_s5:291A
+    sub_s5:2AE4
+    sub_s5:4394
+    sub_s5:55B0
+    sub_s5:5764
+    sub_s5:58CE
+    sub_s5:5BF2
+    sub_s5:694C
+    sub_s5:7308
+    sub_s5:79FC
+    sub_s6:76DA
+    sub_s8:95FC
+    sub_s8:A3D2
+    sub_s8:A584
+    sub_s8:A788
+    sub_s8:A9FA
+    sub_s8:B922
+    sub_s8:C07A
+    sub_s8:C672
+    sub_s8:D400
+    sub_s8:D840
+    sub_s8:DCB0
+    sub_s8:EAA2
+    sub_s9:0170
+    sub_s9:07DC
+    sub_s9:0D5E
+    sub_s9:2512
+    sub_s9:37F0
+    sub_s9:42B2
+    sub_s9:672E
+    sub_s9:6942
+    sub_s9:6D1A
+    sub_s9:70B4
+    sub_s9:748C
+    sub_s9:7B3C
+    sub_s9:7F1C
+    sub_s9:7F56
+    sub_s9:8718
+    sub_s9:A784
+    sub_s9:D2AC
+USER.PostQuitMessage  (1 functions)
+    sub_s2:3AF4
+USER.PtInRect  (8 functions)
+    sub_s3:40F8
+    sub_s3:4E08
+    sub_s4:1BDA
+    sub_s5:5856
+    sub_s5:58CE
+    sub_s5:5BF2
+    sub_s5:68FC
+    sub_s9:8158
+USER.RealizePalette  (8 functions)
+    sub_s2:46E4
+    sub_s2:4E08
+    sub_s5:0CD2
+    sub_s5:0E46
+    sub_s5:2992
+    sub_s5:6896
+    sub_s5:8128
+    sub_s5:81C0
+USER.RegisterClass  (4 functions)
+    RegisterWindowClass@s2:5E7E
+    RegisterWindowClass@s2:818C
+    RegisterWindowClass@s2:96D2
+    RegisterWindowClass@s9:98C0
+USER.ReleaseCapture  (4 functions)
+    sub_s5:522E
+    sub_s5:5764
+    sub_s5:5DE8
+    sub_s5:5E76
+USER.ReleaseDC  (11 functions)
+    sub_s2:DA12
+    sub_s5:0CD2
+    sub_s5:7CC8
+    sub_s8:9BC8
+    sub_s8:9FFA
+    sub_s9:3D5E
+    sub_s9:6942
+    sub_s9:70B4
+    sub_s9:7BB2
+    sub_s9:8C66
+    sub_s9:9650
+USER.RemoveProp  (2 functions)
+    sub_s9:782C
+    sub_s9:911E
+USER.ScreenToClient  (1 functions)
+    sub_s9:8158
+USER.SelectPalette  (31 functions)
+    sub_s2:3C34
+    sub_s2:46E4
+    sub_s2:4E08
+    sub_s2:4F20
+    sub_s2:56E2
+    sub_s3:47D0
+    sub_s4:4D22
+    sub_s4:623E
+    sub_s4:C578
+    sub_s4:CDA8
+    sub_s4:CFC0
+    sub_s4:E16C
+    sub_s5:065E
+    sub_s5:0C3E
+    sub_s5:0CD2
+    sub_s5:150E
+    sub_s5:2020
+    sub_s5:2FEA
+    sub_s5:320E
+    sub_s5:3E84
+    sub_s5:7270
+    sub_s5:7CC8
+    sub_s5:81C0
+    sub_s5:92C4
+    sub_s9:21D6
+    sub_s9:5A06
+    sub_s9:7BB2
+    sub_s9:8A06
+    sub_s9:9458
+    sub_s9:C74C
+    sub_s9:C886
+USER.SendDlgItemMessage  (27 functions)
+    sub_s8:7EAC
+    sub_s8:7FAE
+    sub_s8:8164
+    sub_s8:8400
+    sub_s8:844A
+    sub_s8:8618
+    sub_s8:87B2
+    sub_s8:8B58
+    sub_s8:8D22
+    sub_s8:8F74
+    sub_s8:A8F8
+    sub_s8:A972
+    sub_s8:A9FA
+    sub_s8:D2A2
+    sub_s8:D400
+    sub_s9:0170
+    sub_s9:0558
+    sub_s9:2F90
+    sub_s9:3C64
+    sub_s9:3E08
+    sub_s9:3F12
+    sub_s9:CE12
+    sub_s9:CE76
+    sub_s9:CF1C
+    sub_s9:D20C
+    sub_s9:D2AC
+    sub_s9:D79C
+USER.SendMessage  (48 functions)
+    sub_s2:0C60
+    sub_s2:84BA
+    sub_s2:9640
+    sub_s3:7300
+    sub_s3:7C42
+    sub_s3:7C9E
+    sub_s5:08FE
+    sub_s5:097E
+    sub_s5:29D8
+    sub_s5:493C
+    sub_s5:55B0
+    sub_s5:65CC
+    sub_s5:6AE6
+    sub_s5:6E98
+    sub_s6:E242
+    sub_s8:A4EE
+    sub_s8:A6F4
+    sub_s8:B922
+    sub_s8:BEA4
+    sub_s8:C228
+    sub_s8:C374
+    sub_s8:E1DC
+    sub_s8:EA18
+    sub_s8:EAA2
+    sub_s8:ED8A
+    sub_s9:12BC
+    sub_s9:13B2
+    sub_s9:1696
+    sub_s9:2F90
+    sub_s9:311A
+    sub_s9:323C
+    sub_s9:3374
+    sub_s9:37F0
+    sub_s9:3C64
+    sub_s9:410E
+    sub_s9:42B2
+    sub_s9:4A0A
+    sub_s9:4CB2
+    sub_s9:4CF4
+    sub_s9:52C0
+    sub_s9:6942
+    sub_s9:70B4
+    sub_s9:8BEA
+    sub_s9:93E6
+    sub_s9:9404
+    sub_s9:A308
+    sub_s9:BBE2
+    sub_s9:C85A
+USER.SetCapture  (2 functions)
+    sub_s5:493C
+    sub_s5:6184
+USER.SetCursor  (16 functions)
+    sub_s2:06C0
+    sub_s2:0C60
+    sub_s2:12DC
+    sub_s2:2C4E
+    sub_s2:2DCC
+    sub_s2:2E9A
+    sub_s5:1294
+    sub_s5:493C
+    sub_s5:522E
+    sub_s5:5764
+    sub_s5:5DE8
+    sub_s5:5E76
+    sub_s5:6184
+    sub_s8:BC30
+    sub_s8:D8AE
+    sub_s9:0170
+USER.SetDlgItemInt  (10 functions)
+    sub_s8:8966
+    sub_s8:8B58
+    sub_s8:94DA
+    sub_s8:98B4
+    sub_s9:2D48
+    sub_s9:3A36
+    sub_s9:3E08
+    sub_s9:A94A
+    sub_s9:CDAC
+    sub_s9:CE76
+USER.SetDlgItemText  (10 functions)
+    sub_s5:36F6
+    sub_s8:C58E
+    sub_s9:18A2
+    sub_s9:2512
+    sub_s9:2A64
+    sub_s9:2BB2
+    sub_s9:3B1E
+    sub_s9:A94A
+    sub_s9:AE04
+    sub_s9:B45E
+USER.SetFocus  (17 functions)
+    sub_s3:79AA
+    sub_s5:36F6
+    sub_s5:6E98
+    sub_s8:94DA
+    sub_s8:A4EE
+    sub_s8:A6F4
+    sub_s8:B72E
+    sub_s8:B81C
+    sub_s8:C044
+    sub_s8:C558
+    sub_s9:07DC
+    sub_s9:12BC
+    sub_s9:2F5A
+    sub_s9:355A
+    sub_s9:3AE8
+    sub_s9:410E
+    sub_s9:42B2
+USER.SetProp  (2 functions)
+    sub_s9:78E2
+    sub_s9:92DC
+USER.SetSysColors  (1 functions)
+    sub_s2:357E
+USER.SetSysModalWindow  (1 functions)
+    sub_s9:81FE
+USER.SetTimer  (1 functions)
+    sub_s2:91BA
+USER.SetWindowLong  (4 functions)
+    sub_s2:97F2
+    sub_s9:78E2
+    sub_s9:911E
+    sub_s9:92DC
+USER.SetWindowPlacement  (2 functions)
+    sub_s3:0070
+    sub_s3:010E
+USER.SetWindowPos  (22 functions)
+    sub_s4:5E9A
+    sub_s5:179C
+    sub_s5:38AA
+    sub_s8:9A66
+    sub_s8:9BC8
+    sub_s8:9CEC
+    sub_s8:ABDC
+    sub_s8:C31A
+    sub_s9:0000
+    sub_s9:0F0C
+    sub_s9:162A
+    sub_s9:20D4
+    sub_s9:331A
+    sub_s9:4AE4
+    sub_s9:4F96
+    sub_s9:6942
+    sub_s9:70B4
+    sub_s9:8718
+    sub_s9:8EA0
+    sub_s9:A784
+    sub_s9:B230
+    sub_s9:B8D2
+USER.SetWindowText  (17 functions)
+    sub_s2:9664
+    sub_s4:6066
+    sub_s4:6086
+    sub_s5:179C
+    sub_s5:1D2A
+    sub_s8:8358
+    sub_s8:844A
+    sub_s8:A4EE
+    sub_s8:A6F4
+    sub_s8:BEA4
+    sub_s8:C294
+    sub_s8:C58E
+    sub_s8:D8AE
+    sub_s9:2F90
+    sub_s9:32A8
+    sub_s9:3590
+    sub_s9:3B1E
+USER.SetWindowWord  (1 functions)
+    Mci_s2_5CFE@s2:5CFE
+USER.ShowCursor  (1 functions)
+    sub_s4:6ADC
+USER.ShowWindow  (40 functions)
+    sub_s2:96AE
+    sub_s3:7A76
+    sub_s3:7ACE
+    sub_s5:6E98
+    sub_s5:737A
+    sub_s8:9FD0
+    sub_s8:A396
+    sub_s8:A4EE
+    sub_s8:A6F4
+    sub_s8:A972
+    sub_s8:B634
+    sub_s8:B68A
+    sub_s8:B81C
+    sub_s8:C044
+    sub_s8:C558
+    sub_s8:C89C
+    sub_s8:CB5C
+    sub_s8:CD88
+    sub_s8:D2A2
+    sub_s8:D8AE
+    sub_s8:E19A
+    sub_s8:E348
+    sub_s8:E71C
+    sub_s8:EA18
+    sub_s8:EC16
+    sub_s9:0766
+    sub_s9:0C7C
+    sub_s9:12BC
+    sub_s9:18A2
+    sub_s9:1D50
+    sub_s9:2490
+    sub_s9:2F5A
+    sub_s9:355A
+    sub_s9:3AE8
+    sub_s9:410E
+    sub_s9:52C0
+    sub_s9:65BA
+    sub_s9:92DC
+    sub_s9:B43C
+    sub_s9:BBE2
+USER.TrackPopupMenu  (4 functions)
+    sub_s2:09BA
+    sub_s5:5BF2
+    sub_s5:7AD2
+    sub_s9:7F86
+USER.TranslateAccelerator  (2 functions)
+    MessageLoop@s2:9498
+    MessageLoop@s2:9510
+USER.TranslateMessage  (2 functions)
+    MessageLoop@s2:9498
+    MessageLoop@s2:9510
+USER.UpdateWindow  (6 functions)
+    sub_s2:016E
+    sub_s2:2E9A
+    sub_s5:10A0
+    sub_s5:2CF0
+    sub_s5:6C3A
+    sub_s9:93AA
+USER.ValidateRect  (1 functions)
+    sub_s5:3F12
+USER.WinHelp  (7 functions)
+    sub_s2:0C60
+    sub_s5:0EC4
+    sub_s5:2AE4
+    sub_s5:493C
+    sub_s5:694C
+    sub_s8:DA68
+    sub_s9:800C
+USER._wsprintf  (20 functions)
+    sub_s2:B69C
+    sub_s2:B78A
+    sub_s2:D1C6
+    sub_s2:D4F6
+    sub_s3:8C96
+    sub_s3:B038
+    sub_s4:34B6
+    sub_s4:35B0
+    sub_s4:6086
+    sub_s8:8F74
+    sub_s8:B922
+    sub_s8:BEA4
+    sub_s8:C58E
+    sub_s9:18A2
+    sub_s9:2F90
+    sub_s9:3590
+    sub_s9:3B1E
+    sub_s9:42B2
+    sub_s9:AE04
+    sub_s9:CE12
+USER.wvsprintf  (2 functions)
+    sub_s2:6048
+    sub_s7:840A

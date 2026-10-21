@@ -1,0 +1,104 @@
+\\modemModel.hlp
+If your modem does not appear on this list, try
+        ImagiNation Network Default Settings.
+This setting uses the ATZ command supported by all Hayes-compatible \
+modems.  If that setting does not work for you, try
+        Generic Hayes-compatible (switchless).
+Because some other communications programs may have changed your modem's \
+settings, This choice uses the newer AT&F command which will return the \
+modem to its factory settings.  If this setting causes your modem to hang \
+up and redial whenever you change rooms, try
+        Generic Switchless (alternate).
+This setting uses an alternate method of transmitting a break signal for \
+modems that cannot handle our usual method.
+\\touchtone.hlp
+Almost all modern telephones have touch tone capability.  If you hear \
+a series of beeps when you are dialing your phone, then you have touch \
+tone capability. If you hear a series of "clicks" instead, you DO NOT.
+\\passWord.hlp
+To prevent unauthorized access to your membership and account, a \
+password is required to enter The ImagiNation Network. Never reveal your \
+password to anyone.  Doing so will enable that person to use your \
+membership account on The ImagiNation Network at will, leaving you liable \
+for whatever charges might accumulate on your account.
+\\baudRate.hlp
+The higher your baud rate, the faster your computer will be able to \
+communicate with us.  This difference will be most noticeable in the \
+Bulletin Boards, the Town Hall, the Mall and the Post Office.
+\\commPort.hlp
+The ImagiNation Network can communicate using 1 of 4 communications ports \
+assigned to the modem.  Pick from Communications Ports 1-4.  \
+If you are unsure, start by picking Port 2.  If Port 2 does not work \
+for you, please re-run the install program and try another one.  Port 1 \
+is likely to be the correct one if Port 2 is not.
+
+Also, some people have non-standard communications ports.  These ports use \
+different addresses or IRQ settings.  If you know you have one of these \
+ports, select Non-standard Communications Port and enter the appropriate \
+numbers.
+\\nsCommPortAddr.hlp
+If your communications port is at a normal address, the following list \
+may help:
+
+     Communications Port 1 (COM1:) is at 3F8
+     Communications Port 2 (COM2:) is at 2F8
+     Communications Port 3 (COM3:) is at 3E8
+     Communications Port 4 (COM4:) is at 2E8
+\\nsCommPortIRQ.hlp
+The following is a list of IRQ settings and what they are usually used \
+for:
+
+     IRQ  0  your computer's clock
+     IRQ  1  your keyboard
+     IRQ  2  video cards and older Tandy hard drives
+     IRQ  3  communications ports 2 and 4
+     IRQ  4  communications ports 1 and 3
+     IRQ  5  printer port 2, XT hard drives, or sound cards
+     IRQ  6  floppy drives
+     IRQ  7  printer port 1 or sound cards
+     IRQ  8  your computer's clock
+     IRQ  9  some non-standard communications ports
+     IRQ 10  generally unused
+     IRQ 11  some sound cards
+     IRQ 12  PS/2 mice
+     IRQ 13  math coprocessors and 80486 and Pentium chips
+     IRQ 14  hard drives in most computers
+     IRQ 15  generally unused
+\\ID.hlp
+If you have already have a member number, enter it in the space provided.  \
+If you are a new member, leave the space blank; you will receive a member \
+number when you first enter ImagiNation.
+\\phoneNumber.hlp
+number, number, glop, snort
+\\prefix.hlp
+Modem commands start with AT and end with an exclamation point (!) and one \
+or more tildes (~).  The exclamation point represents a carriage return, \
+and the tilde represents a brief delay to make sure your modem has had time \
+to process the command.  Modem setup strings usually start with +++ to \
+ensure that the modem is paying attention.  Not all modems use the same \
+commands, but here are some common commands that we have seen, as well as \
+their uses:
+
+AT&F!~~~ Reset most modems to their factory settings.
+ATZ!~~~  An alternate method of resetting most modems.
+AT&C1!~  Tell modem to report carrier detect accurately.
+AT&D2!~  Tell modem to hang up the phone when DTR is low.
+
+Again, these commands work with MOST modems, but some behave differently.  \
+Consult your manual for details, or call our Technical Support department \
+at 1-800-IMAGIN-1 (1-800-462-4461)
+\\directory.hlp
+Please enter the directory where you would like INN installed. If you \
+have multiple membership accounts with The ImagiNation Network, you may \
+wish to install each account into a separate subdirectory.
+\\areacode.hlp
+Please enter the 3-digit area code.  You will then be given a menu of phone \
+numbers to dial.
+\\phonemenu.hlp
+Use the cursor keys or the tab key to move to the phone number you'd like.  \
+If you are going to connect to The ImagiNation Network at 1200 baud, use a \
+number from the left-hand column.  For 2400 baud, use a number from the \
+second column.  For 9600 baud, use a number from the third column.  If \
+there are only two columns, then there is no 9600 baud number in your \
+area code.  If you select a number which is not a local call, YOU WILL BE \
+RESPONSIBLE FOR ANY TOLL OR LONG-DISTANCE CHARGES.

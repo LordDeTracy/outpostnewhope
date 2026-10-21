@@ -1,0 +1,891 @@
+[
+ {
+  "type": 1,
+  "name": "Clear",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 2,
+  "name": "Rough",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 3,
+  "name": "Hostile",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 4,
+  "name": "Hopeless",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 5,
+  "name": "Dozed",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 6,
+  "name": "UGEasy",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 7,
+  "name": "UGDiff",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 8,
+  "name": "UGImposs",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 9,
+  "name": "UGDozed",
+  "case": "07BA",
+  "size": 32,
+  "ctor": "s6:48C0"
+ },
+ {
+  "type": 10,
+  "name": "Seed",
+  "case": "07DE",
+  "size": 34,
+  "ctor": "s6:2BFE"
+ },
+ {
+  "type": 11,
+  "name": "SeedCommand",
+  "case": "0802",
+  "size": 38,
+  "ctor": "s7:C09C"
+ },
+ {
+  "type": 12,
+  "name": "SeedSmelter",
+  "case": "0822",
+  "size": 44,
+  "ctor": "s6:3692"
+ },
+ {
+  "type": 13,
+  "name": "SeedPower",
+  "case": "0846",
+  "size": 32,
+  "ctor": "s6:3580"
+ },
+ {
+  "type": 14,
+  "name": "SeedFact",
+  "case": "086A",
+  "size": 38,
+  "ctor": "s6:34A6"
+ },
+ {
+  "type": 15,
+  "name": "SpacePort",
+  "case": "088E",
+  "size": 32,
+  "ctor": "s6:408E"
+ },
+ {
+  "type": 16,
+  "name": "DisMine",
+  "case": "0D7A",
+  "size": 36,
+  "ctor": "s6:0C50"
+ },
+ {
+  "type": 17,
+  "name": "MassDrv",
+  "case": "08B4",
+  "size": 32,
+  "ctor": "s6:0B64"
+ },
+ {
+  "type": 18,
+  "name": "SolrPwrRecvr",
+  "case": "08DA",
+  "size": 32,
+  "ctor": "s6:4376"
+ },
+ {
+  "type": 19,
+  "name": "MShipTokamak",
+  "case": "0DA0",
+  "size": 32,
+  "ctor": "s6:4BA6"
+ },
+ {
+  "type": 20,
+  "name": "Tokamak",
+  "case": "0DA0",
+  "size": 32,
+  "ctor": "s6:4BA6"
+ },
+ {
+  "type": 21,
+  "name": "Tokamak2",
+  "case": "0DA0",
+  "size": 32,
+  "ctor": "s6:4BA6"
+ },
+ {
+  "type": 22,
+  "name": "LMono",
+  "case": "0900",
+  "size": 36,
+  "ctor": "s6:1BE8"
+ },
+ {
+  "type": 23,
+  "name": "RMono",
+  "case": "0900",
+  "size": 36,
+  "ctor": "s6:1BE8"
+ },
+ {
+  "type": 24,
+  "name": "XMono",
+  "case": "0900",
+  "size": 36,
+  "ctor": "s6:1BE8"
+ },
+ {
+  "type": 25,
+  "name": "LMonoTrain",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 26,
+  "name": "RMonoTrain",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 27,
+  "name": "AgriDome",
+  "case": "0926",
+  "size": 32,
+  "ctor": "s7:BE56"
+ },
+ {
+  "type": 28,
+  "name": "AgriDome2",
+  "case": "0926",
+  "size": 32,
+  "ctor": "s7:BE56"
+ },
+ {
+  "type": 29,
+  "name": "AgriDome3",
+  "case": "0926",
+  "size": 32,
+  "ctor": "s7:BE56"
+ },
+ {
+  "type": 30,
+  "name": "Fact",
+  "case": "094C",
+  "size": 38,
+  "ctor": "s6:00CC"
+ },
+ {
+  "type": 31,
+  "name": "Fact2",
+  "case": "094C",
+  "size": 38,
+  "ctor": "s6:00CC"
+ },
+ {
+  "type": 32,
+  "name": "Fact3",
+  "case": "094C",
+  "size": 38,
+  "ctor": "s6:00CC"
+ },
+ {
+  "type": 33,
+  "name": "Trade",
+  "case": "0972",
+  "size": 32,
+  "ctor": "s6:50FA"
+ },
+ {
+  "type": 34,
+  "name": "Spew",
+  "case": "0998",
+  "size": 36,
+  "ctor": "s6:3EC8"
+ },
+ {
+  "type": 35,
+  "name": "Spew2",
+  "case": "0998",
+  "size": 36,
+  "ctor": "s6:3EC8"
+ },
+ {
+  "type": 36,
+  "name": "Spew3",
+  "case": "0998",
+  "size": 36,
+  "ctor": "s6:3EC8"
+ },
+ {
+  "type": 37,
+  "name": "CommTwr",
+  "case": "09BE",
+  "size": 32,
+  "ctor": "s5:D08E"
+ },
+ {
+  "type": 38,
+  "name": "CommTwr2",
+  "case": "09BE",
+  "size": 32,
+  "ctor": "s5:D08E"
+ },
+ {
+  "type": 39,
+  "name": "CommTwr3",
+  "case": "09BE",
+  "size": 32,
+  "ctor": "s5:D08E"
+ },
+ {
+  "type": 40,
+  "name": "HotLab",
+  "case": "0D54",
+  "size": 34,
+  "ctor": "s7:C71E"
+ },
+ {
+  "type": 41,
+  "name": "HotLab2",
+  "case": "0D54",
+  "size": 34,
+  "ctor": "s7:C71E"
+ },
+ {
+  "type": 42,
+  "name": "Chap",
+  "case": "09E4",
+  "size": 32,
+  "ctor": "s5:CD06"
+ },
+ {
+  "type": 43,
+  "name": "Chap2",
+  "case": "09E4",
+  "size": 32,
+  "ctor": "s5:CD06"
+ },
+ {
+  "type": 44,
+  "name": "Nano",
+  "case": "0A0A",
+  "size": 32,
+  "ctor": "s6:26D6"
+ },
+ {
+  "type": 45,
+  "name": "TerraForm",
+  "case": "0A30",
+  "size": 42,
+  "ctor": "s6:49DE"
+ },
+ {
+  "type": 46,
+  "name": "TerraForm2",
+  "case": "0A30",
+  "size": 42,
+  "ctor": "s6:49DE"
+ },
+ {
+  "type": 47,
+  "name": "Dirt",
+  "case": "0A56",
+  "size": 32,
+  "ctor": "s5:E81C"
+ },
+ {
+  "type": 48,
+  "name": "Dirt2",
+  "case": "0A56",
+  "size": 32,
+  "ctor": "s5:E81C"
+ },
+ {
+  "type": 49,
+  "name": "Cops",
+  "case": "0A7C",
+  "size": 34,
+  "ctor": "s5:D3A4"
+ },
+ {
+  "type": 50,
+  "name": "Cops2",
+  "case": "0A7C",
+  "size": 34,
+  "ctor": "s5:D3A4"
+ },
+ {
+  "type": 51,
+  "name": "ActiveMine",
+  "case": "0D7A",
+  "size": 36,
+  "ctor": "s6:0C50"
+ },
+ {
+  "type": 52,
+  "name": "ActiveMine2",
+  "case": "0D7A",
+  "size": 36,
+  "ctor": "s6:0C50"
+ },
+ {
+  "type": 53,
+  "name": "Smelter",
+  "case": "0AA6",
+  "size": 44,
+  "ctor": "s6:3816"
+ },
+ {
+  "type": 54,
+  "name": "Smelter2",
+  "case": "0AA6",
+  "size": 44,
+  "ctor": "s6:3816"
+ },
+ {
+  "type": 55,
+  "name": "Command",
+  "case": "0ACC",
+  "size": 38,
+  "ctor": "s7:C09C"
+ },
+ {
+  "type": 56,
+  "name": "RoboCmd",
+  "case": "0AF2",
+  "size": 154,
+  "ctor": "s7:C9E4"
+ },
+ {
+  "type": 57,
+  "name": "RoboCmd2",
+  "case": "0AF2",
+  "size": 154,
+  "ctor": "s7:C9E4"
+ },
+ {
+  "type": 58,
+  "name": "Warehouse",
+  "case": "0B1A",
+  "size": 36,
+  "ctor": "s6:611E"
+ },
+ {
+  "type": 59,
+  "name": "Warehouse2",
+  "case": "0B1A",
+  "size": 36,
+  "ctor": "s6:611E"
+ },
+ {
+  "type": 60,
+  "name": "Storage",
+  "case": "0B40",
+  "size": 36,
+  "ctor": "s6:44FE"
+ },
+ {
+  "type": 61,
+  "name": "Storage2",
+  "case": "0B40",
+  "size": 36,
+  "ctor": "s6:44FE"
+ },
+ {
+  "type": 62,
+  "name": "ColonistLander",
+  "case": "0B66",
+  "size": 34,
+  "ctor": "s5:CE08"
+ },
+ {
+  "type": 63,
+  "name": "MonoStation",
+  "case": "0B8C",
+  "size": 38,
+  "ctor": "s6:1FC8"
+ },
+ {
+  "type": 64,
+  "name": "MonoXFormer",
+  "case": "0BB2",
+  "size": 32,
+  "ctor": "s6:25FC"
+ },
+ {
+  "type": 65,
+  "name": "CargoLander",
+  "case": "0BD8",
+  "size": 34,
+  "ctor": "s5:CA0C"
+ },
+ {
+  "type": 66,
+  "name": "Const",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 67,
+  "name": "LRoadConst",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 68,
+  "name": "RRoadConst",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 69,
+  "name": "XRoadConst",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 70,
+  "name": "ExpDigConst",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 71,
+  "name": "Core",
+  "case": "0BFE",
+  "size": 32,
+  "ctor": "s5:D5C8"
+ },
+ {
+  "type": 72,
+  "name": "Destroyed",
+  "case": "0C24",
+  "size": 32,
+  "ctor": "s5:D888"
+ },
+ {
+  "type": 73,
+  "name": "Destroyed2",
+  "case": "0C24",
+  "size": 32,
+  "ctor": "s5:D888"
+ },
+ {
+  "type": 74,
+  "name": "Destroyed3",
+  "case": "0C24",
+  "size": 32,
+  "ctor": "s5:D888"
+ },
+ {
+  "type": 75,
+  "name": "LanderConst",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 76,
+  "name": "LRoad",
+  "case": "0C4A",
+  "size": 32,
+  "ctor": "s7:D942"
+ },
+ {
+  "type": 77,
+  "name": "RRoad",
+  "case": "0C4A",
+  "size": 32,
+  "ctor": "s7:D942"
+ },
+ {
+  "type": 78,
+  "name": "XRoad",
+  "case": "0C4A",
+  "size": 32,
+  "ctor": "s7:D942"
+ },
+ {
+  "type": 79,
+  "name": "UGResident",
+  "case": "0C70",
+  "size": 32,
+  "ctor": "s6:5C76"
+ },
+ {
+  "type": 80,
+  "name": "UGResident2",
+  "case": "0C70",
+  "size": 32,
+  "ctor": "s6:5C76"
+ },
+ {
+  "type": 81,
+  "name": "UGResident3",
+  "case": "0C70",
+  "size": 32,
+  "ctor": "s6:5C76"
+ },
+ {
+  "type": 82,
+  "name": "UGRec",
+  "case": "0C96",
+  "size": 32,
+  "ctor": "s6:5988"
+ },
+ {
+  "type": 83,
+  "name": "UGRec2",
+  "case": "0C96",
+  "size": 32,
+  "ctor": "s6:5988"
+ },
+ {
+  "type": 84,
+  "name": "UGUniv",
+  "case": "0CBC",
+  "size": 34,
+  "ctor": "s6:5F00"
+ },
+ {
+  "type": 85,
+  "name": "UGUniv2",
+  "case": "0CBC",
+  "size": 34,
+  "ctor": "s6:5F00"
+ },
+ {
+  "type": 86,
+  "name": "UGUniv3",
+  "case": "0CBC",
+  "size": 34,
+  "ctor": "s6:5F00"
+ },
+ {
+  "type": 87,
+  "name": "UGCommercial",
+  "case": "0CE2",
+  "size": 32,
+  "ctor": "s6:53E8"
+ },
+ {
+  "type": 88,
+  "name": "UGCommercial2",
+  "case": "0CE2",
+  "size": 32,
+  "ctor": "s6:53E8"
+ },
+ {
+  "type": 89,
+  "name": "UGCommercial3",
+  "case": "0CE2",
+  "size": 32,
+  "ctor": "s6:53E8"
+ },
+ {
+  "type": 90,
+  "name": "UGPark",
+  "case": "0D08",
+  "size": 32,
+  "ctor": "s6:58A6"
+ },
+ {
+  "type": 91,
+  "name": "UGFact",
+  "case": "0D2E",
+  "size": 38,
+  "ctor": "s6:5546"
+ },
+ {
+  "type": 92,
+  "name": "UGFact2",
+  "case": "0D2E",
+  "size": 38,
+  "ctor": "s6:5546"
+ },
+ {
+  "type": 93,
+  "name": "UGLab",
+  "case": "0D54",
+  "size": 34,
+  "ctor": "s7:C71E"
+ },
+ {
+  "type": 94,
+  "name": "UGLab2",
+  "case": "0D54",
+  "size": 34,
+  "ctor": "s7:C71E"
+ },
+ {
+  "type": 95,
+  "name": "UGLab3",
+  "case": "0D54",
+  "size": 34,
+  "ctor": "s7:C71E"
+ },
+ {
+  "type": 96,
+  "name": "UGMine",
+  "case": "0D7A",
+  "size": 36,
+  "ctor": "s6:0C50"
+ },
+ {
+  "type": 97,
+  "name": "UGMine2",
+  "case": "0D7A",
+  "size": 36,
+  "ctor": "s6:0C50"
+ },
+ {
+  "type": 98,
+  "name": "UGTokamak",
+  "case": "0DA0",
+  "size": 32,
+  "ctor": "s6:4BA6"
+ },
+ {
+  "type": 99,
+  "name": "UGTokamak2",
+  "case": "0DA0",
+  "size": 32,
+  "ctor": "s6:4BA6"
+ },
+ {
+  "type": 100,
+  "name": "UGSpacePort",
+  "case": "0DC6",
+  "size": 32,
+  "ctor": "s6:5E18"
+ },
+ {
+  "type": 101,
+  "name": "UGRed",
+  "case": "0DEC",
+  "size": 32,
+  "ctor": "s6:5A6A"
+ },
+ {
+  "type": 102,
+  "name": "UGAdmin",
+  "case": "0E12",
+  "size": 32,
+  "ctor": "s6:530A"
+ },
+ {
+  "type": 103,
+  "name": "UGAdmin2",
+  "case": "0E12",
+  "size": 32,
+  "ctor": "s6:530A"
+ },
+ {
+  "type": 104,
+  "name": "UGMed",
+  "case": "0E38",
+  "size": 32,
+  "ctor": "s6:57C8"
+ },
+ {
+  "type": 105,
+  "name": "UGMed2",
+  "case": "0E38",
+  "size": 32,
+  "ctor": "s6:57C8"
+ },
+ {
+  "type": 106,
+  "name": "UGCore",
+  "case": "0BFE",
+  "size": 32,
+  "ctor": "s5:D5C8"
+ },
+ {
+  "type": 107,
+  "name": "UGConst",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 108,
+  "name": "UGCops",
+  "case": "0A7C",
+  "size": 34,
+  "ctor": "s5:D3A4"
+ },
+ {
+  "type": 109,
+  "name": "UGCops2",
+  "case": "0A7C",
+  "size": 34,
+  "ctor": "s5:D3A4"
+ },
+ {
+  "type": 110,
+  "name": "UGGeoTherm",
+  "case": "0E5E",
+  "size": 32,
+  "ctor": "s6:5652"
+ },
+ {
+  "type": 111,
+  "name": "UGTrade",
+  "case": "0F74",
+  "size": 32,
+  "ctor": "s6:B39E"
+ },
+ {
+  "type": 112,
+  "name": "UGDestroyed",
+  "case": "0E84",
+  "size": 32,
+  "ctor": "s5:D888"
+ },
+ {
+  "type": 113,
+  "name": "UGDestroyed2",
+  "case": "0E84",
+  "size": 32,
+  "ctor": "s5:D888"
+ },
+ {
+  "type": 114,
+  "name": "UGDestroyed3",
+  "case": "0E84",
+  "size": 32,
+  "ctor": "s5:D888"
+ },
+ {
+  "type": 115,
+  "name": "RoboDoze",
+  "case": "0EB1",
+  "size": 38,
+  "ctor": "s5:E91E"
+ },
+ {
+  "type": 116,
+  "name": "RoboDig",
+  "case": "0ED8",
+  "size": 44,
+  "ctor": "s5:D99E"
+ },
+ {
+  "type": 117,
+  "name": "RoboMine",
+  "case": "0F02",
+  "size": 36,
+  "ctor": "s6:17AE"
+ },
+ {
+  "type": 118,
+  "name": "RoboExplr",
+  "case": "0F28",
+  "size": 36,
+  "ctor": "s6:2B1C"
+ },
+ {
+  "type": 119,
+  "name": "UGRoboDoze",
+  "case": "0EB1",
+  "size": 38,
+  "ctor": "s5:E91E"
+ },
+ {
+  "type": 120,
+  "name": "UGRoboDig",
+  "case": "0ED8",
+  "size": 44,
+  "ctor": "s5:D99E"
+ },
+ {
+  "type": 121,
+  "name": "UGTargetDig",
+  "case": "0ED8",
+  "size": 44,
+  "ctor": "s5:D99E"
+ },
+ {
+  "type": 122,
+  "name": "XPipe",
+  "case": "0F4E",
+  "size": 32,
+  "ctor": "s6:2812"
+ },
+ {
+  "type": 123,
+  "name": "LPipe",
+  "case": "0F4E",
+  "size": 32,
+  "ctor": "s6:2812"
+ },
+ {
+  "type": 124,
+  "name": "RPipe",
+  "case": "0F4E",
+  "size": 32,
+  "ctor": "s6:2812"
+ },
+ {
+  "type": 125,
+  "name": "UGRPipe",
+  "case": "0F4E",
+  "size": 32,
+  "ctor": "s6:2812"
+ },
+ {
+  "type": 126,
+  "name": "UGLPipe",
+  "case": "0F4E",
+  "size": 32,
+  "ctor": "s6:2812"
+ },
+ {
+  "type": 127,
+  "name": "UGXPipe",
+  "case": "0F4E",
+  "size": 32,
+  "ctor": "s6:2812"
+ }
+]
