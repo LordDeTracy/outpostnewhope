@@ -155,7 +155,7 @@ Start with [`specs/001-outpost-reverse-engineering/findings/00-ground-truth.md`]
 
 ## Credits
 
-- ***Outpost*** © 1994–95 Sierra On-Line, Inc. Version 1.51.
+- ***Outpost*** © 1994–95 Sierra On-Line, Inc. Version 1.51. The original game belongs to Sierra and is considered abandonware.
 - **[OutpostHD](https://github.com/OutpostUniverse/OPHD)**: building, robot and terrain art and the interface click. © 2015–2020 Leeor Dicker and contributors, graphics by **White Claw**, BSD 3-Clause License ([`rebuild/assets/ophd/LICENSE-OutpostHD.md`](rebuild/assets/ophd/LICENSE-OutpostHD.md)).
 - **[Kenney](https://kenney.nl)**: UI Pack Sci-Fi (CC0), recoloured.
 - **Fonts**: [Orbitron](https://github.com/theleagueof/orbitron) and [Exo 2](https://github.com/googlefonts/Exo-2.0) (SIL Open Font License 1.1), and DejaVu Sans.
@@ -166,10 +166,8 @@ Start with [`specs/001-outpost-reverse-engineering/findings/00-ground-truth.md`]
 
 ## Licence and disclaimer
 
-The rebuild's own source code, tools and documentation are released under the **GNU General Public License v3.0**; see [`LICENSE`](LICENSE).
+The rebuild's own source code, tools and documentation are fully open source under the **MIT License**; see [`LICENSE`](LICENSE). Use them, change them and share them freely.
 
-The GPL does **not** cover:
-- the original *Outpost* game files in `Outpost/`, which remain the property of their copyright holder;
-- the third-party art, fonts and assets listed under Credits, which keep their own licences.
+The original *Outpost* game belongs to **Sierra On-Line** and is considered abandonware. Its files in `Outpost/` are included so the rebuild can be played, and they are not covered by the MIT License. The third-party art, fonts and assets listed under Credits keep their own licences.
 
 *Outpost: New Hope* is a fan project. It is not affiliated with, endorsed by, or connected to Sierra On-Line, Activision, or any current owner of the Outpost rights.
