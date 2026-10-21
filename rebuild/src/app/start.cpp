@@ -141,7 +141,7 @@ void StartFlow::toMenu() {
     openDialog(kDlgProgram);
     if (m_dialog) {
         const SDL_Rect s = screen();
-        m_dialog->moveTo((s.w - m_dialog->rect().w) / 2, s.h - m_dialog->rect().h - 52);
+        m_dialog->moveTo((s.w - m_dialog->rect().w) / 2, s.h - m_dialog->rect().h - 52 - m_gfx.lineHeight());
     }
 }
 
@@ -635,6 +635,10 @@ void StartFlow::draw() {
         const std::string hd = "HD art: OutpostHD by White Claw (BSD 3-Clause licence)";
         m_gfx.text(hd, (s.w - m_gfx.textWidth(hd)) / 2 + 1, y + 1, Colour{0, 0, 0});
         m_gfx.text(hd, (s.w - m_gfx.textWidth(hd)) / 2, y, ui::kText);
+        const std::string ab = "Original Outpost belongs to Sierra On-Line and is considered abandonware. Fan project, not affiliated with Sierra.";
+        y += m_gfx.lineHeight();
+        m_gfx.text(ab, (s.w - m_gfx.textWidth(ab)) / 2 + 1, y + 1, Colour{0, 0, 0});
+        m_gfx.text(ab, (s.w - m_gfx.textWidth(ab)) / 2, y, ui::kText);
         const std::string v = "Outpost: New Hope 2.0 by LordDeTracy";
         y = s.h - m_gfx.lineHeight() - 6;
         m_gfx.text(v, (s.w - m_gfx.textWidth(v, true)) / 2 + 1, y + 1, Colour{0, 0, 0}, true);
