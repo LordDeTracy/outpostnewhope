@@ -53,7 +53,17 @@ Every change is listed, with the reason and the original code it replaces, in [`
 
 ## Getting started
 
-### Requirements
+### Download and play (no building needed)
+
+1. Download **`OutpostNewHope-2.0-Windows.zip`** from the [Releases page](https://github.com/LordDeTracy/outpostnewhope/releases/latest).
+2. Unzip it anywhere.
+3. Double-click **`Play Outpost New Hope.bat`**.
+
+It runs on Windows 10 or 11 (64-bit) with nothing else to install, because the original game files are included. If Windows says "Windows protected your PC", click **More info**, then **Run anyway**: the game isn't code-signed.
+
+### Build it yourself
+
+#### Requirements
 
 - Windows 10 or 11
 - Visual Studio 2022 (C++ desktop workload) and CMake 3.20 or newer
@@ -63,7 +73,7 @@ Every change is listed, with the reason and the original code it replaces, in [`
 vcpkg install sdl2 sdl2-ttf sdl2-image sdl2-mixer --triplet x64-windows
 ```
 
-### Build
+#### Build
 
 ```bash
 cmake -S rebuild -B rebuild/build-release
@@ -75,7 +85,7 @@ cmake --build rebuild/build-release --config Release
 
 This builds the game (`outpost-rebuild.exe`), the test suite (`rebuild-tests.exe`) and a play-testing bot (`outpost-autoplay.exe`).
 
-### Play
+#### Play
 
 Double-click **`rebuild/Play Outpost.bat`**. It starts the game with the original files in `Outpost/` and keeps your saved games in `rebuild/saves/`.
 
@@ -85,7 +95,7 @@ You can also start it by hand:
 rebuild/build-release/Release/outpost-rebuild.exe Outpost [save.OPS]
 ```
 
-### Test
+#### Test
 
 ```bash
 rebuild/build-release/Release/rebuild-tests.exe

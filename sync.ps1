@@ -22,5 +22,7 @@ Mirror 'reference' 'reference' @('extracted')
 foreach ($t in 'ne-analyzer', 'resource-extractor', 'map-viewer', 'ops-reader', 'dat-dumper') {
     Mirror "tools\$t" "tools\$t" @('bin', 'obj', '__pycache__', 'node_modules')
 }
+# The release packaging script (not the built packages).
+Mirror 'release' 'release' @('OutpostNewHope-*') @('*.zip')
 Write-Host "Synced into $repo"
 exit 0

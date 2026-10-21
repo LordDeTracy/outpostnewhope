@@ -157,7 +157,16 @@ int main(int argc, char** argv) {
             args.push_back(a);
         }
     }
-    const std::filesystem::path dir = args.size() > 0 ? args[0] : OUTPOST_DEFAULT_DATA_DIR;
+    // A release package carries the game files in "Outpost" next to the
+    // executable; a development build falls back to the source tree's copy.
+    std::filesystem::path dir = OUTPOST_DEFAULT_DATA_DIR;
+    if (args.size() > 0) {
+        dir = args[0];
+    } else if (char* base = SDL_GetBasePath()) {
+        const auto local = std::filesystem::path(base) / "Outpost";
+        SDL_free(base);
+        if (std::filesystem::exists(local / "RESOURCE.000")) dir = local;
+    }
     const std::string saveName = args.size() > 1 ? args[1] : "";
 
     data::GameFiles files;
