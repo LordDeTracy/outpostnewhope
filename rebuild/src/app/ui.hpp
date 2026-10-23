@@ -85,6 +85,9 @@ public:
 
     void centreIn(const SDL_Rect& area);
     void moveTo(int x, int y) { m_rect.x = x; m_rect.y = y; }
+    // The screen changed size (I120: full screen <-> window, a resize): the
+    // same share of the free space on each axis, inside the new screen.
+    void refit(const SDL_Rect& from, const SDL_Rect& to);
     // The width in dialog units (a window that widens, "Resources>>").
     void setWidthDlu(int cx) { m_rect.w = px(cx) + 8; }
     int widthDlu() const { return m_t.cx; }

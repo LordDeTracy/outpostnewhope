@@ -93,6 +93,7 @@ Game::Game(SDL_Window* win, SDL_Renderer* ren, sim::GameData& data, StartResult 
     if (!start.loadedFrom.empty() && std::filesystem::path(start.loadedFrom).filename() != "TUTOR.OPS")
         m_saveFile = start.loadedFrom;
     m_terrainPacks.load(m_gfx.assets() / "terrain-packs");
+    SDL_GetRendererOutputSize(m_ren, &m_laidOut.w, &m_laidOut.h);
     data::MenuItem reports;
     reports.text = "Reports";
     for (auto [id, text] : std::initializer_list<std::pair<int, const char*>>{
@@ -493,7 +494,16 @@ void Game::runTurns(int n) {
 
 // ── Frame ─────────────────────────────────────────────────────────────────
 
+void Game::reflow() {
+    SDL_Rect s{0, 0, 0, 0};
+    SDL_GetRendererOutputSize(m_ren, &s.w, &s.h);
+    if (s.w == m_laidOut.w && s.h == m_laidOut.h) return;
+    if (m_dialog) m_dialog->refit(m_laidOut, s);
+    m_laidOut = s;
+}
+
 void Game::frame(bool present) {
+    reflow();
     m_map.setTerrainPacks(m_prefs.terrainPacks ? &m_terrainPacks : nullptr);
     // I95: the landing's music until the Seed is down, then the surface's
     // or the underground's by the level in view.
@@ -970,6 +980,7 @@ void Game::startMovie(uint16_t command) {
 // ── Events ────────────────────────────────────────────────────────────────
 
 Game::Next Game::event(const SDL_Event& e) {
+    reflow();
     if (e.type == SDL_QUIT) return Next::Quit;
     if (m_over) return Next::Menu;
     if (m_media.sequence.active()) {

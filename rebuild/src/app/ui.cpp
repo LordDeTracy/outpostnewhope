@@ -234,6 +234,17 @@ void Dialog::centreIn(const SDL_Rect& area) {
     m_rect = {area.x + (area.w - w) / 2, area.y + (area.h - h) / 2, w, h};
 }
 
+void Dialog::refit(const SDL_Rect& from, const SDL_Rect& to) {
+    auto axis = [](int pos, int size, int fromLen, int toLen) {
+        const int freeFrom = fromLen - size, freeTo = toLen - size;
+        if (freeTo <= 0) return 0;
+        if (freeFrom <= 0) return freeTo / 2;
+        return std::clamp(int(int64_t(pos) * freeTo / freeFrom), 0, freeTo);
+    };
+    m_rect.x = to.x + axis(m_rect.x - from.x, m_rect.w, from.w, to.w);
+    m_rect.y = to.y + axis(m_rect.y - from.y, m_rect.h, from.h, to.h);
+}
+
 SDL_Rect Dialog::controlRect(const data::DialogTemplate::Control& c) const {
     return {m_rect.x + 4 + px(c.x), m_rect.y + 24 + py(c.y), px(c.cx), py(c.cy)};
 }

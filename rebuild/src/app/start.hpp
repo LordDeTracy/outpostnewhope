@@ -55,6 +55,9 @@ private:
     enum class Stage { Menu, Intro, Load, Prefs, Difficulty, Stars, Ship, Destination, Planets, Sites, Greeting, Name, AiName, Launch };
 
     SDL_Rect screen() const;
+    // Moves the windows after the screen changed size (I120).
+    void reflow();
+    void placeMenu();
     void backdrop(const std::string& file);
     void openDialog(uint16_t id);
     void toGreeting(int step);
@@ -149,6 +152,7 @@ private:
     std::string m_backdrop;
     std::unique_ptr<Dialog> m_dialog;
     std::unique_ptr<Dialog> m_side;            // a second window (star data, planet data)
+    SDL_Rect m_laidOut{};                      // the screen the windows were placed on
     uint16_t m_dialogId{0};
     std::optional<Message> m_message;
     std::function<void()> m_afterMessage;

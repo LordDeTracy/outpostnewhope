@@ -69,6 +69,8 @@ constexpr uint16_t kTitleMusic = 467;       // mars.mid
 constexpr uint16_t kMidiReset = 468;        // 0wscinit.mid, played by mode 1 (s5:08B6)
 constexpr uint16_t kCheersSound = 476;
 constexpr uint16_t kLaunchSound = 478;
+constexpr int kSmlstpMode = 57;             // s4:742E: this movie view also plays
+constexpr uint16_t kSmlstp = 489;           // "smlstp", once a run (DGROUP 0x4254)
 }
 
 // The names the EXE gives its sounds and voices.

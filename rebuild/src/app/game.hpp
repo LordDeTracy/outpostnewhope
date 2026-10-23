@@ -120,6 +120,8 @@ private:
     void describeTile(const sim::Tile& t);
     void dialogCommand(int id);
     void fillDialog();
+    // Moves the window after the screen changed size (I120).
+    void reflow();
     void closeDialog(int id);
 
     // Building windows (a click on a building).
@@ -151,6 +153,7 @@ private:
     MenuBar m_menu;
     BuildPanel m_panel;
     std::unique_ptr<Dialog> m_dialog;
+    SDL_Rect m_laidOut{};            // the screen m_dialog was placed on
     uint16_t m_dialogId{0};
     bool m_wide{false};                      // "Resources>>" pressed
     std::unique_ptr<PopupMenu> m_popup;

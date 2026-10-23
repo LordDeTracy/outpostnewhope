@@ -79,7 +79,7 @@ void Sequence::go(uint16_t command, uint32_t nowMs) {
                 auto movie = std::make_unique<Movie>();
                 const auto file = data::findMedia(m_cd, "VIDEOS", m_names.movie(view->movie));
                 if (file && movie->open(m_ren, *file)) {
-                    if (view->sound) m_audio.playSound(view->sound);           // s4:6B68
+                    playViewSounds(*view, s.mode);
                     m_movie = std::move(movie);
                     m_movie->start(nowMs);
                     m_view = view;
@@ -114,6 +114,12 @@ bool Sequence::playModes(std::vector<int> modes, uint32_t nowMs) {
     return playNextQueued(nowMs);
 }
 
+void Sequence::playViewSounds(const data::MovieView& view, int mode) {
+    if (view.sound) m_audio.playSound(view.sound);                          // s4:6B68
+    if (mode == data::media::kSmlstpMode && !m_smlstpPlayed)                  // s4:742E
+        m_smlstpPlayed = m_audio.playSound(data::media::kSmlstp);
+}
+
 bool Sequence::playNextQueued(uint32_t nowMs) {
     m_movie.reset();
     m_view = nullptr;
@@ -126,7 +132,7 @@ bool Sequence::playNextQueued(uint32_t nowMs) {
         auto movie = std::make_unique<Movie>();
         const auto file = data::findMedia(m_cd, "VIDEOS", m_names.movie(view->movie));
         if (!file || !movie->open(m_ren, *file)) continue;
-        if (view->sound) m_audio.playSound(view->sound);
+        playViewSounds(*view, mode);
         m_movie = std::move(movie);
         m_movie->start(nowMs);
         m_view = view;

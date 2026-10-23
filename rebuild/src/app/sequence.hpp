@@ -70,6 +70,8 @@ private:
     std::deque<int> m_queue;          // playModes: the movies still to come
     bool m_queued{false};
     bool playNextQueued(uint32_t nowMs);
+    void playViewSounds(const data::MovieView& view, int mode);
+    bool m_smlstpPlayed{false};       // DGROUP 0x4254, never cleared
 };
 
 // The media names, the sound manager and the sequence player the screens

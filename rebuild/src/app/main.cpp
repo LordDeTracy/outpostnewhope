@@ -108,6 +108,7 @@ int main(int argc, char** argv) {
     bool land = false;
     int shotTurns2 = 0;
     std::vector<std::array<int, 3>> shotNear;
+    std::array<int, 2> shotResize{0, 0};
     for (int i = 1; i < argc; ++i) {
         const std::string a = argv[i];
         if (a == "--shot" && i + 1 < argc) {
@@ -153,6 +154,9 @@ int main(int argc, char** argv) {
             dpresses.push_back(std::atoi(argv[++i]));
         } else if (a == "--level" && i + 1 < argc) {
             shotLevel = std::atoi(argv[++i]);
+        } else if (a == "--resize" && i + 2 < argc) {
+            shotResize = {std::atoi(argv[i + 1]), std::atoi(argv[i + 2])};
+            i += 2;
         } else {
             args.push_back(a);
         }
@@ -238,6 +242,13 @@ int main(int argc, char** argv) {
         }
 
         if (!shot.empty()) {
+            // --resize W H: the window changes size after the windows are
+            // placed, as switching from full screen does.
+            auto resizeShot = [&] {
+                if (shotResize[0] <= 0 || shotResize[1] <= 0) return;
+                SDL_SetWindowSize(win, shotResize[0], shotResize[1]);
+                SDL_PumpEvents();
+            };
             for (int id : presses) {
                 if (!start || start->done()) break;
                 start->press(id);
@@ -263,10 +274,12 @@ int main(int argc, char** argv) {
                 for (const auto& b : shotBuilding) game->openBuilding(int16_t(b[0]), int16_t(b[1]));
                 for (int id : dpresses) game->pressDialog(id);
                 if (waitMs > 0) media.sequence.tick(SDL_GetTicks() + uint32_t(waitMs));
+                resizeShot();
                 game->frame(false);
                 media.audio.update();
                 std::printf("colony music %s\n", media.audio.nowPlaying().empty() ? "off" : media.audio.nowPlaying().c_str());
             } else if (start) {
+                resizeShot();
                 start->tick(SDL_GetTicks() + uint32_t(waitMs));
                 media.audio.update();
                 start->draw();

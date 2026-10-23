@@ -10,8 +10,8 @@ namespace {
 
 // s4:6D02..s4:7D70: {mode, movie, next command, sound}, as each view's
 // constructor passes them to s4:6A0E. Mode 11 also starts mars.mid (s2:15D4
-// case 11); mode 34's class plays "smlstp" (489) from its own method
-// (s4:742E), which is not decoded.
+// case 11); mode 57's class also plays "smlstp" (489) from its paint method
+// (s4:742E), once a run (see media::kSmlstp).
 constexpr MovieView kMovies[] = {
     {11, 156, 139, 0},   {12, 157, 208, 0},   {13, 158, 209, 0},   {14, 159, 210, 0},   {15, 160, 212, 0},
     {16, 161, 218, 0},   {17, 162, 220, 0},   {18, 163, 211, 0},   {19, 164, 219, 0},   {20, 165, 165, 0},

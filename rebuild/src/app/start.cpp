@@ -90,6 +90,7 @@ StartFlow::StartFlow(SDL_Renderer* ren, Gfx& gfx, sim::GameData& data, const dat
     : m_ren(ren), m_gfx(gfx), m_data(data), m_pics(pics), m_files(files), m_saveDir(std::move(saveDir)),
       m_prefs(prefs), m_media(media) {
     m_ship.load(m_data.exe);
+    m_laidOut = screen();
     toMenu();
 }
 
@@ -97,6 +98,22 @@ SDL_Rect StartFlow::screen() const {
     int w, h;
     SDL_GetRendererOutputSize(m_ren, &w, &h);
     return {0, 0, w, h};
+}
+
+void StartFlow::reflow() {
+    const SDL_Rect s = screen();
+    if (s.w == m_laidOut.w && s.h == m_laidOut.h) return;
+    for (Dialog* d : {m_dialog.get(), m_side.get(), m_launch.get()})
+        if (d) d->refit(m_laidOut, s);
+    m_laidOut = s;
+    if (m_stage == Stage::Menu) placeMenu();
+}
+
+void StartFlow::placeMenu() {
+    if (!m_dialog) return;
+    const SDL_Rect s = screen();
+    m_dialog->moveTo((s.w - m_dialog->rect().w) / 2,
+                     std::max(0, s.h - m_dialog->rect().h - 52 - m_gfx.lineHeight()));
 }
 
 void StartFlow::backdrop(const std::string& file) { m_backdrop = file; }
@@ -139,10 +156,7 @@ void StartFlow::toMenu() {
     music();
     m_media.audio.playSound(data::media::kMidiReset);   // s5:08B6: mode 1 plays 0wscinit.mid (dropped while music plays)
     openDialog(kDlgProgram);
-    if (m_dialog) {
-        const SDL_Rect s = screen();
-        m_dialog->moveTo((s.w - m_dialog->rect().w) / 2, s.h - m_dialog->rect().h - 52 - m_gfx.lineHeight());
-    }
+    placeMenu();
 }
 
 void StartFlow::toLoad() {
@@ -603,6 +617,7 @@ void StartFlow::toIntro() {
 // ── Drawing ───────────────────────────────────────────────────────────────
 
 void StartFlow::draw() {
+    reflow();
     const SDL_Rect s = screen();
     m_gfx.fill(s, Colour{0, 0, 0});
     auto picture = [&](const std::string& file, const SDL_Rect& area, bool fill) {
@@ -773,6 +788,7 @@ void StartFlow::draw() {
 }
 
 void StartFlow::tick(uint32_t nowMs) {
+    reflow();
     // I95: the menu's music on the menus and in the Introduction, the
     // voyage's from star selection to the sites (and in the movies
     // between them), the landing's for the landing story.
@@ -797,6 +813,7 @@ void StartFlow::tick(uint32_t nowMs) {
 // ── Events ────────────────────────────────────────────────────────────────
 
 void StartFlow::event(const SDL_Event& e) {
+    reflow();
     if (e.type == SDL_QUIT) {
         m_result.quit = true;
         m_done = true;
