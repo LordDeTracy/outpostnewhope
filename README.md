@@ -1,4 +1,4 @@
-# Outpost: New Hope 2.0
+# Outpost: New Hope 2.01
 
 **An unofficial modern rebuild of Sierra's 1994 space-colony game *Outpost*, by LordDeTracy.**
 
@@ -55,7 +55,7 @@ Every change is listed, with the reason and the original code it replaces, in [`
 
 ### Download and play (no building needed)
 
-1. Download **`OutpostNewHope-2.0-Windows.zip`** from the [Releases page](https://github.com/LordDeTracy/outpostnewhope/releases/latest).
+1. Download **`OutpostNewHope-2.01-Windows.zip`** from the [Releases page](https://github.com/LordDeTracy/outpostnewhope/releases/latest).
 2. Unzip it anywhere.
 3. Double-click **`Play Outpost New Hope.bat`**.
 

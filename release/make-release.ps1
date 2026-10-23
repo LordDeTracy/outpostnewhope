@@ -1,6 +1,6 @@
 # Builds the Windows release zip of Outpost: New Hope.
-# Usage: powershell -File make-release.ps1 [-Version 2.0]
-param([string]$Version = "2.0")
+# Usage: powershell -File make-release.ps1 [-Version 2.01]
+param([string]$Version = "2.01")
 $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 $bin = Join-Path $root "rebuild\build-release\Release"

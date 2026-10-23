@@ -1,5 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(OutpostRebuild VERSION 0.1.0 LANGUAGES CXX)
+# The release of Outpost: New Hope, shown on the title screen and in the
+# executable's properties.
+set(OUTPOST_VERSION "2.01")
+set(OUTPOST_VERSION_NUMBERS 2,1,0,0)
 
 # Modern rebuild of Outpost (Sierra, 1994/95, v1.51).
 # Game data is read at runtime from the player's original files; see
@@ -153,7 +157,12 @@ if(OUTPOST_REBUILD_APP)
         # executable.
         target_compile_definitions(outpost-rebuild PRIVATE
             OUTPOST_DEFAULT_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/../Outpost"
-            OUTPOST_FONT_FILE="DejaVuSans.ttf")
+            OUTPOST_FONT_FILE="DejaVuSans.ttf"
+            OUTPOST_VERSION="${OUTPOST_VERSION}")
+        if(WIN32)
+            configure_file(src/app/version.rc.in "${CMAKE_CURRENT_BINARY_DIR}/version.rc" @ONLY)
+            target_sources(outpost-rebuild PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/version.rc")
+        endif()
         add_custom_command(TARGET outpost-rebuild POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy_if_different
                 "${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/DejaVuSans.ttf"

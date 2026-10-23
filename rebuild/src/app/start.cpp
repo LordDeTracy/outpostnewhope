@@ -642,7 +642,7 @@ void StartFlow::draw() {
         // OUTPOST logo; the credits under Program Control (which keeps the
         // original's version 1.51 and copyright lines).
         // Right-aligned under the logo's right end (85.5% across the picture).
-        const std::string name = "NEW HOPE 2.0";
+        const std::string name = "NEW HOPE " OUTPOST_VERSION;
         const int ty = back.h > 0 ? back.y + int(back.h * 0.275f) : 200;
         const int right = back.w > 0 ? back.x + int(back.w * 0.855f) : s.w - 40;
         m_gfx.titleEmbossed(name, right - m_gfx.titleWidth(name), ty, Colour{255, 214, 70}, Colour{200, 30, 20});
@@ -654,7 +654,7 @@ void StartFlow::draw() {
         y += m_gfx.lineHeight();
         m_gfx.text(ab, (s.w - m_gfx.textWidth(ab)) / 2 + 1, y + 1, Colour{0, 0, 0});
         m_gfx.text(ab, (s.w - m_gfx.textWidth(ab)) / 2, y, ui::kText);
-        const std::string v = "Outpost: New Hope 2.0 by LordDeTracy";
+        const std::string v = "Outpost: New Hope " OUTPOST_VERSION " by LordDeTracy";
         y = s.h - m_gfx.lineHeight() - 6;
         m_gfx.text(v, (s.w - m_gfx.textWidth(v, true)) / 2 + 1, y + 1, Colour{0, 0, 0}, true);
         m_gfx.text(v, (s.w - m_gfx.textWidth(v, true)) / 2, y, ui::kGold, true);

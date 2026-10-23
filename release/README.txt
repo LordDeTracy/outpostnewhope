@@ -1,4 +1,4 @@
-OUTPOST: NEW HOPE 2.0  by LordDeTracy
+OUTPOST: NEW HOPE 2.01  by LordDeTracy
 A modern rebuild of Sierra's 1994 game Outpost (version 1.51).
 https://github.com/LordDeTracy/outpostnewhope
 
@@ -18,6 +18,10 @@ CONTROLS
   Ctrl+S             save                F1          help
   Esc                skip a movie / close a window
   Alt+X              exit
+
+WHAT'S NEW IN 2.01
+  The main menu and other windows no longer vanish after switching to a
+  window (F11 / Alt+Enter) or resizing it.
 
 WINDOWS SAYS "WINDOWS PROTECTED YOUR PC"
   The game is not code-signed. Click "More info", then "Run anyway".
