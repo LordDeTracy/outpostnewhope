@@ -2,7 +2,8 @@
 1:0000  db 57 56 8c d9 8e c1 8b fb 8b f0 8b ca d1 e9 fc f3
 1:0010  db a5 5e 5f c3 90 00
 
-; ---------------- sub_s1:0016 FAR size=60 callers=1
+; ---------------- SH_MemPoolSize?@s1:0016 FAR size=60 callers=1
+;   SmartHeap: checks pool signature 0xBEAD, walks the pool (error 10 on a bad pool)
 1:0016  c8040000             enter 4, 0
 1:001A  c45e06               les bx, ptr [bp + 6]
 1:001D  26817f14adbe         cmp word ptr es:[bx + 0x14], 0xbead
@@ -12,7 +13,7 @@
 1:0029  6a0a                 push 0xa
 1:002B  90                   nop
 1:002C  0e                   push cs
-1:002D  e8311e               call 0x1e61  ; sub_s1:1E61
+1:002D  e8311e               call 0x1e61  ; SH_error@s1:1E61
 1:0030  b8ffff               mov ax, 0xffff
 1:0033  99                   cdq
 1:0034  c9                   leave
@@ -21,7 +22,7 @@ loc_0038:
 1:0038  1e                   push ds
 1:0039  8e5e08               mov ds, word ptr [bp + 8]
 1:003C  33db                 xor bx, bx
-1:003E  e81100               call 0x52  ; sub_s1:0052
+1:003E  e81100               call 0x52  ; SH_poolWalk@s1:0052
 1:0041  8946fc               mov word ptr [bp - 4], ax
 1:0044  8956fe               mov word ptr [bp - 2], dx
 1:0047  1f                   pop ds
@@ -30,7 +31,8 @@ loc_0038:
 1:004E  c9                   leave
 1:004F  ca0400               retf 4
 
-; ---------------- sub_s1:0052 size=186 callers=2
+; ---------------- SH_poolWalk@s1:0052 size=186 callers=2
+;   SmartHeap internal: walks a pool's pages
 1:0052  c8120000             enter 0x12, 0
 1:0056  53                   push bx
 1:0057  56                   push si
@@ -63,7 +65,7 @@ loc_0085:
 1:009F  8e5ef2               mov ds, word ptr [bp - 0xe]
 1:00A2  33db                 xor bx, bx
 1:00A4  b80100               mov ax, 1
-1:00A7  e86604               call 0x510  ; sub_s1:0510
+1:00A7  e86604               call 0x510  ; SH_pageRelease@s1:0510
 1:00AA  8946ee               mov word ptr [bp - 0x12], ax
 1:00AD  1f                   pop ds
 1:00AE  837eee00             cmp word ptr [bp - 0x12], 0
@@ -106,7 +108,8 @@ loc_00F9:
 1:010A  c3                   ret
 1:010B  db 00
 
-; ---------------- sub_s1:010C FAR size=164 callers=1
+; ---------------- SH_MemPoolFreeAll?@s1:010C FAR size=164 callers=1
+;   SmartHeap: frees a pool's pages (called from MemPoolInit)
 1:010C  c8060000             enter 6, 0
 1:0110  2bc0                 sub ax, ax
 1:0112  8946fc               mov word ptr [bp - 4], ax
@@ -120,7 +123,7 @@ loc_00F9:
 loc_0127:
 1:0127  90                   nop
 1:0128  0e                   push cs
-1:0129  e8351d               call 0x1e61  ; sub_s1:1E61
+1:0129  e8351d               call 0x1e61  ; SH_error@s1:1E61
 loc_012C:
 1:012C  b8ffff               mov ax, 0xffff
 1:012F  99                   cdq
@@ -169,7 +172,7 @@ loc_017F:
 1:0185  33db                 xor bx, bx
 1:0187  8b46fe               mov ax, word ptr [bp - 2]
 1:018A  33d2                 xor dx, dx
-1:018C  e83702               call 0x3c6  ; sub_s1:03C6
+1:018C  e83702               call 0x3c6  ; SH_blockAlloc@s1:03C6
 1:018F  0bd0                 or dx, ax
 1:0191  7411                 je 0x1a4
 1:0193  bb1a00               mov bx, 0x1a
@@ -186,7 +189,8 @@ loc_01A4:
 1:01AC  ca0a00               retf 0xa
 1:01AF  db 00
 
-; ---------------- sub_s1:01B0 size=344 callers=1
+; ---------------- SH_pageAlloc@s1:01B0 size=344 callers=1
+;   SmartHeap internal: allocates a new page for a pool (GlobalAlloc/realloc)
 1:01B0  c80c0000             enter 0xc, 0
 1:01B4  53                   push bx
 1:01B5  57                   push di
@@ -202,7 +206,7 @@ loc_01C9:
 1:01CA  53                   push bx
 1:01CB  90                   nop
 1:01CC  0e                   push cs
-1:01CD  e86213               call 0x1532  ; sub_s1:1532
+1:01CD  e86213               call 0x1532  ; SH_globalSize@s1:1532
 1:01D0  8946fc               mov word ptr [bp - 4], ax
 1:01D3  8956fe               mov word ptr [bp - 2], dx
 1:01D6  0bd2                 or dx, dx
@@ -244,7 +248,7 @@ loc_020C:
 1:021A  50                   push ax
 1:021B  90                   nop
 1:021C  0e                   push cs
-1:021D  e8d212               call 0x14f2  ; sub_s1:14F2
+1:021D  e8d212               call 0x14f2  ; SH_globalReAllocChecked@s1:14F2
 1:0220  0bc0                 or ax, ax
 1:0222  7532                 jne 0x256
 1:0224  d1ee                 shr si, 1
@@ -256,14 +260,14 @@ loc_020C:
 1:022F  6a02                 push 2
 1:0231  90                   nop
 1:0232  0e                   push cs
-1:0233  e82b1c               call 0x1e61  ; sub_s1:1E61
+1:0233  e82b1c               call 0x1e61  ; SH_error@s1:1E61
 1:0236  0bc0                 or ax, ax
 1:0238  7410                 je 0x24a
 1:023A  1e                   push ds
 1:023B  57                   push di
 1:023C  90                   nop
 1:023D  0e                   push cs
-1:023E  e8f112               call 0x1532  ; sub_s1:1532
+1:023E  e8f112               call 0x1532  ; SH_globalSize@s1:1532
 1:0241  8946fc               mov word ptr [bp - 4], ax
 1:0244  8956fe               mov word ptr [bp - 2], dx
 1:0247  eba9                 jmp 0x1f2
@@ -288,7 +292,7 @@ loc_0256:
 1:0267  50                   push ax
 1:0268  90                   nop
 1:0269  0e                   push cs
-1:026A  e82351               call 0x5390  ; sub_s1:5390
+1:026A  e82351               call 0x5390  ; __aFuldiv@s1:5390
 1:026D  8bf0                 mov si, ax
 1:026F  03f0                 add si, ax
 1:0271  03f0                 add si, ax
@@ -305,7 +309,7 @@ loc_0284:
 1:0286  6a08                 push 8
 1:0288  90                   nop
 1:0289  0e                   push cs
-1:028A  e8d41b               call 0x1e61  ; sub_s1:1E61
+1:028A  e8d41b               call 0x1e61  ; SH_error@s1:1E61
 1:028D  33c0                 xor ax, ax
 1:028F  5e                   pop si
 1:0290  5f                   pop di
@@ -318,7 +322,7 @@ loc_0294:
 1:0298  57                   push di
 1:0299  90                   nop
 1:029A  0e                   push cs
-1:029B  e89412               call 0x1532  ; sub_s1:1532
+1:029B  e89412               call 0x1532  ; SH_globalSize@s1:1532
 1:029E  8946f6               mov word ptr [bp - 0xa], ax
 1:02A1  8956f8               mov word ptr [bp - 8], dx
 loc_02A4:
@@ -332,7 +336,7 @@ loc_02A4:
 1:02B3  57                   push di
 1:02B4  90                   nop
 1:02B5  0e                   push cs
-1:02B6  e87912               call 0x1532  ; sub_s1:1532
+1:02B6  e87912               call 0x1532  ; SH_globalSize@s1:1532
 1:02B9  8946f6               mov word ptr [bp - 0xa], ax
 1:02BC  8956f8               mov word ptr [bp - 8], dx
 1:02BF  2d4200               sub ax, 0x42
@@ -341,7 +345,7 @@ loc_02A4:
 1:02C6  50                   push ax
 1:02C7  90                   nop
 1:02C8  0e                   push cs
-1:02C9  e8c450               call 0x5390  ; sub_s1:5390
+1:02C9  e8c450               call 0x5390  ; __aFuldiv@s1:5390
 1:02CC  8bc8                 mov cx, ax
 1:02CE  03c0                 add ax, ax
 1:02D0  03c1                 add ax, cx
@@ -370,7 +374,8 @@ loc_02EC:
 1:0306  c9                   leave
 1:0307  c3                   ret
 
-; ---------------- sub_s1:0308 size=96 callers=1
+; ---------------- SH_pageGet@s1:0308 size=96 callers=1
+;   SmartHeap internal: gets a free page, allocating one if needed
 1:0308  c8060000             enter 6, 0
 1:030C  50                   push ax
 1:030D  57                   push di
@@ -378,7 +383,7 @@ loc_02EC:
 1:030F  8bf3                 mov si, bx
 1:0311  837c0a00             cmp word ptr [si + 0xa], 0
 1:0315  7507                 jne 0x31e
-1:0317  e896fe               call 0x1b0  ; sub_s1:01B0
+1:0317  e896fe               call 0x1b0  ; SH_pageAlloc@s1:01B0
 1:031A  0bc0                 or ax, ax
 1:031C  7446                 je 0x364
 loc_031E:
@@ -416,7 +421,8 @@ loc_0364:
 1:0366  c9                   leave
 1:0367  c3                   ret
 
-; ---------------- sub_s1:0368 size=94 callers=1
+; ---------------- SH_pageUnlink@s1:0368 size=94 callers=1
+;   SmartHeap internal: unlinks a page from a pool list
 1:0368  c8040000             enter 4, 0
 1:036C  52                   push dx
 1:036D  50                   push ax
@@ -461,7 +467,8 @@ loc_03B6:
 1:03C4  c9                   leave
 1:03C5  c3                   ret
 
-; ---------------- sub_s1:03C6 size=330 callers=4
+; ---------------- SH_blockAlloc@s1:03C6 size=330 callers=4
+;   SmartHeap internal: allocates a block from a page
 1:03C6  c8120000             enter 0x12, 0
 1:03CA  52                   push dx
 1:03CB  50                   push ax
@@ -486,7 +493,7 @@ loc_03F4:
 1:03F6  6a07                 push 7
 1:03F8  90                   nop
 1:03F9  0e                   push cs
-1:03FA  e8641a               call 0x1e61  ; sub_s1:1E61
+1:03FA  e8641a               call 0x1e61  ; SH_error@s1:1E61
 loc_03FD:
 1:03FD  33c0                 xor ax, ax
 1:03FF  99                   cdq
@@ -515,14 +522,14 @@ loc_0427:
 1:0433  50                   push ax
 1:0434  90                   nop
 1:0435  0e                   push cs
-1:0436  e8e30e               call 0x131c  ; sub_s1:131C
+1:0436  e8e30e               call 0x131c  ; SH_globalAllocPage@s1:131C
 1:0439  8946f0               mov word ptr [bp - 0x10], ax
 1:043C  8956f2               mov word ptr [bp - 0xe], dx
 1:043F  0bd0                 or dx, ax
 1:0441  74ba                 je 0x3fd
 1:0443  8b5ee8               mov bx, word ptr [bp - 0x18]
 1:0446  8b46ea               mov ax, word ptr [bp - 0x16]
-1:0449  e8bcfe               call 0x308  ; sub_s1:0308
+1:0449  e8bcfe               call 0x308  ; SH_pageGet@s1:0308
 1:044C  8946fe               mov word ptr [bp - 2], ax
 1:044F  8946fa               mov word ptr [bp - 6], ax
 1:0452  8c5efc               mov word ptr [bp - 4], ds
@@ -532,7 +539,7 @@ loc_0427:
 1:045C  ff76f0               push word ptr [bp - 0x10]
 1:045F  90                   nop
 1:0460  0e                   push cs
-1:0461  e86a0f               call 0x13ce  ; sub_s1:13CE
+1:0461  e86a0f               call 0x13ce  ; SH_globalFree@s1:13CE
 1:0464  eb97                 jmp 0x3fd
 loc_0466:
 1:0466  8b46f0               mov ax, word ptr [bp - 0x10]
@@ -558,7 +565,7 @@ loc_0466:
 1:04A8  ff76f0               push word ptr [bp - 0x10]
 1:04AB  90                   nop
 1:04AC  0e                   push cs
-1:04AD  e88210               call 0x1532  ; sub_s1:1532
+1:04AD  e88210               call 0x1532  ; SH_globalSize@s1:1532
 1:04B0  894604               mov word ptr [bp + 4], ax
 1:04B3  895606               mov word ptr [bp + 6], dx
 1:04B6  8b46ea               mov ax, word ptr [bp - 0x16]
@@ -569,14 +576,14 @@ loc_0466:
 1:04BE  741e                 je 0x4de
 1:04C0  8b4604               mov ax, word ptr [bp + 4]
 1:04C3  33db                 xor bx, bx
-1:04C5  e80205               call 0x9ca  ; sub_s1:09CA
+1:04C5  e80205               call 0x9ca  ; SH_freeListFix@s1:09CA
 1:04C8  eb0e                 jmp 0x4d8
 loc_04CA:
 1:04CA  ff76f8               push word ptr [bp - 8]
 1:04CD  ff76f6               push word ptr [bp - 0xa]
 1:04D0  8b4604               mov ax, word ptr [bp + 4]
 1:04D3  33db                 xor bx, bx
-1:04D5  e8aa02               call 0x782  ; sub_s1:0782
+1:04D5  e8aa02               call 0x782  ; SH_pageInitVar@s1:0782
 loc_04D8:
 1:04D8  8946f4               mov word ptr [bp - 0xc], ax
 1:04DB  eb0b                 jmp 0x4e8
@@ -584,7 +591,7 @@ loc_04D8:
 loc_04DE:
 1:04DE  33db                 xor bx, bx
 1:04E0  8b46ec               mov ax, word ptr [bp - 0x14]
-1:04E3  e8ce00               call 0x5b4  ; sub_s1:05B4
+1:04E3  e8ce00               call 0x5b4  ; SH_pageInitFixed@s1:05B4
 1:04E6  ebf0                 jmp 0x4d8
 loc_04E8:
 1:04E8  1f                   pop ds
@@ -603,7 +610,8 @@ loc_04E8:
 1:050C  c20400               ret 4
 1:050F  db 00
 
-; ---------------- sub_s1:0510 size=164 callers=2
+; ---------------- SH_pageRelease@s1:0510 size=164 callers=2
+;   SmartHeap internal: releases an empty page
 1:0510  c8100000             enter 0x10, 0
 1:0514  50                   push ax
 1:0515  53                   push bx
@@ -622,7 +630,7 @@ loc_04E8:
 1:0537  53                   push bx
 1:0538  90                   nop
 1:0539  0e                   push cs
-1:053A  e8f50f               call 0x1532  ; sub_s1:1532
+1:053A  e8f50f               call 0x1532  ; SH_globalSize@s1:1532
 1:053D  8946f2               mov word ptr [bp - 0xe], ax
 1:0540  8956f4               mov word ptr [bp - 0xc], dx
 1:0543  1e                   push ds
@@ -647,7 +655,7 @@ loc_0574:
 1:0574  8b46f8               mov ax, word ptr [bp - 8]
 1:0577  33db                 xor bx, bx
 1:0579  8b56f6               mov dx, word ptr [bp - 0xa]
-1:057C  e8e9fd               call 0x368  ; sub_s1:0368
+1:057C  e8e9fd               call 0x368  ; SH_pageUnlink@s1:0368
 1:057F  8b46f2               mov ax, word ptr [bp - 0xe]
 1:0582  bb1e00               mov bx, 0x1e
 1:0585  8b56f4               mov dx, word ptr [bp - 0xc]
@@ -664,7 +672,7 @@ loc_0595:
 1:05A5  53                   push bx
 1:05A6  90                   nop
 1:05A7  0e                   push cs
-1:05A8  e8230e               call 0x13ce  ; sub_s1:13CE
+1:05A8  e8230e               call 0x13ce  ; SH_globalFree@s1:13CE
 1:05AB  b80100               mov ax, 1
 1:05AE  c9                   leave
 1:05AF  c3                   ret
@@ -673,7 +681,8 @@ loc_05B0:
 1:05B2  c9                   leave
 1:05B3  c3                   ret
 
-; ---------------- sub_s1:05B4 size=46 callers=1
+; ---------------- SH_pageInitFixed@s1:05B4 size=46 callers=1
+;   SmartHeap internal: initialises a fixed-size page header
 1:05B4  55                   push bp
 1:05B5  8bec                 mov bp, sp
 1:05B7  50                   push ax
@@ -696,7 +705,8 @@ loc_05B0:
 1:05E0  c3                   ret
 1:05E1  db 00
 
-; ---------------- sub_s1:05E2 size=142 callers=2
+; ---------------- SH_allocFixedInternal@s1:05E2 size=142 callers=2
+;   SmartHeap internal: fixed-size block allocation
 1:05E2  c8040000             enter 4, 0
 1:05E6  57                   push di
 1:05E7  56                   push si
@@ -710,13 +720,13 @@ loc_05F4:
 1:05FA  8bde                 mov bx, si
 1:05FC  b80300               mov ax, 3
 1:05FF  8bd7                 mov dx, di
-1:0601  e8c2fd               call 0x3c6  ; sub_s1:03C6
+1:0601  e8c2fd               call 0x3c6  ; SH_blockAlloc@s1:03C6
 1:0604  8946fc               mov word ptr [bp - 4], ax
 1:0607  8956fe               mov word ptr [bp - 2], dx
 1:060A  0bd0                 or dx, ax
 1:060C  7544                 jne 0x652
 1:060E  8bde                 mov bx, si
-1:0610  e83ffa               call 0x52  ; sub_s1:0052
+1:0610  e83ffa               call 0x52  ; SH_poolWalk@s1:0052
 1:0613  8946fc               mov word ptr [bp - 4], ax
 1:0616  8956fe               mov word ptr [bp - 2], dx
 1:0619  8b4604               mov ax, word ptr [bp + 4]
@@ -740,7 +750,7 @@ loc_063A:
 1:0644  6a02                 push 2
 1:0646  90                   nop
 1:0647  0e                   push cs
-1:0648  e81618               call 0x1e61  ; sub_s1:1E61
+1:0648  e81618               call 0x1e61  ; SH_error@s1:1E61
 1:064B  0bc0                 or ax, ax
 1:064D  75a5                 jne 0x5f4
 1:064F  eb0d                 jmp 0x65e
@@ -761,7 +771,8 @@ loc_065E:
 1:0664  c20400               ret 4
 1:0667  db 00 33 db 33 c0 e8 a1 fe c3
 
-; ---------------- sub_s1:0670 size=274 callers=1
+; ---------------- SH_reallocLarge@s1:0670 size=274 callers=1
+;   SmartHeap internal: grows/shrinks a large (GlobalAlloc) block
 1:0670  c8100000             enter 0x10, 0
 1:0674  52                   push dx
 1:0675  50                   push ax
@@ -777,7 +788,7 @@ loc_065E:
 1:0689  53                   push bx
 1:068A  90                   nop
 1:068B  0e                   push cs
-1:068C  e8a30e               call 0x1532  ; sub_s1:1532
+1:068C  e8a30e               call 0x1532  ; SH_globalSize@s1:1532
 1:068F  8946fc               mov word ptr [bp - 4], ax
 1:0692  8956fe               mov word ptr [bp - 2], dx
 1:0695  8346ec14             add word ptr [bp - 0x14], 0x14
@@ -816,7 +827,7 @@ loc_06DB:
 1:06E9  50                   push ax
 1:06EA  90                   nop
 1:06EB  0e                   push cs
-1:06EC  e8190d               call 0x1408  ; sub_s1:1408
+1:06EC  e8190d               call 0x1408  ; SH_globalReAlloc@s1:1408
 1:06EF  8bf0                 mov si, ax
 1:06F1  8956f2               mov word ptr [bp - 0xe], dx
 1:06F4  0bd0                 or dx, ax
@@ -826,7 +837,7 @@ loc_06DB:
 1:06FE  6a02                 push 2
 1:0700  90                   nop
 1:0701  0e                   push cs
-1:0702  e85c17               call 0x1e61  ; sub_s1:1E61
+1:0702  e85c17               call 0x1e61  ; SH_error@s1:1E61
 1:0705  0bc0                 or ax, ax
 1:0707  75d2                 jne 0x6db
 loc_0709:
@@ -858,7 +869,7 @@ loc_073C:
 1:0748  56                   push si
 1:0749  90                   nop
 1:074A  0e                   push cs
-1:074B  e8a40d               call 0x14f2  ; sub_s1:14F2
+1:074B  e8a40d               call 0x14f2  ; SH_globalReAllocChecked@s1:14F2
 1:074E  0bc0                 or ax, ax
 1:0750  7428                 je 0x77a
 1:0752  8bf7                 mov si, di
@@ -868,7 +879,7 @@ loc_0757:
 1:075A  56                   push si
 1:075B  90                   nop
 1:075C  0e                   push cs
-1:075D  e8d20d               call 0x1532  ; sub_s1:1532
+1:075D  e8d20d               call 0x1532  ; SH_globalSize@s1:1532
 1:0760  2b46fc               sub ax, word ptr [bp - 4]
 1:0763  1b56fe               sbb dx, word ptr [bp - 2]
 1:0766  c45ef8               les bx, ptr [bp - 8]
@@ -886,7 +897,8 @@ loc_077A:
 1:077E  c9                   leave
 1:077F  c20600               ret 6
 
-; ---------------- sub_s1:0782 size=42 callers=1
+; ---------------- SH_pageInitVar@s1:0782 size=42 callers=1
+;   SmartHeap internal: initialises a variable-size page header
 1:0782  55                   push bp
 1:0783  8bec                 mov bp, sp
 1:0785  50                   push ax
@@ -898,13 +910,14 @@ loc_077A:
 1:0797  c47604               les si, ptr [bp + 4]
 1:079A  8b56fe               mov dx, word ptr [bp - 2]
 1:079D  268b4418             mov ax, word ptr es:[si + 0x18]
-1:07A1  e80800               call 0x7ac  ; sub_s1:07AC
+1:07A1  e80800               call 0x7ac  ; SH_pageFormat@s1:07AC
 1:07A4  b80100               mov ax, 1
 1:07A7  5e                   pop si
 1:07A8  c9                   leave
 1:07A9  c20400               ret 4
 
-; ---------------- sub_s1:07AC size=80 callers=1
+; ---------------- SH_pageFormat@s1:07AC size=80 callers=1
+;   SmartHeap internal: formats the free list of a new page
 1:07AC  c8040000             enter 4, 0
 1:07B0  50                   push ax
 1:07B1  53                   push bx
@@ -948,7 +961,8 @@ loc_07F3:
 1:07FA  c3                   ret
 1:07FB  db 00
 
-; ---------------- sub_s1:07FC FAR size=60 callers=21
+; ---------------- SH_MemAllocFS@s1:07FC FAR size=60 callers=21
+;   SmartHeap MemAllocFS(pool): fixed-size block from a pool (checks 0xBEAD)
 1:07FC  c8040000             enter 4, 0
 1:0800  c45e06               les bx, ptr [bp + 6]
 1:0803  26817f14adbe         cmp word ptr es:[bx + 0x14], 0xbead
@@ -958,7 +972,7 @@ loc_07F3:
 1:080F  6a0a                 push 0xa
 1:0811  90                   nop
 1:0812  0e                   push cs
-1:0813  e84b16               call 0x1e61  ; sub_s1:1E61
+1:0813  e84b16               call 0x1e61  ; SH_error@s1:1E61
 1:0816  33c0                 xor ax, ax
 1:0818  99                   cdq
 1:0819  c9                   leave
@@ -968,7 +982,7 @@ loc_081E:
 1:081E  1e                   push ds
 1:081F  8e5e08               mov ds, word ptr [bp + 8]
 1:0822  33db                 xor bx, bx
-1:0824  e81100               call 0x838  ; sub_s1:0838
+1:0824  e81100               call 0x838  ; SH_allocFS@s1:0838
 1:0827  8946fc               mov word ptr [bp - 4], ax
 1:082A  8956fe               mov word ptr [bp - 2], dx
 1:082D  1f                   pop ds
@@ -977,7 +991,8 @@ loc_081E:
 1:0834  c9                   leave
 1:0835  ca0400               retf 4
 
-; ---------------- sub_s1:0838 size=258 callers=2
+; ---------------- SH_allocFS@s1:0838 size=258 callers=2
+;   SmartHeap internal behind MemAllocFS
 1:0838  c80c0000             enter 0xc, 0
 1:083C  53                   push bx
 1:083D  57                   push di
@@ -1003,7 +1018,7 @@ loc_085B:
 1:0866  6a04                 push 4
 1:0868  90                   nop
 1:0869  0e                   push cs
-1:086A  e8f415               call 0x1e61  ; sub_s1:1E61
+1:086A  e8f415               call 0x1e61  ; SH_error@s1:1E61
 loc_086D:
 1:086D  33c0                 xor ax, ax
 1:086F  99                   cdq
@@ -1024,7 +1039,7 @@ loc_087A:
 1:0886  b80100               mov ax, 1
 1:0889  897ef8               mov word ptr [bp - 8], di
 1:088C  8956fa               mov word ptr [bp - 6], dx
-1:088F  e834fb               call 0x3c6  ; sub_s1:03C6
+1:088F  e834fb               call 0x3c6  ; SH_blockAlloc@s1:03C6
 1:0892  0bd0                 or dx, ax
 1:0894  7540                 jne 0x8d6
 1:0896  8b5ef2               mov bx, word ptr [bp - 0xe]
@@ -1051,7 +1066,7 @@ loc_08B1:
 1:08C8  6a02                 push 2
 1:08CA  90                   nop
 1:08CB  0e                   push cs
-1:08CC  e89215               call 0x1e61  ; sub_s1:1E61
+1:08CC  e89215               call 0x1e61  ; SH_error@s1:1E61
 1:08CF  0bc0                 or ax, ax
 1:08D1  749a                 je 0x86d
 1:08D3  eba5                 jmp 0x87a
@@ -1102,7 +1117,8 @@ loc_0932:
 1:0936  e91aff               jmp 0x853
 1:0939  db 00
 
-; ---------------- sub_s1:093A FAR size=144 callers=6
+; ---------------- SH_MemFreeFS@s1:093A FAR size=144 callers=6
+;   SmartHeap MemFreeFS(ptr): frees a fixed-size block (page signature 0xCAD1)
 1:093A  c8040000             enter 4, 0
 1:093E  8b4608               mov ax, word ptr [bp + 8]
 1:0941  8bc8                 mov cx, ax
@@ -1115,7 +1131,7 @@ loc_0932:
 1:0952  6a0e                 push 0xe
 1:0954  90                   nop
 1:0955  0e                   push cs
-1:0956  e80815               call 0x1e61  ; sub_s1:1E61
+1:0956  e80815               call 0x1e61  ; SH_error@s1:1E61
 1:0959  33c0                 xor ax, ax
 1:095B  c9                   leave
 1:095C  ca0400               retf 4
@@ -1140,7 +1156,7 @@ loc_097F:
 1:098D  7508                 jne 0x997
 1:098F  33db                 xor bx, bx
 1:0991  b80100               mov ax, 1
-1:0994  e879fb               call 0x510  ; sub_s1:0510
+1:0994  e879fb               call 0x510  ; SH_pageRelease@s1:0510
 loc_0997:
 1:0997  1f                   pop ds
 1:0998  b80100               mov ax, 1
@@ -1150,7 +1166,8 @@ loc_0997:
 1:09AF  db 04 00 26 c7 07 01 00 89 36 0e 00 ff 0e 0a 00 75
 1:09BF  db 08 33 db b8 01 00 e8 48 fb 5e c3
 
-; ---------------- sub_s1:09CA size=126 callers=1
+; ---------------- SH_freeListFix@s1:09CA size=126 callers=1
+;   SmartHeap internal: free-list maintenance
 1:09CA  57                   push di
 1:09CB  56                   push si
 1:09CC  8bfb                 mov di, bx
@@ -1205,7 +1222,8 @@ loc_0A16:
 1:0A46  5f                   pop di
 1:0A47  c3                   ret
 
-; ---------------- sub_s1:0A48 FAR size=216 callers=10
+; ---------------- SH_MemAllocPtr_core@s1:0A48 FAR size=216 callers=11
+;   SmartHeap internal: variable-size allocation used by MemAllocPtr/malloc
 1:0A48  c8040000             enter 4, 0
 1:0A4C  57                   push di
 1:0A4D  56                   push si
@@ -1217,7 +1235,7 @@ loc_0A16:
 1:0A5D  6a0a                 push 0xa
 1:0A5F  90                   nop
 1:0A60  0e                   push cs
-1:0A61  e8fd13               call 0x1e61  ; sub_s1:1E61
+1:0A61  e8fd13               call 0x1e61  ; SH_error@s1:1E61
 1:0A64  33c0                 xor ax, ax
 1:0A66  99                   cdq
 1:0A67  5e                   pop si
@@ -1243,7 +1261,7 @@ loc_0A85:
 1:0A8D  7433                 je 0xac2
 loc_0A8F:
 1:0A8F  33db                 xor bx, bx
-1:0A91  e8a4fd               call 0x838  ; sub_s1:0838
+1:0A91  e8a4fd               call 0x838  ; SH_allocFS@s1:0838
 1:0A94  8946fc               mov word ptr [bp - 4], ax
 1:0A97  8956fe               mov word ptr [bp - 2], dx
 1:0A9A  0bd0                 or dx, ax
@@ -1269,7 +1287,7 @@ loc_0AC2:
 1:0AC8  6a04                 push 4
 1:0ACA  90                   nop
 1:0ACB  0e                   push cs
-1:0ACC  e89213               call 0x1e61  ; sub_s1:1E61
+1:0ACC  e89213               call 0x1e61  ; SH_error@s1:1E61
 1:0ACF  2bc0                 sub ax, ax
 1:0AD1  8946fe               mov word ptr [bp - 2], ax
 1:0AD4  8946fc               mov word ptr [bp - 4], ax
@@ -1288,7 +1306,7 @@ loc_0AED:
 1:0AF0  24fd                 and al, 0xfd
 1:0AF2  8b5608               mov dx, word ptr [bp + 8]
 1:0AF5  33db                 xor bx, bx
-1:0AF7  e82600               call 0xb20  ; sub_s1:0B20
+1:0AF7  e82600               call 0xb20  ; SH_allocVar@s1:0B20
 1:0AFA  eb10                 jmp 0xb0c
 loc_0AFC:
 1:0AFC  ff760a               push word ptr [bp + 0xa]
@@ -1296,7 +1314,7 @@ loc_0AFC:
 1:0B02  8b4606               mov ax, word ptr [bp + 6]
 1:0B05  24fd                 and al, 0xfd
 1:0B07  33db                 xor bx, bx
-1:0B09  e8d6fa               call 0x5e2  ; sub_s1:05E2
+1:0B09  e8d6fa               call 0x5e2  ; SH_allocFixedInternal@s1:05E2
 loc_0B0C:
 1:0B0C  8946fc               mov word ptr [bp - 4], ax
 1:0B0F  8956fe               mov word ptr [bp - 2], dx
@@ -1310,7 +1328,8 @@ loc_0B12:
 1:0B1C  ca0a00               retf 0xa
 1:0B1F  db 00
 
-; ---------------- sub_s1:0B20 size=274 callers=1
+; ---------------- SH_allocVar@s1:0B20 size=274 callers=1
+;   SmartHeap internal: variable-size block search
 1:0B20  c80e0000             enter 0xe, 0
 1:0B24  52                   push dx
 1:0B25  50                   push ax
@@ -1374,7 +1393,7 @@ loc_0B9E:
 1:0BA9  ff771a               push word ptr [bx + 0x1a]
 1:0BAC  8b46fe               mov ax, word ptr [bp - 2]
 1:0BAF  33d2                 xor dx, dx
-1:0BB1  e812f8               call 0x3c6  ; sub_s1:03C6
+1:0BB1  e812f8               call 0x3c6  ; SH_blockAlloc@s1:03C6
 1:0BB4  0bd0                 or dx, ax
 1:0BB6  75d4                 jne 0xb8c
 loc_0BB8:
@@ -1395,7 +1414,7 @@ loc_0BDC:
 1:0BDC  6a00                 push 0
 1:0BDE  56                   push si
 1:0BDF  8b46ee               mov ax, word ptr [bp - 0x12]
-1:0BE2  e8fdf9               call 0x5e2  ; sub_s1:05E2
+1:0BE2  e8fdf9               call 0x5e2  ; SH_allocFixedInternal@s1:05E2
 1:0BE5  5e                   pop si
 1:0BE6  5f                   pop di
 1:0BE7  c9                   leave
@@ -1419,7 +1438,7 @@ loc_0BF2:
 1:0C02  33db                 xor bx, bx
 1:0C04  8bc6                 mov ax, si
 1:0C06  8b56ee               mov dx, word ptr [bp - 0x12]
-1:0C09  e82600               call 0xc32  ; sub_s1:0C32
+1:0C09  e82600               call 0xc32  ; SH_allocVarSplit@s1:0C32
 1:0C0C  8946f2               mov word ptr [bp - 0xe], ax
 1:0C0F  8956f4               mov word ptr [bp - 0xc], dx
 1:0C12  1f                   pop ds
@@ -1439,7 +1458,8 @@ loc_0C1E:
 1:0C30  c9                   leave
 1:0C31  c3                   ret
 
-; ---------------- sub_s1:0C32 size=404 callers=1
+; ---------------- SH_allocVarSplit@s1:0C32 size=404 callers=1
+;   SmartHeap internal: splits a free block
 1:0C32  c8080000             enter 8, 0
 1:0C36  52                   push dx
 1:0C37  50                   push ax
@@ -1610,7 +1630,8 @@ loc_0DB4:
 1:0DC4  c9                   leave
 1:0DC5  c3                   ret
 
-; ---------------- SH_MemFreePtr@s1:0DC6 FAR size=270 callers=8
+; ---------------- SH_MemFreePtr@s1:0DC6 FAR size=270 callers=10
+;   SmartHeap MemFreePtr(ptr)
 1:0DC6  c8060000             enter 6, 0
 1:0DCA  8b4608               mov ax, word ptr [bp + 8]
 1:0DCD  8bc8                 mov cx, ax
@@ -1625,7 +1646,7 @@ loc_0DB4:
 1:0DE1  6a0e                 push 0xe
 1:0DE3  90                   nop
 1:0DE4  0e                   push cs
-1:0DE5  e87910               call 0x1e61  ; sub_s1:1E61
+1:0DE5  e87910               call 0x1e61  ; SH_error@s1:1E61
 1:0DE8  33c0                 xor ax, ax
 1:0DEA  c9                   leave
 1:0DEB  ca0400               retf 4
@@ -1655,7 +1676,8 @@ loc_0DEE:
 1:0EB8  db 02 89 4d 04 8b 1e 10 00 89 4f 02 ff 0e 0a 00 75
 1:0EC8  db 08 33 db b8 01 00 e8 3f f6 5e 5f c3
 
-; ---------------- sub_s1:0ED4 FAR size=228 callers=7
+; ---------------- SH_MemReAllocPtr@s1:0ED4 FAR size=228 callers=9
+;   SmartHeap MemReAllocPtr(ptr, size, flags)
 1:0ED4  c80a0000             enter 0xa, 0
 1:0ED8  57                   push di
 1:0ED9  56                   push si
@@ -1673,7 +1695,7 @@ loc_0DEE:
 loc_0EF3:
 1:0EF3  90                   nop
 1:0EF4  0e                   push cs
-1:0EF5  e8690f               call 0x1e61  ; sub_s1:1E61
+1:0EF5  e8690f               call 0x1e61  ; SH_error@s1:1E61
 loc_0EF8:
 1:0EF8  33c0                 xor ax, ax
 1:0EFA  99                   cdq
@@ -1707,7 +1729,7 @@ loc_0F23:
 1:0F2E  8b5e0c               mov bx, word ptr [bp + 0xc]
 1:0F31  8b4608               mov ax, word ptr [bp + 8]
 1:0F34  8b560a               mov dx, word ptr [bp + 0xa]
-1:0F37  e87e00               call 0xfb8  ; sub_s1:0FB8
+1:0F37  e87e00               call 0xfb8  ; SH_reallocInternal@s1:0FB8
 1:0F3A  8946fa               mov word ptr [bp - 6], ax
 1:0F3D  1f                   pop ds
 1:0F3E  837efa00             cmp word ptr [bp - 6], 0
@@ -1728,7 +1750,7 @@ loc_0F50:
 1:0F62  ff7606               push word ptr [bp + 6]
 1:0F65  90                   nop
 1:0F66  0e                   push cs
-1:0F67  e8defa               call 0xa48  ; sub_s1:0A48
+1:0F67  e8defa               call 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 1:0F6A  8946f6               mov word ptr [bp - 0xa], ax
 1:0F6D  8956f8               mov word ptr [bp - 8], dx
 1:0F70  0bd0                 or dx, ax
@@ -1769,7 +1791,8 @@ loc_0FAD:
 1:0FB3  6a05                 push 5
 1:0FB5  e93bff               jmp 0xef3
 
-; ---------------- sub_s1:0FB8 size=420 callers=1
+; ---------------- SH_reallocInternal@s1:0FB8 size=420 callers=1
+;   SmartHeap internal behind MemReAllocPtr
 1:0FB8  c8080000             enter 8, 0
 1:0FBC  52                   push dx
 1:0FBD  50                   push ax
@@ -1785,7 +1808,7 @@ loc_0FAD:
 1:0FD3  6a04                 push 4
 1:0FD5  90                   nop
 1:0FD6  0e                   push cs
-1:0FD7  e8870e               call 0x1e61  ; sub_s1:1E61
+1:0FD7  e8870e               call 0x1e61  ; SH_error@s1:1E61
 1:0FDA  8b4608               mov ax, word ptr [bp + 8]
 1:0FDD  0bc6                 or ax, si
 1:0FDF  740f                 je 0xff0
@@ -1861,7 +1884,7 @@ loc_106C:
 loc_1076:
 1:1076  8b46f4               mov ax, word ptr [bp - 0xc]
 1:1079  8bde                 mov bx, si
-1:107B  e8de00               call 0x115c  ; sub_s1:115C
+1:107B  e8de00               call 0x115c  ; SH_reallocInPlace@s1:115C
 1:107E  0bc0                 or ax, ax
 1:1080  74ea                 je 0x106c
 1:1082  f6460401             test byte ptr [bp + 4], 1
@@ -1936,7 +1959,7 @@ loc_1116:
 1:1117  ff76f2               push word ptr [bp - 0xe]
 1:111A  90                   nop
 1:111B  0e                   push cs
-1:111C  e86501               call 0x1284  ; sub_s1:1284
+1:111C  e86501               call 0x1284  ; SH_MemSizePtr@s1:1284
 1:111F  3b56f6               cmp dx, word ptr [bp - 0xa]
 1:1122  7232                 jb 0x1156
 1:1124  7705                 ja 0x112b
@@ -1955,7 +1978,7 @@ loc_1134:
 1:113B  33db                 xor bx, bx
 1:113D  8b46f4               mov ax, word ptr [bp - 0xc]
 1:1140  8b56f6               mov dx, word ptr [bp - 0xa]
-1:1143  e82af5               call 0x670  ; sub_s1:0670
+1:1143  e82af5               call 0x670  ; SH_reallocLarge@s1:0670
 1:1146  0bc0                 or ax, ax
 1:1148  750a                 jne 0x1154
 1:114A  8b4608               mov ax, word ptr [bp + 8]
@@ -1970,7 +1993,8 @@ loc_1156:
 1:1158  c9                   leave
 1:1159  c20600               ret 6
 
-; ---------------- sub_s1:115C size=296 callers=1
+; ---------------- SH_reallocInPlace@s1:115C size=296 callers=1
+;   SmartHeap internal: grows a block in place
 1:115C  c8060000             enter 6, 0
 1:1160  57                   push di
 1:1161  56                   push si
@@ -2100,7 +2124,8 @@ loc_127E:
 1:1282  c9                   leave
 1:1283  c3                   ret
 
-; ---------------- sub_s1:1284 FAR size=152 callers=2
+; ---------------- SH_MemSizePtr@s1:1284 FAR size=152 callers=2
+;   SmartHeap MemSizePtr(ptr): size of a block (page signature 0xCAD0)
 1:1284  c8080000             enter 8, 0
 1:1288  8b4608               mov ax, word ptr [bp + 8]
 1:128B  8bc8                 mov cx, ax
@@ -2116,7 +2141,7 @@ loc_127E:
 1:12A2  6a0e                 push 0xe
 1:12A4  90                   nop
 1:12A5  0e                   push cs
-1:12A6  e8b80b               call 0x1e61  ; sub_s1:1E61
+1:12A6  e8b80b               call 0x1e61  ; SH_error@s1:1E61
 loc_12A9:
 1:12A9  b8ffff               mov ax, 0xffff
 1:12AC  99                   cdq
@@ -2167,15 +2192,16 @@ loc_1306:
 1:130B  51                   push cx
 1:130C  90                   nop
 1:130D  0e                   push cs
-1:130E  e82102               call 0x1532  ; sub_s1:1532
+1:130E  e82102               call 0x1532  ; SH_globalSize@s1:1532
 1:1311  2d1400               sub ax, 0x14
 1:1314  83da00               sbb dx, 0
 1:1317  c9                   leave
 1:1318  ca0400               retf 4
 1:131B  db 90
 
-; ---------------- sub_s1:131C FAR size=178 callers=2
+; ---------------- SH_globalAllocPage@s1:131C FAR size=178 callers=2
 ;   apis: KERNEL.GlobalAlloc, KERNEL.GlobalLock, KERNEL.GlobalPageLock
+;   SmartHeap: GlobalAlloc + GlobalLock + GlobalPageLock for a page
 1:131C  c8080000             enter 8, 0
 1:1320  57                   push di
 1:1321  56                   push si
@@ -2206,7 +2232,7 @@ loc_1359:
 1:135F  83e6fd               and si, 0xfffd
 1:1362  8b4608               mov ax, word ptr [bp + 8]
 1:1365  8b560a               mov dx, word ptr [bp + 0xa]
-1:1368  e8ed01               call 0x1558  ; sub_s1:1558
+1:1368  e8ed01               call 0x1558  ; SH_dosAlloc@s1:1558
 1:136B  8946f8               mov word ptr [bp - 8], ax
 1:136E  8956fa               mov word ptr [bp - 6], dx
 loc_1371:
@@ -2235,7 +2261,7 @@ loc_1391:
 loc_13A6:
 1:13A6  ff76fa               push word ptr [bp - 6]
 1:13A9  ff76f8               push word ptr [bp - 8]
-1:13AC  e81f02               call 0x15ce  ; sub_s1:15CE
+1:13AC  e81f02               call 0x15ce  ; SH_dosFree@s1:15CE
 loc_13AF:
 1:13AF  837efe00             cmp word ptr [bp - 2], 0
 1:13B3  740f                 je 0x13c4
@@ -2255,8 +2281,9 @@ loc_13C4:
 1:13CA  ca0600               retf 6
 1:13CD  db 00
 
-; ---------------- sub_s1:13CE FAR size=58 callers=3
+; ---------------- SH_globalFree@s1:13CE FAR size=58 callers=3
 ;   apis: KERNEL.GlobalFree, KERNEL.GlobalHandle
+;   SmartHeap: GlobalHandle + GlobalFree
 1:13CE  c8020000             enter 2, 0
 1:13D2  ff7608               push word ptr [bp + 8]
 1:13D5  9affff0000           lcall 0, 0xffff  ; KERNEL.GlobalHandle
@@ -2282,8 +2309,9 @@ loc_1402:
 1:1404  c9                   leave
 1:1405  ca0400               retf 4
 
-; ---------------- sub_s1:1408 FAR size=234 callers=2
+; ---------------- SH_globalReAlloc@s1:1408 FAR size=234 callers=2
 ;   apis: KERNEL.GlobalHandle, KERNEL.GlobalLock, KERNEL.GlobalPageLock, KERNEL.GlobalPageUnlock, KERNEL.GlobalReAlloc
+;   SmartHeap: GlobalReAlloc of a large block
 1:1408  c80c0000             enter 0xc, 0
 1:140C  ff760e               push word ptr [bp + 0xe]
 1:140F  9ad6130000           lcall 0, 0x13d6  ; KERNEL.GlobalHandle
@@ -2377,7 +2405,8 @@ loc_14EC:
 1:14EE  ca0a00               retf 0xa
 1:14F1  db 00
 
-; ---------------- sub_s1:14F2 FAR size=64 callers=2
+; ---------------- SH_globalReAllocChecked@s1:14F2 FAR size=64 callers=2
+;   SmartHeap: GlobalReAlloc with size check
 1:14F2  55                   push bp
 1:14F3  8bec                 mov bp, sp
 1:14F5  8b4e06               mov cx, word ptr [bp + 6]
@@ -2397,7 +2426,7 @@ loc_1509:
 1:151B  51                   push cx
 1:151C  90                   nop
 1:151D  0e                   push cs
-1:151E  e8e7fe               call 0x1408  ; sub_s1:1408
+1:151E  e8e7fe               call 0x1408  ; SH_globalReAlloc@s1:1408
 1:1521  0bd0                 or dx, ax
 1:1523  7407                 je 0x152c
 1:1525  b80100               mov ax, 1
@@ -2408,8 +2437,9 @@ loc_152C:
 1:152E  c9                   leave
 1:152F  ca0a00               retf 0xa
 
-; ---------------- sub_s1:1532 FAR size=38 callers=6
+; ---------------- SH_globalSize@s1:1532 FAR size=38 callers=6
 ;   apis: KERNEL.GlobalHandle, KERNEL.GlobalSize
+;   SmartHeap: GlobalHandle + GlobalSize
 1:1532  55                   push bp
 1:1533  8bec                 mov bp, sp
 1:1535  56                   push si
@@ -2431,8 +2461,9 @@ loc_1550:
 1:1554  c9                   leave
 1:1555  ca0400               retf 4
 
-; ---------------- sub_s1:1558 size=118 callers=1
+; ---------------- SH_dosAlloc@s1:1558 size=118 callers=1
 ;   apis: KERNEL.GlobalDOSAlloc
+;   SmartHeap: GlobalDOSAlloc (fixed low memory)
 1:1558  c80c0000             enter 0xc, 0
 1:155C  52                   push dx
 1:155D  50                   push ax
@@ -2484,8 +2515,9 @@ loc_15C4:
 1:15CC  c3                   ret
 1:15CD  db 00
 
-; ---------------- sub_s1:15CE size=60 callers=1
+; ---------------- SH_dosFree@s1:15CE size=60 callers=1
 ;   apis: KERNEL.GlobalDOSFree
+;   SmartHeap: GlobalDOSFree of a chain
 1:15CE  c8080000             enter 8, 0
 1:15D2  57                   push di
 1:15D3  56                   push si
@@ -2514,10 +2546,11 @@ loc_1604:
 1:1606  c9                   leave
 1:1607  c20400               ret 4
 
-; ---------------- SH_DefaultPool@s1:160A FAR size=112 callers=31
+; ---------------- SH_DefaultPool@s1:160A FAR size=112 callers=32
+;   SmartHeap: creates the default pool on first use
 1:160A  90                   nop
 1:160B  0e                   push cs
-1:160C  e8370b               call 0x2146  ; sub_s1:2146
+1:160C  e8370b               call 0x2146  ; SH_hookTrue@s1:2146
 1:160F  0bc0                 or ax, ax
 1:1611  7503                 jne 0x1616
 1:1613  99                   cdq
@@ -2533,7 +2566,7 @@ loc_1616:
 1:1628  ff36465f             push word ptr [0x5f46]
 1:162C  90                   nop
 1:162D  0e                   push cs
-1:162E  e8bb02               call 0x18ec  ; sub_s1:18EC
+1:162E  e8bb02               call 0x18ec  ; SH_MemPoolInitDefault@s1:18EC
 1:1631  a32c5f               mov word ptr [0x5f2c], ax  ; g_defaultHeap
 1:1634  89162e5f             mov word ptr [0x5f2e], dx  ; g_defaultHeap+2
 1:1638  8bc2                 mov ax, dx
@@ -2546,7 +2579,7 @@ loc_1616:
 1:164C  ff36425f             push word ptr [0x5f42]
 1:1650  90                   nop
 1:1651  0e                   push cs
-1:1652  e8ff03               call 0x1a54  ; sub_s1:1A54
+1:1652  e8ff03               call 0x1a54  ; SH_MemPoolSetPageSize@s1:1A54
 loc_1655:
 1:1655  833e445fff           cmp word ptr [0x5f44], -1
 1:165A  7411                 je 0x166d
@@ -2555,16 +2588,17 @@ loc_1655:
 1:1664  ff36445f             push word ptr [0x5f44]
 1:1668  90                   nop
 1:1669  0e                   push cs
-1:166A  e89104               call 0x1afe  ; sub_s1:1AFE
+1:166A  e89104               call 0x1afe  ; SH_MemPoolSetBlockSizeFS@s1:1AFE
 loc_166D:
 1:166D  90                   nop
 1:166E  0e                   push cs
-1:166F  e8d80a               call 0x214a  ; sub_s1:214A
+1:166F  e8d80a               call 0x214a  ; SH_hookNop@s1:214A
 1:1672  a12c5f               mov ax, word ptr [0x5f2c]  ; g_defaultHeap
 1:1675  8b162e5f             mov dx, word ptr [0x5f2e]  ; g_defaultHeap+2
 1:1679  cb                   retf
 
-; ---------------- sub_s1:167A FAR size=142 callers=4
+; ---------------- _fmalloc@s1:167A FAR size=48 callers=5
+;   C runtime malloc (SmartHeap default pool)
 1:167A  55                   push bp
 1:167B  8bec                 mov bp, sp
 1:167D  a12e5f               mov ax, word ptr [0x5f2e]  ; g_defaultHeap+2
@@ -2587,17 +2621,73 @@ loc_1694:
 1:16A1  6a00                 push 0
 1:16A3  90                   nop
 1:16A4  0e                   push cs
-1:16A5  e8a0f3               call 0xa48  ; sub_s1:0A48
+1:16A5  e8a0f3               call 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 1:16A8  c9                   leave
 1:16A9  cb                   retf
-1:16AA  db 55 8b ec 8b 46 08 0b 46 06 75 0d ff 76 0a 90 0e
-1:16BA  db e8 bd ff 8b e5 c9 cb 90 8b 4e 0a 0b c9 75 13 ff
-1:16CA  db 76 08 ff 76 06 90 0e e8 1a 00 8b e5 33 c0 99 c9
-1:16DA  db cb 90 ff 76 08 ff 76 06 6a 00 51 6a 00 90 0e e8
-1:16EA  db e8 f7 c9 cb 55 8b ec 8b 4e 06 8b 46 08 0b c1 74
-1:16FA  db 0a 8b 46 08 50 51 90 0e e8 c1 f6 c9 cb 00
+
+; ---------------- _frealloc@s1:16AA FAR size=68 callers=1
+;   C runtime realloc (malloc when NULL)
+1:16AA  55                   push bp
+1:16AB  8bec                 mov bp, sp
+1:16AD  8b4608               mov ax, word ptr [bp + 8]
+1:16B0  0b4606               or ax, word ptr [bp + 6]
+1:16B3  750d                 jne 0x16c2
+1:16B5  ff760a               push word ptr [bp + 0xa]
+1:16B8  90                   nop
+1:16B9  0e                   push cs
+1:16BA  e8bdff               call 0x167a  ; _fmalloc@s1:167A
+1:16BD  8be5                 mov sp, bp
+1:16BF  c9                   leave
+1:16C0  cb                   retf
+1:16C1  db 90
+loc_16C2:
+1:16C2  8b4e0a               mov cx, word ptr [bp + 0xa]
+1:16C5  0bc9                 or cx, cx
+1:16C7  7513                 jne 0x16dc
+1:16C9  ff7608               push word ptr [bp + 8]
+1:16CC  ff7606               push word ptr [bp + 6]
+1:16CF  90                   nop
+1:16D0  0e                   push cs
+1:16D1  e81a00               call 0x16ee  ; _ffree@s1:16EE
+1:16D4  8be5                 mov sp, bp
+1:16D6  33c0                 xor ax, ax
+1:16D8  99                   cdq
+1:16D9  c9                   leave
+1:16DA  cb                   retf
+1:16DB  db 90
+loc_16DC:
+1:16DC  ff7608               push word ptr [bp + 8]
+1:16DF  ff7606               push word ptr [bp + 6]
+1:16E2  6a00                 push 0
+1:16E4  51                   push cx
+1:16E5  6a00                 push 0
+1:16E7  90                   nop
+1:16E8  0e                   push cs
+1:16E9  e8e8f7               call 0xed4  ; SH_MemReAllocPtr@s1:0ED4
+1:16EC  c9                   leave
+1:16ED  cb                   retf
+
+; ---------------- _ffree@s1:16EE FAR size=26 callers=2
+;   C runtime free
+1:16EE  55                   push bp
+1:16EF  8bec                 mov bp, sp
+1:16F1  8b4e06               mov cx, word ptr [bp + 6]
+1:16F4  8b4608               mov ax, word ptr [bp + 8]
+1:16F7  0bc1                 or ax, cx
+1:16F9  740a                 je 0x1705
+1:16FB  8b4608               mov ax, word ptr [bp + 8]
+1:16FE  50                   push ax
+1:16FF  51                   push cx
+1:1700  90                   nop
+1:1701  0e                   push cs
+1:1702  e8c1f6               call 0xdc6  ; SH_MemFreePtr@s1:0DC6
+loc_1705:
+1:1705  c9                   leave
+1:1706  cb                   retf
+1:1707  db 00
 
 ; ---------------- SH_MemAllocPtr@s1:1708 FAR size=148 callers=29
+;   SmartHeap MemAllocPtr(pool, size, flags)
 1:1708  c8040000             enter 4, 0
 1:170C  57                   push di
 1:170D  56                   push si
@@ -2620,7 +2710,7 @@ loc_1724:
 1:1735  57                   push di
 1:1736  90                   nop
 1:1737  0e                   push cs
-1:1738  e80df3               call 0xa48  ; sub_s1:0A48
+1:1738  e80df3               call 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 1:173B  8956fe               mov word ptr [bp - 2], dx
 1:173E  0bd0                 or dx, ax
 1:1740  754a                 jne 0x178c
@@ -2671,7 +2761,8 @@ loc_1794:
 1:179A  cb                   retf
 1:179B  db 00
 
-; ---------------- operator_new@s1:179C FAR size=50 callers=291
+; ---------------- operator_new@s1:179C FAR size=50 callers=297
+;   C++ operator new (SmartHeap default pool)
 1:179C  c8040000             enter 4, 0
 1:17A0  a12e5f               mov ax, word ptr [0x5f2e]  ; g_defaultHeap+2
 1:17A3  0b062c5f             or ax, word ptr [0x5f2c]  ; g_defaultHeap
@@ -2698,7 +2789,8 @@ loc_17B7:
 1:17CC  cb                   retf
 1:17CD  db 00
 
-; ---------------- operator_delete@s1:17CE FAR size=110 callers=575
+; ---------------- operator_delete@s1:17CE FAR size=26 callers=579
+;   C++ operator delete
 1:17CE  55                   push bp
 1:17CF  8bec                 mov bp, sp
 1:17D1  8b4e06               mov cx, word ptr [bp + 6]
@@ -2714,14 +2806,54 @@ loc_17B7:
 loc_17E5:
 1:17E5  c9                   leave
 1:17E6  cb                   retf
-1:17E7  db 00 c8 04 00 00 a1 34 5f 8b 16 36 5f 8b d8 89 56
-1:17F7  db fe 8b 46 06 8b 56 08 a3 34 5f 89 16 36 5f 8b c3
-1:1807  db 8b 56 fe c9 cb 55 8b ec a1 2e 5f 0b 06 2c 5f 75
-1:1817  db 0e 90 0e e8 ed fd 0b d0 75 05 33 c0 99 c9 cb ff
-1:1827  db 36 2e 5f ff 36 2c 5f 6a 00 ff 76 06 6a 00 90 0e
-1:1837  db e8 0e f2 c9 cb
+1:17E7  db 00
 
-; ---------------- sub_s1:183C size=176 callers=0
+; ---------------- _set_new_handler@s1:17E8 FAR size=36 callers=0
+;   swaps the new-handler (DGROUP 0x5F34)
+1:17E8  c8040000             enter 4, 0
+1:17EC  a1345f               mov ax, word ptr [0x5f34]
+1:17EF  8b16365f             mov dx, word ptr [0x5f36]
+1:17F3  8bd8                 mov bx, ax
+1:17F5  8956fe               mov word ptr [bp - 2], dx
+1:17F8  8b4606               mov ax, word ptr [bp + 6]
+1:17FB  8b5608               mov dx, word ptr [bp + 8]
+1:17FE  a3345f               mov word ptr [0x5f34], ax
+1:1801  8916365f             mov word ptr [0x5f36], dx
+1:1805  8bc3                 mov ax, bx
+1:1807  8b56fe               mov dx, word ptr [bp - 2]
+1:180A  c9                   leave
+1:180B  cb                   retf
+
+; ---------------- _nmalloc_pool@s1:180C FAR size=48 callers=1
+;   malloc from the default pool
+1:180C  55                   push bp
+1:180D  8bec                 mov bp, sp
+1:180F  a12e5f               mov ax, word ptr [0x5f2e]  ; g_defaultHeap+2
+1:1812  0b062c5f             or ax, word ptr [0x5f2c]  ; g_defaultHeap
+1:1816  750e                 jne 0x1826
+1:1818  90                   nop
+1:1819  0e                   push cs
+1:181A  e8edfd               call 0x160a  ; SH_DefaultPool@s1:160A
+1:181D  0bd0                 or dx, ax
+1:181F  7505                 jne 0x1826
+1:1821  33c0                 xor ax, ax
+1:1823  99                   cdq
+1:1824  c9                   leave
+1:1825  cb                   retf
+loc_1826:
+1:1826  ff362e5f             push word ptr [0x5f2e]  ; g_defaultHeap+2
+1:182A  ff362c5f             push word ptr [0x5f2c]  ; g_defaultHeap
+1:182E  6a00                 push 0
+1:1830  ff7606               push word ptr [bp + 6]
+1:1833  6a00                 push 0
+1:1835  90                   nop
+1:1836  0e                   push cs
+1:1837  e80ef2               call 0xa48  ; SH_MemAllocPtr_core@s1:0A48
+1:183A  c9                   leave
+1:183B  cb                   retf
+
+; ---------------- _nmalloc?@s1:183C size=82 callers=0
+;   C runtime near malloc through SmartHeap
 1:183C  c8040000             enter 4, 0
 1:1840  8b4608               mov ax, word ptr [bp + 8]
 1:1843  f76606               mul word ptr [bp + 6]
@@ -2757,17 +2889,73 @@ loc_1877:
 1:1885  6a01                 push 1
 1:1887  90                   nop
 1:1888  0e                   push cs
-1:1889  e8bcf1               call 0xa48  ; sub_s1:0A48
+1:1889  e8bcf1               call 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 1:188C  c9                   leave
 1:188D  cb                   retf
-1:188E  db 55 8b ec 8b 46 08 0b 46 06 75 0d ff 76 0a 90 0e
-1:189E  db e8 6b ff 8b e5 c9 cb 90 8b 4e 0a 0b c9 75 13 ff
-1:18AE  db 76 08 ff 76 06 90 0e e8 1a 00 8b e5 33 c0 99 c9
-1:18BE  db cb 90 ff 76 08 ff 76 06 6a 00 51 6a 00 90 0e e8
-1:18CE  db 04 f6 c9 cb 55 8b ec 8b 4e 06 8b 46 08 0b c1 74
-1:18DE  db 0a 8b 46 08 50 51 90 0e e8 dd f4 c9 cb 90
 
-; ---------------- sub_s1:18EC FAR size=22 callers=1
+; ---------------- _nrealloc_pool@s1:188E FAR size=68 callers=0
+;   realloc in the default pool
+1:188E  55                   push bp
+1:188F  8bec                 mov bp, sp
+1:1891  8b4608               mov ax, word ptr [bp + 8]
+1:1894  0b4606               or ax, word ptr [bp + 6]
+1:1897  750d                 jne 0x18a6
+1:1899  ff760a               push word ptr [bp + 0xa]
+1:189C  90                   nop
+1:189D  0e                   push cs
+1:189E  e86bff               call 0x180c  ; _nmalloc_pool@s1:180C
+1:18A1  8be5                 mov sp, bp
+1:18A3  c9                   leave
+1:18A4  cb                   retf
+1:18A5  db 90
+loc_18A6:
+1:18A6  8b4e0a               mov cx, word ptr [bp + 0xa]
+1:18A9  0bc9                 or cx, cx
+1:18AB  7513                 jne 0x18c0
+1:18AD  ff7608               push word ptr [bp + 8]
+1:18B0  ff7606               push word ptr [bp + 6]
+1:18B3  90                   nop
+1:18B4  0e                   push cs
+1:18B5  e81a00               call 0x18d2  ; _nfree_pool@s1:18D2
+1:18B8  8be5                 mov sp, bp
+1:18BA  33c0                 xor ax, ax
+1:18BC  99                   cdq
+1:18BD  c9                   leave
+1:18BE  cb                   retf
+1:18BF  db 90
+loc_18C0:
+1:18C0  ff7608               push word ptr [bp + 8]
+1:18C3  ff7606               push word ptr [bp + 6]
+1:18C6  6a00                 push 0
+1:18C8  51                   push cx
+1:18C9  6a00                 push 0
+1:18CB  90                   nop
+1:18CC  0e                   push cs
+1:18CD  e804f6               call 0xed4  ; SH_MemReAllocPtr@s1:0ED4
+1:18D0  c9                   leave
+1:18D1  cb                   retf
+
+; ---------------- _nfree_pool@s1:18D2 FAR size=26 callers=1
+;   free in the default pool
+1:18D2  55                   push bp
+1:18D3  8bec                 mov bp, sp
+1:18D5  8b4e06               mov cx, word ptr [bp + 6]
+1:18D8  8b4608               mov ax, word ptr [bp + 8]
+1:18DB  0bc1                 or ax, cx
+1:18DD  740a                 je 0x18e9
+1:18DF  8b4608               mov ax, word ptr [bp + 8]
+1:18E2  50                   push ax
+1:18E3  51                   push cx
+1:18E4  90                   nop
+1:18E5  0e                   push cs
+1:18E6  e8ddf4               call 0xdc6  ; SH_MemFreePtr@s1:0DC6
+loc_18E9:
+1:18E9  c9                   leave
+1:18EA  cb                   retf
+1:18EB  db 90
+
+; ---------------- SH_MemPoolInitDefault@s1:18EC FAR size=22 callers=1
+;   SmartHeap MemPoolInit(flags) wrapper
 1:18EC  55                   push bp
 1:18ED  8bec                 mov bp, sp
 1:18EF  6a0c                 push 0xc
@@ -2776,12 +2964,13 @@ loc_1877:
 1:18F5  ff7606               push word ptr [bp + 6]
 1:18F8  90                   nop
 1:18F9  0e                   push cs
-1:18FA  e80500               call 0x1902  ; sub_s1:1902
+1:18FA  e80500               call 0x1902  ; SH_MemPoolInit@s1:1902
 1:18FD  c9                   leave
 1:18FE  ca0200               retf 2
 1:1901  db 00
 
-; ---------------- sub_s1:1902 FAR size=338 callers=2
+; ---------------- SH_MemPoolInit@s1:1902 FAR size=338 callers=2
+;   SmartHeap MemPoolInit: creates a pool (WinMain creates the game pool)
 1:1902  c8040000             enter 4, 0
 1:1906  57                   push di
 1:1907  56                   push si
@@ -2817,7 +3006,7 @@ loc_193A:
 1:1947  50                   push ax
 1:1948  90                   nop
 1:1949  0e                   push cs
-1:194A  e8cff9               call 0x131c  ; sub_s1:131C
+1:194A  e8cff9               call 0x131c  ; SH_globalAllocPage@s1:131C
 1:194D  8bf0                 mov si, ax
 1:194F  8956fe               mov word ptr [bp - 2], dx
 1:1952  0bd0                 or dx, ax
@@ -2827,7 +3016,7 @@ loc_193A:
 1:195A  6a02                 push 2
 1:195C  90                   nop
 1:195D  0e                   push cs
-1:195E  e80005               call 0x1e61  ; sub_s1:1E61
+1:195E  e80005               call 0x1e61  ; SH_error@s1:1E61
 1:1961  0bc0                 or ax, ax
 1:1963  75d5                 jne 0x193a
 loc_1965:
@@ -2867,7 +3056,7 @@ loc_1965:
 1:19D5  56                   push si
 1:19D6  90                   nop
 1:19D7  0e                   push cs
-1:19D8  e857fb               call 0x1532  ; sub_s1:1532
+1:19D8  e857fb               call 0x1532  ; SH_globalSize@s1:1532
 1:19DB  8e46fe               mov es, word ptr [bp - 2]
 1:19DE  2689441e             mov word ptr es:[si + 0x1e], ax
 1:19E2  26895420             mov word ptr es:[si + 0x20], dx
@@ -2885,7 +3074,7 @@ loc_1965:
 1:1A0E  57                   push di
 1:1A0F  90                   nop
 1:1A10  0e                   push cs
-1:1A11  e8ea00               call 0x1afe  ; sub_s1:1AFE
+1:1A11  e8ea00               call 0x1afe  ; SH_MemPoolSetBlockSizeFS@s1:1AFE
 1:1A14  0bc0                 or ax, ax
 1:1A16  750e                 jne 0x1a26
 1:1A18  ff76fe               push word ptr [bp - 2]
@@ -2893,7 +3082,7 @@ loc_1965:
 1:1A1C  50                   push ax
 1:1A1D  90                   nop
 1:1A1E  0e                   push cs
-1:1A1F  e87801               call 0x1b9a  ; sub_s1:1B9A
+1:1A1F  e87801               call 0x1b9a  ; SH_poolFreeInternal@s1:1B9A
 1:1A22  e90bff               jmp 0x1930
 1:1A25  db 90
 loc_1A26:
@@ -2908,13 +3097,13 @@ loc_1A26:
 1:1A38  ff7608               push word ptr [bp + 8]
 1:1A3B  90                   nop
 1:1A3C  0e                   push cs
-1:1A3D  e87e38               call 0x52be  ; sub_s1:52BE
+1:1A3D  e87e38               call 0x52be  ; __aFlmul@s1:52BE
 1:1A40  52                   push dx
 1:1A41  50                   push ax
 1:1A42  6a01                 push 1
 1:1A44  90                   nop
 1:1A45  0e                   push cs
-1:1A46  e8c3e6               call 0x10c  ; sub_s1:010C
+1:1A46  e8c3e6               call 0x10c  ; SH_MemPoolFreeAll?@s1:010C
 loc_1A49:
 1:1A49  8bc6                 mov ax, si
 1:1A4B  8b56fe               mov dx, word ptr [bp - 2]
@@ -2923,7 +3112,8 @@ loc_1A49:
 1:1A50  c9                   leave
 1:1A51  ca0800               retf 8
 
-; ---------------- sub_s1:1A54 FAR size=92 callers=1
+; ---------------- SH_MemPoolSetPageSize@s1:1A54 FAR size=92 callers=1
+;   SmartHeap MemPoolSetPageSize (validates 0x1000/0x2000)
 1:1A54  55                   push bp
 1:1A55  8bec                 mov bp, sp
 1:1A57  57                   push di
@@ -2937,7 +3127,7 @@ loc_1A49:
 1:1A6B  6a0a                 push 0xa
 1:1A6D  90                   nop
 1:1A6E  0e                   push cs
-1:1A6F  e8ef03               call 0x1e61  ; sub_s1:1E61
+1:1A6F  e8ef03               call 0x1e61  ; SH_error@s1:1E61
 1:1A72  33c0                 xor ax, ax
 1:1A74  5e                   pop si
 1:1A75  5f                   pop di
@@ -2946,7 +3136,7 @@ loc_1A49:
 loc_1A7A:
 1:1A7A  8b7606               mov si, word ptr [bp + 6]
 1:1A7D  8bc6                 mov ax, si
-1:1A7F  e82e00               call 0x1ab0  ; sub_s1:1AB0
+1:1A7F  e82e00               call 0x1ab0  ; SH_roundPageSize@s1:1AB0
 1:1A82  8bf0                 mov si, ax
 1:1A84  8e460a               mov es, word ptr [bp + 0xa]
 1:1A87  268b4518             mov ax, word ptr es:[di + 0x18]
@@ -2969,7 +3159,8 @@ loc_1AA7:
 1:1AAC  ca0600               retf 6
 1:1AAF  db 00
 
-; ---------------- sub_s1:1AB0 size=78 callers=1
+; ---------------- SH_roundPageSize@s1:1AB0 size=78 callers=1
+;   SmartHeap internal: rounds a page size
 1:1AB0  57                   push di
 1:1AB1  56                   push si
 1:1AB2  8bf8                 mov di, ax
@@ -3019,7 +3210,8 @@ loc_1AFA:
 1:1AFC  c3                   ret
 1:1AFD  db 00
 
-; ---------------- sub_s1:1AFE FAR size=106 callers=2
+; ---------------- SH_MemPoolSetBlockSizeFS@s1:1AFE FAR size=106 callers=2
+;   SmartHeap: sets a pool's fixed block size
 1:1AFE  55                   push bp
 1:1AFF  8bec                 mov bp, sp
 1:1B01  57                   push di
@@ -3041,7 +3233,7 @@ loc_1B14:
 1:1B23  6a0a                 push 0xa
 1:1B25  90                   nop
 1:1B26  0e                   push cs
-1:1B27  e83703               call 0x1e61  ; sub_s1:1E61
+1:1B27  e83703               call 0x1e61  ; SH_error@s1:1E61
 1:1B2A  33c0                 xor ax, ax
 1:1B2C  5e                   pop si
 1:1B2D  5f                   pop di
@@ -3067,7 +3259,7 @@ loc_1B54:
 1:1B56  6a03                 push 3
 1:1B58  90                   nop
 1:1B59  0e                   push cs
-1:1B5A  e80403               call 0x1e61  ; sub_s1:1E61
+1:1B5A  e80403               call 0x1e61  ; SH_error@s1:1E61
 loc_1B5D:
 1:1B5D  33f6                 xor si, si
 loc_1B5F:
@@ -3078,7 +3270,8 @@ loc_1B5F:
 1:1B64  ca0600               retf 6
 1:1B67  db 00
 
-; ---------------- sub_s1:1B68 FAR size=50 callers=1
+; ---------------- SH_MemPoolFree@s1:1B68 FAR size=50 callers=1
+;   SmartHeap MemPoolFree(pool) (WinMain at exit)
 1:1B68  55                   push bp
 1:1B69  8bec                 mov bp, sp
 1:1B6B  56                   push si
@@ -3091,7 +3284,7 @@ loc_1B5F:
 1:1B7E  6a0a                 push 0xa
 1:1B80  90                   nop
 1:1B81  0e                   push cs
-1:1B82  e8dc02               call 0x1e61  ; sub_s1:1E61
+1:1B82  e8dc02               call 0x1e61  ; SH_error@s1:1E61
 1:1B85  33c0                 xor ax, ax
 1:1B87  5e                   pop si
 1:1B88  c9                   leave
@@ -3102,12 +3295,13 @@ loc_1B8C:
 1:1B8E  6a00                 push 0
 1:1B90  90                   nop
 1:1B91  0e                   push cs
-1:1B92  e80500               call 0x1b9a  ; sub_s1:1B9A
+1:1B92  e80500               call 0x1b9a  ; SH_poolFreeInternal@s1:1B9A
 1:1B95  5e                   pop si
 1:1B96  c9                   leave
 1:1B97  ca0400               retf 4
 
-; ---------------- sub_s1:1B9A FAR size=608 callers=2
+; ---------------- SH_poolFreeInternal@s1:1B9A FAR size=608 callers=2
+;   SmartHeap internal: frees every page of a pool
 1:1B9A  c80a0000             enter 0xa, 0
 1:1B9E  56                   push si
 1:1B9F  c45e08               les bx, ptr [bp + 8]
@@ -3128,7 +3322,7 @@ loc_1BBC:
 1:1BC8  ff7408               push word ptr [si + 8]
 1:1BCB  90                   nop
 1:1BCC  0e                   push cs
-1:1BCD  e8fef7               call 0x13ce  ; sub_s1:13CE
+1:1BCD  e8fef7               call 0x13ce  ; SH_globalFree@s1:13CE
 1:1BD0  8b7404               mov si, word ptr [si + 4]
 1:1BD3  8b5efe               mov bx, word ptr [bp - 2]
 1:1BD6  03db                 add bx, bx
@@ -3157,7 +3351,7 @@ loc_1BF1:
 1:1C0F  53                   push bx
 1:1C10  90                   nop
 1:1C11  0e                   push cs
-1:1C12  e8b9f7               call 0x13ce  ; sub_s1:13CE
+1:1C12  e8b9f7               call 0x13ce  ; SH_globalFree@s1:13CE
 1:1C15  8b46f6               mov ax, word ptr [bp - 0xa]
 1:1C18  8b56f8               mov dx, word ptr [bp - 8]
 1:1C1B  ebd4                 jmp 0x1bf1
@@ -3167,12 +3361,12 @@ loc_1C1E:
 1:1C21  ff7608               push word ptr [bp + 8]
 1:1C24  90                   nop
 1:1C25  0e                   push cs
-1:1C26  e87904               call 0x20a2  ; sub_s1:20A2
+1:1C26  e87904               call 0x20a2  ; SH_MemUnregisterTask@s1:20A2
 1:1C29  ff760a               push word ptr [bp + 0xa]
 1:1C2C  ff7608               push word ptr [bp + 8]
 1:1C2F  90                   nop
 1:1C30  0e                   push cs
-1:1C31  e89af7               call 0x13ce  ; sub_s1:13CE
+1:1C31  e89af7               call 0x13ce  ; SH_globalFree@s1:13CE
 1:1C34  b80100               mov ax, 1
 1:1C37  5e                   pop si
 1:1C38  c9                   leave
@@ -3206,7 +3400,8 @@ loc_1C1E:
 1:1DDC  db 5f 54 41 53 4b 00 00 00 00 00 00 00 53 6d 61 72
 1:1DEC  db 74 48 65 61 70 20 4c 69 62 72 61 72 79 00
 
-; ---------------- sub_s1:1DFA size=103 callers=1
+; ---------------- SH_errorRecord@s1:1DFA size=103 callers=2
+;   SmartHeap internal: fills the error record
 1:1DFA  55                   push bp
 1:1DFB  8bec                 mov bp, sp
 1:1DFD  8a4606               mov al, byte ptr [bp + 6]
@@ -3256,7 +3451,8 @@ loc_1E58:
 1:1E5C  c20800               ret 8
 1:1E5F  db ff ff
 
-; ---------------- sub_s1:1E61 FAR size=15 callers=18
+; ---------------- SH_error@s1:1E61 FAR size=15 callers=18
+;   SmartHeap error trampoline (into _SHI_INVOKEERRORHANDLER1)
 1:1E61  2e813e711e9090       cmp word ptr cs:[0x1e71], 0x9090
 1:1E68  7502                 jne 0x1e6c
 1:1E6A  8cd0                 mov ax, ss
@@ -3265,6 +3461,7 @@ loc_1E6C:
 1:1E6F  db 00
 
 ; ---------------- _SHI_INVOKEERRORHANDLER1@s1:1E70 size=180 callers=0
+;   SmartHeap exported error-handler dispatcher
 1:1E70  8cd8                 mov ax, ds
 1:1E72  90                   nop
 1:1E73  c83e0000             enter 0x3e, 0
@@ -3299,7 +3496,7 @@ loc_1EA4:
 1:1EB4  ff361a5f             push word ptr [0x5f1a]
 1:1EB8  90                   nop
 1:1EB9  0e                   push cs
-1:1EBA  e8f902               call 0x21b6  ; sub_s1:21B6
+1:1EBA  e8f902               call 0x21b6  ; SH_invokeHandler@s1:21B6
 1:1EBD  0bc0                 or ax, ax
 1:1EBF  7409                 je 0x1eca
 1:1EC1  a11a5f               mov ax, word ptr [0x5f1a]
@@ -3325,7 +3522,7 @@ loc_1EDD:
 1:1EEB  1e                   push ds
 1:1EEC  681a5f               push 0x5f1a
 1:1EEF  33c0                 xor ax, ax
-1:1EF1  e83000               call 0x1f24  ; sub_s1:1F24
+1:1EF1  e83000               call 0x1f24  ; SH_errorCount@s1:1F24
 1:1EF4  0bc0                 or ax, ax
 1:1EF6  740c                 je 0x1f04
 1:1EF8  2bc0                 sub ax, ax
@@ -3345,7 +3542,7 @@ loc_1F0E:
 1:1F14  7405                 je 0x1f1b
 1:1F16  90                   nop
 1:1F17  0e                   push cs
-1:1F18  e84d00               call 0x1f68  ; sub_s1:1F68
+1:1F18  e84d00               call 0x1f68  ; SH_errorReset@s1:1F68
 loc_1F1B:
 1:1F1B  8bc7                 mov ax, di
 1:1F1D  1f                   pop ds
@@ -3354,7 +3551,8 @@ loc_1F1B:
 1:1F20  ca0600               retf 6
 1:1F23  db 00
 
-; ---------------- sub_s1:1F24 size=68 callers=1
+; ---------------- SH_errorCount@s1:1F24 size=68 callers=1
+;   SmartHeap internal: counts repeated errors
 1:1F24  c8020000             enter 2, 0
 1:1F28  57                   push di
 1:1F29  56                   push si
@@ -3375,7 +3573,7 @@ loc_1F40:
 1:1F4C  6a00                 push 0
 1:1F4E  90                   nop
 1:1F4F  0e                   push cs
-1:1F50  e8f901               call 0x214c  ; sub_s1:214C
+1:1F50  e8f901               call 0x214c  ; SH_defaultErrorHandler@s1:214C
 loc_1F53:
 1:1F53  3bf7                 cmp si, di
 1:1F55  7609                 jbe 0x1f60
@@ -3391,7 +3589,8 @@ loc_1F60:
 1:1F64  c9                   leave
 1:1F65  c20400               ret 4
 
-; ---------------- sub_s1:1F68 FAR size=22 callers=1
+; ---------------- SH_errorReset@s1:1F68 FAR size=22 callers=1
+;   SmartHeap internal: resets the error nesting counter
 1:1F68  b81a5f               mov ax, 0x5f1a
 1:1F6B  8cd9                 mov cx, ds
 1:1F6D  0bc8                 or cx, ax
@@ -3402,7 +3601,8 @@ loc_1F60:
 loc_1F7D:
 1:1F7D  cb                   retf
 
-; ---------------- sub_s1:1F7E size=84 callers=0
+; ---------------- SH_errorText@s1:1F7E size=84 callers=0
+;   SmartHeap internal: formats an error message
 1:1F7E  c8020000             enter 2, 0
 1:1F82  56                   push si
 1:1F83  c45e06               les bx, ptr [bp + 6]
@@ -3439,19 +3639,20 @@ loc_1FBC:
 1:1FBC  33f6                 xor si, si
 loc_1FBE:
 1:1FBE  8bc1                 mov ax, cx
-1:1FC0  e80f00               call 0x1fd2  ; sub_s1:1FD2
+1:1FC0  e80f00               call 0x1fd2  ; SH_errorString@s1:1FD2
 1:1FC3  52                   push dx
 1:1FC4  50                   push ax
 1:1FC5  56                   push si
 1:1FC6  6a00                 push 0
 1:1FC8  90                   nop
 1:1FC9  0e                   push cs
-1:1FCA  e87f01               call 0x214c  ; sub_s1:214C
+1:1FCA  e87f01               call 0x214c  ; SH_defaultErrorHandler@s1:214C
 1:1FCD  5e                   pop si
 1:1FCE  c9                   leave
 1:1FCF  ca0400               retf 4
 
-; ---------------- sub_s1:1FD2 size=24 callers=1
+; ---------------- SH_errorString@s1:1FD2 size=24 callers=1
+;   SmartHeap internal: error number -> message string
 1:1FD2  8bd8                 mov bx, ax
 1:1FD4  83fb02               cmp bx, 2
 1:1FD7  7507                 jne 0x1fe0
@@ -3464,7 +3665,8 @@ loc_1FE0:
 1:1FE6  bace1e               mov dx, 0x1ece  ; SEGMENT s1:0000
 1:1FE9  c3                   ret
 
-; ---------------- sub_s1:1FEA FAR size=184 callers=1
+; ---------------- SH_MemRegisterTask@s1:1FEA FAR size=184 callers=1
+;   SmartHeap MemRegisterTask/error-handler setup (WinMain start)
 1:1FEA  b81a5f               mov ax, 0x5f1a
 1:1FED  8cd9                 mov cx, ds
 1:1FEF  0bc8                 or cx, ax
@@ -3497,7 +3699,8 @@ loc_2018:
 1:208B  db 81 7c 14 ad be 75 08 b8 01 00 5e c9 ca 04 00 33
 1:209B  db c0 5e c9 ca 04 00 00
 
-; ---------------- sub_s1:20A2 FAR size=164 callers=1
+; ---------------- SH_MemUnregisterTask@s1:20A2 FAR size=164 callers=1
+;   SmartHeap internal: task cleanup
 1:20A2  c80c0000             enter 0xc, 0
 1:20A6  57                   push di
 1:20A7  56                   push si
@@ -3568,16 +3771,19 @@ loc_2140:
 1:2142  c9                   leave
 1:2143  ca0400               retf 4
 
-; ---------------- sub_s1:2146 FAR size=4 callers=1
+; ---------------- SH_hookTrue@s1:2146 FAR size=4 callers=1
+;   SmartHeap stub hook (returns 1)
 1:2146  b80100               mov ax, 1
 1:2149  cb                   retf
 
-; ---------------- sub_s1:214A FAR size=2 callers=1
+; ---------------- SH_hookNop@s1:214A FAR size=2 callers=1
+;   SmartHeap stub hook (returns)
 1:214A  cb                   retf
 1:214B  db 90
 
-; ---------------- sub_s1:214C FAR size=106 callers=2
+; ---------------- SH_defaultErrorHandler@s1:214C FAR size=106 callers=2
 ;   apis: USER.MessageBeep, USER.MessageBox
+;   SmartHeap default error handler: MessageBeep + MessageBox, abort
 1:214C  55                   push bp
 1:214D  8bec                 mov bp, sp
 1:214F  57                   push di
@@ -3618,7 +3824,7 @@ loc_218B:
 loc_219C:
 1:219C  90                   nop
 1:219D  0e                   push cs
-1:219E  e8fd1c               call 0x3e9e  ; sub_s1:3E9E
+1:219E  e8fd1c               call 0x3e9e  ; abort@s1:3E9E
 1:21A1  eb0b                 jmp 0x21ae
 1:21A3  db 90
 loc_21A4:
@@ -3635,29 +3841,75 @@ loc_21AE:
 1:21B2  c9                   leave
 1:21B3  ca0800               retf 8
 
-; ---------------- sub_s1:21B6 FAR size=140 callers=1
+; ---------------- SH_invokeHandler@s1:21B6 FAR size=28 callers=1
+;   SmartHeap internal: calls the installed error handler
 1:21B6  55                   push bp
 1:21B7  8bec                 mov bp, sp
 1:21B9  ff7608               push word ptr [bp + 8]
 1:21BC  ff7606               push word ptr [bp + 6]
 1:21BF  6a04                 push 4
 1:21C1  6a00                 push 0
-1:21C3  e834fc               call 0x1dfa  ; sub_s1:1DFA
+1:21C3  e834fc               call 0x1dfa  ; SH_errorRecord@s1:1DFA
 1:21C6  3d0100               cmp ax, 1
 1:21C9  1bc0                 sbb ax, ax
 1:21CB  f7d8                 neg ax
 1:21CD  c9                   leave
 1:21CE  ca0400               retf 4
-1:21D1  db 00 55 8b ec 2e f7 06 5f 1e 02 00 74 04 e9 43 00
-1:21E1  db 90 ff 76 0e ff 76 0c ff 76 06 6a 00 e8 0a fc 0b
-1:21F1  db c0 74 06 33 c0 c9 ca 0a 00 f6 46 06 04 75 24 66
-1:2201  db 33 db 8b 5e 0e 66 0f 03 d3 75 e8 8b 5e 0c 66 8b
-1:2211  db 4e 08 66 e3 24 66 49 66 03 d9 72 d7 66 3b d3 72
-1:2221  db d2 eb 16 ff 76 0e ff 76 0c 8b 46 08 8b 56 0a 8b
-1:2231  db 5e 06 e8 8a 00 0b c0 74 ba b8 01 00 c9 ca 0a 00
+1:21D1  db 00
+
+; ---------------- SH_reportError@s1:21D2 FAR size=112 callers=0
+;   SmartHeap: records an error, may exit
+1:21D2  55                   push bp
+1:21D3  8bec                 mov bp, sp
+1:21D5  2ef7065f1e0200       test word ptr cs:[0x1e5f], 2
+1:21DC  7404                 je 0x21e2
+1:21DE  e94300               jmp 0x2224
+1:21E1  db 90
+loc_21E2:
+1:21E2  ff760e               push word ptr [bp + 0xe]
+1:21E5  ff760c               push word ptr [bp + 0xc]
+1:21E8  ff7606               push word ptr [bp + 6]
+1:21EB  6a00                 push 0
+1:21ED  e80afc               call 0x1dfa  ; SH_errorRecord@s1:1DFA
+1:21F0  0bc0                 or ax, ax
+1:21F2  7406                 je 0x21fa
+loc_21F4:
+1:21F4  33c0                 xor ax, ax
+1:21F6  c9                   leave
+1:21F7  ca0a00               retf 0xa
+loc_21FA:
+1:21FA  f6460604             test byte ptr [bp + 6], 4
+1:21FE  7524                 jne 0x2224
+1:2200  6633db               xor ebx, ebx
+1:2203  8b5e0e               mov bx, word ptr [bp + 0xe]
+1:2206  660f03d3             lsl edx, ebx
+1:220A  75e8                 jne 0x21f4
+1:220C  8b5e0c               mov bx, word ptr [bp + 0xc]
+1:220F  668b4e08             mov ecx, dword ptr [bp + 8]
+1:2213  66e324               jcxz 0x223a
+1:2216  6649                 dec ecx
+1:2218  6603d9               add ebx, ecx
+1:221B  72d7                 jb 0x21f4
+1:221D  663bd3               cmp edx, ebx
+1:2220  72d2                 jb 0x21f4
+1:2222  eb16                 jmp 0x223a
+loc_2224:
+1:2224  ff760e               push word ptr [bp + 0xe]
+1:2227  ff760c               push word ptr [bp + 0xc]
+1:222A  8b4608               mov ax, word ptr [bp + 8]
+1:222D  8b560a               mov dx, word ptr [bp + 0xa]
+1:2230  8b5e06               mov bx, word ptr [bp + 6]
+1:2233  e88a00               call 0x22c0  ; SH_fatalExit@s1:22C0
+1:2236  0bc0                 or ax, ax
+1:2238  74ba                 je 0x21f4
+loc_223A:
+1:223A  b80100               mov ax, 1
+1:223D  c9                   leave
+1:223E  ca0a00               retf 0xa
 1:2241  db 90
 
-; ---------------- sub_s1:2242 size=190 callers=0
+; ---------------- _exit_hook@s1:2242 size=126 callers=1
+;   C runtime: exit path (calls _cexit)
 1:2242  c8060000             enter 6, 0
 1:2246  53                   push bx
 1:2247  50                   push ax
@@ -3721,19 +3973,41 @@ loc_22B6:
 1:22BA  5f                   pop di
 1:22BB  c9                   leave
 1:22BC  c20800               ret 8
-1:22BF  db 00 55 8b ec ff 76 06 ff 76 04 52 50 8b c3 8d 1e
-1:22CF  db fa 1d e8 6e ff 0b d0 75 08 b8 01 00 c9 c2 04 00
-1:22DF  db 90 33 c0 c9 c2 04 00 00 00 00 00 00 00 00 00 00
-1:22EF  db 00 00 00 00 00 00 00 5f 1e
+1:22BF  db 00
+
+; ---------------- SH_fatalExit@s1:22C0 FAR size=64 callers=1
+;   SmartHeap: terminates after a fatal error
+1:22C0  55                   push bp
+1:22C1  8bec                 mov bp, sp
+1:22C3  ff7606               push word ptr [bp + 6]
+1:22C6  ff7604               push word ptr [bp + 4]
+1:22C9  52                   push dx
+1:22CA  50                   push ax
+1:22CB  8bc3                 mov ax, bx
+1:22CD  8d1efa1d             lea bx, [0x1dfa]
+1:22D1  e86eff               call 0x2242  ; _exit_hook@s1:2242
+1:22D4  0bd0                 or dx, ax
+1:22D6  7508                 jne 0x22e0
+1:22D8  b80100               mov ax, 1
+1:22DB  c9                   leave
+1:22DC  c20400               ret 4
+1:22DF  db 90
+loc_22E0:
+1:22E0  33c0                 xor ax, ax
+1:22E2  c9                   leave
+1:22E3  c20400               ret 4
+1:22E6  db 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+1:22F6  db 5f 1e
 loc_22F8:
 1:22F8  b0ff                 mov al, 0xff
 1:22FA  50                   push ax
 1:22FB  90                   nop
 1:22FC  0e                   push cs
-1:22FD  e8db01               call 0x24db  ; sub_s1:24DB
+1:22FD  e8db01               call 0x24db  ; _doexit@s1:24DB
 
 ; ---------------- __astart@s1:2300 size=190 callers=0
 ;   apis: KERNEL.DOS3Call, KERNEL.GetVersion, KERNEL.InitTask, KERNEL.LockSegment, KERNEL.WaitEvent, USER.InitApp
+;   C runtime start: InitTask, WaitEvent, InitApp, _cinit, WinMain, exit
 1:2300  33ed                 xor bp, bp
 1:2302  55                   push bp
 1:2303  9affff0000           lcall 0, 0xffff  ; KERNEL.InitTask
@@ -3781,14 +4055,14 @@ loc_236B:
 loc_2383:
 1:2383  90                   nop
 1:2384  0e                   push cs
-1:2385  e86200               call 0x23ea  ; sub_s1:23EA
+1:2385  e86200               call 0x23ea  ; _cinit@s1:23EA
 1:2388  90                   nop
 1:2389  0e                   push cs
-1:238A  e89f02               call 0x262c  ; sub_s1:262C
+1:238A  e89f02               call 0x262c  ; _setargv@s1:262C
 1:238D  90                   nop
 1:238E  0e                   push cs
-1:238F  e84404               call 0x27d6  ; sub_s1:27D6
-1:2392  e81732               call 0x55ac  ; sub_s1:55AC
+1:238F  e84404               call 0x27d6  ; _setenvp@s1:27D6
+1:2392  e81732               call 0x55ac  ; _nullcheck@s1:55AC
 1:2395  ff36c05f             push word ptr [0x5fc0]
 1:2399  ff36be5f             push word ptr [0x5fbe]
 1:239D  ff36bc5f             push word ptr [0x5fbc]
@@ -3796,17 +4070,18 @@ loc_2383:
 1:23A5  ff36b85f             push word ptr [0x5fb8]
 1:23A9  90                   nop
 1:23AA  0e                   push cs
-1:23AB  e81000               call 0x23be  ; sub_s1:23BE
+1:23AB  e81000               call 0x23be  ; __callWinMain@s1:23BE
 1:23AE  83c40a               add sp, 0xa
 1:23B1  50                   push ax
 1:23B2  90                   nop
 1:23B3  0e                   push cs
-1:23B4  e81601               call 0x24cd  ; sub_s1:24CD
+1:23B4  e81601               call 0x24cd  ; exit@s1:24CD
 1:23B7  b81500               mov ax, 0x15
 1:23BA  e9dd04               jmp 0x289a
 1:23BD  db 00
 
-; ---------------- sub_s1:23BE FAR size=44 callers=1
+; ---------------- __callWinMain@s1:23BE FAR size=44 callers=1
+;   C runtime: pushes hInstance/hPrev/lpCmdLine/nCmdShow and calls WinMain (s2:54AA)
 1:23BE  8cd8                 mov ax, ds
 1:23C0  90                   nop
 1:23C1  45                   inc bp
@@ -3819,7 +4094,7 @@ loc_2383:
 1:23D0  ff36505f             push word ptr [0x5f50]
 1:23D4  ff364e5f             push word ptr [0x5f4e]
 1:23D8  ff36525f             push word ptr [0x5f52]
-1:23DC  9aaa54ffff           lcall 0xffff, 0x54aa  ; sub_s2:54AA
+1:23DC  9aaa54ffff           lcall 0xffff, 0x54aa  ; WinMain@s2:54AA
 1:23E1  83ed02               sub bp, 2
 1:23E4  8be5                 mov sp, bp
 1:23E6  1f                   pop ds
@@ -3827,8 +4102,9 @@ loc_2383:
 1:23E8  4d                   dec bp
 1:23E9  cb                   retf
 
-; ---------------- sub_s1:23EA FAR size=227 callers=1
+; ---------------- _cinit@s1:23EA FAR size=227 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime init: _C_FILE_INFO inheritance, runs the initialiser table
 1:23EA  8cd8                 mov ax, ds
 1:23EC  90                   nop
 1:23ED  45                   inc bp
@@ -3858,7 +4134,7 @@ loc_2429:
 1:2429  cd21                 int 0x21
 loc_242B:
 1:242B  0e                   push cs
-1:242C  e8ad05               call 0x29dc  ; sub_s1:29DC
+1:242C  e8ad05               call 0x29dc  ; _getDGROUP@s1:29DC
 1:242F  8ed8                 mov ds, ax
 1:2431  8b0e0262             mov cx, word ptr [0x6202]
 1:2435  e329                 jcxz 0x2460
@@ -3919,13 +4195,13 @@ loc_24A7:
 loc_24A9:
 1:24A9  be0c62               mov si, 0x620c
 1:24AC  bf0c62               mov di, 0x620c
-1:24AF  e8e200               call 0x2594  ; sub_s1:2594
+1:24AF  e8e200               call 0x2594  ; _initterm@s1:2594
 1:24B2  be0c62               mov si, 0x620c
 1:24B5  bf0c62               mov di, 0x620c
-1:24B8  e8d900               call 0x2594  ; sub_s1:2594
+1:24B8  e8d900               call 0x2594  ; _initterm@s1:2594
 1:24BB  beee61               mov si, 0x61ee
 1:24BE  bffe61               mov di, 0x61fe
-1:24C1  e8d000               call 0x2594  ; sub_s1:2594
+1:24C1  e8d000               call 0x2594  ; _initterm@s1:2594
 1:24C4  83ed02               sub bp, 2
 1:24C7  8be5                 mov sp, bp
 1:24C9  1f                   pop ds
@@ -3933,7 +4209,8 @@ loc_24A9:
 1:24CB  4d                   dec bp
 1:24CC  cb                   retf
 
-; ---------------- sub_s1:24CD FAR size=14 callers=11
+; ---------------- exit@s1:24CD FAR size=14 callers=11
+;   C runtime exit(code)
 1:24CD  8cd8                 mov ax, ds
 1:24CF  90                   nop
 1:24D0  45                   inc bp
@@ -3944,8 +4221,9 @@ loc_24A9:
 1:24D7  33c9                 xor cx, cx
 1:24D9  eb2f                 jmp 0x250a
 
-; ---------------- sub_s1:24DB FAR size=144 callers=1
+; ---------------- _doexit@s1:24DB FAR size=144 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime: runs atexit/terminators, restores vectors, terminates
 1:24DB  8cd8                 mov ax, ds
 1:24DD  90                   nop
 1:24DE  45                   inc bp
@@ -3964,22 +4242,22 @@ loc_250A:
 1:2511  751c                 jne 0x252f
 1:2513  beb668               mov si, 0x68b6
 1:2516  bfb668               mov di, 0x68b6
-1:2519  e87800               call 0x2594  ; sub_s1:2594
+1:2519  e87800               call 0x2594  ; _initterm@s1:2594
 1:251C  be0c62               mov si, 0x620c
 1:251F  bf1062               mov di, 0x6210
-1:2522  e86f00               call 0x2594  ; sub_s1:2594
+1:2522  e86f00               call 0x2594  ; _initterm@s1:2594
 1:2525  8b7606               mov si, word ptr [bp + 6]
 1:2528  56                   push si
-1:2529  e88030               call 0x55ac  ; sub_s1:55AC
+1:2529  e88030               call 0x55ac  ; _nullcheck@s1:55AC
 1:252C  83c402               add sp, 2
 loc_252F:
 1:252F  be1062               mov si, 0x6210
 1:2532  bf1062               mov di, 0x6210
-1:2535  e85c00               call 0x2594  ; sub_s1:2594
+1:2535  e85c00               call 0x2594  ; _initterm@s1:2594
 1:2538  be1062               mov si, 0x6210
 1:253B  bf1062               mov di, 0x6210
-1:253E  e85300               call 0x2594  ; sub_s1:2594
-1:2541  e82700               call 0x256b  ; sub_s1:256B
+1:253E  e85300               call 0x2594  ; _initterm@s1:2594
+1:2541  e82700               call 0x256b  ; _ctermsub@s1:256B
 1:2544  58                   pop ax
 1:2545  0ae4                 or ah, ah
 1:2547  7517                 jne 0x2560
@@ -4001,8 +4279,9 @@ loc_2560:
 1:2569  4d                   dec bp
 1:256A  cb                   retf
 
-; ---------------- sub_s1:256B size=41 callers=1
+; ---------------- _ctermsub@s1:256B size=41 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime: restores DOS interrupt vectors
 1:256B  8b0e0262             mov cx, word ptr [0x6202]
 1:256F  e307                 jcxz 0x2578
 1:2571  bb0200               mov bx, 2
@@ -4021,7 +4300,8 @@ loc_2592:
 1:2592  1f                   pop ds
 1:2593  c3                   ret
 
-; ---------------- sub_s1:2594 size=20 callers=2
+; ---------------- _initterm@s1:2594 size=20 callers=2
+;   C runtime: calls a table of far function pointers
 1:2594  3bf7                 cmp si, di
 1:2596  730e                 jae 0x25a6
 1:2598  83ef04               sub di, 4
@@ -4034,7 +4314,8 @@ loc_25A6:
 1:25A6  c3                   ret
 1:25A7  db 00
 
-; ---------------- sub_s1:25A8 FAR size=74 callers=1
+; ---------------- _FF_MSGBANNER@s1:25A8 FAR size=74 callers=1
+;   C runtime: writes the run-time error banner
 1:25A8  8cd8                 mov ax, ds
 1:25AA  90                   nop
 1:25AB  45                   inc bp
@@ -4045,11 +4326,11 @@ loc_25A6:
 1:25B2  b8fc00               mov ax, 0xfc
 1:25B5  50                   push ax
 1:25B6  0e                   push cs
-1:25B7  e85903               call 0x2913  ; sub_s1:2913
+1:25B7  e85903               call 0x2913  ; _NMSG_WRITE@s1:2913
 1:25BA  b8ff00               mov ax, 0xff
 1:25BD  50                   push ax
 1:25BE  0e                   push cs
-1:25BF  e85103               call 0x2913  ; sub_s1:2913
+1:25BF  e85103               call 0x2913  ; _NMSG_WRITE@s1:2913
 1:25C2  83ed02               sub bp, 2
 1:25C5  8be5                 mov sp, bp
 1:25C7  1f                   pop ds
@@ -4063,7 +4344,8 @@ loc_25CC:
 1:25D2  db 5b 40 24 fe 2b c4 73 4c f7 d8 36 39 06 0a 00 77
 1:25E2  db 43 36 39 06 0c 00 76 04 36 a3 0c 00 8b e0 ff e3
 
-; ---------------- sub_s1:25F2 FAR size=58 callers=3
+; ---------------- _chkstk@s1:25F2 FAR size=58 callers=3
+;   C runtime stack probe / alloca
 1:25F2  5b                   pop bx
 1:25F3  5a                   pop dx
 1:25F4  40                   inc ax
@@ -4084,7 +4366,7 @@ loc_260F:
 loc_2614:
 1:2614  90                   nop
 1:2615  0e                   push cs
-1:2616  e8c303               call 0x29dc  ; sub_s1:29DC
+1:2616  e8c303               call 0x29dc  ; _getDGROUP@s1:29DC
 1:2619  8ed8                 mov ds, ax
 1:261B  8b16ce5f             mov dx, word ptr [0x5fce]
 1:261F  42                   inc dx
@@ -4094,13 +4376,14 @@ loc_2626:
 1:2626  b80000               mov ax, 0
 1:2629  e96e02               jmp 0x289a
 
-; ---------------- sub_s1:262C FAR size=426 callers=1
+; ---------------- _setargv@s1:262C FAR size=426 callers=1
 ;   apis: KERNEL.GetModuleFileName
+;   C runtime: builds argv from the command line (GetModuleFileName)
 1:262C  8f06d25f             pop word ptr [0x5fd2]
 1:2630  8f06d45f             pop word ptr [0x5fd4]
 1:2634  b80401               mov ax, 0x104
 1:2637  b90800               mov cx, 8
-1:263A  e81303               call 0x2950  ; sub_s1:2950
+1:263A  e81303               call 0x2950  ; _malloc_crt@s1:2950
 1:263D  8916c45f             mov word ptr [0x5fc4], dx
 1:2641  a3c25f               mov word ptr [0x5fc2], ax
 1:2644  52                   push dx
@@ -4225,7 +4508,7 @@ loc_26E8:
 1:2717  83c304               add bx, 4
 1:271A  50                   push ax
 1:271B  0e                   push cs
-1:271C  e8bd02               call 0x29dc  ; sub_s1:29DC
+1:271C  e8bd02               call 0x29dc  ; _getDGROUP@s1:29DC
 1:271F  8ed8                 mov ds, ax
 1:2721  58                   pop ax
 1:2722  8e1e7e5f             mov ds, word ptr [0x5f7e]
@@ -4328,14 +4611,15 @@ loc_27BE:
 1:27C0  aa                   stosb byte ptr es:[di], al
 loc_27C1:
 1:27C1  0e                   push cs
-1:27C2  e81702               call 0x29dc  ; sub_s1:29DC
+1:27C2  e81702               call 0x29dc  ; _getDGROUP@s1:29DC
 1:27C5  8ed8                 mov ds, ax
 1:27C7  36c7070000           mov word ptr ss:[bx], 0
 1:27CC  36c747020000         mov word ptr ss:[bx + 2], 0
 1:27D2  ff2ed25f             ljmp [0x5fd2]
 
-; ---------------- sub_s1:27D6 FAR size=262 callers=1
+; ---------------- _setenvp@s1:27D6 FAR size=262 callers=1
 ;   apis: KERNEL.FatalAppExit, KERNEL.GetDOSEnvironment
+;   C runtime: builds the environment (GetDOSEnvironment), FatalAppExit on failure
 1:27D6  8cd8                 mov ax, ds
 1:27D8  90                   nop
 1:27D9  45                   inc bp
@@ -4376,11 +4660,11 @@ loc_2815:
 1:281D  d1e6                 shl si, 1
 1:281F  d1e6                 shl si, 1
 1:2821  b90900               mov cx, 9
-1:2824  e82901               call 0x2950  ; sub_s1:2950
+1:2824  e82901               call 0x2950  ; _malloc_crt@s1:2950
 1:2827  52                   push dx
 1:2828  50                   push ax
 1:2829  8bc6                 mov ax, si
-1:282B  e82201               call 0x2950  ; sub_s1:2950
+1:282B  e82201               call 0x2950  ; _malloc_crt@s1:2950
 1:282E  a3be5f               mov word ptr [0x5fbe], ax
 1:2831  8916c05f             mov word ptr [0x5fc0], dx
 1:2835  8956fa               mov word ptr [bp - 6], dx
@@ -4442,11 +4726,11 @@ loc_289A:
 1:289A  50                   push ax
 1:289B  50                   push ax
 1:289C  0e                   push cs
-1:289D  e808fd               call 0x25a8  ; sub_s1:25A8
+1:289D  e808fd               call 0x25a8  ; _FF_MSGBANNER@s1:25A8
 1:28A0  0e                   push cs
-1:28A1  e86f00               call 0x2913  ; sub_s1:2913
+1:28A1  e86f00               call 0x2913  ; _NMSG_WRITE@s1:2913
 1:28A4  0e                   push cs
-1:28A5  e83400               call 0x28dc  ; sub_s1:28DC
+1:28A5  e83400               call 0x28dc  ; _NMSG_TEXT@s1:28DC
 1:28A8  33db                 xor bx, bx
 1:28AA  0bc0                 or ax, ax
 1:28AC  741d                 je 0x28cb
@@ -4472,7 +4756,8 @@ loc_28CB:
 1:28CE  9affff0000           lcall 0, 0xffff  ; KERNEL.FatalAppExit
 1:28D3  db b8 ff 00 50 9a ff ff 00 00
 
-; ---------------- sub_s1:28DC FAR size=55 callers=2
+; ---------------- _NMSG_TEXT@s1:28DC FAR size=55 callers=2
+;   C runtime: run-time message number -> text
 1:28DC  8cd8                 mov ax, ds
 1:28DE  90                   nop
 1:28DF  45                   inc bp
@@ -4510,7 +4795,8 @@ loc_2905:
 1:290F  4d                   dec bp
 1:2910  ca0200               retf 2
 
-; ---------------- sub_s1:2913 FAR size=61 callers=2
+; ---------------- _NMSG_WRITE@s1:2913 FAR size=61 callers=2
+;   C runtime: writes a run-time message
 1:2913  8cd8                 mov ax, ds
 1:2915  90                   nop
 1:2916  45                   inc bp
@@ -4523,7 +4809,7 @@ loc_2905:
 1:2923  741f                 je 0x2944
 1:2925  ff7606               push word ptr [bp + 6]
 1:2928  0e                   push cs
-1:2929  e8b0ff               call 0x28dc  ; sub_s1:28DC
+1:2929  e8b0ff               call 0x28dc  ; _NMSG_TEXT@s1:28DC
 1:292C  0bc0                 or ax, ax
 1:292E  7414                 je 0x2944
 1:2930  92                   xchg dx, ax
@@ -4534,7 +4820,7 @@ loc_2905:
 1:293A  f7d1                 not cx
 1:293C  49                   dec cx
 1:293D  8b1e8a5f             mov bx, word ptr [0x5f8a]
-1:2941  e86d2c               call 0x55b1  ; sub_s1:55B1
+1:2941  e86d2c               call 0x55b1  ; _amsg_exit_R6020@s1:55B1
 loc_2944:
 1:2944  5f                   pop di
 1:2945  83ed02               sub bp, 2
@@ -4544,7 +4830,8 @@ loc_2944:
 1:294C  4d                   dec bp
 1:294D  ca0200               retf 2
 
-; ---------------- sub_s1:2950 size=95 callers=2
+; ---------------- _malloc_crt@s1:2950 size=95 callers=2
+;   C runtime internal allocation (exits on failure)
 1:2950  55                   push bp
 1:2951  8bec                 mov bp, sp
 1:2953  53                   push bx
@@ -4556,7 +4843,7 @@ loc_2944:
 1:295E  50                   push ax
 1:295F  90                   nop
 1:2960  0e                   push cs
-1:2961  e816ed               call 0x167a  ; sub_s1:167A
+1:2961  e816ed               call 0x167a  ; _fmalloc@s1:167A
 1:2964  5b                   pop bx
 1:2965  8f066660             pop word ptr [0x6066]
 1:2969  59                   pop cx
@@ -4587,7 +4874,7 @@ loc_2980:
 loc_298B:
 1:298B  73f3                 jae 0x2980
 1:298D  50                   push ax
-1:298E  e82400               call 0x29b5  ; sub_s1:29B5
+1:298E  e82400               call 0x29b5  ; _dosmaperr@s1:29B5
 1:2991  58                   pop ax
 1:2992  32e4                 xor ah, ah
 1:2994  83ed02               sub bp, 2
@@ -4599,7 +4886,7 @@ loc_298B:
 loc_299D:
 1:299D  7307                 jae 0x29a6
 loc_299F:
-1:299F  e81300               call 0x29b5  ; sub_s1:29B5
+1:299F  e81300               call 0x29b5  ; _dosmaperr@s1:29B5
 1:29A2  b8ffff               mov ax, 0xffff
 1:29A5  99                   cdq
 loc_29A6:
@@ -4610,12 +4897,14 @@ loc_29A6:
 1:29AD  4d                   dec bp
 1:29AE  cb                   retf
 
-; ---------------- sub_s1:29AF FAR size=6 callers=1
+; ---------------- _dosmaperr_far@s1:29AF FAR size=6 callers=1
+;   C runtime: DOS error -> errno (far entry)
 1:29AF  32e4                 xor ah, ah
-1:29B1  e80100               call 0x29b5  ; sub_s1:29B5
+1:29B1  e80100               call 0x29b5  ; _dosmaperr@s1:29B5
 1:29B4  cb                   retf
 
-; ---------------- sub_s1:29B5 size=39 callers=2
+; ---------------- _dosmaperr@s1:29B5 size=39 callers=2
+;   C runtime: DOS error -> errno
 1:29B5  a2885f               mov byte ptr [0x5f88], al
 1:29B8  0ae4                 or ah, ah
 1:29BA  751b                 jne 0x29d7
@@ -4642,7 +4931,8 @@ loc_29D7:
 1:29D9  ebf7                 jmp 0x29d2
 1:29DB  db 00
 
-; ---------------- sub_s1:29DC FAR size=16 callers=3
+; ---------------- _getDGROUP@s1:29DC FAR size=16 callers=3
+;   C runtime: returns the data segment
 1:29DC  2e803eec29b8         cmp byte ptr cs:[0x29ec], 0xb8
 1:29E2  7403                 je 0x29e7
 1:29E4  8cd0                 mov ax, ss
@@ -4651,7 +4941,8 @@ loc_29E7:
 1:29E7  2ea1ed29             mov ax, word ptr cs:[0x29ed]
 1:29EB  cb                   retf
 
-; ---------------- ___EXPORTEDSTUB@s1:29EC size=278 callers=0
+; ---------------- ___EXPORTEDSTUB@s1:29EC size=20 callers=0
+;   exported prologue stub
 1:29EC  8cd8                 mov ax, ds
 1:29EE  90                   nop
 1:29EF  45                   inc bp
@@ -4665,25 +4956,145 @@ loc_29E7:
 1:29FC  5d                   pop bp
 1:29FD  4d                   dec bp
 1:29FE  cb                   retf
-1:29FF  db 90 45 55 8b ec 1e 83 ec 14 57 56 bf ff ff 8b 46
-1:2A0F  db 06 8b f0 8b d8 f6 47 0a 40 74 08 c6 47 0a 00 e9
-1:2A1F  db d5 00 90 f6 44 0a 83 75 03 e9 c7 00 1e 56 e8 74
-1:2A2F  db 05 83 c4 04 8b f8 8b de 81 eb 10 62 8b 87 04 63
-1:2A3F  db 89 46 fc 1e 56 e8 69 02 83 c4 04 8a 44 0b 2a e4
-1:2A4F  db 89 46 ea 3b 06 8a 5f 7e 18 33 c0 50 ff 76 ea 90
-1:2A5F  db 0e e8 4e 2b 83 c4 04 0b c0 7d 18 b8 01 00 eb 15
-1:2A6F  db 90 8a 44 0b 2a e4 50 90 0e e8 83 0b 83 c4 02 0b
-1:2A7F  db c0 7c e8 33 c0 89 46 ec 0b c0 75 64 39 46 fc 74
-1:2A8F  db 62 b8 ea 5f 1e 50 8d 4e f2 16 51 90 0e e8 9f 12
-1:2A9F  db 83 c4 08 8d 46 f4 89 46 ee 8c 56 f0 80 7e f2 5c
-1:2AAF  db 74 15 b8 ec 5f 1e 50 8d 46 f2 16 50 90 0e e8 2a
-1:2ABF  db 12 83 c4 08 eb 04 90 ff 4e ee b8 0a 00 50 ff 76
-1:2ACF  db f0 ff 76 ee ff 76 fc 90 0e e8 a7 13 83 c4 08 8d
-1:2ADF  db 46 f2 16 50 90 0e e8 66 26 83 c4 04 0b c0 74 03
-1:2AEF  db bf ff ff c6 44 0a 00 8b c7 5e 5f 8d 66 fe 1f 5d
-1:2AFF  db 4d cb 90
+1:29FF  db 90
 
-; ---------------- sub_s1:2B02 FAR size=58 callers=1
+; ---------------- fclose@s1:2A00 FAR size=258 callers=1
+;   C runtime fclose (flush, free the buffer, close, remove a temp file)
+1:2A00  45                   inc bp
+1:2A01  55                   push bp
+1:2A02  8bec                 mov bp, sp
+1:2A04  1e                   push ds
+1:2A05  83ec14               sub sp, 0x14
+1:2A08  57                   push di
+1:2A09  56                   push si
+1:2A0A  bfffff               mov di, 0xffff
+1:2A0D  8b4606               mov ax, word ptr [bp + 6]
+1:2A10  8bf0                 mov si, ax
+1:2A12  8bd8                 mov bx, ax
+1:2A14  f6470a40             test byte ptr [bx + 0xa], 0x40
+1:2A18  7408                 je 0x2a22
+1:2A1A  c6470a00             mov byte ptr [bx + 0xa], 0
+1:2A1E  e9d500               jmp 0x2af6
+1:2A21  db 90
+loc_2A22:
+1:2A22  f6440a83             test byte ptr [si + 0xa], 0x83
+1:2A26  7503                 jne 0x2a2b
+1:2A28  e9c700               jmp 0x2af2
+loc_2A2B:
+1:2A2B  1e                   push ds
+1:2A2C  56                   push si
+1:2A2D  e87405               call 0x2fa4  ; _flush@s1:2FA4
+1:2A30  83c404               add sp, 4
+1:2A33  8bf8                 mov di, ax
+1:2A35  8bde                 mov bx, si
+1:2A37  81eb1062             sub bx, 0x6210
+1:2A3B  8b870463             mov ax, word ptr [bx + 0x6304]
+1:2A3F  8946fc               mov word ptr [bp - 4], ax
+1:2A42  1e                   push ds
+1:2A43  56                   push si
+1:2A44  e86902               call 0x2cb0  ; _freebuf@s1:2CB0
+1:2A47  83c404               add sp, 4
+1:2A4A  8a440b               mov al, byte ptr [si + 0xb]
+1:2A4D  2ae4                 sub ah, ah
+1:2A4F  8946ea               mov word ptr [bp - 0x16], ax
+1:2A52  3b068a5f             cmp ax, word ptr [0x5f8a]
+1:2A56  7e18                 jle 0x2a70
+1:2A58  33c0                 xor ax, ax
+1:2A5A  50                   push ax
+1:2A5B  ff76ea               push word ptr [bp - 0x16]
+1:2A5E  90                   nop
+1:2A5F  0e                   push cs
+1:2A60  e84e2b               call 0x55b1  ; _amsg_exit_R6020@s1:55B1
+1:2A63  83c404               add sp, 4
+1:2A66  0bc0                 or ax, ax
+1:2A68  7d18                 jge 0x2a82
+loc_2A6A:
+1:2A6A  b80100               mov ax, 1
+1:2A6D  eb15                 jmp 0x2a84
+1:2A6F  db 90
+loc_2A70:
+1:2A70  8a440b               mov al, byte ptr [si + 0xb]
+1:2A73  2ae4                 sub ah, ah
+1:2A75  50                   push ax
+1:2A76  90                   nop
+1:2A77  0e                   push cs
+1:2A78  e8830b               call 0x35fe  ; _close@s1:35FE
+1:2A7B  83c402               add sp, 2
+1:2A7E  0bc0                 or ax, ax
+1:2A80  7ce8                 jl 0x2a6a
+loc_2A82:
+1:2A82  33c0                 xor ax, ax
+loc_2A84:
+1:2A84  8946ec               mov word ptr [bp - 0x14], ax
+1:2A87  0bc0                 or ax, ax
+1:2A89  7564                 jne 0x2aef
+1:2A8B  3946fc               cmp word ptr [bp - 4], ax
+1:2A8E  7462                 je 0x2af2
+1:2A90  b8ea5f               mov ax, 0x5fea
+1:2A93  1e                   push ds
+1:2A94  50                   push ax
+1:2A95  8d4ef2               lea cx, [bp - 0xe]
+1:2A98  16                   push ss
+1:2A99  51                   push cx
+1:2A9A  90                   nop
+1:2A9B  0e                   push cs
+1:2A9C  e89f12               call 0x3d3e  ; _fstrcpy@s1:3D3E
+1:2A9F  83c408               add sp, 8
+1:2AA2  8d46f4               lea ax, [bp - 0xc]
+1:2AA5  8946ee               mov word ptr [bp - 0x12], ax
+1:2AA8  8c56f0               mov word ptr [bp - 0x10], ss
+1:2AAB  807ef25c             cmp byte ptr [bp - 0xe], 0x5c
+1:2AAF  7415                 je 0x2ac6
+1:2AB1  b8ec5f               mov ax, 0x5fec
+1:2AB4  1e                   push ds
+1:2AB5  50                   push ax
+1:2AB6  8d46f2               lea ax, [bp - 0xe]
+1:2AB9  16                   push ss
+1:2ABA  50                   push ax
+1:2ABB  90                   nop
+1:2ABC  0e                   push cs
+1:2ABD  e82a12               call 0x3cea  ; _fstrcat@s1:3CEA
+1:2AC0  83c408               add sp, 8
+1:2AC3  eb04                 jmp 0x2ac9
+1:2AC5  db 90
+loc_2AC6:
+1:2AC6  ff4eee               dec word ptr [bp - 0x12]
+loc_2AC9:
+1:2AC9  b80a00               mov ax, 0xa
+1:2ACC  50                   push ax
+1:2ACD  ff76f0               push word ptr [bp - 0x10]
+1:2AD0  ff76ee               push word ptr [bp - 0x12]
+1:2AD3  ff76fc               push word ptr [bp - 4]
+1:2AD6  90                   nop
+1:2AD7  0e                   push cs
+1:2AD8  e8a713               call 0x3e82  ; _itoa@s1:3E82
+1:2ADB  83c408               add sp, 8
+1:2ADE  8d46f2               lea ax, [bp - 0xe]
+1:2AE1  16                   push ss
+1:2AE2  50                   push ax
+1:2AE3  90                   nop
+1:2AE4  0e                   push cs
+1:2AE5  e86626               call 0x514e  ; remove@s1:514E
+1:2AE8  83c404               add sp, 4
+1:2AEB  0bc0                 or ax, ax
+1:2AED  7403                 je 0x2af2
+loc_2AEF:
+1:2AEF  bfffff               mov di, 0xffff
+loc_2AF2:
+1:2AF2  c6440a00             mov byte ptr [si + 0xa], 0
+loc_2AF6:
+1:2AF6  8bc7                 mov ax, di
+1:2AF8  5e                   pop si
+1:2AF9  5f                   pop di
+1:2AFA  8d66fe               lea sp, [bp - 2]
+1:2AFD  1f                   pop ds
+1:2AFE  5d                   pop bp
+1:2AFF  4d                   dec bp
+1:2B00  cb                   retf
+1:2B01  db 90
+
+; ---------------- _fsopen@s1:2B02 FAR size=58 callers=1
+;   C runtime: opens a FILE stream with a share mode
 1:2B02  45                   inc bp
 1:2B03  55                   push bp
 1:2B04  8bec                 mov bp, sp
@@ -4691,7 +5102,7 @@ loc_29E7:
 1:2B07  83ec08               sub sp, 8
 1:2B0A  90                   nop
 1:2B0B  0e                   push cs
-1:2B0C  e89b0a               call 0x35aa  ; sub_s1:35AA
+1:2B0C  e89b0a               call 0x35aa  ; _getstream@s1:35AA
 1:2B0F  8956fc               mov word ptr [bp - 4], dx
 1:2B12  0bd0                 or dx, ax
 1:2B14  7506                 jne 0x2b1c
@@ -4709,7 +5120,7 @@ loc_2B1C:
 1:2B2C  ff7606               push word ptr [bp + 6]
 1:2B2F  90                   nop
 1:2B30  0e                   push cs
-1:2B31  e80002               call 0x2d34  ; sub_s1:2D34
+1:2B31  e80002               call 0x2d34  ; _openfile@s1:2D34
 loc_2B34:
 1:2B34  8d66fe               lea sp, [bp - 2]
 1:2B37  1f                   pop ds
@@ -4718,7 +5129,8 @@ loc_2B34:
 1:2B3A  cb                   retf
 1:2B3B  db 90
 
-; ---------------- sub_s1:2B3C FAR size=32 callers=1
+; ---------------- fopen@s1:2B3C FAR size=32 callers=1
+;   C runtime fopen (used for the debug log simres.out)
 1:2B3C  45                   inc bp
 1:2B3D  55                   push bp
 1:2B3E  8bec                 mov bp, sp
@@ -4731,14 +5143,15 @@ loc_2B34:
 1:2B4D  ff7606               push word ptr [bp + 6]
 1:2B50  90                   nop
 1:2B51  0e                   push cs
-1:2B52  e8adff               call 0x2b02  ; sub_s1:2B02
+1:2B52  e8adff               call 0x2b02  ; _fsopen@s1:2B02
 1:2B55  8d66fe               lea sp, [bp - 2]
 1:2B58  1f                   pop ds
 1:2B59  5d                   pop bp
 1:2B5A  4d                   dec bp
 1:2B5B  cb                   retf
 
-; ---------------- sub_s1:2B5C FAR size=90 callers=2
+; ---------------- fprintf@s1:2B5C FAR size=68 callers=2
+;   C runtime fprintf
 1:2B5C  45                   inc bp
 1:2B5D  55                   push bp
 1:2B5E  8bec                 mov bp, sp
@@ -4749,7 +5162,7 @@ loc_2B34:
 1:2B66  8b7606               mov si, word ptr [bp + 6]
 1:2B69  1e                   push ds
 1:2B6A  56                   push si
-1:2B6B  e80603               call 0x2e74  ; sub_s1:2E74
+1:2B6B  e80603               call 0x2e74  ; _stbuf@s1:2E74
 1:2B6E  83c404               add sp, 4
 1:2B71  8bf8                 mov di, ax
 1:2B73  8d460e               lea ax, [bp + 0xe]
@@ -4761,13 +5174,13 @@ loc_2B34:
 1:2B7F  56                   push si
 1:2B80  90                   nop
 1:2B81  0e                   push cs
-1:2B82  e82f05               call 0x30b4  ; sub_s1:30B4
+1:2B82  e82f05               call 0x30b4  ; _output@s1:30B4
 1:2B85  83c40c               add sp, 0xc
 1:2B88  8946f8               mov word ptr [bp - 8], ax
 1:2B8B  1e                   push ds
 1:2B8C  56                   push si
 1:2B8D  57                   push di
-1:2B8E  e86f03               call 0x2f00  ; sub_s1:2F00
+1:2B8E  e86f03               call 0x2f00  ; _ftbuf@s1:2F00
 1:2B91  83c406               add sp, 6
 1:2B94  8b46f8               mov ax, word ptr [bp - 8]
 1:2B97  5e                   pop si
@@ -4777,10 +5190,26 @@ loc_2B34:
 1:2B9D  5d                   pop bp
 1:2B9E  4d                   dec bp
 1:2B9F  cb                   retf
-1:2BA0  db 55 8b ec 90 0e e8 7c 04 a0 c9 5f 0a c0 74 05 90
-1:2BB0  db 0e e8 a8 13 5d cb
 
-; ---------------- sub_s1:2BB6 FAR size=306 callers=2
+; ---------------- _endstdio@s1:2BA0 FAR size=22 callers=0
+;   C runtime: flushes and closes the streams at exit
+1:2BA0  55                   push bp
+1:2BA1  8bec                 mov bp, sp
+1:2BA3  90                   nop
+1:2BA4  0e                   push cs
+1:2BA5  e87c04               call 0x3024  ; flushall@s1:3024
+1:2BA8  a0c95f               mov al, byte ptr [0x5fc9]
+1:2BAB  0ac0                 or al, al
+1:2BAD  7405                 je 0x2bb4
+1:2BAF  90                   nop
+1:2BB0  0e                   push cs
+1:2BB1  e8a813               call 0x3f5c  ; _fcloseall@s1:3F5C
+loc_2BB4:
+1:2BB4  5d                   pop bp
+1:2BB5  cb                   retf
+
+; ---------------- _flsbuf@s1:2BB6 FAR size=250 callers=2
+;   C runtime: flushes a full stream buffer
 1:2BB6  8cd8                 mov ax, ds
 1:2BB8  90                   nop
 1:2BB9  45                   inc bp
@@ -4836,7 +5265,7 @@ loc_2C21:
 1:2C29  57                   push di
 1:2C2A  53                   push bx
 1:2C2B  0e                   push cs
-1:2C2C  e8c30d               call 0x39f2  ; sub_s1:39F2
+1:2C2C  e8c30d               call 0x39f2  ; _write@s1:39F2
 1:2C2F  83c408               add sp, 8
 1:2C32  b90100               mov cx, 1
 1:2C35  eb46                 jmp 0x2c7d
@@ -4848,7 +5277,7 @@ loc_2C40:
 1:2C40  53                   push bx
 1:2C41  1e                   push ds
 1:2C42  56                   push si
-1:2C43  e8a200               call 0x2ce8  ; sub_s1:2CE8
+1:2C43  e8a200               call 0x2ce8  ; _getbuf@s1:2CE8
 1:2C46  83c404               add sp, 4
 1:2C49  5b                   pop bx
 1:2C4A  f6440a08             test byte ptr [si + 0xa], 8
@@ -4869,7 +5298,7 @@ loc_2C50:
 1:2C68  ff7406               push word ptr [si + 6]
 1:2C6B  53                   push bx
 1:2C6C  0e                   push cs
-1:2C6D  e8820d               call 0x39f2  ; sub_s1:39F2
+1:2C6D  e8820d               call 0x39f2  ; _write@s1:39F2
 1:2C70  83c408               add sp, 8
 1:2C73  59                   pop cx
 loc_2C74:
@@ -4892,7 +5321,7 @@ loc_2C88:
 1:2C96  50                   push ax
 1:2C97  53                   push bx
 1:2C98  0e                   push cs
-1:2C99  e89a09               call 0x3636  ; sub_s1:3636
+1:2C99  e89a09               call 0x3636  ; _lseek@s1:3636
 1:2C9C  83c408               add sp, 8
 1:2C9F  33c0                 xor ax, ax
 1:2CA1  8bc8                 mov cx, ax
@@ -4906,12 +5335,39 @@ loc_2CA5:
 1:2CAD  5d                   pop bp
 1:2CAE  4d                   dec bp
 1:2CAF  cb                   retf
-1:2CB0  db 55 8b ec 56 8b 76 04 8a 44 0a a8 83 74 26 a8 08
-1:2CC0  db 74 22 ff 74 08 ff 74 06 90 0e e8 21 ea 83 c4 04
-1:2CD0  db 80 64 0a f7 33 c0 89 44 06 89 44 08 89 04 89 44
-1:2CE0  db 02 89 44 04 5e 5d c3 00
 
-; ---------------- sub_s1:2CE8 size=76 callers=1
+; ---------------- _freebuf@s1:2CB0 FAR size=56 callers=1
+;   C runtime: frees a stream buffer
+1:2CB0  55                   push bp
+1:2CB1  8bec                 mov bp, sp
+1:2CB3  56                   push si
+1:2CB4  8b7604               mov si, word ptr [bp + 4]
+1:2CB7  8a440a               mov al, byte ptr [si + 0xa]
+1:2CBA  a883                 test al, 0x83
+1:2CBC  7426                 je 0x2ce4
+1:2CBE  a808                 test al, 8
+1:2CC0  7422                 je 0x2ce4
+1:2CC2  ff7408               push word ptr [si + 8]
+1:2CC5  ff7406               push word ptr [si + 6]
+1:2CC8  90                   nop
+1:2CC9  0e                   push cs
+1:2CCA  e821ea               call 0x16ee  ; _ffree@s1:16EE
+1:2CCD  83c404               add sp, 4
+1:2CD0  80640af7             and byte ptr [si + 0xa], 0xf7
+1:2CD4  33c0                 xor ax, ax
+1:2CD6  894406               mov word ptr [si + 6], ax
+1:2CD9  894408               mov word ptr [si + 8], ax
+1:2CDC  8904                 mov word ptr [si], ax
+1:2CDE  894402               mov word ptr [si + 2], ax
+1:2CE1  894404               mov word ptr [si + 4], ax
+loc_2CE4:
+1:2CE4  5e                   pop si
+1:2CE5  5d                   pop bp
+1:2CE6  c3                   ret
+1:2CE7  db 00
+
+; ---------------- _getbuf@s1:2CE8 size=76 callers=1
+;   C runtime: allocates a stream buffer
 1:2CE8  55                   push bp
 1:2CE9  8bec                 mov bp, sp
 1:2CEB  56                   push si
@@ -4920,7 +5376,7 @@ loc_2CA5:
 1:2CF2  50                   push ax
 1:2CF3  90                   nop
 1:2CF4  0e                   push cs
-1:2CF5  e882e9               call 0x167a  ; sub_s1:167A
+1:2CF5  e882e9               call 0x167a  ; _fmalloc@s1:167A
 1:2CF8  59                   pop cx
 1:2CF9  8bde                 mov bx, si
 1:2CFB  81eb1062             sub bx, 0x6210
@@ -4946,7 +5402,8 @@ loc_2D20:
 1:2D32  c3                   ret
 1:2D33  db 00
 
-; ---------------- sub_s1:2D34 FAR size=320 callers=1
+; ---------------- _openfile@s1:2D34 FAR size=320 callers=1
+;   C runtime: parses the fopen mode and opens the file
 1:2D34  45                   inc bp
 1:2D35  55                   push bp
 1:2D36  8bec                 mov bp, sp
@@ -5053,7 +5510,7 @@ loc_2E0A:
 1:2E15  ff7606               push word ptr [bp + 6]
 1:2E18  90                   nop
 1:2E19  0e                   push cs
-1:2E1A  e8ed08               call 0x370a  ; sub_s1:370A
+1:2E1A  e8ed08               call 0x370a  ; _sopen@s1:370A
 1:2E1D  83c40a               add sp, 0xa
 1:2E20  8946f4               mov word ptr [bp - 0xc], ax
 1:2E23  0bc0                 or ax, ax
@@ -5093,7 +5550,8 @@ loc_2E6B:
 1:2E72  4d                   dec bp
 1:2E73  cb                   retf
 
-; ---------------- sub_s1:2E74 size=140 callers=1
+; ---------------- _stbuf@s1:2E74 size=140 callers=1
+;   C runtime: temporary buffering for console streams
 1:2E74  55                   push bp
 1:2E75  8bec                 mov bp, sp
 1:2E77  56                   push si
@@ -5142,7 +5600,7 @@ loc_2EE3:
 1:2EE7  50                   push ax
 1:2EE8  90                   nop
 1:2EE9  0e                   push cs
-1:2EEA  e88de7               call 0x167a  ; sub_s1:167A
+1:2EEA  e88de7               call 0x167a  ; _fmalloc@s1:167A
 1:2EED  5b                   pop bx
 1:2EEE  5b                   pop bx
 1:2EEF  0bd2                 or dx, dx
@@ -5158,7 +5616,8 @@ loc_2EFC:
 1:2EFE  5d                   pop bp
 1:2EFF  c3                   ret
 
-; ---------------- sub_s1:2F00 size=72 callers=1
+; ---------------- _ftbuf@s1:2F00 size=72 callers=1
+;   C runtime: ends temporary buffering
 1:2F00  55                   push bp
 1:2F01  8bec                 mov bp, sp
 1:2F03  56                   push si
@@ -5175,7 +5634,7 @@ loc_2EFC:
 1:2F21  7420                 je 0x2f43
 1:2F23  1e                   push ds
 1:2F24  56                   push si
-1:2F25  e87c00               call 0x2fa4  ; sub_s1:2FA4
+1:2F25  e87c00               call 0x2fa4  ; _flush@s1:2FA4
 1:2F28  83c404               add sp, 4
 1:2F2B  837e0400             cmp word ptr [bp + 4], 0
 1:2F2F  7412                 je 0x2f43
@@ -5193,7 +5652,8 @@ loc_2F43:
 1:2F46  c3                   ret
 1:2F47  db 00
 
-; ---------------- sub_s1:2F48 FAR size=92 callers=3
+; ---------------- fflush@s1:2F48 FAR size=92 callers=3
+;   C runtime fflush (NULL flushes every stream)
 1:2F48  45                   inc bp
 1:2F49  55                   push bp
 1:2F4A  8bec                 mov bp, sp
@@ -5204,12 +5664,12 @@ loc_2F43:
 1:2F54  7508                 jne 0x2f5e
 1:2F56  33c0                 xor ax, ax
 1:2F58  50                   push ax
-1:2F59  e8dc00               call 0x3038  ; sub_s1:3038
+1:2F59  e8dc00               call 0x3038  ; _flsall@s1:3038
 1:2F5C  eb3e                 jmp 0x2f9c
 loc_2F5E:
 1:2F5E  ff7608               push word ptr [bp + 8]
 1:2F61  ff7606               push word ptr [bp + 6]
-1:2F64  e83d00               call 0x2fa4  ; sub_s1:2FA4
+1:2F64  e83d00               call 0x2fa4  ; _flush@s1:2FA4
 1:2F67  83c404               add sp, 4
 1:2F6A  0bc0                 or ax, ax
 1:2F6C  7406                 je 0x2f74
@@ -5228,7 +5688,7 @@ loc_2F74:
 1:2F8D  50                   push ax
 1:2F8E  90                   nop
 1:2F8F  0e                   push cs
-1:2F90  e87710               call 0x400a  ; sub_s1:400A
+1:2F90  e87710               call 0x400a  ; _commit_flush?@s1:400A
 1:2F93  83c402               add sp, 2
 1:2F96  3d0100               cmp ax, 1
 1:2F99  f5                   cmc
@@ -5241,7 +5701,8 @@ loc_2F9C:
 1:2FA2  4d                   dec bp
 1:2FA3  cb                   retf
 
-; ---------------- sub_s1:2FA4 size=148 callers=2
+; ---------------- _flush@s1:2FA4 size=128 callers=3
+;   C runtime: writes a stream's buffer
 1:2FA4  55                   push bp
 1:2FA5  8bec                 mov bp, sp
 1:2FA7  83ec02               sub sp, 2
@@ -5275,7 +5736,7 @@ loc_2FD2:
 1:2FEA  50                   push ax
 1:2FEB  90                   nop
 1:2FEC  0e                   push cs
-1:2FED  e8020a               call 0x39f2  ; sub_s1:39F2
+1:2FED  e8020a               call 0x39f2  ; _write@s1:39F2
 1:2FF0  83c408               add sp, 8
 1:2FF3  3b46fe               cmp ax, word ptr [bp - 2]
 1:2FF6  750c                 jne 0x3004
@@ -5298,10 +5759,26 @@ loc_300B:
 1:301F  8be5                 mov sp, bp
 1:3021  5d                   pop bp
 1:3022  c3                   ret
-1:3023  db 90 45 55 8b ec 1e b8 01 00 50 e8 08 00 8d 66 fe
-1:3033  db 1f 5d 4d cb 90
+1:3023  db 90
 
-; ---------------- sub_s1:3038 size=124 callers=1
+; ---------------- flushall@s1:3024 FAR size=20 callers=1
+;   C runtime flushall
+1:3024  45                   inc bp
+1:3025  55                   push bp
+1:3026  8bec                 mov bp, sp
+1:3028  1e                   push ds
+1:3029  b80100               mov ax, 1
+1:302C  50                   push ax
+1:302D  e80800               call 0x3038  ; _flsall@s1:3038
+1:3030  8d66fe               lea sp, [bp - 2]
+1:3033  1f                   pop ds
+1:3034  5d                   pop bp
+1:3035  4d                   dec bp
+1:3036  cb                   retf
+1:3037  db 90
+
+; ---------------- _flsall@s1:3038 size=124 callers=2
+;   C runtime: flushes all streams
 1:3038  55                   push bp
 1:3039  8bec                 mov bp, sp
 1:303B  83ec02               sub sp, 2
@@ -5320,7 +5797,7 @@ loc_304A:
 1:3057  56                   push si
 1:3058  90                   nop
 1:3059  0e                   push cs
-1:305A  e8ebfe               call 0x2f48  ; sub_s1:2F48
+1:305A  e8ebfe               call 0x2f48  ; fflush@s1:2F48
 1:305D  83c404               add sp, 4
 1:3060  40                   inc ax
 1:3061  7505                 jne 0x3068
@@ -5338,7 +5815,7 @@ loc_306B:
 1:307E  56                   push si
 1:307F  90                   nop
 1:3080  0e                   push cs
-1:3081  e8c4fe               call 0x2f48  ; sub_s1:2F48
+1:3081  e8c4fe               call 0x2f48  ; fflush@s1:2F48
 1:3084  83c404               add sp, 4
 1:3087  40                   inc ax
 1:3088  74de                 je 0x3068
@@ -5369,7 +5846,8 @@ switch_table_30A4:
     dw loc_31C5
     dw loc_31F7
 
-; ---------------- sub_s1:30B4 FAR size=1051 callers=2
+; ---------------- _output@s1:30B4 FAR size=1051 callers=2
+;   C runtime printf formatting engine
 1:30B4  8cd8                 mov ax, ds
 1:30B6  90                   nop
 1:30B7  45                   inc bp
@@ -5379,7 +5857,7 @@ switch_table_30A4:
 1:30BC  8ed8                 mov ds, ax
 1:30BE  b81402               mov ax, 0x214  ; 'SOLClearWnd'
 1:30C1  0e                   push cs
-1:30C2  e82df5               call 0x25f2  ; sub_s1:25F2
+1:30C2  e82df5               call 0x25f2  ; _chkstk@s1:25F2
 1:30C5  56                   push si
 1:30C6  57                   push di
 1:30C7  33c0                 xor ax, ax
@@ -5422,7 +5900,7 @@ loc_30FA:
 loc_3113:
 1:3113  8a56fc               mov dl, byte ptr [bp - 4]
 1:3116  b90100               mov cx, 1
-1:3119  e83604               call 0x3552  ; sub_s1:3552
+1:3119  e83604               call 0x3552  ; _output_pad@s1:3552
 1:311C  ebb1                 jmp 0x30cf
 loc_311E:
 1:311E  33c0                 xor ax, ax
@@ -5461,7 +5939,7 @@ loc_3168:
 1:3168  8a4efc               mov cl, byte ptr [bp - 4]
 1:316B  80f92a               cmp cl, 0x2a
 1:316E  750f                 jne 0x317f
-1:3170  e85c03               call 0x34cf  ; sub_s1:34CF
+1:3170  e85c03               call 0x34cf  ; _output_getint@s1:34CF
 1:3173  0bc0                 or ax, ax
 1:3175  7917                 jns 0x318e
 1:3177  f7d8                 neg ax
@@ -5484,7 +5962,7 @@ loc_319C:
 1:319C  8a4efc               mov cl, byte ptr [bp - 4]
 1:319F  80f92a               cmp cl, 0x2a
 1:31A2  750c                 jne 0x31b0
-1:31A4  e82803               call 0x34cf  ; sub_s1:34CF
+1:31A4  e82803               call 0x34cf  ; _output_getint@s1:34CF
 1:31A7  0bc0                 or ax, ax
 1:31A9  7914                 jns 0x31bf
 1:31AB  b8ffff               mov ax, 0xffff
@@ -5566,7 +6044,7 @@ loc_3224:
 loc_323F:
 1:323F  e9b500               jmp 0x32f7
 loc_3242:
-1:3242  e88a02               call 0x34cf  ; sub_s1:34CF
+1:3242  e88a02               call 0x34cf  ; _output_getint@s1:34CF
 1:3245  8dbeeafd             lea di, [bp - 0x216]
 1:3249  16                   push ss
 1:324A  07                   pop es
@@ -5575,7 +6053,7 @@ loc_3242:
 1:324D  b90100               mov cx, 1
 1:3250  e9f101               jmp 0x3444
 loc_3253:
-1:3253  e89002               call 0x34e6  ; sub_s1:34E6
+1:3253  e89002               call 0x34e6  ; _output_getptr@s1:34E6
 1:3256  0bff                 or di, di
 1:3258  7512                 jne 0x326c
 1:325A  8cc0                 mov ax, es
@@ -5600,7 +6078,7 @@ loc_3279:
 1:327C  87cf                 xchg di, cx
 1:327E  e9c301               jmp 0x3444
 loc_3281:
-1:3281  e86202               call 0x34e6  ; sub_s1:34E6
+1:3281  e86202               call 0x34e6  ; _output_getptr@s1:34E6
 1:3284  8b46f6               mov ax, word ptr [bp - 0xa]
 1:3287  ab                   stosw word ptr es:[di], ax
 1:3288  f646fa10             test byte ptr [bp - 6], 0x10
@@ -5612,10 +6090,10 @@ loc_3291:
 loc_3294:
 1:3294  f646fa30             test byte ptr [bp - 6], 0x30
 1:3298  7505                 jne 0x329f
-1:329A  e83202               call 0x34cf  ; sub_s1:34CF
+1:329A  e83202               call 0x34cf  ; _output_getint@s1:34CF
 1:329D  eb39                 jmp 0x32d8
 loc_329F:
-1:329F  e83602               call 0x34d8  ; sub_s1:34D8
+1:329F  e83602               call 0x34d8  ; _output_getlong@s1:34D8
 1:32A2  f646fb18             test byte ptr [bp - 5], 0x18
 1:32A6  7530                 jne 0x32d8
 1:32A8  c646fd07             mov byte ptr [bp - 3], 7
@@ -5626,13 +6104,13 @@ loc_329F:
 1:32B2  33d2                 xor dx, dx
 1:32B4  8dbef2fd             lea di, [bp - 0x20e]
 1:32B8  be0400               mov si, 4
-1:32BB  e8b002               call 0x356e  ; sub_s1:356E
+1:32BB  e8b002               call 0x356e  ; _output_cvtnum@s1:356E
 1:32BE  b91000               mov cx, 0x10
 1:32C1  8dbeedfd             lea di, [bp - 0x213]
 1:32C5  58                   pop ax
 1:32C6  33d2                 xor dx, dx
 1:32C8  be0400               mov si, 4
-1:32CB  e8a002               call 0x356e  ; sub_s1:356E
+1:32CB  e8a002               call 0x356e  ; _output_cvtnum@s1:356E
 1:32CE  c686eefd3a           mov byte ptr [bp - 0x212], 0x3a
 1:32D3  b90900               mov cx, 9
 1:32D6  eb18                 jmp 0x32f0
@@ -5644,7 +6122,7 @@ loc_32D8:
 1:32E1  33d2                 xor dx, dx
 1:32E3  8dbeedfd             lea di, [bp - 0x213]
 1:32E7  be0400               mov si, 4
-1:32EA  e88102               call 0x356e  ; sub_s1:356E
+1:32EA  e88102               call 0x356e  ; _output_cvtnum@s1:356E
 1:32ED  b90400               mov cx, 4
 loc_32F0:
 1:32F0  8dbeeafd             lea di, [bp - 0x216]
@@ -5749,10 +6227,10 @@ loc_33D0:
 loc_33D4:
 1:33D4  f646fa10             test byte ptr [bp - 6], 0x10
 1:33D8  7405                 je 0x33df
-1:33DA  e8fb00               call 0x34d8  ; sub_s1:34D8
+1:33DA  e8fb00               call 0x34d8  ; _output_getlong@s1:34D8
 1:33DD  eb0e                 jmp 0x33ed
 loc_33DF:
-1:33DF  e8ed00               call 0x34cf  ; sub_s1:34CF
+1:33DF  e8ed00               call 0x34cf  ; _output_getint@s1:34CF
 1:33E2  f646fa40             test byte ptr [bp - 6], 0x40
 1:33E6  7403                 je 0x33eb
 1:33E8  99                   cdq
@@ -5787,7 +6265,7 @@ loc_341E:
 1:3423  8a4ef8               mov cl, byte ptr [bp - 8]
 1:3426  32ed                 xor ch, ch
 1:3428  8b76f2               mov si, word ptr [bp - 0xe]
-1:342B  e84001               call 0x356e  ; sub_s1:356E
+1:342B  e84001               call 0x356e  ; _output_cvtnum@s1:356E
 1:342E  f646fb02             test byte ptr [bp - 5], 2
 1:3432  740e                 je 0x3442
 1:3434  e306                 jcxz 0x343c
@@ -5832,14 +6310,14 @@ loc_3487:
 1:348E  7507                 jne 0x3497
 1:3490  8bc8                 mov cx, ax
 1:3492  b220                 mov dl, 0x20  ; 'New failed in Op::Op'
-1:3494  e8bb00               call 0x3552  ; sub_s1:3552
+1:3494  e8bb00               call 0x3552  ; _output_pad@s1:3552
 loc_3497:
 1:3497  50                   push ax
 1:3498  16                   push ss
 1:3499  07                   pop es
 1:349A  8d7ef0               lea di, [bp - 0x10]
 1:349D  8b4eee               mov cx, word ptr [bp - 0x12]
-1:34A0  e89100               call 0x3534  ; sub_s1:3534
+1:34A0  e89100               call 0x3534  ; _output_putstr@s1:3534
 1:34A3  58                   pop ax
 1:34A4  f646fa08             test byte ptr [bp - 6], 8
 1:34A8  740d                 je 0x34b7
@@ -5847,29 +6325,31 @@ loc_3497:
 1:34AE  7507                 jne 0x34b7
 1:34B0  8bc8                 mov cx, ax
 1:34B2  b230                 mov dl, 0x30
-1:34B4  e89b00               call 0x3552  ; sub_s1:3552
+1:34B4  e89b00               call 0x3552  ; _output_pad@s1:3552
 loc_34B7:
 1:34B7  59                   pop cx
 1:34B8  5f                   pop di
 1:34B9  07                   pop es
 1:34BA  50                   push ax
-1:34BB  e87600               call 0x3534  ; sub_s1:3534
+1:34BB  e87600               call 0x3534  ; _output_putstr@s1:3534
 1:34BE  58                   pop ax
 1:34BF  f646fa04             test byte ptr [bp - 6], 4
 1:34C3  7407                 je 0x34cc
 1:34C5  8bc8                 mov cx, ax
 1:34C7  b220                 mov dl, 0x20  ; 'New failed in Op::Op'
-1:34C9  e88600               call 0x3552  ; sub_s1:3552
+1:34C9  e88600               call 0x3552  ; _output_pad@s1:3552
 loc_34CC:
 1:34CC  e900fc               jmp 0x30cf
 
-; ---------------- sub_s1:34CF size=9 callers=2
+; ---------------- _output_getint@s1:34CF size=9 callers=2
+;   C runtime _output helper: next int argument
 1:34CF  c4760e               les si, ptr [bp + 0xe]
 1:34D2  26ad                 lodsw ax, word ptr es:[si]
 1:34D4  89760e               mov word ptr [bp + 0xe], si
 1:34D7  c3                   ret
 
-; ---------------- sub_s1:34D8 size=14 callers=2
+; ---------------- _output_getlong@s1:34D8 size=14 callers=2
+;   C runtime _output helper: next long argument
 1:34D8  c4760e               les si, ptr [bp + 0xe]
 1:34DB  26ad                 lodsw ax, word ptr es:[si]
 1:34DD  8bd0                 mov dx, ax
@@ -5878,15 +6358,16 @@ loc_34CC:
 1:34E2  89760e               mov word ptr [bp + 0xe], si
 1:34E5  c3                   ret
 
-; ---------------- sub_s1:34E6 size=29 callers=1
+; ---------------- _output_getptr@s1:34E6 size=29 callers=1
+;   C runtime _output helper: next pointer argument
 1:34E6  f646fa20             test byte ptr [bp - 6], 0x20
 1:34EA  7408                 je 0x34f4
-1:34EC  e8e9ff               call 0x34d8  ; sub_s1:34D8
+1:34EC  e8e9ff               call 0x34d8  ; _output_getlong@s1:34D8
 1:34EF  8ec2                 mov es, dx
 1:34F1  8bf8                 mov di, ax
 1:34F3  c3                   ret
 loc_34F4:
-1:34F4  e8d8ff               call 0x34cf  ; sub_s1:34CF
+1:34F4  e8d8ff               call 0x34cf  ; _output_getint@s1:34CF
 1:34F7  8bf8                 mov di, ax
 1:34F9  0bc0                 or ax, ax
 1:34FB  7503                 jne 0x3500
@@ -5897,7 +6378,8 @@ loc_3500:
 1:3501  07                   pop es
 1:3502  c3                   ret
 
-; ---------------- sub_s1:3503 size=49 callers=2
+; ---------------- _output_putc@s1:3503 size=49 callers=2
+;   C runtime _output helper: writes one character
 1:3503  98                   cwde
 1:3504  06                   push es
 1:3505  57                   push di
@@ -5921,7 +6403,7 @@ loc_351F:
 1:3522  53                   push bx
 1:3523  50                   push ax
 1:3524  0e                   push cs
-1:3525  e88ef6               call 0x2bb6  ; sub_s1:2BB6
+1:3525  e88ef6               call 0x2bb6  ; _flsbuf@s1:2BB6
 1:3528  83c406               add sp, 6
 1:352B  5a                   pop dx
 1:352C  59                   pop cx
@@ -5929,7 +6411,8 @@ loc_351F:
 1:3530  75e8                 jne 0x351a
 1:3532  ebe8                 jmp 0x351c
 
-; ---------------- sub_s1:3534 size=30 callers=1
+; ---------------- _output_putstr@s1:3534 size=30 callers=1
+;   C runtime _output helper: writes a string
 1:3534  e31b                 jcxz 0x3551
 1:3536  8bf7                 mov si, di
 1:3538  014ef6               add word ptr [bp - 0xa], cx
@@ -5937,7 +6420,7 @@ loc_351F:
 1:353C  33ff                 xor di, di
 loc_353E:
 1:353E  26ac                 lodsb al, byte ptr es:[si]
-1:3540  e8c0ff               call 0x3503  ; sub_s1:3503
+1:3540  e8c0ff               call 0x3503  ; _output_putc@s1:3503
 1:3543  0bf8                 or di, ax
 1:3545  e2f7                 loop 0x353e
 1:3547  0bff                 or di, di
@@ -5947,14 +6430,15 @@ loc_353E:
 loc_3551:
 1:3551  c3                   ret
 
-; ---------------- sub_s1:3552 size=28 callers=1
+; ---------------- _output_pad@s1:3552 size=28 callers=1
+;   C runtime _output helper: writes padding
 1:3552  e319                 jcxz 0x356d
 1:3554  014ef6               add word ptr [bp - 0xa], cx
 1:3557  57                   push di
 1:3558  33ff                 xor di, di
 loc_355A:
 1:355A  8ac2                 mov al, dl
-1:355C  e8a4ff               call 0x3503  ; sub_s1:3503
+1:355C  e8a4ff               call 0x3503  ; _output_putc@s1:3503
 1:355F  0bf8                 or di, ax
 1:3561  e2f7                 loop 0x355a
 1:3563  0bff                 or di, di
@@ -5964,7 +6448,8 @@ loc_355A:
 loc_356D:
 1:356D  c3                   ret
 
-; ---------------- sub_s1:356E size=60 callers=1
+; ---------------- _output_cvtnum@s1:356E size=60 callers=1
+;   C runtime _output helper: number to digits
 1:356E  fd                   std
 1:356F  57                   push di
 1:3570  93                   xchg bx, ax
@@ -6009,7 +6494,8 @@ loc_359F:
 1:35A8  4d                   dec bp
 1:35A9  cb                   retf
 
-; ---------------- sub_s1:35AA FAR size=140 callers=1
+; ---------------- _getstream@s1:35AA FAR size=84 callers=1
+;   C runtime: finds a free FILE slot
 1:35AA  45                   inc bp
 1:35AB  55                   push bp
 1:35AC  8bec                 mov bp, sp
@@ -6047,13 +6533,42 @@ loc_35EF:
 1:35FA  5d                   pop bp
 1:35FB  4d                   dec bp
 1:35FC  cb                   retf
-1:35FD  db 90 8c d8 90 45 55 8b ec 1e 8e d8 8b 5e 06 3b 1e
-1:360D  db 8a 5f 72 06 b8 00 09 f9 eb 1b b4 3e 2e f7 06 f6
-1:361D  db 22 01 00 74 07 9a 8a 25 00 00 eb 02 cd 21 72 05
-1:362D  db c6 87 90 5f 00 e9 49 f3 00
+1:35FD  db 90
 
-; ---------------- sub_s1:3636 FAR size=212 callers=1
+; ---------------- _close@s1:35FE FAR size=56 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime _close (DOS 3Eh)
+1:35FE  8cd8                 mov ax, ds
+1:3600  90                   nop
+1:3601  45                   inc bp
+1:3602  55                   push bp
+1:3603  8bec                 mov bp, sp
+1:3605  1e                   push ds
+1:3606  8ed8                 mov ds, ax
+1:3608  8b5e06               mov bx, word ptr [bp + 6]
+1:360B  3b1e8a5f             cmp bx, word ptr [0x5f8a]
+1:360F  7206                 jb 0x3617
+1:3611  b80009               mov ax, 0x900
+1:3614  f9                   stc
+1:3615  eb1b                 jmp 0x3632
+loc_3617:
+1:3617  b43e                 mov ah, 0x3e
+1:3619  2ef706f6220100       test word ptr cs:[0x22f6], 1
+1:3620  7407                 je 0x3629
+1:3622  9a8a250000           lcall 0, 0x258a  ; KERNEL.DOS3Call
+1:3627  eb02                 jmp 0x362b
+loc_3629:
+1:3629  cd21                 int 0x21
+loc_362B:
+1:362B  7205                 jb 0x3632
+1:362D  c687905f00           mov byte ptr [bx + 0x5f90], 0
+loc_3632:
+1:3632  e949f3               jmp 0x297e
+1:3635  db 00
+
+; ---------------- _lseek@s1:3636 FAR size=212 callers=1
+;   apis: KERNEL.DOS3Call
+;   C runtime _lseek (DOS 42h)
 1:3636  8cd8                 mov ax, ds
 1:3638  90                   nop
 1:3639  45                   inc bp
@@ -6142,8 +6657,9 @@ loc_3700:
 loc_3707:
 1:3707  e993f2               jmp 0x299d
 
-; ---------------- sub_s1:370A FAR size=727 callers=1
+; ---------------- _sopen@s1:370A FAR size=727 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime _open/_sopen (DOS 3Dh/3Ch)
 1:370A  8cd8                 mov ax, ds
 1:370C  90                   nop
 1:370D  45                   inc bp
@@ -6333,7 +6849,7 @@ loc_38C3:
 loc_38C6:
 1:38C6  c646fb00             mov byte ptr [bp - 5], 0
 1:38CA  8b4e0c               mov cx, word ptr [bp + 0xc]
-1:38CD  e81101               call 0x39e1  ; sub_s1:39E1
+1:38CD  e81101               call 0x39e1  ; _umaskval@s1:39E1
 1:38D0  894e0c               mov word ptr [bp + 0xc], cx
 1:38D3  f646fcff             test byte ptr [bp - 4], 0xff
 1:38D7  7507                 jne 0x38e0
@@ -6455,7 +6971,8 @@ loc_39DD:
 1:39DD  32c9                 xor cl, cl
 1:39DF  ebc7                 jmp 0x39a8
 
-; ---------------- sub_s1:39E1 size=17 callers=1
+; ---------------- _umaskval@s1:39E1 size=17 callers=1
+;   C runtime: applies the umask to open flags
 1:39E1  a17a5f               mov ax, word ptr [0x5f7a]
 1:39E4  f7d0                 not ax
 1:39E6  23c1                 and ax, cx
@@ -6466,8 +6983,9 @@ loc_39DD:
 loc_39F1:
 1:39F1  c3                   ret
 
-; ---------------- sub_s1:39F2 FAR size=231 callers=2
+; ---------------- _write@s1:39F2 FAR size=231 callers=2
 ;   apis: KERNEL.DOS3Call
+;   C runtime _write (text-mode LF->CRLF)
 1:39F2  8cd8                 mov ax, ds
 1:39F4  90                   nop
 1:39F5  45                   inc bp
@@ -6531,7 +7049,7 @@ loc_3A4B:
 1:3A79  8e5ef8               mov ds, word ptr [bp - 8]
 1:3A7C  90                   nop
 1:3A7D  0e                   push cs
-1:3A7E  e82b01               call 0x3bac  ; sub_s1:3BAC
+1:3A7E  e82b01               call 0x3bac  ; _stackavail?@s1:3BAC
 1:3A81  3da800               cmp ax, 0xa8
 1:3A84  764c                 jbe 0x3ad2
 1:3A86  1f                   pop ds
@@ -6558,21 +7076,21 @@ loc_3AA7:
 loc_3AAB:
 1:3AAB  aa                   stosb byte ptr es:[di], al
 1:3AAC  e2f4                 loop 0x3aa2
-1:3AAE  e82800               call 0x3ad9  ; sub_s1:3AD9
+1:3AAE  e82800               call 0x3ad9  ; _write_text@s1:3AD9
 loc_3AB1:
 1:3AB1  e99400               jmp 0x3b48
 loc_3AB4:
 1:3AB4  b00d                 mov al, 0xd
 1:3AB6  3bfb                 cmp di, bx
 1:3AB8  7503                 jne 0x3abd
-1:3ABA  e81c00               call 0x3ad9  ; sub_s1:3AD9
+1:3ABA  e81c00               call 0x3ad9  ; _write_text@s1:3AD9
 loc_3ABD:
 1:3ABD  aa                   stosb byte ptr es:[di], al
 1:3ABE  b00a                 mov al, 0xa
 1:3AC0  ff46fa               inc word ptr [bp - 6]
 1:3AC3  ebe2                 jmp 0x3aa7
 loc_3AC5:
-1:3AC5  e81100               call 0x3ad9  ; sub_s1:3AD9
+1:3AC5  e81100               call 0x3ad9  ; _write_text@s1:3AD9
 1:3AC8  ebe1                 jmp 0x3aab
 loc_3ACA:
 1:3ACA  5e                   pop si
@@ -6583,10 +7101,11 @@ loc_3ACF:
 loc_3AD2:
 1:3AD2  b8fcff               mov ax, 0xfffc
 1:3AD5  0e                   push cs
-1:3AD6  e819eb               call 0x25f2  ; sub_s1:25F2
+1:3AD6  e819eb               call 0x25f2  ; _chkstk@s1:25F2
 
-; ---------------- sub_s1:3AD9 size=211 callers=1
+; ---------------- _write_text@s1:3AD9 size=211 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime _write helper for text mode
 1:3AD9  50                   push ax
 1:3ADA  53                   push bx
 1:3ADB  51                   push cx
@@ -6600,7 +7119,7 @@ loc_3AD2:
 1:3AE6  8b5e06               mov bx, word ptr [bp + 6]
 1:3AE9  3b5ef4               cmp bx, word ptr [bp - 0xc]
 1:3AEC  7205                 jb 0x3af3
-1:3AEE  e8c01a               call 0x55b1  ; sub_s1:55B1
+1:3AEE  e8c01a               call 0x55b1  ; _amsg_exit_R6020@s1:55B1
 1:3AF1  eb14                 jmp 0x3b07
 loc_3AF3:
 1:3AF3  b440                 mov ah, 0x40
@@ -6668,7 +7187,7 @@ loc_3B65:
 1:3B66  c55608               lds dx, ptr [bp + 8]
 1:3B69  3b5ef4               cmp bx, word ptr [bp - 0xc]
 1:3B6C  7205                 jb 0x3b73
-1:3B6E  e8401a               call 0x55b1  ; sub_s1:55B1
+1:3B6E  e8401a               call 0x55b1  ; _amsg_exit_R6020@s1:55B1
 1:3B71  eb14                 jmp 0x3b87
 loc_3B73:
 1:3B73  b440                 mov ah, 0x40
@@ -6700,7 +7219,8 @@ loc_3BA6:
 1:3BA7  b8001c               mov ax, 0x1c00
 1:3BAA  ebaa                 jmp 0x3b56
 
-; ---------------- sub_s1:3BAC FAR size=318 callers=2
+; ---------------- _stackavail?@s1:3BAC FAR size=318 callers=2
+;   C runtime: stack-space helper used by _write and qsort
 1:3BAC  59                   pop cx
 1:3BAD  5a                   pop dx
 1:3BAE  a1485f               mov ax, word ptr [0x5f48]
@@ -6735,7 +7255,8 @@ loc_3BBC:
 1:3CD0  db f2 4f 4f 8b f7 5f c3 00 55 8b ec ff 76 08 ff 76
 1:3CE0  db 06 90 0e e8 94 03 8b e5 5d cb
 
-; ---------------- sub_s1:3CEA FAR size=84 callers=27
+; ---------------- _fstrcat@s1:3CEA FAR size=84 callers=28
+;   C runtime _fstrcat
 1:3CEA  55                   push bp
 1:3CEB  8bec                 mov bp, sp
 1:3CED  8bd7                 mov dx, di
@@ -6783,7 +7304,8 @@ loc_3D2D:
 1:3D3C  5d                   pop bp
 1:3D3D  cb                   retf
 
-; ---------------- _fstrcpy@s1:3D3E FAR size=60 callers=70
+; ---------------- _fstrcpy@s1:3D3E FAR size=60 callers=73
+;   C runtime _fstrcpy
 1:3D3E  55                   push bp
 1:3D3F  8bec                 mov bp, sp
 1:3D41  8bd7                 mov dx, di
@@ -6820,7 +7342,8 @@ loc_3D69:
 1:3D78  5d                   pop bp
 1:3D79  cb                   retf
 
-; ---------------- sub_s1:3D7A FAR size=42 callers=14
+; ---------------- _fstrcmp@s1:3D7A FAR size=42 callers=14
+;   C runtime _fstrcmp
 1:3D7A  55                   push bp
 1:3D7B  8bec                 mov bp, sp
 1:3D7D  8bd7                 mov dx, di
@@ -6845,7 +7368,8 @@ loc_3D9C:
 1:3DA2  cb                   retf
 1:3DA3  db 00
 
-; ---------------- sub_s1:3DA4 FAR size=26 callers=26
+; ---------------- _fstrlen@s1:3DA4 FAR size=26 callers=27
+;   C runtime _fstrlen
 1:3DA4  55                   push bp
 1:3DA5  8bec                 mov bp, sp
 1:3DA7  8bd7                 mov dx, di
@@ -6863,7 +7387,8 @@ loc_3DB8:
 1:3DBC  cb                   retf
 1:3DBD  db 00
 
-; ---------------- sub_s1:3DBE FAR size=42 callers=4
+; ---------------- _fstrncpy@s1:3DBE FAR size=42 callers=4
+;   C runtime _fstrncpy
 1:3DBE  55                   push bp
 1:3DBF  8bec                 mov bp, sp
 1:3DC1  57                   push di
@@ -6893,7 +7418,8 @@ loc_3DDD:
 1:3DE6  5d                   pop bp
 1:3DE7  cb                   retf
 
-; ---------------- sub_s1:3DE8 FAR size=60 callers=3
+; ---------------- _fstrncmp?@s1:3DE8 FAR size=60 callers=3
+;   C runtime: bounded string compare (getenv, save tags)
 1:3DE8  55                   push bp
 1:3DE9  8bec                 mov bp, sp
 1:3DEB  57                   push di
@@ -6930,11 +7456,13 @@ loc_3E1A:
 1:3E22  cb                   retf
 1:3E23  db 00
 
-; ---------------- sub_s1:3E24 FAR size=4 callers=4
+; ---------------- _fatoi@s1:3E24 FAR size=4 callers=4
+;   C runtime atoi (jumps into atol)
 1:3E24  e90500               jmp 0x3e2c
 1:3E27  db 00
 
-; ---------------- _fatol@s1:3E28 FAR size=118 callers=6
+; ---------------- _fatol@s1:3E28 FAR size=90 callers=6
+;   C runtime atol
 1:3E28  e90100               jmp 0x3e2c
 1:3E2B  db 00
 loc_3E2C:
@@ -6992,11 +7520,28 @@ loc_3E7D:
 1:3E7F  5f                   pop di
 1:3E80  5d                   pop bp
 1:3E81  cb                   retf
-1:3E82  db 55 8b ec 56 57 b3 01 8b 4e 0c 8b 46 06 33 d2 83
-1:3E92  db f9 0a 75 01 99 1e c5 7e 08 e9 bd 0a
 
-; ---------------- sub_s1:3E9E FAR size=34 callers=1
+; ---------------- _itoa@s1:3E82 FAR size=28 callers=1
+;   C runtime _itoa
+1:3E82  55                   push bp
+1:3E83  8bec                 mov bp, sp
+1:3E85  56                   push si
+1:3E86  57                   push di
+1:3E87  b301                 mov bl, 1
+1:3E89  8b4e0c               mov cx, word ptr [bp + 0xc]
+1:3E8C  8b4606               mov ax, word ptr [bp + 6]
+1:3E8F  33d2                 xor dx, dx
+1:3E91  83f90a               cmp cx, 0xa
+1:3E94  7501                 jne 0x3e97
+1:3E96  99                   cdq
+loc_3E97:
+1:3E97  1e                   push ds
+1:3E98  c57e08               lds di, ptr [bp + 8]
+1:3E9B  e9bd0a               jmp 0x495b
+
+; ---------------- abort@s1:3E9E FAR size=34 callers=1
 ;   apis: KERNEL.FatalAppExit
+;   C runtime abort: FatalAppExit "ABNORMAL PROGRAM TERMINATION"
 1:3E9E  8cd8                 mov ax, ds
 1:3EA0  90                   nop
 1:3EA1  45                   inc bp
@@ -7012,7 +7557,8 @@ loc_3E7D:
 1:3EB1  9acf280000           lcall 0, 0x28cf  ; KERNEL.FatalAppExit
 1:3EB6  db 83 ed 02 8b e5 1f 5d 4d cb 00
 
-; ---------------- sub_s1:3EC0 FAR size=220 callers=2
+; ---------------- getenv@s1:3EC0 FAR size=156 callers=2
+;   C runtime getenv
 1:3EC0  45                   inc bp
 1:3EC1  55                   push bp
 1:3EC2  8bec                 mov bp, sp
@@ -7032,7 +7578,7 @@ loc_3E7D:
 1:3EE5  ff7606               push word ptr [bp + 6]
 1:3EE8  90                   nop
 1:3EE9  0e                   push cs
-1:3EEA  e8b7fe               call 0x3da4  ; sub_s1:3DA4
+1:3EEA  e8b7fe               call 0x3da4  ; _fstrlen@s1:3DA4
 1:3EED  83c404               add sp, 4
 1:3EF0  8bf0                 mov si, ax
 loc_3EF2:
@@ -7044,7 +7590,7 @@ loc_3EF2:
 1:3F02  26ff37               push word ptr es:[bx]
 1:3F05  90                   nop
 1:3F06  0e                   push cs
-1:3F07  e89afe               call 0x3da4  ; sub_s1:3DA4
+1:3F07  e89afe               call 0x3da4  ; _fstrlen@s1:3DA4
 1:3F0A  83c404               add sp, 4
 1:3F0D  3bc6                 cmp ax, si
 1:3F0F  7639                 jbe 0x3f4a
@@ -7060,7 +7606,7 @@ loc_3EF2:
 1:3F2B  26ff37               push word ptr es:[bx]
 1:3F2E  90                   nop
 1:3F2F  0e                   push cs
-1:3F30  e8b5fe               call 0x3de8  ; sub_s1:3DE8
+1:3F30  e8b5fe               call 0x3de8  ; _fstrncmp?@s1:3DE8
 1:3F33  83c40a               add sp, 0xa
 1:3F36  0bc0                 or ax, ax
 1:3F38  7510                 jne 0x3f4a
@@ -7084,13 +7630,54 @@ loc_3F53:
 1:3F58  5d                   pop bp
 1:3F59  4d                   dec bp
 1:3F5A  cb                   retf
-1:3F5B  db 90 45 55 8b ec 1e 57 56 33 ff 39 3e ec 61 74 05
-1:3F6B  db be 34 62 eb 09 be 10 62 eb 04 90 83 c6 0c 39 36
-1:3F7B  db f0 5f 72 11 1e 56 90 0e e8 7a ea 83 c4 04 40 74
-1:3F8B  db ea 47 eb e7 90 8b c7 5e 5f 8d 66 fe 1f 5d 4d cb
+1:3F5B  db 90
+
+; ---------------- _fcloseall@s1:3F5C FAR size=64 callers=1
+;   C runtime _fcloseall
+1:3F5C  45                   inc bp
+1:3F5D  55                   push bp
+1:3F5E  8bec                 mov bp, sp
+1:3F60  1e                   push ds
+1:3F61  57                   push di
+1:3F62  56                   push si
+1:3F63  33ff                 xor di, di
+1:3F65  393eec61             cmp word ptr [0x61ec], di
+1:3F69  7405                 je 0x3f70
+1:3F6B  be3462               mov si, 0x6234
+1:3F6E  eb09                 jmp 0x3f79
+loc_3F70:
+1:3F70  be1062               mov si, 0x6210
+1:3F73  eb04                 jmp 0x3f79
+1:3F75  db 90
+loc_3F76:
+1:3F76  83c60c               add si, 0xc
+loc_3F79:
+1:3F79  3936f05f             cmp word ptr [0x5ff0], si
+1:3F7D  7211                 jb 0x3f90
+1:3F7F  1e                   push ds
+1:3F80  56                   push si
+1:3F81  90                   nop
+1:3F82  0e                   push cs
+1:3F83  e87aea               call 0x2a00  ; fclose@s1:2A00
+1:3F86  83c404               add sp, 4
+1:3F89  40                   inc ax
+1:3F8A  74ea                 je 0x3f76
+1:3F8C  47                   inc di
+1:3F8D  ebe7                 jmp 0x3f76
+1:3F8F  db 90
+loc_3F90:
+1:3F90  8bc7                 mov ax, di
+1:3F92  5e                   pop si
+1:3F93  5f                   pop di
+1:3F94  8d66fe               lea sp, [bp - 2]
+1:3F97  1f                   pop ds
+1:3F98  5d                   pop bp
+1:3F99  4d                   dec bp
+1:3F9A  cb                   retf
 1:3F9B  db 90
 
 ; ---------------- _fsprintf@s1:3F9C FAR size=110 callers=36
+;   C runtime sprintf
 1:3F9C  45                   inc bp
 1:3F9D  55                   push bp
 1:3F9E  8bec                 mov bp, sp
@@ -7116,7 +7703,7 @@ loc_3F53:
 1:3FD2  56                   push si
 1:3FD3  90                   nop
 1:3FD4  0e                   push cs
-1:3FD5  e8dcf0               call 0x30b4  ; sub_s1:30B4
+1:3FD5  e8dcf0               call 0x30b4  ; _output@s1:30B4
 1:3FD8  83c40c               add sp, 0xc
 1:3FDB  8bf8                 mov di, ax
 1:3FDD  ff0eac68             dec word ptr [0x68ac]
@@ -7133,7 +7720,7 @@ loc_3FF2:
 1:3FF6  50                   push ax
 1:3FF7  90                   nop
 1:3FF8  0e                   push cs
-1:3FF9  e8baeb               call 0x2bb6  ; sub_s1:2BB6
+1:3FF9  e8baeb               call 0x2bb6  ; _flsbuf@s1:2BB6
 1:3FFC  83c406               add sp, 6
 loc_3FFF:
 1:3FFF  8bc7                 mov ax, di
@@ -7145,7 +7732,8 @@ loc_3FFF:
 1:4008  4d                   dec bp
 1:4009  cb                   retf
 
-; ---------------- sub_s1:400A FAR size=724 callers=1
+; ---------------- _commit_flush?@s1:400A FAR size=112 callers=1
+;   C runtime: flush with commit (DOS 68h via _commit)
 1:400A  45                   inc bp
 1:400B  55                   push bp
 1:400C  8bec                 mov bp, sp
@@ -7182,7 +7770,7 @@ loc_4040:
 1:4053  56                   push si
 1:4054  90                   nop
 1:4055  0e                   push cs
-1:4056  e81b11               call 0x5174  ; sub_s1:5174
+1:4056  e81b11               call 0x5174  ; _commit@s1:5174
 1:4059  83c402               add sp, 2
 1:405C  8bf8                 mov di, ax
 1:405E  0bf8                 or di, ax
@@ -7201,48 +7789,315 @@ loc_4071:
 1:4077  5d                   pop bp
 1:4078  4d                   dec bp
 1:4079  cb                   retf
-1:407A  db 8c d8 90 45 55 8b ec 1e 8e d8 ff 76 08 2e f7 06
-1:408A  db f6 22 01 00 74 11 e8 4d 01 83 c4 02 0b c0 74 0c
-1:409A  db 50 50 9a ff ff 00 00 9a f2 13 00 00 83 ed 02 8b
-1:40AA  db e5 1f 5d 4d cb 8c d8 90 45 55 8b ec 1e 8e d8 83
-1:40BA  db ec 02 56 57 8b 5e 0a 8b 46 06 f7 e3 8b c8 8b fa
-1:40CA  db 8b 46 08 f7 e3 03 c7 8b d0 0b c1 75 03 e9 d0 00
-1:40DA  db 33 f6 8d 47 ff 83 fa 02 77 04 72 0b e3 09 23 c3
-1:40EA  db 74 03 e9 bb 00 eb 28 83 fa 01 73 0f 81 c1 ff 0f
-1:40FA  db 81 e1 00 f0 0b c9 75 17 42 eb 14 23 c3 74 10 33
-1:410A  db c0 f7 f3 8b f2 03 ca 73 03 e9 94 00 ba 01 00 52
-1:411A  db 51 2e 8b 1e f6 22 b8 02 00 f7 c3 01 00 75 03 b8
-1:412A  db 20 00 53 50 52 51 9a 7c 13 00 00 5b 0b c0 74 38
-1:413A  db f7 c3 01 00 74 32 50 50 50 9a e1 14 00 00 0b c0
-1:414A  db 74 03 e9 8b 00 0b c2 75 03 e9 84 00 8b c2 50 e8
-1:415A  db ce 00 83 c4 04 59 0b c0 75 0e 51 51 9a 9d 40 00
-1:416A  db 00 9a a2 40 00 00 33 c0 59 5a 0b c0 74 32 89 46
-1:417A  db fc fc 33 ff 8b d9 85 d2 74 16 8e c0 33 c0 b9 00
-1:418A  db 80 f3 ab 40 b9 95 22 d3 e0 8c c1 03 c1 4a 75 ea
-1:419A  db 8b cb e3 06 8e c0 33 c0 f3 aa 8b 56 fc 96 eb 25
-1:41AA  db 33 c0 99 8b 0e 8e 61 0b 0e 8c 61 74 18 ff 76 08
-1:41BA  db ff 76 06 ff 76 0a ff 1e 8c 61 83 c4 06 99 0b c0
-1:41CA  db 74 03 e9 ef fe 5f 5e 83 ed 02 8b e5 1f 5d 4d cb
-1:41DA  db b8 12 00 e9 ba e6 55 8b ec 83 ec 08 a1 90 61 8b
-1:41EA  db 16 92 61 89 46 fc 89 56 fe 8b 0e 94 61 80 e1 fc
-1:41FA  db 03 c1 89 46 f8 eb 05 90 83 46 fc 04 8b 46 fc 39
-1:420A  db 46 f8 76 16 8b 46 04 c4 5e fc 26 39 07 75 e9 26
-1:421A  db c7 07 00 00 26 8b 47 02 eb 02 33 c0 8b e5 5d c3
-1:422A  db 55 8b ec 83 ec 0a a1 90 61 8b 16 92 61 89 46 fc
-1:423A  db 89 56 fe 8b 0e 94 61 80 e1 fc 03 c1 89 46 f8 eb
-1:424A  db 05 90 83 46 fc 04 8b 46 fc 39 46 f8 76 18 c4 5e
-1:425A  db fc 26 83 3f 00 75 eb 8b 46 06 26 89 47 02 8b 46
-1:426A  db 04 26 89 07 eb 6a a1 94 61 05 28 00 89 46 f6 50
-1:427A  db ff 36 92 61 ff 36 90 61 90 0e e8 23 d4 83 c4 06
-1:428A  db 89 46 fc 89 56 fe 0b d0 75 04 33 c0 eb 42 8b 56
-1:429A  db fe a3 90 61 89 16 92 61 8b 46 04 8b 0e 94 61 80
-1:42AA  db e1 fc 01 4e fc c4 5e fc 26 89 07 8b 4e 06 26 89
-1:42BA  db 4f 02 8b 4e f6 89 0e 94 61 b9 24 00 51 33 c9 51
-1:42CA  db 8d 4f 04 89 4e fc 06 51 90 0e e8 2f 06 8b 46 04
-1:42DA  db 8b e5 5d c3
 
-; ---------------- sub_s1:42DE FAR size=126 callers=1
+; ---------------- _hfree@s1:407A FAR size=53 callers=0
+;   apis: KERNEL.GlobalFree, KERNEL.GlobalUnlock
+;   C runtime huge free (GlobalUnlock/GlobalFree)
+1:407A  8cd8                 mov ax, ds
+1:407C  90                   nop
+1:407D  45                   inc bp
+1:407E  55                   push bp
+1:407F  8bec                 mov bp, sp
+1:4081  1e                   push ds
+1:4082  8ed8                 mov ds, ax
+1:4084  ff7608               push word ptr [bp + 8]
+1:4087  2ef706f6220100       test word ptr cs:[0x22f6], 1
+1:408E  7411                 je 0x40a1
+1:4090  e84d01               call 0x41e0  ; _hfind@s1:41E0
+1:4093  83c402               add sp, 2
+1:4096  0bc0                 or ax, ax
+1:4098  740c                 je 0x40a6
+1:409A  50                   push ax
+1:409B  50                   push ax
+1:409C  9affff0000           lcall 0, 0xffff  ; KERNEL.GlobalUnlock
+loc_40A1:
+1:40A1  9af2130000           lcall 0, 0x13f2  ; KERNEL.GlobalFree
+loc_40A6:
+1:40A6  83ed02               sub bp, 2
+1:40A9  8be5                 mov sp, bp
+1:40AB  1f                   pop ds
+1:40AC  5d                   pop bp
+1:40AD  4d                   dec bp
+1:40AE  cb                   retf
+
+; ---------------- _halloc@s1:40AF FAR size=305 callers=0
+;   apis: KERNEL.GlobalAlloc, KERNEL.GlobalFree, KERNEL.GlobalLock, KERNEL.GlobalUnlock
+;   C runtime huge alloc (GlobalAlloc + GlobalLock)
+1:40AF  8cd8                 mov ax, ds
+1:40B1  90                   nop
+1:40B2  45                   inc bp
+1:40B3  55                   push bp
+1:40B4  8bec                 mov bp, sp
+1:40B6  1e                   push ds
+1:40B7  8ed8                 mov ds, ax
+1:40B9  83ec02               sub sp, 2
+1:40BC  56                   push si
+1:40BD  57                   push di
+loc_40BE:
+1:40BE  8b5e0a               mov bx, word ptr [bp + 0xa]
+1:40C1  8b4606               mov ax, word ptr [bp + 6]
+1:40C4  f7e3                 mul bx
+1:40C6  8bc8                 mov cx, ax
+1:40C8  8bfa                 mov di, dx
+1:40CA  8b4608               mov ax, word ptr [bp + 8]
+1:40CD  f7e3                 mul bx
+1:40CF  03c7                 add ax, di
+1:40D1  8bd0                 mov dx, ax
+1:40D3  0bc1                 or ax, cx
+1:40D5  7503                 jne 0x40da
+1:40D7  e9d000               jmp 0x41aa
+loc_40DA:
+1:40DA  33f6                 xor si, si
+1:40DC  8d47ff               lea ax, [bx - 1]
+1:40DF  83fa02               cmp dx, 2
+1:40E2  7704                 ja 0x40e8
+1:40E4  720b                 jb 0x40f1
+1:40E6  e309                 jcxz 0x40f1
+loc_40E8:
+1:40E8  23c3                 and ax, bx
+1:40EA  7403                 je 0x40ef
+1:40EC  e9bb00               jmp 0x41aa
+loc_40EF:
+1:40EF  eb28                 jmp 0x4119
+loc_40F1:
+1:40F1  83fa01               cmp dx, 1
+1:40F4  730f                 jae 0x4105
+1:40F6  81c1ff0f             add cx, 0xfff
+1:40FA  81e100f0             and cx, 0xf000
+1:40FE  0bc9                 or cx, cx
+1:4100  7517                 jne 0x4119
+1:4102  42                   inc dx
+1:4103  eb14                 jmp 0x4119
+loc_4105:
+1:4105  23c3                 and ax, bx
+1:4107  7410                 je 0x4119
+1:4109  33c0                 xor ax, ax
+1:410B  f7f3                 div bx
+1:410D  8bf2                 mov si, dx
+1:410F  03ca                 add cx, dx
+1:4111  7303                 jae 0x4116
+1:4113  e99400               jmp 0x41aa
+loc_4116:
+1:4116  ba0100               mov dx, 1
+loc_4119:
+1:4119  52                   push dx
+1:411A  51                   push cx
+1:411B  2e8b1ef622           mov bx, word ptr cs:[0x22f6]
+1:4120  b80200               mov ax, 2
+1:4123  f7c30100             test bx, 1
+1:4127  7503                 jne 0x412c
+1:4129  b82000               mov ax, 0x20  ; 'New failed in Op::Op'
+loc_412C:
+1:412C  53                   push bx
+1:412D  50                   push ax
+1:412E  52                   push dx
+1:412F  51                   push cx
+1:4130  9a7c130000           lcall 0, 0x137c  ; KERNEL.GlobalAlloc
+1:4135  5b                   pop bx
+1:4136  0bc0                 or ax, ax
+1:4138  7438                 je 0x4172
+1:413A  f7c30100             test bx, 1
+1:413E  7432                 je 0x4172
+1:4140  50                   push ax
+1:4141  50                   push ax
+1:4142  50                   push ax
+1:4143  9ae1140000           lcall 0, 0x14e1  ; KERNEL.GlobalLock
+1:4148  0bc0                 or ax, ax
+1:414A  7403                 je 0x414f
+1:414C  e98b00               jmp 0x41da
+loc_414F:
+1:414F  0bc2                 or ax, dx
+1:4151  7503                 jne 0x4156
+1:4153  e98400               jmp 0x41da
+loc_4156:
+1:4156  8bc2                 mov ax, dx
+1:4158  50                   push ax
+1:4159  e8ce00               call 0x422a  ; _hadd@s1:422A
+1:415C  83c404               add sp, 4
+1:415F  59                   pop cx
+1:4160  0bc0                 or ax, ax
+1:4162  750e                 jne 0x4172
+1:4164  51                   push cx
+1:4165  51                   push cx
+1:4166  9a9d400000           lcall 0, 0x409d  ; KERNEL.GlobalUnlock
+1:416B  9aa2400000           lcall 0, 0x40a2  ; KERNEL.GlobalFree
+1:4170  33c0                 xor ax, ax
+loc_4172:
+1:4172  59                   pop cx
+1:4173  5a                   pop dx
+1:4174  0bc0                 or ax, ax
+1:4176  7432                 je 0x41aa
+1:4178  8946fc               mov word ptr [bp - 4], ax
+1:417B  fc                   cld
+1:417C  33ff                 xor di, di
+1:417E  8bd9                 mov bx, cx
+1:4180  85d2                 test dx, dx
+1:4182  7416                 je 0x419a
+loc_4184:
+1:4184  8ec0                 mov es, ax
+1:4186  33c0                 xor ax, ax
+1:4188  b90080               mov cx, 0x8000
+1:418B  f3ab                 rep stosw word ptr es:[di], ax
+1:418D  40                   inc ax
+1:418E  b99522               mov cx, 0x2295  ; OFFSET KERNEL.__AHSHIFT
+1:4191  d3e0                 shl ax, cl
+1:4193  8cc1                 mov cx, es
+1:4195  03c1                 add ax, cx
+1:4197  4a                   dec dx
+1:4198  75ea                 jne 0x4184
+loc_419A:
+1:419A  8bcb                 mov cx, bx
+1:419C  e306                 jcxz 0x41a4
+1:419E  8ec0                 mov es, ax
+1:41A0  33c0                 xor ax, ax
+1:41A2  f3aa                 rep stosb byte ptr es:[di], al
+loc_41A4:
+1:41A4  8b56fc               mov dx, word ptr [bp - 4]
+1:41A7  96                   xchg si, ax
+1:41A8  eb25                 jmp 0x41cf
+loc_41AA:
+1:41AA  33c0                 xor ax, ax
+1:41AC  99                   cdq
+1:41AD  8b0e8e61             mov cx, word ptr [0x618e]
+1:41B1  0b0e8c61             or cx, word ptr [0x618c]
+1:41B5  7418                 je 0x41cf
+1:41B7  ff7608               push word ptr [bp + 8]
+1:41BA  ff7606               push word ptr [bp + 6]
+1:41BD  ff760a               push word ptr [bp + 0xa]
+1:41C0  ff1e8c61             lcall [0x618c]
+1:41C4  83c406               add sp, 6
+1:41C7  99                   cdq
+1:41C8  0bc0                 or ax, ax
+1:41CA  7403                 je 0x41cf
+1:41CC  e9effe               jmp 0x40be
+loc_41CF:
+1:41CF  5f                   pop di
+1:41D0  5e                   pop si
+1:41D1  83ed02               sub bp, 2
+1:41D4  8be5                 mov sp, bp
+1:41D6  1f                   pop ds
+1:41D7  5d                   pop bp
+1:41D8  4d                   dec bp
+1:41D9  cb                   retf
+loc_41DA:
+1:41DA  b81200               mov ax, 0x12  ; 'version %d %d'
+1:41DD  e9bae6               jmp 0x289a
+
+; ---------------- _hfind@s1:41E0 size=74 callers=1
+;   huge-block handle table lookup
+1:41E0  55                   push bp
+1:41E1  8bec                 mov bp, sp
+1:41E3  83ec08               sub sp, 8
+1:41E6  a19061               mov ax, word ptr [0x6190]
+1:41E9  8b169261             mov dx, word ptr [0x6192]
+1:41ED  8946fc               mov word ptr [bp - 4], ax
+1:41F0  8956fe               mov word ptr [bp - 2], dx
+1:41F3  8b0e9461             mov cx, word ptr [0x6194]
+1:41F7  80e1fc               and cl, 0xfc
+1:41FA  03c1                 add ax, cx
+1:41FC  8946f8               mov word ptr [bp - 8], ax
+1:41FF  eb05                 jmp 0x4206
+1:4201  db 90
+loc_4202:
+1:4202  8346fc04             add word ptr [bp - 4], 4
+loc_4206:
+1:4206  8b46fc               mov ax, word ptr [bp - 4]
+1:4209  3946f8               cmp word ptr [bp - 8], ax
+1:420C  7616                 jbe 0x4224
+1:420E  8b4604               mov ax, word ptr [bp + 4]
+1:4211  c45efc               les bx, ptr [bp - 4]
+1:4214  263907               cmp word ptr es:[bx], ax
+1:4217  75e9                 jne 0x4202
+1:4219  26c7070000           mov word ptr es:[bx], 0
+1:421E  268b4702             mov ax, word ptr es:[bx + 2]
+1:4222  eb02                 jmp 0x4226
+loc_4224:
+1:4224  33c0                 xor ax, ax
+loc_4226:
+1:4226  8be5                 mov sp, bp
+1:4228  5d                   pop bp
+1:4229  c3                   ret
+
+; ---------------- _hadd@s1:422A FAR size=180 callers=1
+;   huge-block handle table insert
+1:422A  55                   push bp
+1:422B  8bec                 mov bp, sp
+1:422D  83ec0a               sub sp, 0xa
+1:4230  a19061               mov ax, word ptr [0x6190]
+1:4233  8b169261             mov dx, word ptr [0x6192]
+1:4237  8946fc               mov word ptr [bp - 4], ax
+1:423A  8956fe               mov word ptr [bp - 2], dx
+1:423D  8b0e9461             mov cx, word ptr [0x6194]
+1:4241  80e1fc               and cl, 0xfc
+1:4244  03c1                 add ax, cx
+1:4246  8946f8               mov word ptr [bp - 8], ax
+1:4249  eb05                 jmp 0x4250
+1:424B  db 90
+loc_424C:
+1:424C  8346fc04             add word ptr [bp - 4], 4
+loc_4250:
+1:4250  8b46fc               mov ax, word ptr [bp - 4]
+1:4253  3946f8               cmp word ptr [bp - 8], ax
+1:4256  7618                 jbe 0x4270
+1:4258  c45efc               les bx, ptr [bp - 4]
+1:425B  26833f00             cmp word ptr es:[bx], 0
+1:425F  75eb                 jne 0x424c
+1:4261  8b4606               mov ax, word ptr [bp + 6]
+1:4264  26894702             mov word ptr es:[bx + 2], ax
+1:4268  8b4604               mov ax, word ptr [bp + 4]
+1:426B  268907               mov word ptr es:[bx], ax
+1:426E  eb6a                 jmp 0x42da
+loc_4270:
+1:4270  a19461               mov ax, word ptr [0x6194]
+1:4273  052800               add ax, 0x28
+1:4276  8946f6               mov word ptr [bp - 0xa], ax
+1:4279  50                   push ax
+1:427A  ff369261             push word ptr [0x6192]
+1:427E  ff369061             push word ptr [0x6190]
+1:4282  90                   nop
+1:4283  0e                   push cs
+1:4284  e823d4               call 0x16aa  ; _frealloc@s1:16AA
+1:4287  83c406               add sp, 6
+1:428A  8946fc               mov word ptr [bp - 4], ax
+1:428D  8956fe               mov word ptr [bp - 2], dx
+1:4290  0bd0                 or dx, ax
+1:4292  7504                 jne 0x4298
+1:4294  33c0                 xor ax, ax
+1:4296  eb42                 jmp 0x42da
+loc_4298:
+1:4298  8b56fe               mov dx, word ptr [bp - 2]
+1:429B  a39061               mov word ptr [0x6190], ax
+1:429E  89169261             mov word ptr [0x6192], dx
+1:42A2  8b4604               mov ax, word ptr [bp + 4]
+1:42A5  8b0e9461             mov cx, word ptr [0x6194]
+1:42A9  80e1fc               and cl, 0xfc
+1:42AC  014efc               add word ptr [bp - 4], cx
+1:42AF  c45efc               les bx, ptr [bp - 4]
+1:42B2  268907               mov word ptr es:[bx], ax
+1:42B5  8b4e06               mov cx, word ptr [bp + 6]
+1:42B8  26894f02             mov word ptr es:[bx + 2], cx
+1:42BC  8b4ef6               mov cx, word ptr [bp - 0xa]
+1:42BF  890e9461             mov word ptr [0x6194], cx
+1:42C3  b92400               mov cx, 0x24
+1:42C6  51                   push cx
+1:42C7  33c9                 xor cx, cx
+1:42C9  51                   push cx
+1:42CA  8d4f04               lea cx, [bx + 4]
+1:42CD  894efc               mov word ptr [bp - 4], cx
+1:42D0  06                   push es
+1:42D1  51                   push cx
+1:42D2  90                   nop
+1:42D3  0e                   push cs
+1:42D4  e82f06               call 0x4906  ; _fmemset@s1:4906
+1:42D7  8b4604               mov ax, word ptr [bp + 4]
+loc_42DA:
+1:42DA  8be5                 mov sp, bp
+1:42DC  5d                   pop bp
+1:42DD  c3                   ret
+
+; ---------------- _validdrive?@s1:42DE FAR size=126 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime: DOS drive call used by _getdcwd
 1:42DE  8cd8                 mov ax, ds
 1:42E0  90                   nop
 1:42E1  45                   inc bp
@@ -7290,7 +8145,7 @@ loc_433E:
 1:433E  1f                   pop ds
 1:433F  1e                   push ds
 1:4340  0e                   push cs
-1:4341  e86be6               call 0x29af  ; sub_s1:29AF
+1:4341  e86be6               call 0x29af  ; _dosmaperr_far@s1:29AF
 1:4344  c57e0a               lds di, ptr [bp + 0xa]
 1:4347  be0100               mov si, 1
 1:434A  8b05                 mov ax, word ptr [di]
@@ -7307,8 +8162,9 @@ loc_434C:
 1:435A  cb                   retf
 1:435B  db 00
 
-; ---------------- sub_s1:435C FAR size=148 callers=1
+; ---------------- time@s1:435C FAR size=148 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime time() (DOS date/time; WinMain seeds srand with it)
 1:435C  8cd8                 mov ax, ds
 1:435E  90                   nop
 1:435F  45                   inc bp
@@ -7368,7 +8224,7 @@ loc_43C0:
 1:43CC  51                   push cx
 1:43CD  90                   nop
 1:43CE  0e                   push cs
-1:43CF  e85c02               call 0x462e  ; sub_s1:462E
+1:43CF  e85c02               call 0x462e  ; __loctotime_t@s1:462E
 1:43D2  83c40c               add sp, 0xc
 1:43D5  837e0800             cmp word ptr [bp + 8], 0
 1:43D9  740a                 je 0x43e5
@@ -7385,7 +8241,8 @@ loc_43E5:
 1:43EE  cb                   retf
 1:43EF  db 00
 
-; ---------------- sub_s1:43F0 FAR size=28 callers=1
+; ---------------- __tzset@s1:43F0 FAR size=28 callers=1
+;   C runtime: runs _tzset once
 1:43F0  45                   inc bp
 1:43F1  55                   push bp
 1:43F2  8bec                 mov bp, sp
@@ -7394,7 +8251,7 @@ loc_43E5:
 1:43FA  7509                 jne 0x4405
 1:43FC  90                   nop
 1:43FD  0e                   push cs
-1:43FE  e80b00               call 0x440c  ; sub_s1:440C
+1:43FE  e80b00               call 0x440c  ; _tzset@s1:440C
 1:4401  ff06b468             inc word ptr [0x68b4]
 loc_4405:
 1:4405  8d66fe               lea sp, [bp - 2]
@@ -7403,7 +8260,8 @@ loc_4405:
 1:440A  4d                   dec bp
 1:440B  cb                   retf
 
-; ---------------- sub_s1:440C FAR size=334 callers=1
+; ---------------- _tzset@s1:440C FAR size=334 callers=1
+;   C runtime _tzset (reads TZ via getenv)
 1:440C  45                   inc bp
 1:440D  55                   push bp
 1:440E  8bec                 mov bp, sp
@@ -7416,7 +8274,7 @@ loc_4405:
 1:441B  50                   push ax
 1:441C  90                   nop
 1:441D  0e                   push cs
-1:441E  e89ffa               call 0x3ec0  ; sub_s1:3EC0
+1:441E  e89ffa               call 0x3ec0  ; getenv@s1:3EC0
 1:4421  83c404               add sp, 4
 1:4424  8946fa               mov word ptr [bp - 6], ax
 1:4427  8956fc               mov word ptr [bp - 4], dx
@@ -7437,7 +8295,7 @@ loc_443D:
 1:4447  ff36dc61             push word ptr [0x61dc]
 1:444B  90                   nop
 1:444C  0e                   push cs
-1:444D  e86ef9               call 0x3dbe  ; sub_s1:3DBE
+1:444D  e86ef9               call 0x3dbe  ; _fstrncpy@s1:3DBE
 1:4450  83c40a               add sp, 0xa
 1:4453  8346fa03             add word ptr [bp - 6], 3
 1:4457  c45efa               les bx, ptr [bp - 6]
@@ -7461,7 +8319,7 @@ loc_4467:
 1:447A  50                   push ax
 1:447B  90                   nop
 1:447C  0e                   push cs
-1:447D  e83e0e               call 0x52be  ; sub_s1:52BE
+1:447D  e83e0e               call 0x52be  ; __aFlmul@s1:52BE
 1:4480  a3ce61               mov word ptr [0x61ce], ax
 1:4483  8916d061             mov word ptr [0x61d0], dx
 loc_4487:
@@ -7494,7 +8352,7 @@ loc_44A2:
 1:44BE  50                   push ax
 1:44BF  90                   nop
 1:44C0  0e                   push cs
-1:44C1  e8fa0d               call 0x52be  ; sub_s1:52BE
+1:44C1  e8fa0d               call 0x52be  ; __aFlmul@s1:52BE
 1:44C4  0106ce61             add word ptr [0x61ce], ax
 1:44C8  1116d061             adc word ptr [0x61d0], dx
 1:44CC  eb09                 jmp 0x44d7
@@ -7549,7 +8407,7 @@ loc_4523:
 1:453B  ff36e061             push word ptr [0x61e0]
 1:453F  90                   nop
 1:4540  0e                   push cs
-1:4541  e87af8               call 0x3dbe  ; sub_s1:3DBE
+1:4541  e87af8               call 0x3dbe  ; _fstrncpy@s1:3DBE
 1:4544  83c40a               add sp, 0xa
 1:4547  eb09                 jmp 0x4552
 1:4549  db 90
@@ -7564,7 +8422,8 @@ loc_4552:
 1:4558  4d                   dec bp
 1:4559  cb                   retf
 
-; ---------------- sub_s1:455A FAR size=212 callers=1
+; ---------------- _isindst@s1:455A FAR size=212 callers=1
+;   C runtime: daylight-saving test
 1:455A  45                   inc bp
 1:455B  55                   push bp
 1:455C  8bec                 mov bp, sp
@@ -7629,7 +8488,7 @@ loc_45C8:
 1:45EA  50                   push ax
 1:45EB  90                   nop
 1:45EC  0e                   push cs
-1:45ED  e8000d               call 0x52f0  ; sub_s1:52F0
+1:45ED  e8000d               call 0x52f0  ; __aFldiv@s1:52F0
 1:45F0  2b46fc               sub ax, word ptr [bp - 4]
 1:45F3  f7d8                 neg ax
 1:45F5  c45e06               les bx, ptr [bp + 6]
@@ -7661,7 +8520,8 @@ loc_4625:
 1:462C  cb                   retf
 1:462D  db 90
 
-; ---------------- sub_s1:462E FAR size=254 callers=1
+; ---------------- __loctotime_t@s1:462E FAR size=254 callers=1
+;   C runtime: DOS date/time -> time_t
 1:462E  45                   inc bp
 1:462F  55                   push bp
 1:4630  8bec                 mov bp, sp
@@ -7681,7 +8541,7 @@ loc_4625:
 loc_4651:
 1:4651  90                   nop
 1:4652  0e                   push cs
-1:4653  e89afd               call 0x43f0  ; sub_s1:43F0
+1:4653  e89afd               call 0x43f0  ; __tzset@s1:43F0
 1:4656  b83c00               mov ax, 0x3c
 1:4659  99                   cdq
 1:465A  52                   push dx
@@ -7719,7 +8579,7 @@ loc_4651:
 1:469A  51                   push cx
 1:469B  90                   nop
 1:469C  0e                   push cs
-1:469D  e81e0c               call 0x52be  ; sub_s1:52BE
+1:469D  e81e0c               call 0x52be  ; __aFlmul@s1:52BE
 1:46A0  8bc8                 mov cx, ax
 1:46A2  8b460c               mov ax, word ptr [bp + 0xc]
 1:46A5  8bda                 mov bx, dx
@@ -7730,7 +8590,7 @@ loc_4651:
 1:46AD  51                   push cx
 1:46AE  90                   nop
 1:46AF  0e                   push cs
-1:46B0  e80b0c               call 0x52be  ; sub_s1:52BE
+1:46B0  e80b0c               call 0x52be  ; __aFlmul@s1:52BE
 1:46B3  8bc8                 mov cx, ax
 1:46B5  8b460e               mov ax, word ptr [bp + 0xe]
 1:46B8  8bda                 mov bx, dx
@@ -7741,7 +8601,7 @@ loc_4651:
 1:46C0  51                   push cx
 1:46C1  90                   nop
 1:46C2  0e                   push cs
-1:46C3  e8f80b               call 0x52be  ; sub_s1:52BE
+1:46C3  e8f80b               call 0x52be  ; __aFlmul@s1:52BE
 1:46C6  8bc8                 mov cx, ax
 1:46C8  8b4610               mov ax, word ptr [bp + 0x10]
 1:46CB  8bda                 mov bx, dx
@@ -7769,7 +8629,7 @@ loc_4651:
 1:4706  50                   push ax
 1:4707  90                   nop
 1:4708  0e                   push cs
-1:4709  e84efe               call 0x455a  ; sub_s1:455A
+1:4709  e84efe               call 0x455a  ; _isindst@s1:455A
 1:470C  83c404               add sp, 4
 1:470F  0bc0                 or ax, ax
 1:4711  7409                 je 0x471c
@@ -7787,7 +8647,8 @@ loc_471C:
 1:472A  cb                   retf
 1:472B  db 90
 
-; ---------------- sub_s1:472C FAR size=50 callers=2
+; ---------------- _fstrchr@s1:472C FAR size=50 callers=2
+;   C runtime _fstrchr
 1:472C  55                   push bp
 1:472D  8bec                 mov bp, sp
 1:472F  57                   push di
@@ -7818,7 +8679,8 @@ loc_4759:
 1:475C  5d                   pop bp
 1:475D  cb                   retf
 
-; ---------------- sub_s1:475E FAR size=70 callers=3
+; ---------------- _fstricmp@s1:475E FAR size=70 callers=4
+;   C runtime case-insensitive compare
 1:475E  55                   push bp
 1:475F  8bec                 mov bp, sp
 1:4761  8bd6                 mov dx, si
@@ -7860,6 +8722,7 @@ loc_479D:
 1:47A3  db 00
 
 ; ---------------- _fstrtok@s1:47A4 FAR size=168 callers=4
+;   C runtime _fstrtok
 1:47A4  55                   push bp
 1:47A5  8bec                 mov bp, sp
 1:47A7  83ec20               sub sp, 0x20
@@ -7946,7 +8809,8 @@ loc_4841:
 1:484A  cb                   retf
 1:484B  db 00
 
-; ---------------- sub_s1:484C FAR size=92 callers=1
+; ---------------- _fmemcmp@s1:484C FAR size=92 callers=1
+;   C runtime _fmemcmp
 1:484C  55                   push bp
 1:484D  8bec                 mov bp, sp
 1:484F  33c0                 xor ax, ax
@@ -8003,7 +8867,8 @@ loc_48A5:
 1:48A6  cb                   retf
 1:48A7  db 00
 
-; ---------------- sub_s1:48A8 FAR size=94 callers=7
+; ---------------- _fmemcpy@s1:48A8 FAR size=94 callers=7
+;   C runtime _fmemcpy/_fmemmove (DIB copies)
 1:48A8  55                   push bp
 1:48A9  8bec                 mov bp, sp
 1:48AB  8b4e0e               mov cx, word ptr [bp + 0xe]
@@ -8058,7 +8923,8 @@ loc_48FB:
 1:4904  5d                   pop bp
 1:4905  cb                   retf
 
-; ---------------- sub_s1:4906 FAR size=172 callers=56
+; ---------------- _fmemset@s1:4906 FAR size=172 callers=58
+;   C runtime _fmemset
 1:4906  55                   push bp
 1:4907  8bec                 mov bp, sp
 1:4909  8b4e0c               mov cx, word ptr [bp + 0xc]
@@ -8097,15 +8963,67 @@ loc_4946:
 1:4949  8b5608               mov dx, word ptr [bp + 8]
 1:494C  5d                   pop bp
 1:494D  cb                   retf
-1:494E  db 8b 4e 0e 8b 46 06 8b 56 08 1e c5 7e 0a 57 1e 07
-1:495E  db fc 93 0a c0 74 13 83 f9 0a 75 0e 0b d2 79 0a b0
-1:496E  db 2d aa f7 db 83 d2 00 f7 da 8b f7 92 33 d2 0b c0
-1:497E  db 74 02 f7 f1 93 f7 f1 92 87 d3 04 30 3c 39 76 02
-1:498E  db 04 27 aa 8b c2 0b c3 75 e2 88 05 4f ac 86 05 88
-1:499E  db 44 ff 8d 44 01 3b c7 72 f2 8c da 58 1f 5f 5e 8b
-1:49AE  db e5 5d cb 00
+1:494E  db 8b 4e 0e 8b 46 06 8b 56 08 1e c5 7e 0a
+loc_495B:
+1:495B  57                   push di
+1:495C  1e                   push ds
+1:495D  07                   pop es
+1:495E  fc                   cld
+1:495F  93                   xchg bx, ax
+1:4960  0ac0                 or al, al
+1:4962  7413                 je 0x4977
+1:4964  83f90a               cmp cx, 0xa
+1:4967  750e                 jne 0x4977
+1:4969  0bd2                 or dx, dx
+1:496B  790a                 jns 0x4977
+1:496D  b02d                 mov al, 0x2d
+1:496F  aa                   stosb byte ptr es:[di], al
+1:4970  f7db                 neg bx
+1:4972  83d200               adc dx, 0
+1:4975  f7da                 neg dx
+loc_4977:
+1:4977  8bf7                 mov si, di
+loc_4979:
+1:4979  92                   xchg dx, ax
+1:497A  33d2                 xor dx, dx
+1:497C  0bc0                 or ax, ax
+1:497E  7402                 je 0x4982
+1:4980  f7f1                 div cx
+loc_4982:
+1:4982  93                   xchg bx, ax
+1:4983  f7f1                 div cx
+1:4985  92                   xchg dx, ax
+1:4986  87d3                 xchg bx, dx
+1:4988  0430                 add al, 0x30
+1:498A  3c39                 cmp al, 0x39
+1:498C  7602                 jbe 0x4990
+1:498E  0427                 add al, 0x27
+loc_4990:
+1:4990  aa                   stosb byte ptr es:[di], al
+1:4991  8bc2                 mov ax, dx
+1:4993  0bc3                 or ax, bx
+1:4995  75e2                 jne 0x4979
+1:4997  8805                 mov byte ptr [di], al
+loc_4999:
+1:4999  4f                   dec di
+1:499A  ac                   lodsb al, byte ptr [si]
+1:499B  8605                 xchg byte ptr [di], al
+1:499D  8844ff               mov byte ptr [si - 1], al
+1:49A0  8d4401               lea ax, [si + 1]
+1:49A3  3bc7                 cmp ax, di
+1:49A5  72f2                 jb 0x4999
+1:49A7  8cda                 mov dx, ds
+1:49A9  58                   pop ax
+1:49AA  1f                   pop ds
+1:49AB  5f                   pop di
+1:49AC  5e                   pop si
+1:49AD  8be5                 mov sp, bp
+1:49AF  5d                   pop bp
+1:49B0  cb                   retf
+1:49B1  db 00
 
-; ---------------- sub_s1:49B2 FAR size=20 callers=4
+; ---------------- abs@s1:49B2 FAR size=20 callers=4
+;   C runtime abs
 1:49B2  45                   inc bp
 1:49B3  55                   push bp
 1:49B4  8bec                 mov bp, sp
@@ -8120,7 +9038,8 @@ loc_4946:
 1:49C4  4d                   dec bp
 1:49C5  cb                   retf
 
-; ---------------- sub_s1:49C6 FAR size=292 callers=2
+; ---------------- bsearch@s1:49C6 FAR size=292 callers=2
+;   C runtime bsearch (SparseTable::find)
 1:49C6  45                   inc bp
 1:49C7  55                   push bp
 1:49C8  8bec                 mov bp, sp
@@ -8143,7 +9062,7 @@ loc_4946:
 1:49EC  51                   push cx
 1:49ED  90                   nop
 1:49EE  0e                   push cs
-1:49EF  e8cc08               call 0x52be  ; sub_s1:52BE
+1:49EF  e8cc08               call 0x52be  ; __aFlmul@s1:52BE
 1:49F2  03460a               add ax, word ptr [bp + 0xa]
 1:49F5  83d200               adc dx, 0
 1:49F8  b93e4a               mov cx, 0x4a3e  ; OFFSET KERNEL.__AHSHIFT
@@ -8262,7 +9181,8 @@ loc_4AE0:
 1:4AE8  cb                   retf
 1:4AE9  db 90
 
-; ---------------- sub_s1:4AEA FAR size=513 callers=4
+; ---------------- qsort@s1:4AEA FAR size=513 callers=4
+;   C runtime qsort (Microsoft C, huge-pointer swap)
 1:4AEA  8cd8                 mov ax, ds
 1:4AEC  90                   nop
 1:4AED  45                   inc bp
@@ -8319,7 +9239,7 @@ loc_4B37:
 1:4B44  8bf0                 mov si, ax
 1:4B46  90                   nop
 1:4B47  0e                   push cs
-1:4B48  e861f0               call 0x3bac  ; sub_s1:3BAC
+1:4B48  e861f0               call 0x3bac  ; _stackavail?@s1:3BAC
 1:4B4B  3bc6                 cmp ax, si
 1:4B4D  7225                 jb 0x4b74
 1:4B4F  55                   push bp
@@ -8343,7 +9263,7 @@ loc_4B71:
 loc_4B74:
 1:4B74  b8fcff               mov ax, 0xfffc
 1:4B77  0e                   push cs
-1:4B78  e877da               call 0x25f2  ; sub_s1:25F2
+1:4B78  e877da               call 0x25f2  ; _chkstk@s1:25F2
 1:4B7B  eba9                 jmp 0x4b26
 loc_4B7D:
 1:4B7D  3be7                 cmp sp, di
@@ -8444,7 +9364,7 @@ loc_4C38:
 1:4C3B  8ec1                 mov es, cx
 1:4C3D  368b4514             mov ax, word ptr ss:[di + 0x14]
 1:4C41  87fa                 xchg dx, di
-1:4C43  e8a500               call 0x4ceb  ; sub_s1:4CEB
+1:4C43  e8a500               call 0x4ceb  ; qsort_swap@s1:4CEB
 1:4C46  87fa                 xchg dx, di
 1:4C48  1f                   pop ds
 1:4C49  894efe               mov word ptr [bp - 2], cx
@@ -8459,7 +9379,7 @@ loc_4C58:
 1:4C60  1e                   push ds
 1:4C61  56                   push si
 1:4C62  c57600               lds si, ptr [bp]
-1:4C65  e88300               call 0x4ceb  ; sub_s1:4CEB
+1:4C65  e88300               call 0x4ceb  ; qsort_swap@s1:4CEB
 1:4C68  5e                   pop si
 1:4C69  1f                   pop ds
 1:4C6A  87fa                 xchg dx, di
@@ -8510,7 +9430,8 @@ loc_4CC4:
 1:4CE5  894efc               mov word ptr [bp - 4], cx
 1:4CE8  e996fe               jmp 0x4b81
 
-; ---------------- sub_s1:4CEB size=33 callers=1
+; ---------------- qsort_swap@s1:4CEB size=33 callers=1
+;   qsort helper: swaps two elements
 1:4CEB  53                   push bx
 1:4CEC  8bd8                 mov bx, ax
 1:4CEE  f7c30100             test bx, 1
@@ -8530,7 +9451,8 @@ loc_4D0A:
 1:4D0A  5b                   pop bx
 1:4D0B  c3                   ret
 
-; ---------------- sub_s1:4D0C FAR size=24 callers=1
+; ---------------- srand@s1:4D0C FAR size=24 callers=1
+;   C runtime srand
 1:4D0C  45                   inc bp
 1:4D0D  55                   push bp
 1:4D0E  8bec                 mov bp, sp
@@ -8544,7 +9466,8 @@ loc_4D0A:
 1:4D22  4d                   dec bp
 1:4D23  cb                   retf
 
-; ---------------- sub_s1:4D24 FAR size=52 callers=1
+; ---------------- rand@s1:4D24 FAR size=52 callers=1
+;   C runtime rand (seed*0x343FD+0x269EC3)
 1:4D24  45                   inc bp
 1:4D25  55                   push bp
 1:4D26  8bec                 mov bp, sp
@@ -8557,7 +9480,7 @@ loc_4D0A:
 1:4D35  ff36e861             push word ptr [0x61e8]
 1:4D39  90                   nop
 1:4D3A  0e                   push cs
-1:4D3B  e88005               call 0x52be  ; sub_s1:52BE
+1:4D3B  e88005               call 0x52be  ; __aFlmul@s1:52BE
 1:4D3E  05c39e               add ax, 0x9ec3
 1:4D41  83d226               adc dx, 0x26
 1:4D44  a3e861               mov word ptr [0x61e8], ax
@@ -8571,7 +9494,8 @@ loc_4D0A:
 1:4D56  cb                   retf
 1:4D57  db 90
 
-; ---------------- sub_s1:4D58 FAR size=450 callers=6
+; ---------------- _splitpath@s1:4D58 FAR size=450 callers=6
+;   C runtime _splitpath
 1:4D58  45                   inc bp
 1:4D59  55                   push bp
 1:4D5A  8bec                 mov bp, sp
@@ -8661,7 +9585,7 @@ loc_4E1C:
 1:4E29  8bf0                 mov si, ax
 1:4E2B  90                   nop
 1:4E2C  0e                   push cs
-1:4E2D  e88eef               call 0x3dbe  ; sub_s1:3DBE
+1:4E2D  e88eef               call 0x3dbe  ; _fstrncpy@s1:3DBE
 1:4E30  83c40a               add sp, 0xa
 1:4E33  c45e0e               les bx, ptr [bp + 0xe]
 1:4E36  26c60000             mov byte ptr es:[bx + si], 0
@@ -8701,7 +9625,7 @@ loc_4E7B:
 1:4E86  8bf0                 mov si, ax
 1:4E88  90                   nop
 1:4E89  0e                   push cs
-1:4E8A  e831ef               call 0x3dbe  ; sub_s1:3DBE
+1:4E8A  e831ef               call 0x3dbe  ; _fstrncpy@s1:3DBE
 1:4E8D  83c40a               add sp, 0xa
 1:4E90  c45e12               les bx, ptr [bp + 0x12]
 1:4E93  26c60000             mov byte ptr es:[bx + si], 0
@@ -8723,7 +9647,7 @@ loc_4EAD:
 1:4EBA  8bf0                 mov si, ax
 1:4EBC  90                   nop
 1:4EBD  0e                   push cs
-1:4EBE  e8fdee               call 0x3dbe  ; sub_s1:3DBE
+1:4EBE  e8fdee               call 0x3dbe  ; _fstrncpy@s1:3DBE
 1:4EC1  83c40a               add sp, 0xa
 1:4EC4  c45e16               les bx, ptr [bp + 0x16]
 1:4EC7  26c60000             mov byte ptr es:[bx + si], 0
@@ -8747,7 +9671,7 @@ loc_4EE4:
 1:4EF1  8bf0                 mov si, ax
 1:4EF3  90                   nop
 1:4EF4  0e                   push cs
-1:4EF5  e8c6ee               call 0x3dbe  ; sub_s1:3DBE
+1:4EF5  e8c6ee               call 0x3dbe  ; _fstrncpy@s1:3DBE
 1:4EF8  83c40a               add sp, 0xa
 1:4EFB  c45e12               les bx, ptr [bp + 0x12]
 1:4EFE  26c60000             mov byte ptr es:[bx + si], 0
@@ -8766,13 +9690,15 @@ loc_4F11:
 1:4F18  cb                   retf
 1:4F19  db 90
 
-; ---------------- sub_s1:4F1A FAR size=20 callers=0
+; ---------------- _purecall@s1:4F1A FAR size=20 callers=0
+;   C++ pure virtual call -> run-time error R6025
 1:4F1A  b81900               mov ax, 0x19
 1:4F1D  e97ad9               jmp 0x289a
 1:4F20  db 8c d8 90 45 55 8b ec 1e 8e d8 b4 39 eb 0c
 
-; ---------------- sub_s1:4F2E FAR size=102 callers=1
+; ---------------- _chdir@s1:4F2E FAR size=102 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime _chdir (file dialog)
 1:4F2E  8cd8                 mov ax, ds
 1:4F30  90                   nop
 1:4F31  45                   inc bp
@@ -8797,8 +9723,9 @@ loc_4F50:
 1:4F74  db cd 21 73 d8 83 f8 10 75 d3 92 93 8a 07 43 3c 00
 1:4F84  db 74 0a 3c 3f 74 04 3c 2a 75 f1 b2 03 92 f9 eb bc
 
-; ---------------- sub_s1:4F94 FAR size=116 callers=1
+; ---------------- _getcurdir@s1:4F94 FAR size=42 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime: DOS 47h current directory
 1:4F94  8cd8                 mov ax, ds
 1:4F96  90                   nop
 1:4F97  45                   inc bp
@@ -8822,13 +9749,51 @@ loc_4FB2:
 1:4FBB  5d                   pop bp
 1:4FBC  4d                   dec bp
 1:4FBD  cb                   retf
-1:4FBE  db 8c d8 90 45 55 8b ec 1e 8e d8 8a 56 06 4a b4 0e
-1:4FCE  db 2e f7 06 f6 22 01 00 74 07 9a aa 4f 00 00 eb 02
-1:4FDE  db cd 21 b4 19 2e f7 06 f6 22 01 00 74 07 9a d8 4f
-1:4FEE  db 00 00 eb 02 cd 21 40 3a 46 06 b8 ff ff 75 01 40
-1:4FFE  db 83 ed 02 8b e5 1f 5d 4d cb 00
 
-; ---------------- sub_s1:5008 FAR size=30 callers=2
+; ---------------- _chdrive@s1:4FBE FAR size=74 callers=0
+;   apis: KERNEL.DOS3Call
+;   C runtime _chdrive (DOS 0Eh/19h)
+1:4FBE  8cd8                 mov ax, ds
+1:4FC0  90                   nop
+1:4FC1  45                   inc bp
+1:4FC2  55                   push bp
+1:4FC3  8bec                 mov bp, sp
+1:4FC5  1e                   push ds
+1:4FC6  8ed8                 mov ds, ax
+1:4FC8  8a5606               mov dl, byte ptr [bp + 6]
+1:4FCB  4a                   dec dx
+1:4FCC  b40e                 mov ah, 0xe
+1:4FCE  2ef706f6220100       test word ptr cs:[0x22f6], 1
+1:4FD5  7407                 je 0x4fde
+1:4FD7  9aaa4f0000           lcall 0, 0x4faa  ; KERNEL.DOS3Call
+1:4FDC  eb02                 jmp 0x4fe0
+loc_4FDE:
+1:4FDE  cd21                 int 0x21
+loc_4FE0:
+1:4FE0  b419                 mov ah, 0x19
+1:4FE2  2ef706f6220100       test word ptr cs:[0x22f6], 1
+1:4FE9  7407                 je 0x4ff2
+1:4FEB  9ad84f0000           lcall 0, 0x4fd8  ; KERNEL.DOS3Call
+1:4FF0  eb02                 jmp 0x4ff4
+loc_4FF2:
+1:4FF2  cd21                 int 0x21
+loc_4FF4:
+1:4FF4  40                   inc ax
+1:4FF5  3a4606               cmp al, byte ptr [bp + 6]
+1:4FF8  b8ffff               mov ax, 0xffff
+1:4FFB  7501                 jne 0x4ffe
+1:4FFD  40                   inc ax
+loc_4FFE:
+1:4FFE  83ed02               sub bp, 2
+1:5001  8be5                 mov sp, bp
+1:5003  1f                   pop ds
+1:5004  5d                   pop bp
+1:5005  4d                   dec bp
+1:5006  cb                   retf
+1:5007  db 00
+
+; ---------------- _getcwd@s1:5008 FAR size=30 callers=2
+;   C runtime _getcwd
 1:5008  45                   inc bp
 1:5009  55                   push bp
 1:500A  8bec                 mov bp, sp
@@ -8840,7 +9805,7 @@ loc_4FB2:
 1:5018  50                   push ax
 1:5019  90                   nop
 1:501A  0e                   push cs
-1:501B  e80800               call 0x5026  ; sub_s1:5026
+1:501B  e80800               call 0x5026  ; _getdcwd@s1:5026
 1:501E  8d66fe               lea sp, [bp - 2]
 1:5021  1f                   pop ds
 1:5022  5d                   pop bp
@@ -8848,7 +9813,8 @@ loc_4FB2:
 1:5024  cb                   retf
 1:5025  db 90
 
-; ---------------- sub_s1:5026 FAR size=334 callers=1
+; ---------------- _getdcwd@s1:5026 FAR size=296 callers=1
+;   C runtime _getdcwd
 1:5026  45                   inc bp
 1:5027  55                   push bp
 1:5028  8bec                 mov bp, sp
@@ -8863,7 +9829,7 @@ loc_4FB2:
 1:5043  7508                 jne 0x504d
 1:5045  90                   nop
 1:5046  0e                   push cs
-1:5047  e84aff               call 0x4f94  ; sub_s1:4F94
+1:5047  e84aff               call 0x4f94  ; _getcurdir@s1:4F94
 1:504A  894606               mov word ptr [bp + 6], ax
 loc_504D:
 1:504D  8a4606               mov al, byte ptr [bp + 6]
@@ -8895,7 +9861,7 @@ loc_504D:
 1:50A2  50                   push ax
 1:50A3  90                   nop
 1:50A4  0e                   push cs
-1:50A5  e836f2               call 0x42de  ; sub_s1:42DE
+1:50A5  e836f2               call 0x42de  ; _validdrive?@s1:42DE
 1:50A8  83c40c               add sp, 0xc
 1:50AB  83beeafe00           cmp word ptr [bp - 0x116], 0
 1:50B0  7416                 je 0x50c8
@@ -8913,7 +9879,7 @@ loc_50C8:
 1:50CD  50                   push ax
 1:50CE  90                   nop
 1:50CF  0e                   push cs
-1:50D0  e8d1ec               call 0x3da4  ; sub_s1:3DA4
+1:50D0  e8d1ec               call 0x3da4  ; _fstrlen@s1:3DA4
 1:50D3  83c404               add sp, 4
 1:50D6  40                   inc ax
 1:50D7  8986d0fe             mov word ptr [bp - 0x130], ax
@@ -8930,7 +9896,7 @@ loc_50F7:
 1:50F7  56                   push si
 1:50F8  90                   nop
 1:50F9  0e                   push cs
-1:50FA  e87dc5               call 0x167a  ; sub_s1:167A
+1:50FA  e87dc5               call 0x167a  ; _fmalloc@s1:167A
 1:50FD  83c402               add sp, 2
 1:5100  8986d2fe             mov word ptr [bp - 0x12e], ax
 1:5104  8996d4fe             mov word ptr [bp - 0x12c], dx
@@ -8965,12 +9931,33 @@ loc_5146:
 1:514B  5d                   pop bp
 1:514C  4d                   dec bp
 1:514D  cb                   retf
-1:514E  db 8c d8 90 45 55 8b ec 1e 8e d8 1e c5 56 06 b4 41
-1:515E  db 2e f7 06 f6 22 01 00 74 07 9a ec 4f 00 00 eb 02
-1:516E  db cd 21 1f e9 0a d8
 
-; ---------------- sub_s1:5174 FAR size=54 callers=1
+; ---------------- remove@s1:514E FAR size=38 callers=1
 ;   apis: KERNEL.DOS3Call
+;   C runtime remove (DOS 41h)
+1:514E  8cd8                 mov ax, ds
+1:5150  90                   nop
+1:5151  45                   inc bp
+1:5152  55                   push bp
+1:5153  8bec                 mov bp, sp
+1:5155  1e                   push ds
+1:5156  8ed8                 mov ds, ax
+1:5158  1e                   push ds
+1:5159  c55606               lds dx, ptr [bp + 6]
+1:515C  b441                 mov ah, 0x41
+1:515E  2ef706f6220100       test word ptr cs:[0x22f6], 1
+1:5165  7407                 je 0x516e
+1:5167  9aec4f0000           lcall 0, 0x4fec  ; KERNEL.DOS3Call
+1:516C  eb02                 jmp 0x5170
+loc_516E:
+1:516E  cd21                 int 0x21
+loc_5170:
+1:5170  1f                   pop ds
+1:5171  e90ad8               jmp 0x297e
+
+; ---------------- _commit@s1:5174 FAR size=54 callers=1
+;   apis: KERNEL.DOS3Call
+;   C runtime _commit (DOS 68h)
 1:5174  8cd8                 mov ax, ds
 1:5176  90                   nop
 1:5177  45                   inc bp
@@ -8991,8 +9978,9 @@ loc_5195:
 1:5198  db 8c d8 90 45 55 8b ec 1e 8e d8 1e b0 4f c5 56 06
 1:51A8  db eb 10
 
-; ---------------- sub_s1:51AA FAR size=276 callers=4
+; ---------------- _stat?@s1:51AA FAR size=122 callers=4
 ;   apis: KERNEL.DOS3Call
+;   C runtime file status (DOS find/attributes)
 1:51AA  8cd8                 mov ax, ds
 1:51AC  90                   nop
 1:51AD  45                   inc bp
@@ -9051,18 +10039,93 @@ loc_521D:
 1:521F  58                   pop ax
 1:5220  1f                   pop ds
 1:5221  e967d7               jmp 0x298b
-1:5224  db 55 8b ec 57 56 53 33 ff 8b 46 08 0b c0 7d 11 47
-1:5234  db 8b 56 06 f7 d8 f7 da 83 d8 00 89 46 08 89 56 06
-1:5244  db 8b 46 0c 0b c0 7d 11 47 8b 56 0a f7 d8 f7 da 83
-1:5254  db d8 00 89 46 0c 89 56 0a 0b c0 75 15 8b 4e 0a 8b
-1:5264  db 46 08 33 d2 f7 f1 8b d8 8b 46 06 f7 f1 8b d3 eb
-1:5274  db 38 8b d8 8b 4e 0a 8b 56 08 8b 46 06 d1 eb d1 d9
-1:5284  db d1 ea d1 d8 0b db 75 f4 f7 f1 8b f0 f7 66 0c 91
-1:5294  db 8b 46 0a f7 e6 03 d1 72 0c 3b 56 08 77 07 72 06
-1:52A4  db 3b 46 06 76 01 4e 33 d2 96 4f 75 07 f7 da f7 d8
-1:52B4  db 83 da 00 5b 5e 5f 5d ca 08 00
 
-; ---------------- sub_s1:52BE FAR size=50 callers=5
+; ---------------- __aFldiv_signed@s1:5224 FAR size=154 callers=0
+;   C runtime signed 32-bit divide
+1:5224  55                   push bp
+1:5225  8bec                 mov bp, sp
+1:5227  57                   push di
+1:5228  56                   push si
+1:5229  53                   push bx
+1:522A  33ff                 xor di, di
+1:522C  8b4608               mov ax, word ptr [bp + 8]
+1:522F  0bc0                 or ax, ax
+1:5231  7d11                 jge 0x5244
+1:5233  47                   inc di
+1:5234  8b5606               mov dx, word ptr [bp + 6]
+1:5237  f7d8                 neg ax
+1:5239  f7da                 neg dx
+1:523B  83d800               sbb ax, 0
+1:523E  894608               mov word ptr [bp + 8], ax
+1:5241  895606               mov word ptr [bp + 6], dx
+loc_5244:
+1:5244  8b460c               mov ax, word ptr [bp + 0xc]
+1:5247  0bc0                 or ax, ax
+1:5249  7d11                 jge 0x525c
+1:524B  47                   inc di
+1:524C  8b560a               mov dx, word ptr [bp + 0xa]
+1:524F  f7d8                 neg ax
+1:5251  f7da                 neg dx
+1:5253  83d800               sbb ax, 0
+1:5256  89460c               mov word ptr [bp + 0xc], ax
+1:5259  89560a               mov word ptr [bp + 0xa], dx
+loc_525C:
+1:525C  0bc0                 or ax, ax
+1:525E  7515                 jne 0x5275
+1:5260  8b4e0a               mov cx, word ptr [bp + 0xa]
+1:5263  8b4608               mov ax, word ptr [bp + 8]
+1:5266  33d2                 xor dx, dx
+1:5268  f7f1                 div cx
+1:526A  8bd8                 mov bx, ax
+1:526C  8b4606               mov ax, word ptr [bp + 6]
+1:526F  f7f1                 div cx
+1:5271  8bd3                 mov dx, bx
+1:5273  eb38                 jmp 0x52ad
+loc_5275:
+1:5275  8bd8                 mov bx, ax
+1:5277  8b4e0a               mov cx, word ptr [bp + 0xa]
+1:527A  8b5608               mov dx, word ptr [bp + 8]
+1:527D  8b4606               mov ax, word ptr [bp + 6]
+loc_5280:
+1:5280  d1eb                 shr bx, 1
+1:5282  d1d9                 rcr cx, 1
+1:5284  d1ea                 shr dx, 1
+1:5286  d1d8                 rcr ax, 1
+1:5288  0bdb                 or bx, bx
+1:528A  75f4                 jne 0x5280
+1:528C  f7f1                 div cx
+1:528E  8bf0                 mov si, ax
+1:5290  f7660c               mul word ptr [bp + 0xc]
+1:5293  91                   xchg cx, ax
+1:5294  8b460a               mov ax, word ptr [bp + 0xa]
+1:5297  f7e6                 mul si
+1:5299  03d1                 add dx, cx
+1:529B  720c                 jb 0x52a9
+1:529D  3b5608               cmp dx, word ptr [bp + 8]
+1:52A0  7707                 ja 0x52a9
+1:52A2  7206                 jb 0x52aa
+1:52A4  3b4606               cmp ax, word ptr [bp + 6]
+1:52A7  7601                 jbe 0x52aa
+loc_52A9:
+1:52A9  4e                   dec si
+loc_52AA:
+1:52AA  33d2                 xor dx, dx
+1:52AC  96                   xchg si, ax
+loc_52AD:
+1:52AD  4f                   dec di
+1:52AE  7507                 jne 0x52b7
+1:52B0  f7da                 neg dx
+1:52B2  f7d8                 neg ax
+1:52B4  83da00               sbb dx, 0
+loc_52B7:
+1:52B7  5b                   pop bx
+1:52B8  5e                   pop si
+1:52B9  5f                   pop di
+1:52BA  5d                   pop bp
+1:52BB  ca0800               retf 8
+
+; ---------------- __aFlmul@s1:52BE FAR size=50 callers=6
+;   C runtime 32-bit multiply helper
 1:52BE  55                   push bp
 1:52BF  8bec                 mov bp, sp
 1:52C1  8b4608               mov ax, word ptr [bp + 8]
@@ -9088,7 +10151,8 @@ loc_52D7:
 1:52EC  5d                   pop bp
 1:52ED  ca0800               retf 8
 
-; ---------------- sub_s1:52F0 FAR size=160 callers=1
+; ---------------- __aFldiv@s1:52F0 FAR size=160 callers=1
+;   C runtime 32-bit divide helper
 1:52F0  55                   push bp
 1:52F1  8bec                 mov bp, sp
 1:52F3  53                   push bx
@@ -9170,7 +10234,8 @@ loc_538A:
 1:538C  5d                   pop bp
 1:538D  ca0800               retf 8
 
-; ---------------- sub_s1:5390 FAR size=202 callers=1
+; ---------------- __aFuldiv@s1:5390 FAR size=96 callers=1
+;   C runtime 32-bit unsigned divide helper
 1:5390  55                   push bp
 1:5391  8bec                 mov bp, sp
 1:5393  53                   push bx
@@ -9222,15 +10287,65 @@ loc_53E9:
 1:53EA  5b                   pop bx
 1:53EB  5d                   pop bp
 1:53EC  ca0800               retf 8
-1:53EF  db 00 55 8b ec 53 8b 46 0c 0b c0 75 15 8b 4e 0a 8b
-1:53FF  db 46 08 33 d2 f7 f1 8b 46 06 f7 f1 8b c2 33 d2 eb
-1:540F  db 45 8b c8 8b 5e 0a 8b 56 08 8b 46 06 d1 e9 d1 db
-1:541F  db d1 ea d1 d8 0b c9 75 f4 f7 f3 8b c8 f7 66 0c 91
-1:542F  db f7 66 0a 03 d1 72 0c 3b 56 08 77 07 72 0b 3b 46
-1:543F  db 06 76 06 2b 46 0a 1b 56 0c 2b 46 06 1b 56 08 f7
-1:544F  db da f7 d8 83 da 00 5b 5d ca 08 00
+1:53EF  db 00
 
-; ---------------- sub_s1:545A FAR size=70 callers=1
+; ---------------- __aFlrem@s1:53F0 FAR size=106 callers=0
+;   C runtime 32-bit remainder
+1:53F0  55                   push bp
+1:53F1  8bec                 mov bp, sp
+1:53F3  53                   push bx
+1:53F4  8b460c               mov ax, word ptr [bp + 0xc]
+1:53F7  0bc0                 or ax, ax
+1:53F9  7515                 jne 0x5410
+1:53FB  8b4e0a               mov cx, word ptr [bp + 0xa]
+1:53FE  8b4608               mov ax, word ptr [bp + 8]
+1:5401  33d2                 xor dx, dx
+1:5403  f7f1                 div cx
+1:5405  8b4606               mov ax, word ptr [bp + 6]
+1:5408  f7f1                 div cx
+1:540A  8bc2                 mov ax, dx
+1:540C  33d2                 xor dx, dx
+1:540E  eb45                 jmp 0x5455
+loc_5410:
+1:5410  8bc8                 mov cx, ax
+1:5412  8b5e0a               mov bx, word ptr [bp + 0xa]
+1:5415  8b5608               mov dx, word ptr [bp + 8]
+1:5418  8b4606               mov ax, word ptr [bp + 6]
+loc_541B:
+1:541B  d1e9                 shr cx, 1
+1:541D  d1db                 rcr bx, 1
+1:541F  d1ea                 shr dx, 1
+1:5421  d1d8                 rcr ax, 1
+1:5423  0bc9                 or cx, cx
+1:5425  75f4                 jne 0x541b
+1:5427  f7f3                 div bx
+1:5429  8bc8                 mov cx, ax
+1:542B  f7660c               mul word ptr [bp + 0xc]
+1:542E  91                   xchg cx, ax
+1:542F  f7660a               mul word ptr [bp + 0xa]
+1:5432  03d1                 add dx, cx
+1:5434  720c                 jb 0x5442
+1:5436  3b5608               cmp dx, word ptr [bp + 8]
+1:5439  7707                 ja 0x5442
+1:543B  720b                 jb 0x5448
+1:543D  3b4606               cmp ax, word ptr [bp + 6]
+1:5440  7606                 jbe 0x5448
+loc_5442:
+1:5442  2b460a               sub ax, word ptr [bp + 0xa]
+1:5445  1b560c               sbb dx, word ptr [bp + 0xc]
+loc_5448:
+1:5448  2b4606               sub ax, word ptr [bp + 6]
+1:544B  1b5608               sbb dx, word ptr [bp + 8]
+1:544E  f7da                 neg dx
+1:5450  f7d8                 neg ax
+1:5452  83da00               sbb dx, 0
+loc_5455:
+1:5455  5b                   pop bx
+1:5456  5d                   pop bp
+1:5457  ca0800               retf 8
+
+; ---------------- _fstricmp2@s1:545A FAR size=70 callers=1
+;   C runtime case-insensitive compare (second copy)
 1:545A  55                   push bp
 1:545B  8bec                 mov bp, sp
 1:545D  8bd6                 mov dx, si
@@ -9271,7 +10386,8 @@ loc_5499:
 1:549E  cb                   retf
 1:549F  db 00
 
-; ---------------- sub_s1:54A0 FAR size=72 callers=1
+; ---------------- _fmemchr@s1:54A0 FAR size=72 callers=1
+;   C runtime _fmemchr
 1:54A0  55                   push bp
 1:54A1  8bec                 mov bp, sp
 1:54A3  8b4e0c               mov cx, word ptr [bp + 0xc]
@@ -9311,7 +10427,8 @@ loc_54E0:
 1:54E6  5d                   pop bp
 1:54E7  cb                   retf
 
-; ---------------- sub_s1:54E8 FAR size=158 callers=1
+; ---------------- _fstrlwr?@s1:54E8 FAR size=42 callers=1
+;   C runtime string helper used by the custom controls
 1:54E8  55                   push bp
 1:54E9  8bec                 mov bp, sp
 1:54EB  57                   push di
@@ -9335,16 +10452,66 @@ loc_5506:
 1:550B  8be5                 mov sp, bp
 1:550D  5d                   pop bp
 1:550E  ca0c00               retf 0xc
-1:5511  db 90 55 8b ec 83 ec 04 57 56 8b 7e 0e 2b c0 50 57
-1:5521  db ff 76 0c ff 76 0a 90 0e e8 92 fd 2b db 8b c8 01
-1:5531  db 4e 10 13 da b9 60 4b d3 e3 01 5e 12 8b 76 06 83
-1:5541  db 6e 0a 01 83 5e 0c 00 83 7e 0c 00 7c 30 8b c7 2b
-1:5551  db d2 f7 d8 13 d2 f7 da 2b db 8b c8 01 4e 10 13 da
-1:5561  db b9 36 55 d3 e3 01 5e 12 ff 76 12 ff 76 10 8b 46
-1:5571  db 08 89 46 fe 89 76 fc ff 5e fc eb c3 90 5e 5f 8b
-1:5581  db e5 5d ca 0e 00
+1:5511  db 90
 
-; ---------------- sub_s1:5586 FAR size=38 callers=17
+; ---------------- __aFlmuladd@s1:5512 FAR size=116 callers=0
+;   C runtime 32-bit multiply-accumulate helper
+1:5512  55                   push bp
+1:5513  8bec                 mov bp, sp
+1:5515  83ec04               sub sp, 4
+1:5518  57                   push di
+1:5519  56                   push si
+1:551A  8b7e0e               mov di, word ptr [bp + 0xe]
+1:551D  2bc0                 sub ax, ax
+1:551F  50                   push ax
+1:5520  57                   push di
+1:5521  ff760c               push word ptr [bp + 0xc]
+1:5524  ff760a               push word ptr [bp + 0xa]
+1:5527  90                   nop
+1:5528  0e                   push cs
+1:5529  e892fd               call 0x52be  ; __aFlmul@s1:52BE
+1:552C  2bdb                 sub bx, bx
+1:552E  8bc8                 mov cx, ax
+1:5530  014e10               add word ptr [bp + 0x10], cx
+1:5533  13da                 adc bx, dx
+1:5535  b9604b               mov cx, 0x4b60  ; OFFSET KERNEL.__AHSHIFT
+1:5538  d3e3                 shl bx, cl
+1:553A  015e12               add word ptr [bp + 0x12], bx
+1:553D  8b7606               mov si, word ptr [bp + 6]
+loc_5540:
+1:5540  836e0a01             sub word ptr [bp + 0xa], 1
+1:5544  835e0c00             sbb word ptr [bp + 0xc], 0
+1:5548  837e0c00             cmp word ptr [bp + 0xc], 0
+1:554C  7c30                 jl 0x557e
+1:554E  8bc7                 mov ax, di
+1:5550  2bd2                 sub dx, dx
+1:5552  f7d8                 neg ax
+1:5554  13d2                 adc dx, dx
+1:5556  f7da                 neg dx
+1:5558  2bdb                 sub bx, bx
+1:555A  8bc8                 mov cx, ax
+1:555C  014e10               add word ptr [bp + 0x10], cx
+1:555F  13da                 adc bx, dx
+1:5561  b93655               mov cx, 0x5536  ; OFFSET KERNEL.__AHSHIFT
+1:5564  d3e3                 shl bx, cl
+1:5566  015e12               add word ptr [bp + 0x12], bx
+1:5569  ff7612               push word ptr [bp + 0x12]
+1:556C  ff7610               push word ptr [bp + 0x10]
+1:556F  8b4608               mov ax, word ptr [bp + 8]
+1:5572  8946fe               mov word ptr [bp - 2], ax
+1:5575  8976fc               mov word ptr [bp - 4], si
+1:5578  ff5efc               lcall [bp - 4]
+1:557B  ebc3                 jmp 0x5540
+1:557D  db 90
+loc_557E:
+1:557E  5e                   pop si
+1:557F  5f                   pop di
+1:5580  8be5                 mov sp, bp
+1:5582  5d                   pop bp
+1:5583  ca0e00               retf 0xe
+
+; ---------------- __vec_ctor@s1:5586 FAR size=38 callers=17
+;   C++ vector constructor iterator: calls a ctor for each array element
 1:5586  55                   push bp
 1:5587  8bec                 mov bp, sp
 1:5589  57                   push di
@@ -9369,12 +10536,14 @@ loc_55A0:
 1:55A8  ca0c00               retf 0xc
 1:55AB  db 90
 
-; ---------------- sub_s1:55AC size=5 callers=2
+; ---------------- _nullcheck@s1:55AC size=5 callers=2
+;   C runtime: empty hook
 1:55AC  55                   push bp
 1:55AD  8bec                 mov bp, sp
 1:55AF  5d                   pop bp
 1:55B0  c3                   ret
 
-; ---------------- sub_s1:55B1 size=6 callers=2
+; ---------------- _amsg_exit_R6020@s1:55B1 FAR size=6 callers=3
+;   C runtime: run-time error R6020
 1:55B1  b81400               mov ax, 0x14
 1:55B4  e9e3d2               jmp 0x289a

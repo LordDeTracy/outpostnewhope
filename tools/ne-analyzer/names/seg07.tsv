@@ -1,0 +1,377 @@
+# Segment 7: the object database (per-type tables, DbObj, named objects, handle lists, handle
+# allocator), galaxy/star/planet/site objects, players and research, population cohorts, the
+# BLDGBLD/BLDGOPS loaders, tiles and site grids, the structure icon bar model, the AI builder's
+# site search, monorail trains, RoboCmd slots, robots, and the SC steps defined here.
+s7:0000	Db::createForLoad	makes an empty object of a DB type for the loader (default ctors)
+s7:07AC	Building::create(type)	the building factory: type -> class ctor
+s7:10B0	Db::createBuilding	factory + link into its tile
+s7:1120	Db::createPlayer	a new player (DB type 8)
+s7:117A	DbTableBase::scalar_dtor	deleting destructor
+s7:11AA	DbTable::DbTable	one object table (handles at +6, count +0x0A; vtable 1624)
+s7:1244	DbTable::~DbTable	dtor
+s7:12CA	DbTable::freeIndex	the first free index
+s7:1312	DbTable::at	the object at an index
+s7:1358	DbTable::add	adds an object
+s7:13F6	Db::destroy	deletes the object of a handle
+s7:145A	DbTable::reset	empties the table for a count
+s7:14B4	DbTable::addAt	the loader registers an object under its own handle
+s7:154C	DbTable::nop	empty function
+s7:1550	DbTable::grow	reallocates the table
+s7:15FE	DbTable::scalar_dtor	deleting destructor
+s7:1628	DbObj::DbObj()	empty DB object (loader; vtable 17BA)
+s7:165E	DbObj::DbObj(type,owner)	base of every DB object: own handle +4, owner +8
+s7:16B2	DbObj::~DbObj	dtor
+s7:16D6	DbObj::save	own handle, owner handle
+s7:1730	DbObj::load	own handle, owner handle
+s7:177A	DbObj::setOwner	(vslot 1) the owner handle (+8)
+s7:1794	DbObj::scalar_dtor	deleting destructor
+s7:17CE	NamedObj::NamedObj()	a named object with a child list +0x0C (vtable 1A16)
+s7:183C	NamedObj::NamedObj(type,owner)	named object ctor
+s7:18B2	NamedObj::~NamedObj	dtor
+s7:18F0	NamedObj::blankChild	(vslot 6) every entry holding a child is cleared
+s7:1972	NamedObj::generateKids	(vslot 5) default: nothing
+s7:1978	NamedObj::save	DbObj, then the child handle list
+s7:19B4	NamedObj::load	DbObj, then the child handle list
+s7:19F0	NamedObj::scalar_dtor	deleting destructor
+s7:1A32	Galaxy::Galaxy	the galaxy (type 0xFF, DGROUP 0x5166; vtable 1CBC)
+s7:1A74	Galaxy::~Galaxy	dtor
+s7:1A9C	Galaxy::save	(vslot 3)
+s7:1B18	Galaxy::load	(vslot 4)
+s7:1BE2	Galaxy::generateKids	(vslot 5) makes its stars
+s7:1C96	Galaxy::scalar_dtor	deleting destructor
+s7:1CD8	HandleList::HandleList	a list of (handle, key) entries (vtable 2044)
+s7:1D28	HandleList::~HandleList	dtor
+s7:1D58	HandleList::resolveAt	the object of entry i
+s7:1D7C	HandleList::buildingAt	the building of tile entry i
+s7:1DAA	HandleList::count	(vslot 4)
+s7:1DBC	HandleList::at	(vslot 1) the handle of entry i
+s7:1DFC	HandleList::remove	(vslot 2) the slot set to 0
+s7:1E96	HandleList::add	(vslot 3) the first empty slot
+s7:1EEE	HandleList::reserve	(vslot 5) minimum size
+s7:1F16	HandleList::append	(vslot 6)
+s7:1F6C	HandleList::nop	empty virtual
+s7:1F70	HandleList::grow	(vslot 8) reallocates
+s7:201E	HandleList::scalar_dtor	deleting destructor
+s7:2068	Player::Player()	empty player (loader; vtable 293C)
+s7:2112	Player::Player(owner)	per-player research state (DB type 8)
+s7:2242	Player::progress	points or turns left, whichever is more; -1 if not started
+s7:227A	Player::save	(vslot 3) remaining[131], discoveries[67], priority[5] ...
+s7:232E	Player::load	(vslot 4)
+s7:23E2	Player::research	one turn of lab work on a topic
+s7:25B2	Player::isComplete	remaining[id] reached 0
+s7:25D8	Player::setRemaining	remaining[id] = n
+s7:25F0	Player::countDiscovery	how often each discovery was made (+0x116)
+s7:2622	Player::addPriority	adds a priority topic
+s7:266C	Player::isPriority	is a topic a priority
+s7:2690	Player::newTurn	clears the topics worked this turn (SCSetup)
+s7:26AC	Player::topicCompleted	what a completed topic does to the player's colonies
+s7:2852	Player::pointsFromMorale	research points per lab turn from colony 1's morale
+s7:28DC	Player::priorityIndex	-1 if absent
+s7:2916	Player::scalar_dtor	deleting destructor
+s7:2958	Planet::Planet()	empty planet (loader; vtable 3130)
+s7:299A	Planet::Planet(owner)	planet ctor (DB type 2)
+s7:29E6	Planet::~Planet	dtor
+s7:2A2C	Planet::terraform	one turn of terraforming
+s7:2A98	Planet::nextSiteNumber	++field14
+s7:2AAA	Planet::hostility	record +0x0C
+s7:2ACA	Planet::save	(vslot 3)
+s7:2C8A	Planet::load	(vslot 4) and its terrain set
+s7:2F1A	Planet::mineSiteCount	mine sites by the planet's hostility
+s7:2FAC	Planet::maxDepth	digging depth by hostility (0..1: 4, 2..4: 3, 5..7: 2, else 1)
+s7:3006	Planet::setRecord	the planet record pointer
+s7:301A	Planet::rename	replaces the name
+s7:3058	Planet::generateKids	(vslot 5) makes its sites
+s7:310A	Planet::scalar_dtor	deleting destructor
+s7:314C	Population::Population	age cohorts of a colony (vtable 3AF2)
+s7:3258	Population::setSchoolLeavingAge	+0x1AE
+s7:326A	Population::noLifeSupport	no life support this turn: deaths
+s7:32E4	Population::save	91 cohorts and the death tables
+s7:33F0	Population::load	91 cohorts and the death tables
+s7:34DA	Population::resetDeathTables	Beginner tables, clears the carries
+s7:3534	Population::setNewborns	cohort[0] = n
+s7:3548	Population::addNewborns	cohort[0] += n
+s7:355C	Population::addCohorts	adds another colony's cohorts
+s7:35A4	Population::emigrate	random people leave ("Pop:Leaving %ld")
+s7:3694	Population::takePeople	people of a group leave (random ages for group 0)
+s7:375A	Population::kill	removes people (group 0 oldest first)
+s7:387C	Population::ageOneYear	shift up, age 90 is lost
+s7:38B8	Population::total	sum of all cohorts
+s7:38F2	Population::group	people in an age group
+s7:3948	Population::groupRange	age range of a group
+s7:39DC	Population::takeFromGroup	up to n people leave a group
+s7:3A3A	Population::takeFromAge	up to n people of one age
+s7:3AC6	Population::scalar_dtor	deleting destructor
+s7:3AF6	siteRowInit	copies one row of the site table
+s7:3B28	initSiteTable	builds the 70-row site table (code that stores constants)
+s7:44BE	SimTables::SimTables	the simulation's tables (g_objectDb+0x52)
+s7:4538	SimTables::free	frees BLDGBLD/BLDGOPS and the tables
+s7:4574	Galaxy::starIds	21 star ids (DGROUP 0x518C)
+s7:4594	makeStar	a star from its table row
+s7:4628	makePlanet	a planet from its table row
+s7:4782	Site::fill	a site record from the site table ("get site data without planet!")
+s7:4BBE	Sim::bldgBldRecord	the type's BLDGBLD record (loaded on first use)
+s7:4C06	Sim::bldgOpsRecord	the type's BLDGOPS record (loaded on first use)
+s7:4C52	BldgOps::parseRecord	one BLDGOPS record
+s7:4D3A	BldgBld::parseRecord	one BLDGBLD record
+s7:4DBC	DataFile::nextRecord	steps to the next record
+s7:4E34	DataFile::countRecords	counts the CR bytes
+s7:4E70	LoadEncodedDataFile	reads and decodes a .DAT file
+s7:4F5A	Sim::loadBldgBld	bldgbld.dat
+s7:5044	Sim::loadBldgOps	bldgops.dat
+s7:5164	DataFile::find	looks the file up on the CD folders
+s7:51F0	BldgOps::clearRuntime	+0xA4..+0xAD = 0
+s7:521C	SCGenKids	SCGenKids ctor (priority 12999)
+s7:5260	SCGenKids::calcMe	slot 5 (generateKids) of the target
+s7:5290	SCGenKids::clone	(vslot 3)
+s7:532E	SCSelect	SCSelect ctor (priority 12999)
+s7:538A	SCSelect::shouldRun	a star becomes the view's star, a planet the view's planet
+s7:53F4	SCSelect::calcMe	selects the object, queues SCGenKids
+s7:54F8	SCSelect::clone	(vslot 3)
+s7:5596	SCGenKids::dtor	(vslot 0)
+s7:55C2	SCSelect::dtor	(vslot 0)
+s7:560E	Site::Site()	empty site (loader; vtable 5BD0)
+s7:565A	Site::Site(owner)	site ctor (DB type 3)
+s7:56B0	Site::~Site	dtor
+s7:56F6	Site::save	(vslot 3) drops unrevealed mine sites
+s7:581E	Site::load	(vslot 4)
+s7:5A52	Site::recordWords	two dwords of the record
+s7:5A80	Site::setMapSize	(w, h, 1) from the terrain DIB
+s7:5B00	Site::listIndex	12 + index - 1
+s7:5B1C	Site::levels	+0x1A and +0x1C (underground levels)
+s7:5B3E	Site::deepen	deepens the site to a level
+s7:5B5C	Site::mapBox	returns this+0x14
+s7:5B6C	Site::rename	replaces the name
+s7:5BAA	Site::scalar_dtor	deleting destructor
+s7:5BEC	HandleAlloc::init	g_handleAllocator
+s7:5C0E	HandleAlloc::clear	g_handleAllocator = 0
+s7:5C1A	HandleAlloc::save	chunk 0x09: the last index per object type
+s7:5C52	HandleAlloc::load	chunk 0x09
+s7:5C8A	Db::allocHandle	the next handle of a type
+s7:5D0A	Star::Star()	empty star (loader; vtable 613E)
+s7:5D3C	Star::Star(owner)	star ctor (DB type 1)
+s7:5D78	Star::~Star	dtor
+s7:5DBE	Star::save	(vslot 3)
+s7:5E70	Star::load	(vslot 4)
+s7:5FE2	Star::setRecord	the star record pointer
+s7:5FF6	Star::generateKids	(vslot 5) makes its planets ("%s %d")
+s7:6118	Star::scalar_dtor	deleting destructor
+s7:615A	SiteGrids::SiteGrids	the list of site grids
+s7:61B0	SiteGrids::~SiteGrids	dtor
+s7:61FE	SiteGrids::putTile	puts a tile handle on a cell
+s7:6222	SiteGrids::addGrid	a new grid for a site (and its DisMines on new sites)
+s7:627E	SiteGrids::tileAt	the tile at (x, y, level) of a site
+s7:62E4	SiteGrids::tilesInBox	tiles in a box
+s7:64CE	SiteGrids::cellValue	a cell's raw value (tile handle or terrain)
+s7:6522	SiteGrids::tilesInBox2	tiles in a box (another variant)
+s7:66DE	SiteGrids::resetAll	resets every grid
+s7:671C	SiteGrids::clearCell	clears a cell
+s7:6740	SiteGrids::sortAll	sorts every grid's tables
+s7:677A	SiteGrids::gridOf	the grid of a site handle
+s7:67CC	Tile::Tile()	empty tile (loader; vtable 8114)
+s7:684C	Tile::Tile(owner)	a tile with the cell's terrain in +0x12 and +0x14
+s7:68DC	Tile::~Tile	dtor
+s7:69CC	Tile::hasContents	units, ledgers or items (menu)
+s7:6A2C	Tile::addItem	onto the +0x3E list, merged with the same item
+s7:6B16	Tile::takeItem	taken off the +0x3A list
+s7:6B86	Tile::truckInfo	trucks of the tile
+s7:6C1A	Tile::setTruckSlots	+0x32
+s7:6C4C	Tile::setTrucks	at most +0x32 trucks
+s7:6C66	Tile::addProduct	a product item back on the list
+s7:6D4E	Tile::copyRoute	the tile's route for a trip
+s7:6D80	Tile::clearRoute	deletes the route
+s7:6DB4	viewPlanetField18	the planet in view's +0x18
+s7:6DDC	Tile::roboCmdBusy	busy robots of a RoboCmd tile
+s7:6E14	Tile::roboCmdIdle	idle robots of a RoboCmd tile
+s7:6E4C	Tile::buildingField	a field of the tile's building
+s7:6E9C	Tile::removeUnits	removes units of a kind
+s7:6F5A	Tile::warehouseFill	a warehouse's contents
+s7:6FA0	Tile::buildingType	the tile's building type
+s7:6FD4	Tile::opsWordA	an operational building's BLDGOPS word
+s7:701C	Tile::opsWordB	an operational building's BLDGOPS word
+s7:7064	Tile::workers	an operational building's workers
+s7:70AC	Tile::workerCapacity	an operational building's capacity
+s7:70F4	Tile::storedTotal	total stored
+s7:7176	Tile::storedEntry	one stored entry
+s7:7226	Tile::groupField	a field by group
+s7:7296	Tile::clearBas	deletes the Bas ledger
+s7:72D0	Tile::clearAlloc	deletes the Alloc ledger
+s7:730A	Tile::clearUnits	deletes the units
+s7:73A8	DbObj::resolveLink16	the tile's building (+0x16, cached at +0x1A)
+s7:73EE	Tile::setColony	the tile's colony (+0x2A)
+s7:7418	Tile::save	(vslot 3) chunk 0x10 entry
+s7:778C	Tile::load	(vslot 4) chunk 0x10 entry
+s7:7C28	Tile::bas	the Bas ledger value of a resource
+s7:7C50	Tile::addUnits	units of a kind arrive on the tile
+s7:7D1C	Tile::setBas(value,res)	Bas[res] = v
+s7:7D7C	Tile::setAlloc(value,res)	Alloc[res] = v
+s7:7DDC	Tile::addBas(value,res)	Bas[res] += v
+s7:7E5A	Tile::setBuilding	the building handle, through the colony's tile list
+s7:7EA0	Tile::isOperationalGroup11	an operational building of group 11
+s7:7EDA	Tile::setOpsResource	the building's ops resource
+s7:7F1A	Tile::setProduct	the building's product (tells its window)
+s7:7F5A	Tile::needA	a need of the building
+s7:7F98	Tile::needB	a need of the building
+s7:7FD6	Tile::mineInfoA	mine information
+s7:8030	Tile::mineInfoB	mine information
+s7:8086	Tile::buildingIndex	the building handle's index
+s7:809C	Tile::isActive	the building's state test
+s7:80EE	Tile::scalar_dtor	deleting destructor (MemFreeFS)
+s7:8128	Sim::Sim	the simulator: database, step queue, handle allocator, vehicle manager
+s7:8210	Sim::~Sim	dtor
+s7:82F0	Sim::stepAt	a queued step
+s7:8308	Db::tileCommand	a command on a tile (s6:E198)
+s7:8326	Sim::getTurnNumber	g_objectDb +0
+s7:8334	Sim::setTurn0	turn = 0
+s7:8344	Sim::resolve	handle -> object
+s7:835A	Sim::enqueue	queues a step
+s7:8372	Sim::schedule	a step on a later turn
+s7:838E	Sim::runOneTurn	one turn
+s7:83BA	Sim::runTurns	n turns
+s7:840A	simLog	debug log to simres.out
+s7:8480	freeRecordPtr	frees +0
+s7:8496	freeRecordName	frees +2
+s7:84AE	GridRecord::init	position zero, +0x1E = 1
+s7:84D0	GridRecord::free	frees the record
+s7:8544	Grid::copyRecord	a copy of the site record
+s7:85BE	CellTable::CellTable	sparse cell table (25, 100)
+s7:8604	CellTable::free	frees the entries
+s7:861A	CellTable::get	the value of a cell
+s7:8660	CellTable::set	sets a cell
+s7:86EC	CellTable::reset	empties the table
+s7:871E	CellTable::clear	clears a cell
+s7:877C	CellTable::sort	sorts
+s7:878C	CellTable::grow	reallocates
+s7:8834	CellTable::sortNow	qsort by cell
+s7:8854	CellTable::find	bsearch
+s7:88CE	Grid::Grid	one site's grid (0x4C bytes): terrain DIB, 5 level tables
+s7:8A2C	Grid::~Grid	dtor
+s7:8AA0	Grid::putTile	a tile handle on a cell
+s7:8B00	Grid::cellValue	the tile handle, or the terrain
+s7:8BAC	Grid::resetLevels	resets the level tables
+s7:8BDC	Grid::clearCell	clears a cell
+s7:8C38	Grid::sortLevels	sorts the 5 tables
+s7:8C66	Grid::terrainAt	the terrain of an empty cell (DIB pixel + 1)
+s7:8CD2	Grid::levelTable	a level's table (0..5, unchecked at 5)
+s7:8D08	Grid::placeDisMines	DisMine tiles on a new site
+s7:8D9E	Grid::cellIndex	y * width + x, unchecked
+s7:8E12	Grid::scalar_dtor	deleting destructor
+s7:8E3C	IconBarModel::build	the structure icon bar of a colony
+s7:8F04	IconBarModel::robotAvailable	a robot kind is available
+s7:8FE4	IconBarModel::tileOffset	a tile next to a position
+s7:9048	IconBarModel::nearestFree	the nearest free cell
+s7:9296	IconBarModel::robots	the colony's free robots first (products 1..3)
+s7:951A	IconBarModel::structures	the buildings, the ship's landers and kits
+s7:9ADC	IconBarModel::vehicles	the vehicles
+s7:9C1C	IconBarModel::tubes	the tubes and roads
+s7:9D42	IconBarModel::affordable	what the colony can afford (BLDGBLD costs)
+s7:9E9C	IconItem::scalar_dtor	deleting destructor (MemFreeFS)
+s7:9ECC	AiBuilder::AiBuilder	the AI manager's builder {tile, colony, type}
+s7:9EF2	AiBuilder::idle	no building, or its building is done
+s7:9F40	AiBuilder::buildGroup	the group's first type the build menu offers
+s7:9F64	AiBuilder::reset	clears type and tile
+s7:9F7A	AiBuilder::build	places the type (search on the surface first)
+s7:A044	softenAround	the ground around a dug cell softens
+s7:A278	aiSiteSearch	where to build on the colony's site
+s7:A39A	aiReadyCell	a ready cell
+s7:A3AE	aiTubeSpot	bulldozed ground next to a conductor for a tube
+s7:A57E	aiTubeEnds	tube ends with an empty buildable neighbour (needs a Dozer)
+s7:A844	aiBesideNetwork	beside any conducting building
+s7:AA18	aiTubeEndsGround	tube ends on ground
+s7:ACBE	isDozedGround	bulldozed or dug ground (types 5, 9)
+s7:AD22	conducts	a building that conducts (group 70)
+s7:AD86	emptyBuildable	no tile, and terrain 1..3 or 7..8
+s7:ADDC	insideMargin2	inside the map with a margin of 2
+s7:AE6C	Train::Train()	empty train (loader; vtable B932)
+s7:AEFA	Train::Train(station)	a monorail train (0x14 bytes)
+s7:AFA6	Train::~Train	dtor
+s7:AFFC	moveTrains	up to 6 cells a turn; a stop ends the turn
+s7:B13C	Train::load	stub: 0
+s7:B142	Train::atJunction	at a crossing or a station
+s7:B2AA	railAt	a rail cell (group 0x42) takes the train
+s7:B344	firstRail	the first rail cell round it
+s7:B454	Train::atStation	riders get off, waiting trips board (up to 500)
+s7:B578	Train::advance	one cell on
+s7:B718	cellValueInView	cell value on the site in view
+s7:B768	Train::save	chunk 0x17 entry
+s7:B836	Train::load	chunk 0x17 entry
+s7:B90C	Train::scalar_dtor	deleting destructor
+s7:B936	Unit::Unit	a unit object (DB type 6; vtable BC0C)
+s7:B96C	Unit::~Unit	dtor
+s7:BBE6	Unit::scalar_dtor	deleting destructor
+s7:BC24	Unit2::Unit2	a second unit class (vtable BC96)
+s7:BC4E	Unit2::~Unit2	dtor
+s7:BC6C	Unit2::nop	empty virtual
+s7:BC70	Unit2::scalar_dtor	deleting destructor
+s7:BCAE	Tile::self	returns this
+s7:BCBC	hubDistanceOnSite	-1 on another site
+s7:BCDE	hubDistance	|dx| + |dy| from the colony's hub, -1 elsewhere
+s7:BD74	tileDistance	|dx| + |dy| between two tiles of one grid, -1 across grids
+s7:BFB8	storageRoom	1000 - stored
+s7:C652	CommandCenter::firstLanders	a finished SeedCommand moves the landers (first time)
+s7:CBF0	RoboCmd::freeUnusedSlot	a slot working without a building frees it
+s7:CC44	RoboCmd::returnRobot	back to a warehouse as a kit
+s7:CDE8	RoboCmd::lend	lends a robot of a kind
+s7:CE2E	RoboCmd::countKind	robots of a kind
+s7:CE72	RoboCmd::assignRobots	up to n free robots go to work on a tile
+s7:CEF8	RoboCmd::setSlotTile	the tile a robot works on
+s7:CF3A	RoboCmd::hasRobot	a robot of a kind
+s7:CF78	RoboCmd::release	gives up the first robot of a kind
+s7:D00C	RoboCmd::releaseIdle	the same for an idle robot only
+s7:D0A8	RoboCmd::nextKit	the kit to ask for (moves along the cycle)
+s7:D0C6	RoboCmd::busyCount	busy robots
+s7:D102	RoboCmd::idleCount	idle robots
+s7:D144	RoboCmd::freeSlots	free slots
+s7:D180	RoboCmd::receive	a kit becomes a robot in the first free slot, for 200 turns
+s7:D340	RoboCmd::lifeOf	the robot's life by kind
+s7:D36E	RoboCmd::otherSlotHas	another slot with the item
+s7:D3B2	RoboCmd::renew	robots past their turn are renewed by a Repair Robot or lost
+s7:D56A	RoboCmd::kitCycle	1, 2, 3, 4, 12, 8, 9, 11, 5, 1 ...
+s7:DA22	Road::payFromWarehouse	takes the cost from the warehouse
+s7:DACE	Road::findWarehouse	the first warehouse of the colony
+s7:DC96	Robot::Robot()	robot base (loader; vtable E036)
+s7:DCC2	Robot::Robot(type,owner)	robot base ctor
+s7:DCF4	Robot::~Robot	its robot goes back to its RoboCmd
+s7:DF0C	Robot::reserveNeeds	(vslot 6) claims a free robot of its kind in a RoboCmd
+s7:DFCC	Robot::unitKind	115, 119 -> Dozer, 116.. -> Digger, ...
+s7:E010	Robot::scalar_dtor	deleting destructor
+s7:E09E	SCAiInput	SCAiInput ctor (priority 10999)
+s7:E0D4	SCAiInput::calcMe	the AI managers build in their colonies
+s7:E1F4	SCAiInput::clone	(vslot 3)
+s7:E282	SCAiInput::dtor	(vslot 0)
+s7:E2BE	SCTradeSetup::SCTradeSetup	runs next turn after a trade agreement (vtable E4EA)
+s7:E300	SCTradeSetup::calcMe	(vslot 1) the trade alert on
+s7:E328	SCTradeSetup::shouldRun	(vslot 2)
+s7:E34E	SCTradeSetup::clone	(vslot 3)
+s7:E410	tradePartnerSetup	the partner without a Trade center (33) puts one up
+s7:E4BA	SCTradeSetup::nop	empty function
+s7:E4BE	SCTradeSetup::dtor	(vslot 0)
+s7:E4FA	SCKillBldg	SCKillBldg ctor (priority 16000)
+s7:E540	SCKillBldg::shouldRun	returns 1
+s7:E546	SCKillBldg::calcMe	destroys the building
+s7:E564	SCKillBldg::clone	(vslot 3)
+s7:E602	SCKillBldg::dtor	(vslot 0)
+s7:E63E	SCKillColony	SCKillColony ctor (priority 3999)
+s7:E67C	SCKillColony::calcMe	drops the colony's log entries, posts the end
+s7:E6C2	SCKillColony::clone	(vslot 3)
+s7:E75E	SCKillColony::dtor	(vslot 0)
+s7:E79A	SCKillRebelColony	SCKillRebelColony ctor (priority 3999)
+s7:E7D0	SCKillRebelColony::calcMe	returns 1 (does nothing)
+s7:E7D6	SCKillRebelColony::clone	(vslot 3)
+s7:E864	SCKillRebelColony::dtor	(vslot 0)
+s7:E8A0	SCMoveBas	SCMoveBas ctor (priority 10000)
+s7:E8F8	SCMoveBas::calcMe	the load goes to the tile if the building is still there
+s7:E98E	SCMoveBas::clone	(vslot 3)
+s7:EA50	SCMoveBas::deliver	no limit, except storage tanks
+s7:EB14	SCMoveBas::dtor	(vslot 0)
+s7:EB50	SCMines	SCMines ctor (priority 7999)
+s7:EB86	SCMines::calcMe	mine() of every mine
+s7:EBF8	SCMines::clone	(vslot 3)
+s7:EC86	SCMines::dtor	(vslot 0)
+s7:ECC2	SCMorale	SCMorale ctor (priority 3999)
+s7:ECF8	SCMorale::calcMe	morale of every colony
+# Found by the improved disassembler (2026-10-22).
+s7:7BEE	Tile::hasBuildingHandle	the tile's building, resolved
+s7:888E	CellTable::compare	qsort comparator by cell (+4)
+s7:B9B2	Unit::takeLoad	clears and returns the load (+0x0E)
+s7:B9DA	Unit::load	"truck 0x%08lx loaded %ld of %s"
+s7:BB0E	Unit::unload	"truck 0x%08lx unloaded %ld of %s"

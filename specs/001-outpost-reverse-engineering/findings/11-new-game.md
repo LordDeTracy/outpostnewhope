@@ -229,7 +229,7 @@ from the RCDATA sheet of the Sol body the planet's template copies
 (`s3:4E9E`, id DGROUP `0x1384[template]`): 1 Mercury 333, 2 Venus 334,
 3 Moon 338, 4 Mars 335, 5 Jupiter 336, 6 Saturn 337, 7 Neptune 339, 8 Pluto
 340, 9 Ceres 341, 10 Phobos 342. The planet picker in orbit (registry
-0x0B, `s3:4C3E`, `s3:4D5C`, `s3:4E08`) lists the star's planets as
+0x39, ctor `s3:4A8A`; `s3:4C3E`, `s3:4D5C`, `s3:4E08`) lists the star's planets as
 pictures (catalog 437..446 by template, `s3:BFFA`) in a row and picks one
 by its rectangle (PtInRect). The maximum digging depth is `s7:2FAC` by
 hostility (0..1: 4 levels, 2..4: 3, 5..7: 2, else 1).

@@ -99,3 +99,33 @@ assertions / 15 cases, test-tutorial 495 / 8, all passing.
   `TerrainView::renderBuildings` (visual layer; to be redone in Milestone 5).
 * `contracts/tilemap-format.md` ("no tile array") is superseded by 10-map.md:
   a sparse grid of tile handles per site and level over a terrain bitmap.
+
+## H. Found 2026-10-22 (every function named, [15-function-map.md](15-function-map.md))
+
+* **`s2:380A` is not the building class family.** `00-ground-truth.md` §2
+  (segment 4's row) and its open question 4 read the 73-slot vtable `s2:380A`
+  and "72 constructors spaced 0x48 apart in seg 4" as one subclass per
+  building. `s2:380A` is the SOL window family (with `9D2E`, `6378`, `6BFC`);
+  the seg 4 constructors are the 78 movie views (`MovieView` s4:6A0E). The
+  buildings derive from `Building`, vtable `s6:CF6A` (26 slots), with 142
+  classes overriding it. No rebuild code relied on the old reading.
+* **"smlstp" belongs to mode 57, not mode 34.** `13-media.md` and
+  `rebuild/src/data/media.cpp` gave the sound to mode 34's view and left
+  `s4:742E` undecoded. `s4:742E` is slot 13 (paint) of the mode 57 view
+  (vtable A146, movie 187 = 140.flc); mode 34's vtable (B42A) has the base
+  paint there. It plays sound 489 after the movie's paint, once a run (DGROUP
+  0x4254 is set when it starts and never cleared). Fixed in the rebuild
+  (`media::kSmlstp`, `Sequence::playViewSounds`).
+* **The planet picker is registry 0x39, not 0x0B.** `11-new-game.md` gave
+  0x0B; `Registry_get`'s switch (s3:276A, entry 57) makes it with
+  `PlanetPicker::PlanetPicker` s3:4A8A. 0x0B is a different model.
+* **`s2:57C4` is `List::~List`.** `symbols.json` calls it
+  `ListIter::~ListIter`; it clears a list's nodes. The hand name wins in the
+  listings.
+* **`MicroSpinControl` is in segment 2** (window procedure `s2:84F2`), not
+  segment 9 as the segment map said. Segment 9 has `OPCtrl` and `OPButton`.
+* **The undecoded 8.8 % is data.** The 89.5 % code coverage of 2026-10-10 was
+  not undiscovered code: after 57 new functions (far pointers in code,
+  prologues after padding) decoding reaches 91.2 %, and `undecoded.py`
+  classifies every remaining byte as data (vtables, switch tables, runtime
+  strings: 40,434 bytes) or padding (3,956 bytes).

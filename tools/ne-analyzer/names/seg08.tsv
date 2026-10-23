@@ -1,0 +1,352 @@
+# Segment 8: morale helpers, SCMove (trucking) and SCRoboMove, the colony class (ledgers,
+# networks, save), truck trips and the vehicle manager (DGROUP 0x5A64), the dialog container
+# (DGROUP 0x5B7C, factory s8:AF40) and many in-game dialogs.
+# Dialog ids: 283 AI Interface, 318 Interstellar Launch System, 358 Orbital Launch System,
+# 374 Diplomacy, 380 Initiate Diplomatic Contact, 451 Master Reports, 455 Feature Naming,
+# 459 Editor Interview, 4010 Ship Configuration Setup, 4024 Select Dig Direction, 4025 Name,
+# 4026 Outpost (About), 4031 Destination Selection, 4034 Change Level, 4039..4041 A.I. Says,
+# 4042 Difficulty Level, 4043/4044 Outpost, 4051 Color Legend, 6220 Assign Trucks,
+# 6227 Assign AI Managers, 6234 Build in Rebel Colony.
+s8:0000	SCMorale::clone	(vslot 3) copies the step
+s8:008E	moraleCrisisAnswer	the answer to the morale crisis dialog (colony 1 only)
+s8:01C0	tokamakCrowding	buildings near a Tokamak (group 41) lower morale
+s8:0340	defectColonists	colonists leave colony 1 for the rebels while morale <= 200
+s8:05D8	defectToRebels	the defection of one colony (the same-tier rule)
+s8:08D4	defections	SCMorale: defections, only while a rebel colony exists
+s8:095E	reportsAndIncidents	morale reports every 10 turns, crime incidents
+s8:0B6A	SCMorale::dtor	(vslot 0) deleting destructor
+s8:0BA6	SCMove	SCMove ctor (priority 9999)
+s8:0C00	SCMove::calcMe	(vslot 1) robot kits, factories to warehouses, smelters, mines, routes
+s8:0CF0	SCMove::clone	(vslot 3)
+s8:0D8E	roboCmdAskKits	a RoboCmd asks a warehouse for kits, one of each kind
+s8:0E00	roboCmdVisitWarehouses	every operational RoboCmd visits every operational warehouse
+s8:0E78	moveRobotKits	robot kits from warehouses to RoboCmds
+s8:0F8C	factoryToWarehouse	one factory's output into the warehouses
+s8:11B0	factoriesToWarehousesColony	stops at the first factory with no room anywhere
+s8:1220	factoriesToWarehouses	factories (group 5), then underground factories (group 6)
+s8:134A	nextStorageTank	the next storage tank with room
+s8:13DA	nextSmelter	the next smelter with room
+s8:1482	smelterToStorage	trucks on a tank's tile fetch resources 14..28
+s8:16F2	mineToSmelter	each mine with trucks on its tile sends ore
+s8:1940	smeltersToStorage	smelters to storage (group 3)
+s8:19A0	minesToSmelters	automatic trucking: mines to smelters ("mineToSmelter->no mines")
+s8:1A30	trucksCarry	trucks carry 50 units each per turn
+s8:1AC6	queueMoveBas	the load reaches the smelter next turn (SCMoveBas)
+s8:1B3A	unloadToTank	unload into the tank's tile at once; what does not fit is lost
+s8:1C02	SCMove::dtor	(vslot 0) deleting destructor
+s8:1C3E	dispatchRoutes	trucks with routes start their trips
+s8:1D68	factoryToWarehouseList	factory output list moved to warehouses (list version)
+s8:201A	routeFromTile	a load waiting on the tile goes first
+s8:2306	routeFromFactory	a factory's output list, 100 units a truck
+s8:24E8	routeFromSmelter	a smelter's output ledger, 100 units a truck
+s8:26EE	routeFromMine	the ore on a mine's tile, by the mine's cycle
+s8:28D8	SCRoboMove	SCRoboMove ctor (priority 14999)
+s8:290E	SCRoboMove::calcMe	(vslot 1) explorers, then the trips
+s8:2944	SCRoboMove::clone	(vslot 3)
+s8:29D2	SCRoboMove::dtor	(vslot 0) deleting destructor
+s8:2A0E	SCTrade::SCTrade	the trade step (queued by the trade market; vtable 309A)
+s8:2A5C	SCTrade::~SCTrade	dtor
+s8:2AC2	SCTrade::shouldRun	(vslot 2) carries out the trade
+s8:2B2E	SCTrade::calcMe	(vslot 1) the delivery
+s8:2B9A	SCTrade::clone	(vslot 3)
+s8:2C82	SCTrade::execute	proposes the agreement, the rebels' order, moves the goods
+s8:2F92	SCTrade::deliver	the goods arrive
+s8:3074	SCTrade::scalar_dtor	(vslot 0) deleting destructor
+s8:30AA	Colony::Colony	colony ctor: morale 600, tile list (vtable 6504)
+s8:3222	Colony::Colony(site,name)	a new colony on a site ("%5lu" name), player 1 by default
+s8:33F8	Colony::~Colony	dtor
+s8:349E	Colony::defect	a colony joins the other side (and empties its stores)
+s8:354A	aiBuilderIdle	the AI's builder waits until the piece is done
+s8:35A8	aiBuildGroup	build the group's offered type, then wait
+s8:3608	aiClearTask	the AI's task is dropped
+s8:362E	startPlague	the plague starts in a colony
+s8:3698	plagueTick	one plague tick
+s8:387E	retaskTrucks	a tile's trucks go back to the colony
+s8:3AA6	trucksOnTile	trucks of a tile for the dialog
+s8:3BA0	rebuildRoboCmdTable	the colony's table of operational RoboCmd tiles (SCEndSim)
+s8:3CC0	tradeDeliverGoods	traded goods into the colony's stores
+s8:3EFC	tradeSetTarget	trade helper: sets an object's target
+s8:3F38	tradeTransferOwner	trade helper: hands an object over
+s8:3FB0	Colony::player	the colony's player object (+0x200)
+s8:3FCA	prodSchedule	SCProdSched: rebuilds the colony's networks and decides what runs
+s8:42CC	lifeSupportCheck	SCPop: without operational life support (group 45) people die
+s8:43CC	loseRobots	the colony loses robots of a kind (busy first)
+s8:44D8	loseIdleRobots	only idle robots leave their RoboCmds
+s8:45E4	educationDrift	education drifts by 1 a turn (+2 per operational UGUniv)
+s8:4760	crimeDrift	crime drifts with crowding, red-light districts, education
+s8:48E0	addExplorers	explorers (+0x20E), at most 10
+s8:4900	loseExplorer	one explorer less
+s8:4918	explorersReveal	colony 1's explorers reveal the site's next hidden mine
+s8:4B20	Colony::setTileBuilding	Tile::setBuilding through the colony's tile list
+s8:4B40	BldgText::colonyField	a colony value for a building window
+s8:4C1A	BldgText::groupCount	buildings of a group in the colony
+s8:4CBA	BldgText::population	population total (+0x1F6)
+s8:4CD0	Colony::setDefection	the remembered defection (+0x1C)
+s8:4CEA	Colony::defection	the remembered defection
+s8:4D0E	Colony::setMorale	morale (+0x18), previous (+0x1A)
+s8:4D28	Colony::name	the name (+0x1FA)
+s8:4D3C	Colony::setName	renames the colony
+s8:4D6E	colonyTilesInGroup	the colony's tiles of a building group (a list)
+s8:4E78	colonyTilesInGroupAll	the colony's tiles of a group (any state)
+s8:4F54	Colony::hasGroup	a building (any state) of a group
+s8:4FD8	Colony::hasTrade	a Trade center (type 33)
+s8:5050	Colony::storageOf	storage of a group
+s8:50E0	Colony::capacityOf	capacity of a group
+s8:518C	Colony::allocate	SCPrelimAlloc: grants each building its needs
+s8:52B8	Colony::consume	takes the allocated resources
+s8:53BA	Colony::units	the colony's units of a kind
+s8:540A	Colony::available	total - alloc, or 0 when fully allocated
+s8:5464	Colony::sumTileLedgers	rebuilds the totals from the tiles
+s8:565E	Colony::removeTileEntry	drops a tile entry
+s8:5694	Colony::addTotal	total[res] += n
+s8:56BA	Colony::resetTotals	totals = 0
+s8:56D6	Colony::clearAlloc	clears allocations (and the tiles' with tilesToo)
+s8:5770	Colony::alloc	alloc[res] += n
+s8:5798	Colony::addLinked	linked[kind] += n
+s8:57C0	Colony::resetLinked	linked counts = 0
+s8:57DC	Colony::addBusy	busy robots[kind] += n
+s8:5804	Colony::subBusy	busy robots[kind] -= n
+s8:582C	Colony::deleteField14	deletes the object at +0x14
+s8:5860	Colony::addTile	(vslot 2) lists a tile (nothing if listed)
+s8:58E6	ugCoreConnected	a UG core on a level is connected through an Air Shaft
+s8:5A16	noConnectionNeeded	buildings that need no connection
+s8:5A96	seedPowerNetwork	power plants seed the power network and pay first
+s8:5B3C	seedAirNetwork	life support seeds the air network
+s8:5BE8	canSpread	can a network spread onto a tile (tubes conduct)
+s8:5CC6	floodLevel	flood a network over one level to a fixpoint
+s8:5E16	Colony::save	(vslot 3) chunk 0x0F
+s8:6118	Colony::load	(vslot 4) chunk 0x0F
+s8:64DE	Colony::scalar_dtor	deleting destructor
+s8:6520	Trip::Trip	empty trip (loader; vtable 78DE)
+s8:6590	Trip::Trip(bas)	a trip with a Bas load
+s8:666E	Trip::Trip(cargo)	a trip with a cargo table
+s8:675C	Trip::Trip(productA)	a trip with product A
+s8:6838	Trip::Trip(productB)	a trip with product B
+s8:6912	Trip::~Trip	dtor
+s8:6984	tripWeight	what a trip weighs on a train
+s8:69FE	Trip::leaveTrain	rider flag cleared
+s8:6A0E	moveTrip	a trip's movement
+s8:6B3C	tripFinished	finished trips are removed
+s8:6B88	cellValue	a cell's raw value (the site in view)
+s8:6BD4	stepX	one step along x
+s8:6C1C	stepY	one step along y
+s8:6C68	stepLevel	one step up/down a level
+s8:6D24	stepToward	one step towards the stop: x, then y, then a level
+s8:6E1A	stepCost	the points a step onto a cell costs
+s8:6F5A	deliverInto	delivered into the tile
+s8:709C	leaveOnTile	what cannot be delivered stays on the tile
+s8:7356	arriveAtStop	at the last stop: warehouses take products that fit
+s8:75CA	Trip::save	chunk 0x17 entry
+s8:774E	Trip::load	chunk 0x17 entry (version 2 and later)
+s8:78B8	Trip::scalar_dtor	deleting destructor
+s8:78E2	VehicleMgr::VehicleMgr	the vehicle manager (DGROUP 0x5A64)
+s8:7964	VehicleMgr::~VehicleMgr	dtor
+s8:79B2	VehicleMgr::makeTrain	a station's train is made
+s8:79F2	VehicleMgr::dropTrain	a station's train is dropped
+s8:7A5A	Trip::addToManager	vslot 1 of the manager list
+s8:7A76	moveTrips	moves every trip, removes finished ones
+s8:7B20	VehicleMgr::save	chunk 0x17
+s8:7C02	VehicleMgr::load	chunk 0x17: trips, then the trains
+s8:7D10	AssignAiDlg::AssignAiDlg	dialog 6227 "Assign AI Managers" (vtable 8876)
+s8:7D5C	AssignAiDlg::~AssignAiDlg	dtor
+s8:7D88	AssignAiDlg::close	(vslot 5) applies
+s8:7DAC	AssignAiDlg::refresh	(vslot 20)
+s8:7DC6	AssignAiDlg::onCommand	(vslot 4)
+s8:7EAC	AssignAiDlg::rename	renames a manager
+s8:7FAE	AssignAiDlg::assign	assigns a colony/building
+s8:801A	AssignAiDlg::gotoColony	opens the manager's colony
+s8:806A	AssignAiDlg::enableControls	once Multiple AI is known (650.bmp)
+s8:8164	AssignAiDlg::comboText	a combo box's selected text
+s8:81BE	AssignAiDlg::message	a message box
+s8:8358	AssignAiDlg::status	a manager's status
+s8:8400	AssignAiDlg::fillCombo	a combo box from a list
+s8:844A	AssignAiDlg::fill	the managers
+s8:8618	AssignAiDlg::fillTargets	the colonies and buildings
+s8:87B2	AssignAiDlg::setColony	from the combo
+s8:8810	AssignAiDlg::setBuilding	from the combo
+s8:8842	ReportDlg::zero_24	virtual returning 0
+s8:8848	ReportDlg::nop_9	empty virtual
+s8:884C	ReportDlg::nop_30	empty virtual
+s8:8850	AssignAiDlg::scalar_dtor	deleting destructor
+s8:88F2	AssignTrucksDlg::AssignTrucksDlg	dialog 6220 "Assign Trucks" (vtable 8C2E)
+s8:893A	AssignTrucksDlg::~AssignTrucksDlg	dtor
+s8:8966	AssignTrucksDlg::setCount	(vslot 21)
+s8:89E8	AssignTrucksDlg::refresh	(vslot 20)
+s8:89F8	AssignTrucksDlg::onCommand	(vslot 4)
+s8:8A3A	AssignTrucksDlg::message	a message box
+s8:8AFE	AssignTrucksDlg::apply	(vslot 30) retasks the tile's trucks
+s8:8B58	AssignTrucksDlg::fill	the tiles and trucks
+s8:8C08	AssignTrucksDlg::scalar_dtor	deleting destructor
+s8:8CAA	RebelBuildDlg::RebelBuildDlg	dialog 6234 "Build in Rebel Colony" (vtable 90C8)
+s8:8CF6	RebelBuildDlg::~RebelBuildDlg	dtor
+s8:8D22	RebelBuildDlg::apply	(vslot 30) places the order
+s8:8D7E	RebelBuildDlg::refresh	(vslot 20)
+s8:8D98	RebelBuildDlg::onCommand	(vslot 4)
+s8:8DDA	RebelBuildDlg::message	a message box
+s8:8F74	RebelBuildDlg::fill	the choices, busy until the last order is done
+s8:90A2	RebelBuildDlg::scalar_dtor	deleting destructor
+s8:9144	ShipConfigDlg::ShipConfigDlg	dialog 4010 "Ship Configuration Setup" (vtable 99A2)
+s8:927C	ShipConfigDlg::title	(vslot 20)
+s8:9294	ShipConfigDlg::init	(vslot 2) says add9, reads the fields
+s8:92F6	ShipConfigDlg::onCommand	(vslot 4)
+s8:94DA	ShipConfigDlg::onSpin	(vslot 21) one up or down within [min, max]
+s8:95FC	ShipConfigDlg::launch	(vslot 30) fills the hold and the orbital objects
+s8:977A	ShipConfigDlg::close	(vslot 5) Launch asks first when funds remain (1498)
+s8:9820	ShipConfigDlg::budget	weight and cost of a row change
+s8:98B4	ShipConfigDlg::readFields	the remaining fields
+s8:993A	ShipConfigDlg::rowOf	the row of a control (15 rows)
+s8:997C	ShipConfigDlg::scalar_dtor	deleting destructor
+s8:9A1E	SimpleBuildingDlg::SimpleBuildingDlg	a building window (vtable 9AF6)
+s8:9A48	SimpleBuildingDlg::~SimpleBuildingDlg	dtor
+s8:9A66	SimpleBuildingDlg::onCommand	(vslot 4)
+s8:9AD0	SimpleBuildingDlg::scalar_dtor	deleting destructor
+s8:9B72	StructureDlg::StructureDlg	a building window with its picture (vtable 9EFA)
+s8:9BC8	StructureDlg::init	(vslot 2) sized to the picture
+s8:9CEC	StructureDlg::onCommand	(vslot 4)
+s8:9DCC	StructureDlg::onCtlColor	(vslot 13)
+s8:9ED4	StructureDlg::scalar_dtor	deleting destructor
+s8:9F76	AboutDlg::AboutDlg	dialog 4026 "Outpost" (About; vtable A0B6)
+s8:9FA4	AboutDlg::~AboutDlg	dtor
+s8:9FD0	AboutDlg::init	(vslot 2)
+s8:9FFA	AboutDlg::loadBackground	(vslot 24)
+s8:A072	AboutDlg::close	(vslot 5)
+s8:A08C	AboutDlg::nop	empty virtual
+s8:A090	AboutDlg::scalar_dtor	deleting destructor
+s8:A122	AISaysDlg::AISaysDlg	base of the A.I. Says dialogs (vtable A2D0)
+s8:A156	AISaysDlg::~AISaysDlg	dtor
+s8:A174	AISaysDlg::onNotify	(vslot 1)
+s8:A18C	AISaysDlg::placeByPicture	its place on the screen picture
+s8:A2A4	AISaysDlg::zero	virtual returning 0
+s8:A2AA	AISaysDlg::scalar_dtor	deleting destructor
+s8:A33C	GreetingDlg::GreetingDlg	dialog 4039 "A.I. Says": "Greetings, Commander" (vtable A428)
+s8:A36A	GreetingDlg::~GreetingDlg	dtor
+s8:A396	GreetingDlg::init	(vslot 2) fem1
+s8:A3D2	GreetingDlg::close	(vslot 5) posts the next window
+s8:A402	GreetingDlg::scalar_dtor	deleting destructor
+s8:A494	PlayerNameDlg::PlayerNameDlg	dialog 4040 "A.I. Says": what name do you use (vtable A62E)
+s8:A4C2	PlayerNameDlg::~PlayerNameDlg	dtor
+s8:A4EE	PlayerNameDlg::init	(vslot 2) fem2
+s8:A584	PlayerNameDlg::close	(vslot 5) stores the player name
+s8:A608	PlayerNameDlg::scalar_dtor	deleting destructor
+s8:A69A	AiNameDlg::AiNameDlg	dialog 4041 "A.I. Says": the A.I.'s name (vtable A832)
+s8:A6C8	AiNameDlg::~AiNameDlg	dtor
+s8:A6F4	AiNameDlg::init	(vslot 2) fem3
+s8:A788	AiNameDlg::close	(vslot 5) stores the AI name
+s8:A80C	AiNameDlg::scalar_dtor	deleting destructor
+s8:A89E	DifficultyDlg::DifficultyDlg	dialog 4042 "Difficulty Level" (vtable AB16)
+s8:A8CC	DifficultyDlg::~DifficultyDlg	dtor
+s8:A8F8	DifficultyDlg::onCommand	(vslot 4)
+s8:A972	DifficultyDlg::init	(vslot 2) fem4
+s8:A9FA	DifficultyDlg::close	(vslot 5) sets the difficulty (DGROUP 0x13AE)
+s8:AAF0	DifficultyDlg::scalar_dtor	deleting destructor
+s8:AB82	ColorLegendDlg::ColorLegendDlg	dialog 4051 "Color Legend" (vtable AD72)
+s8:ABB0	ColorLegendDlg::~ColorLegendDlg	dtor
+s8:ABDC	placeBelowControl	moves a window below control 0xFD7
+s8:AC38	ColorLegendDlg::onCtlColor	(vslot 13) the legend colours
+s8:AD4C	ColorLegendDlg::scalar_dtor	deleting destructor
+s8:ADDE	StructureDlg2::StructureDlg2	building window variant (vtable AE4E)
+s8:AE08	StructureDlg2::~StructureDlg2	dtor
+s8:AE28	StructureDlg2::scalar_dtor	deleting destructor
+s8:AECA	DialogCtr::DialogCtr	the dialog container (DGROUP 0x5B7C): registers MicroSpin and OPButton
+s8:AF34	DialogCtr::clear	DGROUP 0x5B7C = 0
+s8:AF40	DialogCtr::open	window factory: makes the dialog for a window mode (switch)
+s8:B634	DialogCtr::hideAll	hides the open dialogs while an overlay plays
+s8:B68A	DialogCtr::showAll	shows them again
+s8:B6E0	DialogCtr::forget	a dialog closes: its slot is cleared
+s8:B72E	DialogCtr::focus	brings an open dialog to the front
+s8:B772	DestinationDlg::DestinationDlg	dialog 4031 "Destination Selection" (vtable BD70)
+s8:B7F0	DestinationDlg::~DestinationDlg	dtor
+s8:B81C	DestinationDlg::init	(vslot 2) the star buttons
+s8:B922	DestinationDlg::onCommand	(vslot 4) one star at a time, its voice, Launch
+s8:BC30	DestinationDlg::launch	SCSelect(star) and a turn
+s8:BCA8	DestinationDlg::loadBackground	(vslot 26)
+s8:BD4A	DestinationDlg::scalar_dtor	deleting destructor
+s8:BDDC	DiplomacyDlg::DiplomacyDlg	dialog 374 "%s - Diplomacy" (vtable C436)
+s8:BE4A	DiplomacyDlg::~DiplomacyDlg	dtor
+s8:BE76	DiplomacyDlg::close	(vslot 5)
+s8:BEA4	DiplomacyDlg::fill	(vslot 20) the colony lists
+s8:C044	DiplomacyDlg::init	(vslot 2)
+s8:C07A	DiplomacyDlg::onCommand	(vslot 4) propose, accept
+s8:C228	DiplomacyDlg::selected	list selection
+s8:C294	DiplomacyDlg::showStatus	agreement and diplomacy texts
+s8:C31A	DiplomacyDlg::onNotify	list notifications
+s8:C374	DiplomacyDlg::fillList	colony names
+s8:C410	DiplomacyDlg::scalar_dtor	deleting destructor
+s8:C4A2	ContactDlg::ContactDlg	dialog 380 "%s - Initiate Diplomatic Contact" (vtable C74C)
+s8:C4FE	ContactDlg::~ContactDlg	dtor
+s8:C52A	ContactDlg::close	(vslot 5)
+s8:C558	ContactDlg::init	(vslot 2)
+s8:C58E	ContactDlg::fill	(vslot 20) the offer
+s8:C672	ContactDlg::onCommand	(vslot 4) makes the agreement
+s8:C726	ContactDlg::scalar_dtor	deleting destructor
+s8:C7B8	DigDirectionDlg::DigDirectionDlg	dialog 4024 "Select Dig Direction" (vtable CA6C)
+s8:C80A	DigDirectionDlg::~DigDirectionDlg	dtor
+s8:C836	DigDirectionDlg::onCommand	(vslot 4) add32
+s8:C89C	DigDirectionDlg::init	(vslot 2) radios by the cell's kind
+s8:C95E	DigDirectionDlg::close	(vslot 5) 4012..4016 give 1..5
+s8:CA42	DigDirectionDlg::nop	empty virtual
+s8:CA46	DigDirectionDlg::scalar_dtor	deleting destructor
+s8:CAD8	InterviewDlg::InterviewDlg	dialog 459 "Editor Interview Requested" (vtable CC9A)
+s8:CB30	InterviewDlg::~InterviewDlg	dtor
+s8:CB5C	InterviewDlg::init	(vslot 2) fem9, the answers
+s8:CC00	InterviewDlg::onCommand	(vslot 4) the answer 1..5 and its voice
+s8:CC74	InterviewDlg::scalar_dtor	deleting destructor
+s8:CD06	Outpost4044Dlg::Outpost4044Dlg	dialog 4044 "Outpost" (modal; vtable CF00)
+s8:CD5C	Outpost4044Dlg::~Outpost4044Dlg	dtor
+s8:CD88	Outpost4044Dlg::init	(vslot 2) modal loop
+s8:CDD6	Outpost4044Dlg::close	(vslot 5) reads the check boxes
+s8:CED6	Outpost4044Dlg::nop	empty virtual
+s8:CEDA	Outpost4044Dlg::scalar_dtor	deleting destructor
+s8:CF6C	DialogHandler::DialogHandler	the dialog handler (message hook thunk; vtable D23E)
+s8:CFDA	DialogHandler::~DialogHandler	dtor
+s8:D218	DialogHandler::scalar_dtor	deleting destructor
+s8:D242	InterstellarDlg::InterstellarDlg	dialog 318 "Interstellar Launch System" (vtable D6EA)
+s8:D276	InterstellarDlg::~InterstellarDlg	dtor
+s8:D2A2	InterstellarDlg::init	(vslot 2) add14, the seven switches from DGROUP 0x5C0C
+s8:D400	InterstellarDlg::onCommand	(vslot 4) the launch checklist
+s8:D6C4	InterstellarDlg::scalar_dtor	deleting destructor
+s8:D756	AiInterfaceDlg::AiInterfaceDlg	dialog 283 "AI Interface" (vtable E0D4)
+s8:D7D0	AiInterfaceDlg::~AiInterfaceDlg	dtor
+s8:D840	AiInterfaceDlg::onNotify	(vslot 1)
+s8:D8AE	AiInterfaceDlg::init	(vslot 2) the alert buttons (10 rows)
+s8:DA68	AiInterfaceDlg::onCommand	(vslot 4) scream'n, add63, help
+s8:DCB0	AiInterfaceDlg::report	posts a log entry
+s8:DE20	AiInterfaceDlg::askBox	a message box
+s8:DF5C	AiInterfaceDlg::openAlert	opens an alert's window
+s8:DF86	AiInterfaceDlg::summary	the summary message
+s8:E03E	AiInterfaceDlg::refresh	buttons by the alerts
+s8:E0AE	AiInterfaceDlg::scalar_dtor	deleting destructor
+s8:E140	ChangeLevelDlg::ChangeLevelDlg	dialog 4034 "Change Level" (vtable E264)
+s8:E16E	ChangeLevelDlg::~ChangeLevelDlg	dtor
+s8:E19A	ChangeLevelDlg::init	(vslot 2)
+s8:E1DC	ChangeLevelDlg::close	(vslot 5) the chosen level
+s8:E23A	ChangeLevelDlg::nop	empty virtual
+s8:E23E	ChangeLevelDlg::scalar_dtor	deleting destructor
+s8:E2D0	MasterReportsDlg::MasterReportsDlg	dialog 451 "Master Reports" (vtable E62E)
+s8:E308	MasterReportsDlg::~MasterReportsDlg	dtor
+s8:E348	MasterReportsDlg::init	(vslot 2) the report buttons
+s8:E4BC	MasterReportsDlg::onCommand	(vslot 4) opens a report
+s8:E608	MasterReportsDlg::scalar_dtor	deleting destructor
+s8:E69A	Outpost4043Dlg::Outpost4043Dlg	dialog 4043 "Outpost" (vtable E92E)
+s8:E6F0	Outpost4043Dlg::~Outpost4043Dlg	dtor
+s8:E71C	Outpost4043Dlg::init	(vslot 2) modal, with a title
+s8:E7A0	Outpost4043Dlg::close	(vslot 5) reads the check boxes (vrpal.bmp)
+s8:E904	Outpost4043Dlg::nop	empty virtual
+s8:E908	Outpost4043Dlg::scalar_dtor	deleting destructor
+s8:E99A	NameDlg::NameDlg	dialog 4025 "Name" (registry 0x30 text; vtable EB32)
+s8:E9EC	NameDlg::~NameDlg	dtor
+s8:EA18	NameDlg::init	(vslot 2)
+s8:EAA2	NameDlg::close	(vslot 5) stores the name
+s8:EB08	NameDlg::nop	empty virtual
+s8:EB0C	NameDlg::scalar_dtor	deleting destructor
+s8:EB9E	FeatureNamingDlg::FeatureNamingDlg	dialog 455 "Feature Naming" (vtable EE6E)
+s8:EBD6	FeatureNamingDlg::~FeatureNamingDlg	dtor
+s8:EC16	FeatureNamingDlg::init	(vslot 2)
+s8:ED8A	FeatureNamingDlg::onCommand	(vslot 4) names the selected feature
+s8:EE48	FeatureNamingDlg::scalar_dtor	deleting destructor
+s8:EEDA	OrbitalLaunchDlg::OrbitalLaunchDlg	dialog 358 "Orbital Launch System" (vtable s9:067C)
+s8:EF3A	OrbitalLaunchDlg::~OrbitalLaunchDlg	dtor
+# Found by the improved disassembler (2026-10-22).
+s8:1FAA	factoriesListToWarehouses	each list entry's factory output to the warehouses
+s8:D01E	DialogHandler::subclassProc	subclassed dialog procedure (CallWindowProc)
+s8:D116	DialogHandler::fontProc	the control font property (SetProp/RemoveProp)

@@ -1,0 +1,334 @@
+# Segment 5: the game's windows (planet, site, star map, tile list, the colony view with its
+# icon bar and panels), the timed/story views, the Star System dialog, the rebels' AI, SparseTable,
+# names of buildings/resources/products, the colony tile list, and several building classes
+# (landers, Chapel, CommTower, Police, Core, Destroyed, robots: names in seg00_auto.tsv).
+s5:0000	ShipLayer::paint	(vslot 2) the ship picture for the star record
+s5:01A6	ShipLayer::scalar_dtor	deleting destructor
+s5:01D8	TimedView::TimedView	a view that shows a picture for a time, then posts a command (vtable 045A)
+s5:022C	TimedView::~TimedView	dtor
+s5:028C	TimedView::show	shows the window, starts its timer
+s5:02AE	TimedView::destroy	(vslot 36) stops the timer
+s5:0316	TimedView::create	(vslot 2) the window and its painter
+s5:03B2	TimedView::onKey	(vslot 23) a key skips: posts the next command
+s5:03D6	TimedView::onClick	(vslot 24) a click skips: posts the next command
+s5:03FA	TimedView::onChar	(vslot 26) skips: posts the next command
+s5:041E	TimedView::paint	(vslot 13) paints the page background
+s5:0434	TimedView::scalar_dtor	deleting destructor
+s5:04F6	TimedPainter::TimedPainter	painter of a timed view
+s5:05D6	TimedPainter::~TimedPainter	dtor
+s5:061C	TimedPainter::onNotify	(vslot 1) time up: posts the next command
+s5:065E	paintStoryBackground	CreateSolidBrush(PALETTERGB(0x0B, 0x07, 0x10)) + FillRect
+s5:0734	TimedPainter::scalar_dtor	deleting destructor
+s5:0762	StoryView::StoryView	the story page window (vtable 081A)
+s5:07AA	StoryView::paint	(vslot 13) the voice on the first paint
+s5:07F4	StoryView::scalar_dtor	deleting destructor
+s5:08B6	Mode1View::Mode1View	mode 1: the title backdrop (plays 0wscinit.mid, catalog 468)
+s5:08FE	Mode1View::~Mode1View	dtor: closes the main menu dialog
+s5:097E	Mode1View::closeMenu	closes the Program Control dialog
+s5:09BA	Mode1View::create	(vslot 2)
+s5:0A0C	Mode1View::destroy	(vslot 36)
+s5:0A52	Mode1View::onShow	(vslot 13) paints, then opens the main menu (window 6)
+s5:0AA6	Mode1View::onPaletteChanged	(vslot 35)
+s5:0ABC	Mode1View::forwardKey	(vslot 16) to the menu dialog
+s5:0AE8	Mode1View::scalar_dtor	deleting destructor
+s5:0BAA	Mode1Painter::Mode1Painter	painter of the title backdrop
+s5:0C3E	Mode1Painter::paint	draws the backdrop
+s5:0CD2	Mode1Painter::realizePalette	makes and realises its palette
+s5:0D82	Mode1Painter::scalar_dtor	deleting destructor
+s5:0DC4	PlanetWnd::PlanetWnd	the planet window frame (PCPOPMENU; vtable 1384)
+s5:0E2C	PlanetWnd::onClose	(vslot 15)
+s5:0E46	PlanetWnd::onPaletteChanged	(vslot 36)
+s5:0E8E	PlanetWnd::onLButton	(vslot 23) clicks on the globe
+s5:0EC4	PlanetWnd::onCommand	(vslot 16) menu commands, help, spin
+s5:1000	PlanetWnd::initMenu	(vslot 19) EnableMenuItem
+s5:1022	PlanetWnd::paint	(vslot 13)
+s5:1038	PlanetWnd::cleanup	DestroyIcon, current object
+s5:10A0	PlanetWnd::create	(vslot 2) window, painter, the globe (PLNTICON)
+s5:1294	PlanetWnd::click	a click on a site of the globe
+s5:135E	PlanetWnd::scalar_dtor	deleting destructor
+s5:1418	PlanetPainter::PlanetPainter	painter of the globe (vtable 1730)
+s5:150E	PlanetPainter::~PlanetPainter	dtor
+s5:157C	PlanetPainter::onNotify	(vslot 1) invalidates
+s5:15DE	PlanetPainter::paint	blits the globe frame
+s5:1674	PlanetPainter::paintIconic	DrawIcon when minimised
+s5:170A	PlanetPainter::scalar_dtor	deleting destructor
+s5:1738	StarSystemDialog::StarSystemDialog	dialog 4045 "Star System:" in orbit: pick a planet, land (vtable 1E7A)
+s5:1780	StarSystemDialog::refresh	(vslot 9)
+s5:179C	StarSystemDialog::init	(vslot 2) lists the planets, says add17, sizes the dialog
+s5:1B68	StarSystemDialog::onClose	(vslot 27) frees the planet picker
+s5:1BB6	StarSystemDialog::onCommand	(vslot 24)
+s5:1BD4	StarSystemDialog::onClick	(vslot 17) picks a planet (PtInRect), enables Land
+s5:1CA4	StarSystemDialog::land	a refused site gets 1578 "You don't want to land there!"; a good one posts 222
+s5:1D2A	setDlgItemText2	GetDlgItem + SetWindowText
+s5:1D4A	StarSystemDialog::onOK	(vslot 5)
+s5:1D8E	StarSystemDialog::hit	the planet under a point
+s5:1DA8	StarSystemDialog::enableLand	Land is enabled for a good site
+s5:1E54	StarSystemDialog::scalar_dtor	deleting destructor
+s5:1EEA	StarSystemPainter::StarSystemPainter	painter of dialog 4045
+s5:1F74	StarSystemPainter::~StarSystemPainter	dtor
+s5:1FB2	StarSystemPainter::onNotify	(vslot 1) invalidates
+s5:2020	StarSystemPainter::paint	(vslot 2) the planets in a row and the selected one's facts
+s5:2286	StarSystemPainter::barTop	(100 - n) / 2
+s5:229C	StarSystemPainter::drawOrbit	lines
+s5:239C	StarSystemPainter::drawMarker	the selection triangle
+s5:23F2	StarSystemPainter::markerPoints	its points
+s5:2474	StarSystemPainter::polygon	GDI Polygon
+s5:2488	StarSystemPainter::showFacts	the fact sheet into the dialog
+s5:24F2	StarSystemPainter::scalar_dtor	deleting destructor
+s5:2524	Mode2View::Mode2View	mode 2: in orbit (vtable 270C)
+s5:2594	Mode2View::~Mode2View	dtor
+s5:25C0	Mode2View::onShow	(vslot 13) opens the Star System dialog
+s5:2642	Mode2View::create	(vslot 2)
+s5:26A6	Mode2View::destroy	(vslot 36)
+s5:26D8	Mode2View::thunk_dtor	this-adjusting thunk
+s5:26E6	Mode2View::scalar_dtor	deleting destructor
+s5:27B0	Mode2Layer::Mode2Layer	its picture layer
+s5:2838	Mode2Layer::~Mode2Layer	dtor
+s5:2868	Mode2Layer::scalar_dtor	deleting destructor
+s5:289A	SiteWnd::SiteWnd	the site (colony map) window frame (SCPOPMENU; vtable 2E4A)
+s5:28FC	SiteWnd::~SiteWnd	dtor
+s5:291A	SiteWnd::close	PostMessage WM_CLOSE
+s5:2936	SiteWnd::vslot18	returns 1
+s5:294A	SiteWnd::setModel	its map view model (registry 0x0C..0x24)
+s5:2992	SiteWnd::onPaletteChanged	(vslot 36)
+s5:29D8	SiteWnd::onActivate	(vslot 32) the planet area follows this site
+s5:2A46	SiteWnd::show	(vslot 3) tool 1, show
+s5:2A6A	SiteWnd::onClose	(vslot 15)
+s5:2A94	SiteWnd::scrollBy	scrolls the map
+s5:2AAE	SiteWnd::onLButton	(vslot 23) to the front, the level
+s5:2AE4	SiteWnd::onCommand	(vslot 16) menu commands (level, help, surface/underground)
+s5:2C2A	SiteWnd::initMenu	(vslot 19)
+s5:2C72	SiteWnd::paint	(vslot 13)
+s5:2C88	SiteWnd::cleanup	DestroyIcon
+s5:2CF0	SiteWnd::create	(vslot 2) window, minimap (SITEICON)
+s5:2E24	SiteWnd::scalar_dtor	deleting destructor
+s5:2EDE	SiteMiniMap::SiteMiniMap	the site overview (vtable 363C)
+s5:2FEA	SiteMiniMap::~SiteMiniMap	dtor
+s5:3080	SiteMiniMap::onNotify	(vslot 1) invalidates
+s5:30BE	SiteMiniMap::paint	draws the overview
+s5:320E	SiteMiniMap::drawMap	terrain and objects
+s5:33C0	SiteMiniMap::drawObjects	the buildings and markers
+s5:3488	SiteMiniMap::drawViewRect	the visible part
+s5:3540	SiteMiniMap::markerPoints	marker polygon points
+s5:3602	SiteMiniMap::polygon	GDI Polygon
+s5:3616	SiteMiniMap::scalar_dtor	deleting destructor
+s5:3644	StarMapWnd::StarMapWnd	the destination star map window (vtable 3D08)
+s5:36F6	StarMapWnd::onNotify	(vslot 38) the selected star's text in the dialog
+s5:3898	StarMapWnd::onClose	(vslot 15)
+s5:38AA	StarMapWnd::create	(vslot 2) window, dialog, painter
+s5:3B3E	StarMapWnd::cleanup	destroys the window
+s5:3BD6	StarMapWnd::paint	(vslot 13) paints, opens its window once
+s5:3C32	StarMapWnd::onKey	(vslot 16) scrolls
+s5:3C74	StarMapWnd::onLButton	(vslot 23)
+s5:3C8C	StarMapWnd::hit	the star under a point
+s5:3CA6	StarMapWnd::thunk_dtor	this-adjusting thunk
+s5:3CB4	StarMapWnd::nop	empty virtual
+s5:3CB8	StarMapWnd::scalar_dtor	deleting destructor
+s5:3DA4	StarMapPainter::StarMapPainter	painter of the star map (vtable 408A)
+s5:3E84	StarMapPainter::~StarMapPainter	dtor
+s5:3F12	StarMapPainter::onNotify	(vslot 1)
+s5:3FA0	StarMapPainter::paint	BeginPaint, the stars
+s5:40CE	StarMapPainter::drawStars	ellipses and the selection
+s5:4064	StarMapPainter::scalar_dtor	deleting destructor
+s5:41C8	ColonyView::ColonyView	mode 10: the colony view (OpAccel accelerators; vtable 623C)
+s5:42F4	ColonyView::~ColonyView	dtor
+s5:434C	ColonyView::onMessage	(vslot 1) mouse capture and window messages
+s5:4394	ColonyView::postCommand	(vslot 40)
+s5:43F6	ColonyView::create	(vslot 2) window, icon bar, the first site window
+s5:44B0	ColonyView::paint	(vslot 13)
+s5:44EC	ColonyView::initMenu	(vslot 19) menu items by state (colonies, AI managers...)
+s5:493C	ColonyView::onCommand	(vslot 16) the colony menu: windows, reports, SCFillResources/SCForceMorale/SCKillColony debug commands
+s5:51C6	ColonyView::onMouse	(vslot 23)
+s5:522E	ColonyView::onLButtonUp	(vslot 24) ends a drag or a route
+s5:52DE	ColonyView::destroy	(vslot 36)
+s5:536E	ColonyView::openWindow	opens a site/planet window for a model
+s5:55B0	ColonyView::showMessage	a message log entry box
+s5:5764	ColonyView::setLevel	the level in view
+s5:5856	ColonyView::hitButton	the panel button under a point
+s5:58CE	ColonyView::onLButtonDown	a click on the map or the icon bar (fem134 ...)
+s5:5BF2	ColonyView::tileMenu	the TILEMENU popup on a tile
+s5:5D56	ColonyView::openBuilding	opens a building's window
+s5:5DE8	ColonyView::endDrag	releases the mouse
+s5:5E76	ColonyView::placeOrRoute	places a building or a route stop
+s5:6184	ColonyView::capture	SetCapture with a cursor
+s5:61C4	ColonyView::tileCommand	a tile command on the current site
+s5:6208	ColonyView::thunk_dtor	this-adjusting thunk
+s5:6216	ColonyView::scalar_dtor	deleting destructor
+s5:62E0	IconBar::IconBar	the colony view's button bar and panels (vtable 67C2)
+s5:6466	IconBar::~IconBar	dtor
+s5:6498	IconBar::buttonState	a button's state
+s5:64D4	IconBar::buttonId	a button's command
+s5:650C	IconBar::paint	(vslot 2)
+s5:65CC	IconBar::onMouse	(vslot 1) hover and click
+s5:6746	IconBar::setButton	sets a button's state
+s5:679C	IconBar::scalar_dtor	deleting destructor
+s5:67CE	TileListWnd::TileListWnd	the tile/object list window (TPPOPMENU, VrMode2; vtable 70E6)
+s5:687C	TileListWnd::onClose	(vslot 15)
+s5:6896	TileListWnd::onPaletteChanged	(vslot 36)
+s5:68DE	TileListWnd::refresh	repaints the list
+s5:68FC	TileListWnd::onLButton	(vslot 23)
+s5:694C	TileListWnd::onCommand	(vslot 16) previous/next/help
+s5:6AE6	TileListWnd::onSelect	(vslot 17) an entry by name
+s5:6B9A	TileListWnd::initMenu	(vslot 19)
+s5:6BBC	TileListWnd::paint	(vslot 13)
+s5:6BD2	TileListWnd::cleanup	DestroyIcon
+s5:6C3A	TileListWnd::create	(vslot 2) TILEICON
+s5:6E52	TileListWnd::caption	(vslot 37) the current entry's name
+s5:6E98	TileListWnd::showList	a listbox of the entries
+s5:7070	TileListWnd::onCtlColor	(vslot 30)
+s5:70C0	TileListWnd::scalar_dtor	deleting destructor
+s5:717E	TileListPainter::TileListPainter	its painter (vtable 754C)
+s5:7270	TileListPainter::~TileListPainter	dtor
+s5:7308	TileListPainter::onNotify	(vslot 1)
+s5:735A	TileListPainter::invalidate	InvalidateRect
+s5:737A	TileListPainter::paint	the current entry's picture and details
+s5:7526	TileListPainter::scalar_dtor	deleting destructor
+s5:7554	Mode5View::Mode5View	mode 5: destination selection (vtable 7780)
+s5:75C4	Mode5View::~Mode5View	dtor
+s5:75F0	Mode5View::onShow	(vslot 13) says add5, opens the star map
+s5:76AA	Mode5View::create	(vslot 2)
+s5:770E	Mode5View::destroy	(vslot 36)
+s5:774C	Mode5View::thunk_dtor	this-adjusting thunk
+s5:775A	Mode5View::scalar_dtor	deleting destructor
+s5:7824	Mode5Layer::Mode5Layer	its picture layer
+s5:78AC	Mode5Layer::~Mode5Layer	dtor
+s5:78DC	Mode5Layer::scalar_dtor	deleting destructor
+s5:790E	VrModeWnd::VrModeWnd	framed child window with a menu (base of the planet/site/star/tile windows; vtable 7B86)
+s5:795C	VrModeWnd::~VrModeWnd	dtor
+s5:79AE	VrModeWnd::returnTrue	virtual returning 1
+s5:79B4	VrModeWnd::setCaption	the title, drawn by its own caption painter
+s5:79E4	VrModeWnd::onNcPaint	draws the caption
+s5:79FC	VrModeWnd::onActivate	(vslot 32)
+s5:7A50	VrModeWnd::rememberPlace	the window place when it closes
+s5:7AD2	VrModeWnd::contextMenu	(vslot 24) its popup menu
+s5:7B60	VrModeWnd::scalar_dtor	deleting destructor
+s5:7C1A	FramePainter::FramePainter	window frame metrics
+s5:7CC8	drawCaption	the game's own title bar (text, lines)
+s5:7F38	FramePainter::scalar_dtor	deleting destructor
+s5:7F7A	ScreenView::ScreenView	full-screen view base (class "VrMode"; vtable 82BC)
+s5:808E	ScreenView::~ScreenView	dtor
+s5:8106	ScreenView::forward_60	(vslot 24) to the handler
+s5:8128	ScreenView::realizeChildren	(vslot 38) palettes of the children
+s5:81C0	ScreenView::onPaletteChanged	(vslot 35)
+s5:8250	ScreenView::destroyWindow	(vslot 15)
+s5:8288	ScreenView::thunk_dtor	this-adjusting thunk
+s5:8296	ScreenView::scalar_dtor	deleting destructor
+s5:8360	BackPanel::BackPanel	icon bar background panel (vtable 8462)
+s5:83F8	BackPanel::paint	(vslot 2) blits the background
+s5:8438	Panel::nop	empty virtual
+s5:843C	BackPanel::scalar_dtor	deleting destructor
+s5:847A	Panel::Panel	icon bar panel base (vtable 87AA)
+s5:8556	Panel::~Panel	dtor
+s5:85F6	Panel::freeSaved	(vslot 5)
+s5:865A	Panel::restoreAndFree	(vslot 4)
+s5:86D8	Panel::restoreAll	(vslot 3)
+s5:8712	Panel::position	its place on the bar
+s5:8780	Panel::nop8	empty virtual
+s5:8784	Panel::scalar_dtor	deleting destructor
+s5:87C2	CursorPanel::CursorPanel	the cursor/tool panel (vtable 8A84)
+s5:8908	CursorPanel::paint	(vslot 2)
+s5:8A5E	CursorPanel::scalar_dtor	deleting destructor
+s5:8A9C	TurnPanel::TurnPanel	the turn panel (vtable 8E92)
+s5:8BAE	TurnPanel::~TurnPanel	dtor
+s5:8BCC	TurnPanel::paint	(vslot 2) the frame and the turn number
+s5:8D90	TurnPanel::drawTurn	"%03ld" turn number
+s5:8E6C	TurnPanel::scalar_dtor	deleting destructor
+s5:8EAA	EventPanel::EventPanel	the event/animation panel (vtable 9204)
+s5:8F74	EventPanel::~EventPanel	dtor
+s5:8FB4	EventPanel::onNotify	(vslot 1) an animation starts
+s5:9068	EventPanel::paint	(vslot 2) the current event animation
+s5:915A	EventPanel::eventPicture	the picture of an event
+s5:91DE	EventPanel::scalar_dtor	deleting destructor
+s5:921C	Layer::Layer	picture layer base (GetDC; vtable 96C8)
+s5:92C4	Layer::~Layer	dtor
+s5:9312	Layer::paint	(vslot 2)
+s5:9364	Layer::drawFrame	the frame border round a layer
+s5:96A2	Layer::scalar_dtor	deleting destructor (vtable data follows)
+s5:A43E	RebelAI::RebelAI	the rebels' helper object (difficulty, chunk 0x0B)
+s5:A49A	rebelCalendarSmelter	turn 152: an XPipe at the cursor, a Smelter on the spiral
+s5:A54C	rebelCalendarPipes	turns 15..21: LPipes, then a Tokamak
+s5:A644	RebelAI::save	chunk 0x0B: the tag only
+s5:A65E	RebelAI::load	chunk 0x0B: 4 words from a version-1 save
+s5:A6EE	rebelPlaceOrder	a "Build in Rebel Colony" order is placed
+s5:A80E	rebelsHear	the rebels answer a player's building
+s5:A89E	rebelSetup	the rebels' underground core round their hub
+s5:ABC0	rebelAnswer	the answer goes down at the spiral's next cell
+s5:AC6E	rebelLayTube	a tube at the moved cursor
+s5:AD90	rebelPrepareCell	bulldozes/softens round a cell
+s5:AFC4	cellTerrainKind	the cell's terrain kind, 0 under a building
+s5:B0AA	rebelAnswerType	the rebels' answer to a building type (by difficulty)
+s5:B1AE	insideMargin	more than 11 cells from every edge
+s5:B240	cellFree	terrain only, inside the margin
+s5:B2DA	spiralNext	the next free cell of a spiral round the cursor
+s5:B482	findSeedSpot	a spot for the rebels' Seed, far from every colony
+s5:B872	rebelSeedLand	the rebels' Seed lands at a random spot
+s5:B97E	rebelCursorInit	colony 2's surface cursor starts at its hub
+s5:BA3E	SparseTable::SparseTable	sorted (key, long value) list
+s5:BA7E	SparseTable::~SparseTable	frees the entries
+s5:BA94	SparseTable::total	sum of the values
+s5:BAE6	SparseTable::get	value of a key
+s5:BB16	SparseTable::entryAt	entry i (key, value)
+s5:BB70	SparseTable::add	adds to a key
+s5:BB8A	SparseTable::set	sets a key
+s5:BBA4	SparseTable::write(mode0=set,1=add)	mode 0 sets, else adds
+s5:BC72	SparseTable::sort	qsort by key
+s5:BC92	SparseTable::find	bsearch
+s5:BCC4	SparseTable::grow	reallocates
+s5:BD80	buildingName	string id per building type
+s5:C0CA	resourceName	ResourceName wrapper
+s5:C0D8	ResourceName	resource id -> name
+s5:C222	productAName	product A names (1 Dozer ...)
+s5:C2F8	productBName	product B names
+s5:C3AE	returnOne	returns 1
+s5:C3B4	productAUnits	unit values of product A
+s5:C42E	productBUnits	unit values of product B (1 for 15, else 3)
+s5:C444	TileList::TileList	the colony's tile list (vtable C834)
+s5:C47A	TileList::~TileList	dtor
+s5:C4A8	TileList::writeEntries	writes the entries (sorted first)
+s5:C4F4	TileList::setBuilding	the tile's first entry takes a new key
+s5:C538	TileList::count	(vslot 4)
+s5:C54A	TileList::at	(vslot 1) entry i in visiting order
+s5:C5AE	TileList::zero	virtual returning 0
+s5:C5B4	TileList::add	(vslot 3) the first empty slot takes the tile
+s5:C640	TileList::nop	empty virtual
+s5:C644	TileList::append	(vslot 10) appends as saved
+s5:C694	TileList::sortNow	(vslot 7)
+s5:C6A4	TileList::sort	qsort by key
+s5:C6DE	TileList::find	an entry by tile
+s5:C73A	TileList::grow	(vslot 8) reallocates
+s5:C80E	TileList::scalar_dtor	deleting destructor
+s5:C860	KeyedList::head	returns +4
+s5:C872	KeyedList::insertDescending	keyed insert (a new step goes in front of equal keys)
+s5:C9BA	KeyedNode::scalar_dtor	deleting destructor (MemFreeFS)
+s5:CAC2	CargoLander::unload	a player's lander unloads when it lands
+s5:CEFC	ColonistLander::bringColonists	colonists come down from the mothership
+s5:CF6C	Pop::landColonists	colonists split over ages 19/29/39/49/59
+s5:D194	CommTower::inRange	within 30 of the hub, or anywhere with a ComSat
+s5:DC1C	RoboDigger::caveInCell	one cell of a cave-in
+s5:DCA8	RoboDigger::caveIn	a cave-in wrecks the buildings on the 8 cells
+s5:DE32	askDigDirection	dialog 4024 "Select Dig Direction"
+s5:DEAC	RoboDigger::digSurface	placement on the surface
+s5:DF10	RoboDigger::digBelow	placement below the surface (only down an air core)
+s5:E044	RoboDigger::levelAllowed	the level in view is within the planet's depth
+s5:E08E	RoboDigger::digFinish	the dig ends
+s5:E294	RoboDigger::sideTunnel	a side tunnel goes on
+s5:E39C	RoboDigger::finishAs	the robot's cell becomes the result
+s5:E49A	RoboDigger::dugGround	by the tile's mark: 6 -> 9, 7 -> 6, 8 -> 7, 9 -> 8
+s5:E4FA	RoboDigger::digTurns	turns of digging by a cell's mark
+s5:E652	RoboDigger::targetCell	the cell a direction leads to
+s5:E846	Dirt::~Dirt	dtor
+s5:EE3A	RoboDozer::finish	the cell becomes bulldozed ground, the dozer is free
+s5:EF7C	nop_EF7C	empty function (end of segment)
+s5:EF80	nop_EF80	empty function (end of segment)
+s5:EF84	nop_EF84	empty function (end of segment)
+s5:EF88	nop_EF88	empty function (end of segment)
+s5:EF8C	nop_EF8C	empty function (end of segment)
+s5:EF90	nop_EF90	empty function (end of segment)
+# Found by the improved disassembler (2026-10-22).
+s5:1DEA	destroyChildProc	EnumChildWindows callback: destroys child 0x175
+s5:1E1E	destroyOtherChildrenProc	EnumChildWindows callback: destroys the children but 1 and 0x175
+s5:4092	StarMapState::StarMapState	star map painter state
+s5:BD6C	SparseTable::compareKeys	qsort comparator by key (+4)
+s5:C7FA	TileList::compareKeys	qsort comparator by key (+4)
+s5:EF5E	UnusedBuilding::~UnusedBuilding	a building class no factory makes
+s5:EF94	UnusedBuilding::scalar_dtor	deleting destructor

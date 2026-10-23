@@ -1,0 +1,451 @@
+# Segment 2: application framework (Op app, OpWnd main window, SOL window classes), DIBs, lists,
+# timers, save-file chunk I/O, sound manager, message log, AI managers, trade agreements.
+# Vtables: 051E Op, 052A AppBase, 389A Object (base of almost everything), 380A SOLWnd family,
+# 389E OpWnd (main window), 3B46 SOLDefaultWnd, 3CFC PalDialog, 48DE/50A2 DIB/DibDC, 4C4C BmpFile,
+# 4F1C MemBlock, 573A PaletteHolder, 5BC4 List, 5BC0 ListNode, 5FC8 SoundMgr, 6378 DanWnd,
+# 685A DibView, 6BFC SOLChildWnd, 6C8C ChildRef, 8042 SOLChildPar, 87C8 MicroSpinControl,
+# 8E9A AnimOverlay, 9170 PtrArray, 9412 TimerEntry, 9416 Timer, 9D2E SOLWndBase.
+s2:0000	Op::Op	application object ctor (AppBase then Op vtable 051E); made by WinMain
+s2:0036	Op::~Op	application dtor: deletes the simulator, resource library, dialog objects
+s2:016E	Op::init	application start-up (vslot 2): checks the Windows version, creates ResLibr, DialogCtr, DialogHandler, the Simulator, the sound manager and the main window
+s2:049C	Op::parseCmdLine	(vslot 1) command line: "nomono2" turns the debug output off
+s2:04D2	AppBase::scalar_dtor	AppBase deleting destructor
+s2:04F8	Op::scalar_dtor	Op deleting destructor
+s2:0536	OpWnd::OpWnd	main window ctor (class "Outpost", icon, cursor, system colours)
+s2:0618	OpWnd::~OpWnd	main window dtor: restores the system colours, destroys icon and menu
+s2:06C0	OpWnd::onRunTurn	WM_USER on the main window: runs n turns (s7:83BA) unless the game is over
+s2:07D8	OpWnd::newSimulatorForLoad	creates an empty Simulator before a saved game is read
+s2:087E	OpWnd::newGame	New Game: creates the Simulator, the two players and the galaxy, queues SCSelect
+s2:0932	OpWnd::releaseResources	frees the resource library and the memory pools at shutdown
+s2:0984	OpWnd::onActivateApp	re-applies the game's system colours and tells the child view
+s2:09BA	OpWnd::onRightButton	shows the OPPOPMENU popup menu at the mouse
+s2:0A3C	OpWnd::onSysCommand	SC_CLOSE / screen-saver handling for the main window
+s2:0A92	OpWnd::onClose	asks to quit, then PostQuitMessage
+s2:0AF8	OpWnd::create	creates the main window, its timer and the first view
+s2:0C60	OpWnd::onCommand	menu and screen commands 100..302 (Run Turn, Load, Save, help, read.me, screens)
+s2:1230	OpWnd::onPaint	paints the main window background
+s2:1246	OpWnd::forwardToView_4C	forwards to the child view's vslot 0x4C
+s2:1272	OpWnd::forwardToView_88	forwards to the child view's vslot 0x88 (or the base)
+s2:12AA	OpWnd::forwardToView_8C	forwards to the child view's vslot 0x8C (or the base)
+s2:12DC	OpWnd::saveGameTo	writes a saved game to a file (SaveFile create, write, close)
+s2:1414	OpWnd::loadGameFrom	reads a saved game from a file and rebuilds the views
+s2:15D4	OpWnd::getKid	window factory: makes the view/window for a target mode (105 modes)
+s2:2B54	OpWnd::confirmExit	"Ready to leave Outpost?" (MessageBox, or the Outpost dialog when one is open)
+s2:2C4E	OpWnd::showOverlay	shows an overlay view (movie, window) over the colony view
+s2:2D22	OpWnd::overlayDone	command 121: the overlay ended, the colony view returns
+s2:2DCC	OpWnd::replaceView	replaces the main view (introduction, voyage)
+s2:2E9A	OpWnd::cmdLoadGame	Load Game: file dialog, then loadGameFrom
+s2:3018	OpWnd::cmdSave	Save: current file name, or Save As
+s2:30CC	OpWnd::cmdSaveAs	Save As: file dialog, then saveGameTo
+s2:3178	FileDialog::run	GetOpenFileName/GetSaveFileName for *.ops (initFileStruct)
+s2:357E	setGameSysColors	saves/restores the Windows system colours around the game
+s2:3714	SOLWnd::vslot1_forward	forwards to the attached handler's vslot 1
+s2:372C	SOLWnd::textBuffer	returns this+0x0A (the title buffer)
+s2:373C	SOLWnd::nop_6	empty virtual (retf 6)
+s2:3740	SOLWnd::nop_A	empty virtual (retf 0xA)
+s2:3744	SOLWnd::nop_C	empty virtual (retf 0xC)
+s2:3748	SOLWnd::nop_4	empty virtual (retf 4)
+s2:374C	SOLWnd::nop_6b	empty virtual (retf 6)
+s2:3750	SOLWnd::nop_4b	empty virtual (retf 4)
+s2:3754	SOLWnd::nop_6c	empty virtual (retf 6)
+s2:3758	SOLWnd::returnTrue	virtual returning 1
+s2:375E	SOLWnd::nop_Ab	empty virtual (retf 0xA)
+s2:3762	SOLWnd::nop_8	empty virtual (retf 8)
+s2:3766	SOLWnd::nop_Ac	empty virtual (retf 0xA)
+s2:376A	SOLWnd::nop_Ad	empty virtual (retf 0xA)
+s2:376E	SOLWnd::nop_Ae	empty virtual (retf 0xA)
+s2:3772	SOLWnd::nop_6d	empty virtual (retf 6)
+s2:3776	SOLWnd::nop_6e	empty virtual (retf 6)
+s2:377A	SOLWnd::nop_8b	empty virtual (retf 8)
+s2:377E	Object::scalar_dtor	base Object deleting destructor (vtable 389A, the root class)
+s2:37AA	SOLWnd::scalar_dtor	SOLWnd deleting destructor (vtable 380A)
+s2:37E4	OpWnd::scalar_dtor	main window deleting destructor (vtable 389E)
+s2:392E	WndHandler::WndHandler	handler object attached to a window (vtables 3AA0/3AA8)
+s2:397A	WndHandler::~WndHandler	handler dtor
+s2:39AC	paintSolidBackground	BeginPaint + FillRect with a solid brush
+s2:3A10	WndHandler::nop	empty virtual
+s2:3A14	WndHandlerBase::scalar_dtor	handler base deleting destructor
+s2:3A40	WndHandler2::scalar_dtor	second handler base deleting destructor
+s2:3A7A	WndHandler::scalar_dtor	handler deleting destructor
+s2:3AB8	SOLDefaultWnd::SOLDefaultWnd	top-level window ctor (class SOLDefaultWindowClass)
+s2:3AF4	SOLDefaultWnd::onDestroy	PostQuitMessage
+s2:3AFE	SOLDefaultWnd::scalar_dtor	deleting destructor
+s2:3BD6	PalDialog::PalDialog	dialog with its own palette (base of the game's DIB dialogs: launch, report, interview...)
+s2:3C34	PalDialog::onDestroy	releases the dialog palette
+s2:3CD2	PalDialog::nop	empty virtual
+s2:3CD6	PalDialog::scalar_dtor	deleting destructor
+s2:3D20	SOLControl::notifyParent	posts WM_COMMAND(id) to the parent window
+s2:3D40	SOLControl::nop	empty virtual
+s2:3D44	SOLWndDerived::scalar_dtor	deleting destructor of a SOLWnd subclass
+s2:3E0E	Handler::callVslot1	calls the handler at this+4, vslot 1
+s2:3E38	Pos3::Pos3	position (x, y, level) = 0
+s2:3E54	Pos3::Pos3(x,y,z)	position ctor
+s2:3E76	Pos3::set	sets x, y, level
+s2:3E94	Pos3::getXY	unpacks x, y
+s2:3EB4	Pos3::get	unpacks x, y, level
+s2:3EE2	Pos3::spanTo	|b - a| + 1 on each axis (size of a box between two corners)
+s2:3F32	Pos3::add	adds another position
+s2:3F62	Pos3::assign	copies another position
+s2:3F92	DIB::DIB(copy)	DIB copy ctor (vtable 48DE)
+s2:4016	DIB::DIB	empty DIB
+s2:405C	DIB::DIB(w,h,bpp)	new DIB of a size
+s2:41BC	DIB::~DIB	frees the bits and the header
+s2:4214	DIB::takeFrom	moves another DIB's bits into this one
+s2:4274	DIB::clone	(vslot 7) copies header and bits
+s2:431C	DIB::fill	fills the bits with a colour index
+s2:43CC	DIB::width	width from the header (loads it first)
+s2:4426	DIB::height	(vslot 5) height from the header
+s2:4480	DIB::blitRect	copies a rectangle into another DIB
+s2:4544	DIB::pixelPtr	address of (x, y) in the bottom-up bits, no bounds check
+s2:45D6	DIB::drawToDC	(vslot 1) SetDIBitsToDevice
+s2:465A	DIB::stretchToDC	(vslot 4) StretchDIBits
+s2:46E4	DIB::selectPalette	(vslot 2) makes and realises the DIB's palette
+s2:4772	DIB::rect	(0,0)-(w-1,h-1) from the header
+s2:47CC	DIB::ensureHeader	loads the header on first use
+s2:4834	DIB::ensureBits	allocates/loads the bits on first use
+s2:48AA	DIB::field0E	(vslot 6) returns +0x0E
+s2:48B8	DIB::scalar_dtor	deleting destructor
+s2:48FE	BmpFile::BmpFile	a .bmp on disk (name copied)
+s2:496C	BmpFile::~BmpFile	closes the file, frees the data
+s2:49E8	BmpFile::load	(vslot 2) _lopen/_hread the bitmap
+s2:4B5E	BmpFile::ensureLoaded	(vslot 1)
+s2:4B8E	BmpFile::parseHeader	reads BITMAPFILEHEADER/INFOHEADER
+s2:4C26	BmpFile::scalar_dtor	deleting destructor
+s2:4C58	MemBlock::MemBlock	empty memory block (vtable 4F1C)
+s2:4C98	MemBlock::MemBlock(ptr,size)	memory block over a buffer
+s2:4CDC	MemBlock::~MemBlock	frees owned data
+s2:4D26	MemBlock::at	element n, or 0 out of range
+s2:4D72	MemBlock::data	returns the data pointer
+s2:4D84	MemBlock::copyFrom	reallocates and copies another block
+s2:4E08	Palette::selectAndRealize	makes the palette, SelectPalette + RealizePalette into a DC
+s2:4E38	CreateGamePalette	CreatePalette from a DIB colour table
+s2:4EF6	MemBlock::scalar_dtor	deleting destructor
+s2:4F20	DibDC::DibDC	device context over a DIB (CreateDC "dib"), text drawing (vtable 50A2)
+s2:5068	DibDC::attach	takes a DIB's bits
+s2:507C	DibDC::scalar_dtor	deleting destructor
+s2:50C2	DibRegion::DibRegion	a rectangle of a DIB (for saving/restoring what is under an overlay)
+s2:5118	DibRegion::free	frees the saved pixels
+s2:5134	DibRegion::save	copies the rectangle's pixels into a new buffer
+s2:5236	DibRegion::restore	copies the saved pixels back
+s2:52FC	DibRegion::clip	clips the rectangle to the DIB
+s2:5394	NullPtr::init	sets a far pointer to 0
+s2:53AA	Op::nop	empty
+s2:53AE	playMovieMci	plays an FLC with mciaap.drv (MCI_PLAY, MCI_WAIT)
+s2:54AA	WinMain	creates the memory pool, srand(time()), the Op object, runs the message loop
+s2:56B4	PaletteHolder::PaletteHolder	holds a palette handle (vtable 573A)
+s2:56E2	PaletteHolder::release	(vslot 3) SelectPalette back + DeleteObject
+s2:570E	PaletteHolder::scalar_dtor	deleting destructor
+s2:574A	List::List	empty linked list (vtable 5BC4: +4 head, +8 count, +0A owns items)
+s2:5784	ListIter::ListIter	iterator over a list
+s2:57A4	ListIter::ListIter_b	iterator over a list (second copy)
+s2:57C4	List::~List	list dtor: clears the nodes (listed as ListIter::~ListIter in symbols.json)
+s2:57F0	List::countItems	counts the items with an iterator
+s2:5830	List::clear	(vslot 5) frees every node (and the items when owned)
+s2:58A6	List::append	(vslot 1) adds an item at the end
+s2:593C	List::insert	(vslot 2) adds an item at the front/before
+s2:59F4	List::remove	(vslot 3) removes an item
+s2:5AB8	List::popFront	(vslot 4) removes and returns the first item
+s2:5B12	ListIter::next	next item, or 0
+s2:5B6E	ListNode::scalar_dtor	node deleting destructor (MemFreeFS)
+s2:5B9A	List::scalar_dtor	deleting destructor
+s2:5BDC	SoundMgr::SoundMgr	sound manager (DGROUP 0x2A0)
+s2:5C34	SoundMgr::~SoundMgr	sound manager dtor
+s2:5C5C	SoundMgr::playCatalog	plays catalog sound id (kind 3, 467..503)
+s2:5C7C	SoundMgr::playVoice	plays voice line (type, index)
+s2:5C9E	SoundMgr::playVoicePair	plays a (type, index) pair from memory
+s2:5CB6	SoundMgr::onMciNotify	closes a device when its notification arrives
+s2:5CFE	SoundMgr::playFile	opens waveaudio or sequencer (.mid) and plays; drops a request while one of its kind plays
+s2:5E7E	SoundMgr::createNotifyWindow	registers/creates the hidden MciSoundWindow
+s2:5F44	MciSoundWndProc	window procedure of MciSoundWindow (MM_MCINOTIFY)
+s2:5FA2	SoundMgr::scalar_dtor	deleting destructor
+s2:5FD8	joinResourceStrings	loads one or two strings and joins them into a new buffer (story pages)
+s2:6048	debugPrintf	debug output (MONO2: OutputDebugString / fprintf)
+s2:60E8	_strdup	copies a string into new memory
+s2:612E	random	random(lo, hi) from rand()
+s2:61B2	DanWnd::DanWnd	child view window ctor (window class "DanBrotherton"; vtable 6378)
+s2:628E	DanWnd::destroy	(vslot 36) tells the handler, DestroyWindow
+s2:62C0	DanWnd::onPaint	paints a solid background
+s2:6324	DanWnd::nop_A	empty virtual
+s2:6328	DanWnd::nop_6	empty virtual
+s2:632C	DanWnd::nop_6b	empty virtual
+s2:6330	DanWnd::scalar_dtor	deleting destructor
+s2:6414	DIB::fromBmpFile	makes a DIB from a .bmp file
+s2:64A2	deleteObjectPtr	deletes the object a pointer holds (virtual dtor)
+s2:64C8	DIB::extract	new DIB from a rectangle of another
+s2:6562	DIB::copyOf	new DIB copying another
+s2:6604	DibView::DibView	DIB that shares another's palette (vtable 685A)
+s2:6732	DibView::~DibView	dtor
+s2:676E	DIB::cloneForOverlay	a copy of a picture so overlays can be drawn on it
+s2:6814	DibView::zero_7	virtual returning 0
+s2:681A	DibView::nop_1	empty virtual
+s2:681E	DibView::nop_4	empty virtual
+s2:6822	DibView::zero_2	virtual returning 0
+s2:6828	DibView::zero_5	virtual returning 0
+s2:682E	DibView::zero_6	virtual returning 0
+s2:6834	DibView::scalar_dtor	deleting destructor
+s2:687A	SOLChildWnd::SOLChildWnd	window with a child list at +0xD2 (vtable 6BFC)
+s2:68C6	SOLChildWnd::show	ShowWindow, then shows the children
+s2:68EA	SOLChildWnd::vslot38	forwards to the handler
+s2:6978	SOLChildWnd::addChild	adds a ChildRef (child, id) to the child list
+s2:6A04	SOLChildWnd::showChildren	shows every child
+s2:6A4A	SOLChildWnd::forEachChild	(vslot 62) calls each child
+s2:6B02	SOLChildWnd::forward_6C	forwards to the object at +0xCE, vslot 0x6C
+s2:6B2E	SOLChildWnd::forward_68	forwards to the object at +0xCE, vslot 0x68
+s2:6B5A	ChildRef::scalar_dtor	deleting destructor (vtable 6C8C)
+s2:6BB4	SOLChildWnd::scalar_dtor	deleting destructor
+s2:6C90	Box::Box	two Pos3 corners = 0
+s2:6CB4	Box::copy	copies a box
+s2:6CEC	Box::set	sets both corners
+s2:6D18	Box::assign	copies corners from two positions
+s2:6D3E	Box::getCorners	unpacks both corners
+s2:6D64	Box::fromCorners	corner and size from two positions
+s2:6D8A	SaveFile::create	starts a save (format version 4 at DGROUP 0x312)
+s2:6DD0	SaveFile::destroy	closes the file and frees the object
+s2:6E02	SaveFile::writeAll	writes header, registry chunks and the simulation chunks
+s2:6E78	SaveFile::readAll	reads header, registry chunks and the simulation chunks
+s2:6EEE	SaveFile::writeSimChunks	simulation objects (players, colonies, buildings, robots, trucks...)
+s2:6F7A	SaveFile::readSimChunks	reads the simulation objects
+s2:7006	SaveFile::writeRegistryChunks	every registry object in the order of DGROUP 0x320
+s2:7056	SaveFile::readRegistryChunks	reads every registry object
+s2:70A6	SaveFile::writeHeader	_lcreat and the "SC001" header
+s2:7146	SaveFile::openRead	_lopen for reading
+s2:71A0	SaveFile::readHeader	reads and checks the header and version
+s2:726C	SaveFile::close	_lclose (error 0x6D1 on failure)
+s2:72A8	SaveFile::setMode	stores a word
+s2:72BC	Save_translateV1Value	save version 1 -> 2 value translation
+s2:738C	Save_alertRowV1	v1 alert table row mapping
+s2:73EA	Save_translateV1BuildingType	save version 1 -> 2 building type translation
+s2:7548	Save_readObjectList	reads n objects (dword n)
+s2:766E	Save_readTruckRoute	reads a route (handle list)
+s2:76E4	Save_readHandleList	dword n, n dword handles (0 = empty slot)
+s2:77CC	Save_readSparseTable	word slots, (word key, dword value) each
+s2:7898	Save_writeObjectList	writes n objects
+s2:7954	Save_writeHandleList	dword n, n dword handles
+s2:79F0	Save_writeHandleListPtr	writes a handle list through a pointer (0 when none)
+s2:7A22	Save_writeSparseTable	word slots, (word key, dword value) each
+s2:7AD4	Save_readSparseTableInto	reads into an existing table
+s2:7B4C	Save_writePos3	three words
+s2:7BC8	Save_readPos3	three words
+s2:7C2A	Save_writeString	bytes up to and including the NUL
+s2:7C6E	Save_readString	bytes up to the NUL
+s2:7CAC	Save_writeChunkTag	writes "dcbSC%02x"
+s2:7CFE	Save_findChunkTag	searches for a tag from the start of the file
+s2:7DEE	File_read	_hread with a size check
+s2:7E1C	File_write	_hwrite with a size check
+s2:7E4A	Save_checkTag	compares a tag
+s2:7E98	SOLWndSubclass::scalar_dtor	deleting destructor
+s2:7F62	SOLChildPar::SOLChildPar	child parent window (class SOLChildPar; vtable 8042)
+s2:7FFA	SOLChildPar::scalar_dtor	deleting destructor
+s2:80EE	MicroSpinControl::MicroSpinControl	spin control ctor (vtable 87C8)
+s2:8168	MicroSpinControl::~MicroSpinControl	dtor
+s2:818C	MicroSpinControl::registerClass	registers "MicroSpinControl"
+s2:8288	MicroSpin_paint	draws the spin arrows (pens, polygons)
+s2:84BA	MicroSpin_helper	spin control helper (SendMessage to the buddy)
+s2:87A2	MicroSpinControl::scalar_dtor	deleting destructor
+s2:87CC	AnimOverlay::AnimOverlay	animation overlays and map projection (cache registry 0x2E)
+s2:8AA2	AnimOverlay::~AnimOverlay	dtor
+s2:8B20	AnimOverlay::drawAt	draws a frame at a position
+s2:8BC6	AnimOverlay::drawFrame	draws the current frame
+s2:8C4E	AnimOverlay::saveUnder	saves the pixels under a frame
+s2:8CE4	AnimOverlay::saveUnderAt	saves the pixels under a frame at a position
+s2:8D8A	AnimOverlay::blit	blits with transparency
+s2:8E74	AnimOverlay::scalar_dtor	deleting destructor
+s2:8E9E	PtrArray::PtrArray	growable far-pointer array (vtable 9170)
+s2:8F24	PtrArray::~PtrArray	dtor
+s2:8FAA	PtrArray::push	appends a pointer
+s2:8FC4	PtrArray::get	element i, or 0
+s2:9004	PtrArray::setAt	stores at index, growing as needed
+s2:909C	PtrArray::grow	reallocates the array
+s2:914A	PtrArray::scalar_dtor	deleting destructor
+s2:9174	TimerEntry::TimerEntry	one timer client (callback, period)
+s2:91BA	Timer::Timer	the game timer (SetTimer; DGROUP 0x388)
+s2:921C	Timer::~Timer	KillTimer
+s2:9262	Timer::add	registers a timer client
+s2:92B2	Timer::remove	unregisters a timer client
+s2:932A	Timer::tick	calls the clients whose period has passed
+s2:93C0	TimerEntry::scalar_dtor	deleting destructor
+s2:93EC	Timer::scalar_dtor	deleting destructor
+s2:941A	Pair::Pair(a,b)	two words
+s2:9436	Pair::Pair	two words = 0
+s2:944E	Pair::set	sets two words
+s2:9466	AppBase::~AppBase	app base dtor
+s2:9490	AppBase::nop_4	empty virtual
+s2:9494	AppBase::nop_8	empty virtual
+s2:9498	MessageLoop	main GetMessage/TranslateAccelerator/DispatchMessage loop
+s2:9510	MessageLoop_modal	modal message loop (dialogs)
+s2:9584	SOLWndBase::SOLWndBase	window base ctor (vtable 9D2E)
+s2:9640	SOLWnd::ncActivate	SendMessage WM_NCACTIVATE
+s2:9664	SOLWnd::setText	copies the title, SetWindowText
+s2:9698	SOLWnd::destroy	DestroyWindow
+s2:96AE	SOLWnd::show	ShowWindow
+s2:96D2	SOLWnd::registerClass	RegisterClass when not yet registered
+s2:9760	SOLWnd::create	CreateWindowEx
+s2:97C8	SOLWnd::onPaint	empty BeginPaint/EndPaint
+s2:97F2	SOLWnd::wndProc	dispatches window messages to the virtual methods
+s2:9C16	SOLWnd::onNcPaint	DefWindowProc for WM_NCPAINT
+s2:9C30	SOLWnd::onNcActivate	DefWindowProc for WM_NCACTIVATE
+s2:9C4A	SOLWnd::nop_Ac	empty virtual
+s2:9C4E	SOLWnd::nop_6f	empty virtual
+s2:9C52	SOLWnd::nop_6g	empty virtual
+s2:9C56	SOLWnd::onCtlColor	default: stock brush 5
+s2:9C60	SOLWnd::onChildMsg	message 0xC7: deletes the object passed
+s2:9C86	SOLWnd::getText	copies the title out
+s2:9CC4	SOLWnd::isOtherWindow	1 when the hwnd is not this window
+s2:9CE0	SOLWnd::zero	virtual returning 0
+s2:9CE6	SOLWnd::defProc	DefWindowProc
+s2:9D02	SOLWndBase::scalar_dtor	deleting destructor
+s2:9D36	AnimTicker::AnimTicker	registry 0x27: 12-step animation clock on the timer
+s2:9E5A	AnimTicker::~AnimTicker	dtor
+s2:9F18	AnimTicker::onTimer	advances the step
+s2:9F48	AnimTicker::current	current step's entry
+s2:9F64	AnimTicker::step	step = (step + 1) mod 12
+s2:9F80	AnimTicker::thunk_dtor	this-adjusting thunk (multiple inheritance)
+s2:9F8C	AnimTicker::scalar_dtor	deleting destructor
+s2:9FD2	MessageLog::MessageLog	registry 0x37: the message log (0x420 bytes)
+s2:A086	MessageLog::~MessageLog	dtor
+s2:A0E4	MessageLog::post	adds a log entry (code, colony, values) and notifies the window
+s2:A1F0	MessageLog::format	the text of a log entry (switch at 2:A82A), its movie
+s2:A8F4	MessageLog::formatEntry	wrapper used by the log window
+s2:A930	SoundQueue::add	queues a sound (+0x410)
+s2:A9EC	SoundQueue::playNext	plays the next queued sound
+s2:AA28	SoundQueue::play	plays one queued sound
+s2:AAA8	MessageLog::forgetColony	drops the entries of a killed colony
+s2:AB12	MessageLog::codeCategory	log code -> category
+s2:AB54	MessageLog::hasEntries	1 when the log has entries
+s2:AB80	logCodeToMovie	log codes 8..45 -> movie command
+s2:AD0C	LogEntry::scalar_dtor	deleting destructor (MemFreeFS)
+s2:AD38	LogEntryBase::scalar_dtor	deleting destructor
+s2:AD64	MessageLog::scalar_dtor	deleting destructor
+s2:ADA2	AnimRef::init	a building type's animation (table DGROUP 0x3A4)
+s2:ADD2	AnimRef::reset	back to the first frame
+s2:ADF2	AnimRef::firstFrame	the animation's first frame
+s2:AE0C	AnimRef::mode	the animation's mode
+s2:AE26	AnimRef::advance	next frame (loop or ping-pong)
+s2:AED8	AnimRef::hasAnimation	1 when the type has an animation
+s2:AEFE	RegObj0B::RegObj0B	registry 0x0B: command target 0x1B3 (DGROUP 0x4230)
+s2:AF38	RegObj0B::~RegObj0B	dtor
+s2:AF56	RegObj0B::scalar_dtor	deleting destructor
+s2:AF94	AiManagers::AiManagers	registry 0x40: the AI managers
+s2:AFDE	AiManagers::~AiManagers	dtor
+s2:B05A	AiNamed::AiNamed	named item base (vtable BDC8)
+s2:B08C	AiNamed::~AiNamed	dtor
+s2:B0BC	AiManager::AiManager	one AI manager (vtable BDC4)
+s2:B0F2	AiColonyRef::AiColonyRef	a colony entry (vtable BDC0)
+s2:B11E	AiBuildingRef::AiBuildingRef	a building entry (vtable BDDC)
+s2:B146	AiManager::release	clears the manager's assignment
+s2:B1A6	AiManager::rename	sets the manager's name
+s2:B1F0	AiManager::defaultName	string 0x531
+s2:B200	AiManagers::listColonies	the colonies a manager can take
+s2:B340	AiManager::colony	the assigned colony
+s2:B366	AiManager::target	the assigned target
+s2:B38C	AiManagers::listBuildings	the buildings a manager can take
+s2:B47A	AiManager::building	the assigned building
+s2:B4A0	AiManagers::refresh	rebuilds the colony and building lists
+s2:B544	AiManager::apply	applies an assignment
+s2:B61A	AiManager::setColonyByName	finds and sets the colony
+s2:B63A	AiManager::setBuildingByName	finds and sets the building
+s2:B65A	AiManagers::isAssigned	whether a name is taken
+s2:B69C	AiManagers::create	makes the five managers ("AI Name #1"..) (discovery 30)
+s2:B78A	AiManagers::createForEvent	makes managers from an event
+s2:B820	AiManagers::active	managers work once player 1 has "Multiple AI(5)"
+s2:B85C	AiManagers::countColonies	count of the colony list
+s2:B8AC	AiManagers::countBuildings	count of the building list
+s2:B8FA	AiManagers::findColony	by name
+s2:B964	AiManagers::findBuilding	by name
+s2:B9CE	AiManagers::findManager	by name
+s2:BA38	AiManagers::save	chunk 0x16
+s2:BB5E	AiManagers::load	chunk 0x16
+s2:BD02	AiManagers::scalar_dtor	deleting destructor
+s2:BD28	AiNamed::scalar_dtor	deleting destructor
+s2:BD4E	AiManager::scalar_dtor	deleting destructor
+s2:BD74	AiColonyRef::scalar_dtor	deleting destructor
+s2:BD9A	AiBuildingRef::scalar_dtor	deleting destructor
+s2:BDE0	buildBldgGroups	builds the 70 building-type groups (g_bldgGroups)
+s2:C626	freeBldgGroups	frees the groups
+s2:C646	BldgGroups::firstOffered	the first type of a group the build menu offers
+s2:C6AE	BldgGroups::contains	is a type in a group
+s2:C6FA	BldgGroups::get	group record (1..70)
+s2:C72A	RebelBuildOrder::RebelBuildOrder	registry 0x3F: "Build in Rebel Colony"
+s2:C75C	RebelBuildOrder::~RebelBuildOrder	dtor
+s2:C79A	RebelBuildOrder::place	orders a building in the rebel colony (+0x0E = turn + build time)
+s2:C83A	RebelBuildOrder::busy	1 while the last order's turn has not passed
+s2:C85E	RebelBuildOrder::choices	the building list (made on first use)
+s2:C882	RebelBuildOrder::buildChoices	lists the buildings that can be ordered
+s2:C98E	RebelBuildOrder::save	chunk 0x15
+s2:C9D4	RebelBuildOrder::load	chunk 0x15
+s2:CA24	RebelBuildOrder::scalar_dtor	deleting destructor
+s2:CA5A	TradeLists::TradeLists	the trade window's lists (vtable D71A)
+s2:CAA0	TradeLists::~TradeLists	dtor
+s2:CAC6	TradeLists::clear	(vslot 4) frees the lists
+s2:CBC4	TradeLists::listColonies	colonies to trade with
+s2:CDA2	TradeLists::listCargo	what can be traded
+s2:CFA0	TradeLists::listResources	resources on offer
+s2:D1C6	TradeLists::listBuildings	buildings ("%s #%02ld")
+s2:D3AE	TradeLists::listRobots	robots/vehicles
+s2:D4F6	TradeLists::listGroupBuildings	buildings of a group ("%s #%02ld")
+s2:D6F4	TradeLists::scalar_dtor	deleting destructor
+s2:D72E	AiAttitude::AiAttitude	registry 0x3A: the A.I.'s attitude (+0x0A: 2 benevolent ...)
+s2:D75A	AiAttitude::scalar_dtor	deleting destructor
+s2:D790	StarChoice::StarChoice	registry 0x36: the chosen destination star (+0x0E)
+s2:D7DA	StarChoice::~StarChoice	dtor
+s2:D818	StarChoice::fromButton	button 416..436 -> star 1..21
+s2:D968	StarChoice::scalar_dtor	deleting destructor
+s2:D99E	RegObj26::RegObj26	registry 0x26: command target 0x9A
+s2:D9D4	RegObj26::scalar_dtor	deleting destructor
+s2:DA12	SysPalette::SysPalette	registry 0x48: system palette entries and device caps
+s2:DC2C	SysPalette::~SysPalette	dtor
+s2:DC5A	SysPalette::scalar_dtor	deleting destructor
+s2:DC90	TradeAgreement::TradeAgreement	an agreement between two colonies (0x14 bytes)
+s2:DCDC	TradeAgreement::TradeAgreement()	empty agreement (loader)
+s2:DD1E	TradeAgreement::scalar_dtor	deleting destructor
+s2:DD4E	TradeAgreements::TradeAgreements	registry 0x3B: trade agreements (list at +0x0A)
+s2:DDCA	TradeAgreements::~TradeAgreements	dtor
+s2:DE58	TradeAgreements::propose	adds a proposed agreement
+s2:DF4A	TradeAgreements::checkLapses	SCEndSim: every agreement in state 2 or 3 is tested (result unused)
+s2:DFA6	TradeAgreements::countFor	agreements of a colony
+s2:E01C	TradeOffer::set	stores two dwords
+s2:E038	TradeOffer::get	returns two dwords
+s2:E05E	TradeAgreements::schedule	queues the trade step
+s2:E10C	TradeAgreements::accept	accepts or refuses an agreement
+s2:E164	TradeAgreements::make	creates an agreement and schedules the trade step
+s2:E2A4	TradeAgreements::statusText	agreement status string
+s2:E320	TradeAgreements::diplomacyText	strings 1091..1094: "No diplomatic contact" ...
+s2:E3EC	TradeAgreements::colonyLists	the colonies not of player 2, and the others
+s2:E586	colonyNameCopy	a colony's name in new memory
+s2:E5DA	TradeAgreements::save	chunk 0x14
+s2:E70E	TradeAgreements::load	chunk 0x14
+s2:E852	colonyByName	name -> colony
+s2:E8CC	TradeAgreements::between	the agreement of two colony names
+s2:E9A4	TradeAgreement::hasLapsed	has an agreement in state 2 or 3 run out
+s2:EA86	TradeAgreements::scalar_dtor	deleting destructor
+s2:EABC	RegObj05::RegObj05	registry 0x05: a word and a position
+s2:EAF4	RegObj05::scalar_dtor	deleting destructor
+s2:EB2A	MoraleCrisis::MoraleCrisis	registry 0x2C: the morale crisis (Editor Interview)
+s2:EB5C	MoraleCrisis::answerVoices	voice list of answer n (DGROUP 0xD0E + 16n)
+s2:EB6E	MoraleCrisis::answerCount	5
+s2:EB74	MoraleCrisis::setResponse	stores the player's answer 1..5
+s2:EBDA	MoraleCrisis::scalar_dtor	deleting destructor
+s2:EC10	RegObj42::RegObj42	registry 0x42: one word
+s2:EC3C	RegObj42::scalar_dtor	deleting destructor
+s2:EC72	ResearchNode::ResearchNode	research tree node (vtable EFC4)
+s2:EC94	ResearchNode::~ResearchNode	dtor
+s2:ECB2	ResearchTree41::ResearchTree41	registry 0x41: a research tree (topics at DGROUP 0xD5E)
+s2:ED00	ResearchTree41::~ResearchTree41	dtor
+s2:ED1E	ResearchTree41::makeNode	new node
+s2:ED62	ResearchTree41::setTopic	topic n from the 8-byte table at DGROUP 0xD5E
+s2:ED8A	ResearchTree41::topicState	a topic's state
+s2:EE14	ResearchTree41::root	the root node
+s2:EE56	ResearchTree41::topicName	the topic's string
+s2:EE72	ResearchTree41::children	a topic's children
+s2:EEA6	ResearchTree41::zero	virtual returning 0
+s2:EEAC	ResearchTree41::isOpen	whether a topic is listed (roots wait)
+s2:EF38	ResearchTree41::topicWord	+2 of the topic record
+s2:EF4A	ResearchTree41::id	returns 0x41
+s2:EF50	ResearchNode::scalar_dtor	deleting destructor
+s2:EF76	ResearchTree41::scalar_dtor	deleting destructor
+# Found by the improved disassembler (2026-10-22).
+s2:5632	SOLWndProc	the window procedure of the SOL window classes: the C++ object from the window long, dispatch
+s2:80D2	MicroSpinData::init	zeroes the spin control's data
+s2:8214	MicroSpin_onNcCreate	WM_NCCREATE: allocates its data, records buddy and id
+s2:84F2	MicroSpin_WndProc	the MicroSpinControl window procedure (paint, clicks, auto-repeat timer)
+s2:9628	SOLWnd::setHwnd	+8 when not yet set

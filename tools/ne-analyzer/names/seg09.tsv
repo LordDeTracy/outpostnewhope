@@ -1,0 +1,332 @@
+# Segment 9: the dialogs (OPDialog base s9:7728, vtable 840C), the message box (4035), the building
+# and report window bases (s9:B040/B082/B0BC, vtable B772), the custom controls (OPCtrl vtable 9800,
+# OPButton vtable A230), the research tree views, and every concrete dialog.
+# Dialog ids (resources): 232 Test of Sound Queue, 343 Terraforming Control, 358 Orbital Launch System,
+# 384 Trade, 389 Trade Session, 402 Trade Counter Offer, 448 Police, 497 Robot Command,
+# 4001 Factory Summary, 4011 (lab), 4023 Turns, 4027 Preferences, 4028 Program Control,
+# 4029 Star Selection, 4035 (message box), 4045 Star System, 4047 (alert), 4049 Move Colonists,
+# 4057/4058 (research trees), 499 Robot Command Details, 4002 Executive Summary, 4003 Laboratory Summary,
+# 6208 Transfer Assets, 6213 Transit Information,
+# 6224 Macromanagement Functions.
+s9:0000	OrbitalLaunchDlg::init	(vslot 2) dialog 358: eight controls made from DGROUP 0x5C60, says add18
+s9:0170	OrbitalLaunchDlg::onCommand	(vslot 4) launches an item (SCSelect a planet with the Seed Factory), probes, satellites
+s9:0558	OrbitalLaunchDlg::refresh	an item still aboard (or the Seed Factory) can be chosen
+s9:060E	enableDlgItems	EnableWindow on a list of control ids
+s9:0656	OrbitalLaunchDlg::scalar_dtor	deleting destructor
+s9:06E8	MainMenuDlg::MainMenuDlg	dialog 4028 "Program Control" (vtable 0B90)
+s9:073A	MainMenuDlg::~MainMenuDlg	dtor
+s9:0766	MainMenuDlg::init	(vslot 2) shows it, movies back on
+s9:07DC	MainMenuDlg::onCommand	(vslot 4) New Game (mission brief), Introduction, Load, Preferences, Exit
+s9:0A1A	MainMenuDlg::loadBackground	(vslot 26) the dialog picture
+s9:0ACC	MainMenuDlg::enableButtons	buttons by state
+s9:0B6A	MainMenuDlg::scalar_dtor	deleting destructor
+s9:0BFC	PlanetPickDlg::PlanetPickDlg	dialog 4045 "Star System:" opened as a window (vtable 0DB0)
+s9:0C54	PlanetPickDlg::~PlanetPickDlg	dtor
+s9:0C7C	PlanetPickDlg::init	(vslot 2) sized to the planet grid
+s9:0CC0	PlanetPickDlg::onCtlColor	(vslot 13)
+s9:0D5E	PlanetPickDlg::close	(vslot 5) posts command 1
+s9:0D80	PlanetPickDlg::returnTrue	virtual returning 1
+s9:0D86	PlanetPickDlg::nop	empty virtual
+s9:0D8A	PlanetPickDlg::scalar_dtor	deleting destructor
+s9:0E1C	PoliceDlg::PoliceDlg	dialog 448 "Police" (vtable 11D2)
+s9:0E86	PoliceDlg::~PoliceDlg	dtor
+s9:0F0C	PoliceDlg::init	(vslot 2) the mode buttons; hides Needs when there is no building
+s9:109C	PoliceDlg::onCommand	(vslot 4)
+s9:1152	PoliceDlg::close	(vslot 5) applies the chosen mode
+s9:11AC	PoliceDlg::scalar_dtor	deleting destructor
+s9:123E	MoveColonistsDlg::MoveColonistsDlg	dialog 4049 "Move Colonists" (vtable 17B0)
+s9:1290	MoveColonistsDlg::~MoveColonistsDlg	dtor
+s9:12BC	MoveColonistsDlg::init	(vslot 2)
+s9:13B2	MoveColonistsDlg::onOK	(vslot 5) moves the colonists between the two colonies
+s9:162A	MoveColonistsDlg::onCommand	(vslot 4)
+s9:1696	MoveColonistsDlg::fillColonies	the colony lists
+s9:1786	MoveColonistsDlg::nop	empty virtual
+s9:178A	MoveColonistsDlg::scalar_dtor	deleting destructor
+s9:181C	PreferencesDlg::PreferencesDlg	dialog 4027 "Preferences" (vtable 1C48)
+s9:1876	PreferencesDlg::~PreferencesDlg	dtor
+s9:18A2	PreferencesDlg::init	(vslot 2) the options and the Difficulty Level box
+s9:19EA	PreferencesDlg::onOK	(vslot 5) stores animations, turns, sound, music
+s9:1AB0	PreferencesDlg::onCommand	(vslot 4) Defaults
+s9:1AFE	PreferencesDlg::checkButtons	CheckDlgButton for each option
+s9:1B8A	PreferencesDlg::defaults	the default options
+s9:1C1E	PreferencesDlg::nop	empty virtual
+s9:1C22	PreferencesDlg::scalar_dtor	deleting destructor
+s9:1CB4	SoundQueueTestDlg::SoundQueueTestDlg	dialog 232 "Test of Sound Queue" (debug; vtable 1EEE)
+s9:1D24	SoundQueueTestDlg::~SoundQueueTestDlg	dtor
+s9:1D50	SoundQueueTestDlg::init	(vslot 2)
+s9:1D7A	SoundQueueTestDlg::onOK	(vslot 5) queues the checked sounds
+s9:1E80	SoundQueueTestDlg::onCommand	(vslot 4) plays the queue
+s9:1EC4	SoundQueueTestDlg::nop	empty virtual
+s9:1EC8	SoundQueueTestDlg::scalar_dtor	deleting destructor
+s9:1F5A	AlertDlg::AlertDlg	dialog 4047: an alert's text and picture (vtable 237E)
+s9:205E	AlertDlg::~AlertDlg	dtor
+s9:20D4	AlertDlg::init	(vslot 2) sizes to the picture, an OPButton
+s9:21D6	AlertDlg::paint	(vslot 24) the text
+s9:2358	AlertDlg::scalar_dtor	deleting destructor
+s9:23EA	StarSelectionDlg::StarSelectionDlg	dialog 4029 "Star Selection" (vtable 2956)
+s9:2464	StarSelectionDlg::~StarSelectionDlg	dtor
+s9:2490	StarSelectionDlg::init	(vslot 2) the star buttons
+s9:2512	StarSelectionDlg::onCommand	(vslot 4) star check boxes, Launch (too many targets: 1404), star voices
+s9:27CC	StarSelectionDlg::onCtlColor	(vslot 13)
+s9:288E	StarSelectionDlg::loadBackground	(vslot 26)
+s9:2930	StarSelectionDlg::scalar_dtor	deleting destructor
+s9:29C2	TerraformDlg::TerraformDlg	dialog 343 "Terraforming Control" (vtable 2E26)
+s9:2A22	TerraformDlg::~TerraformDlg	dtor
+s9:2A64	TerraformDlg::init	(vslot 2)
+s9:2BB2	TerraformDlg::onCommand	(vslot 4)
+s9:2D48	TerraformDlg::setValue	(vslot 28) a setting's number
+s9:2DAC	TerraformDlg::apply	(vslot 30) writes the settings
+s9:2E00	TerraformDlg::scalar_dtor	deleting destructor
+s9:2EA2	TradeDlg::TradeDlg	dialog 384 "%s - Trade" (vtable 3436)
+s9:2F06	TradeDlg::~TradeDlg	dtor
+s9:2F32	TradeDlg::close	(vslot 5) unless the trade alert is on
+s9:2F5A	TradeDlg::init	(vslot 2)
+s9:2F90	TradeDlg::fill	(vslot 20) partner lists, title
+s9:311A	TradeDlg::onCommand	(vslot 4) choose a partner, open the session
+s9:323C	TradeDlg::selectPartner	list selection
+s9:32A8	TradeDlg::showDiplomacy	the partner's diplomacy text
+s9:331A	TradeDlg::onNotify	list notifications
+s9:3374	TradeDlg::fillPartners	the partner list
+s9:3410	TradeDlg::scalar_dtor	deleting destructor
+s9:34A2	CounterOfferDlg::CounterOfferDlg	dialog 402 "%s - Trade Counter Offer" (vtable 38FA)
+s9:3506	CounterOfferDlg::~CounterOfferDlg	dtor
+s9:3532	CounterOfferDlg::close	(vslot 5)
+s9:355A	CounterOfferDlg::init	(vslot 2)
+s9:3590	CounterOfferDlg::fill	(vslot 20) the offer and its prices
+s9:37F0	CounterOfferDlg::onCommand	(vslot 4) accept: makes the trade
+s9:38D4	CounterOfferDlg::scalar_dtor	deleting destructor
+s9:3966	TradeSessionDlg::TradeSessionDlg	dialog 389 "%s - Trade Session" (vtable 3FFC)
+s9:39E2	TradeSessionDlg::~TradeSessionDlg	dtor
+s9:3A0E	TradeSessionDlg::close	(vslot 5)
+s9:3A36	TradeSessionDlg::setQuantity	(vslot 21)
+s9:3AE8	TradeSessionDlg::init	(vslot 2)
+s9:3B1E	TradeSessionDlg::fill	(vslot 20) the page radio buttons and prices
+s9:3C64	TradeSessionDlg::onCommand	(vslot 4) page, quantity, offer
+s9:3D5E	TradeSessionDlg::loadBackground	(vslot 24)
+s9:3DDC	TradeSessionDlg::invalidatePicture	InvalidateRect of the picture box
+s9:3E08	TradeSessionDlg::showPage	the page's list
+s9:3F12	TradeSessionDlg::fillList	list entries
+s9:3FD6	TradeSessionDlg::scalar_dtor	deleting destructor
+s9:4068	TurnsDlg::TurnsDlg	dialog 4023 "Turns": run multiple turns (vtable 4466)
+s9:40E2	TurnsDlg::~TurnsDlg	dtor
+s9:410E	TurnsDlg::init	(vslot 2) the number of turns, its place
+s9:42B2	TurnsDlg::onOK	(vslot 5) runs the turns
+s9:43EA	TurnsDlg::rememberPlace	(vslot 9)
+s9:4440	TurnsDlg::scalar_dtor	deleting destructor
+s9:44D2	ExecSummaryDlg::ExecSummaryDlg	dialog 4002 "Executive Summary" (vtable 4824)
+s9:45E8	ExecSummaryDlg::refresh	(vslot 4) the rows
+s9:4766	ExecSummaryDlg::title	(vslot 20)
+s9:477E	ExecSummaryDlg::init	(vslot 2) title with the colony name
+s9:47FE	ExecSummaryDlg::scalar_dtor	deleting destructor
+s9:48A0	FactoryDlg::FactoryDlg	dialog 4001 "Factory Summary": the product list (combobox 6000; vtable 4E18)
+s9:4A0A	FactoryDlg::fillProducts	(vslot 20) the products it can make
+s9:4AE4	FactoryDlg::refresh	(vslot 4)
+s9:4CB2	FactoryDlg::selectCurrent	(vslot 28) the current product selected, else a None row
+s9:4CF4	FactoryDlg::onOK	(vslot 30) sets the chosen product
+s9:4D7E	FactoryDlg::productIndex	index of a product
+s9:4DCC	FactoryDlg::productText	a product's name
+s9:4DF2	FactoryDlg::scalar_dtor	deleting destructor
+s9:4E94	LabDlg::LabDlg	dialog 4011: a laboratory's topic (vtable 55A2)
+s9:4F0A	LabDlg::~LabDlg	dtor
+s9:4F28	LabDlg::dlgProc	(vslot 3)
+s9:4F82	LabDlg::refresh	(vslot 9)
+s9:4F96	LabDlg::init	(vslot 2) topic, progress, priority
+s9:5238	LabDlg::onCommand	(vslot 24)
+s9:5256	LabDlg::destroy	(vslot 32)
+s9:52C0	LabDlg::onTopic	(vslot 31) picks a topic in the tree
+s9:557C	LabDlg::scalar_dtor	deleting destructor
+s9:5626	LabSummaryDlg::LabSummaryDlg	dialog 4003 "Laboratory Summary" (vtable 6386)
+s9:5780	LabSummaryDlg::enable	(vslot 20)
+s9:57D4	LabSummaryDlg::init	(vslot 2)
+s9:5800	LabSummaryDlg::refresh	(vslot 4)
+s9:5A06	LabSummaryDlg::paint	(vslot 24) the progress bars
+s9:5CD6	LabSummaryDlg::topic	the lab's topic
+s9:5D12	LabSummaryDlg::lab	the lab object
+s9:5D42	LabSummaryDlg::title	the title
+s9:5DC4	LabSummaryDlg::progress	the topic's progress
+s9:5EAA	LabSummaryDlg::texts	the text lines
+s9:6360	LabSummaryDlg::scalar_dtor	deleting destructor
+s9:6402	MacroDlg::MacroDlg	dialog 6224 "Macromanagement Functions" (vtable 67BA)
+s9:6470	MacroDlg::~MacroDlg	dtor
+s9:64CA	MacroDlg::message	a message box
+s9:65BA	MacroDlg::init	(vslot 2) the functions by the alerts
+s9:672E	MacroDlg::onCommand	(vslot 4)
+s9:6794	MacroDlg::scalar_dtor	deleting destructor
+s9:6826	ResearchTreeDlg::ResearchTreeDlg	dialog 4058: a research tree window (vtable 6F32)
+s9:6862	ResearchTreeDlg::~ResearchTreeDlg	dtor
+s9:6880	ResearchTreeDlg::onNotify	(vslot 1)
+s9:68D2	ResearchTreeDlg::dlgProc	(vslot 3)
+s9:692E	ResearchTreeDlg::refresh	(vslot 9)
+s9:6942	ResearchTreeDlg::init	(vslot 2) static texts and tree buttons
+s9:6CAC	ResearchTreeDlg::destroy	(vslot 31)
+s9:6CFA	ResearchTreeDlg::onCommand	(vslot 24)
+s9:6D1A	ResearchTreeDlg::onTopic	(vslot 32) opens/closes a topic
+s9:6EAE	ResearchTreeDlg::makeButton	a "button" child
+s9:6F0C	ResearchTreeDlg::scalar_dtor	deleting destructor
+s9:6FB6	UgResearchTreeDlg::UgResearchTreeDlg	dialog 4057: the underground research tree window (vtable 76A4)
+s9:6FF2	UgResearchTreeDlg::onNotify	(vslot 1)
+s9:7044	UgResearchTreeDlg::dlgProc	(vslot 3)
+s9:70A0	UgResearchTreeDlg::refresh	(vslot 9)
+s9:70B4	UgResearchTreeDlg::init	(vslot 2)
+s9:741E	UgResearchTreeDlg::destroy	(vslot 31)
+s9:746C	UgResearchTreeDlg::onCommand	(vslot 24)
+s9:748C	UgResearchTreeDlg::onTopic	(vslot 32)
+s9:7620	UgResearchTreeDlg::makeButton	a "button" child
+s9:767E	UgResearchTreeDlg::scalar_dtor	deleting destructor
+s9:7728	OPDialog::OPDialog	modeless dialog base (dialog id, parent; vtable 840C)
+s9:782C	OPDialog::~OPDialog	removes the window properties (thisLo/thisHi/procLo/procHi)
+s9:78DE	OPDialog::nop	empty virtual (vslot 20)
+s9:78E2	OPDialog::create	(vslot 2) CreateDialog and the this-pointer properties
+s9:79C0	OPDialog::dlgProc	(vslot 3) dispatches dialog messages
+s9:7B3C	OPDialog::onCommand	(vslot 4) default commands (OK/Cancel/help)
+s9:7B98	OPDialog::close	(vslot 5) DestroyWindow unless modal
+s9:7BB2	OPDialog::ncPaint	(vslot 7) the game's own caption
+s9:7E5E	OPDialog::onCtlColor	(vslot 13)
+s9:7F1C	OPDialog::activate	(vslot 8)
+s9:7F56	OPDialog::setTitle	(vslot 6)
+s9:7F86	OPDialog::contextMenu	(vslot 10)
+s9:800C	OPDialog::help	(vslot 11) WinHelp
+s9:8054	OPDialog::zero	(vslot 12) virtual returning 0
+s9:805A	currentPictureCache	registry 0x28's picture (DGROUP 0x4230)
+s9:807E	OPDialog::loadBackground	(vslot 26) the dialog's picture
+s9:8158	OPDialog::hitCaption	(vslot 14)
+s9:81B6	OPDialog::runModal	(vslot 15) own message loop
+s9:81FE	OPDialog::setSysModal	(vslot 16)
+s9:8212	OPDialog::destroyChild	(vslot 9) the child window at +0x8C
+s9:824A	OPDialog::isOtherWindow	(vslot 18)
+s9:8266	OPDialog::zero19	(vslot 19)
+s9:826C	OPDialog::position	moves the dialog into the screen
+s9:82EE	OPDialog::drawFrame	FrameRect
+s9:83E6	OPDialog::scalar_dtor	deleting destructor
+s9:8478	OPMessageBox::OPMessageBox	message box (dialog 4035) with a text
+s9:8520	OPMessageBox::OPMessageBox(ids)	message box from string ids (MB_YESNO ...; caption 1403 "Outpost")
+s9:869A	OPMessageBox::~OPMessageBox	dtor
+s9:86DC	OPMessageBox::enableButtons	(vslot 30)
+s9:8718	OPMessageBox::run	(vslot 29) lays out, modal loop
+s9:8978	OPMessageBox::runWithSound	(vslot 28) with a catalog sound
+s9:89A4	OPMessageBox::runWithVoice	(vslot 27) with a voice line
+s9:8A06	OPMessageBox::paint	(vslot 24) icon and text
+s9:8B3C	OPMessageBox::onCommand	(vslot 4)
+s9:8B7E	OPMessageBox::destroy	DestroyWindow
+s9:8B92	OPMessageBox::icon	icon by MB_ type
+s9:8BEA	OPMessageBox::makeButtons	OPButtons
+s9:8C66	OPMessageBox::layout	sizes to the text
+s9:8D14	OPMessageBox::measureText	DrawText CALCRECT
+s9:8DB6	OPMessageBox::scalar_dtor	deleting destructor
+s9:8E58	BuildingDlg::BuildingDlg	a building's window (its type's dialog; vtable 8F3C)
+s9:8E82	BuildingDlg::~BuildingDlg	dtor
+s9:8EA0	BuildingDlg::onCommand	(vslot 4)
+s9:8F16	BuildingDlg::scalar_dtor	deleting destructor
+s9:8FB8	OPCtrl::OPCtrl	custom control base (subclassed button; vtable 9800)
+s9:911E	OPCtrl::~OPCtrl	removes the properties, restores the window proc
+s9:9234	OPCtrl::enable	EnableWindow
+s9:9252	OPCtrl::layout	(vslot 1) size from its picture and label
+s9:92DC	OPCtrl::create	(vslot 2) CreateWindow "button", subclass
+s9:93AA	OPCtrl::move	MoveWindow
+s9:93E6	OPCtrl::notifyParent	(vslot 7) WM_COMMAND to the parent
+s9:9404	OPCtrl::notifyParent2	(vslot 8) WM_COMMAND to the parent
+s9:9422	OPCtrl::paint	(vslot 3)
+s9:9458	OPCtrl::releasePalette	(vslot 4)
+s9:94FC	OPCtrl::drawLabel	(vslot 5) DrawText
+s9:9566	objectFromHwnd	the C++ object of a window (GetProp thisLo/thisHi)
+s9:9618	OPCtrl::sizeFromPicture	width/height from its DIB
+s9:9650	OPCtrl::measureLabel	text size
+s9:97DA	OPCtrl::scalar_dtor	deleting destructor
+s9:9854	OPButton::OPButton	the OPButton class (vtable A230)
+s9:98C0	OPButton::registerClass	registers "OPButton" (its window procedure follows)
+s9:A204	OPButton::scalar_dtor	deleting destructor
+s9:A234	LabTopicDlg::LabTopicDlg	a lab building's window with its topic list (vtable A4E8)
+s9:A294	LabTopicDlg::~LabTopicDlg	dtor
+s9:A2CC	LabTopicDlg::onCommand	(vslot 4) control 6182
+s9:A308	LabTopicDlg::fillTopics	topic names
+s9:A3D0	LabTopicDlg::init	(vslot 28)
+s9:A4C2	LabTopicDlg::scalar_dtor	deleting destructor
+s9:A582	deletePtrField2	deletes the pointer at +0
+s9:A598	ReportRow::ReportRow	one row of a report (zeroed)
+s9:A5D0	ReportRow::free	frees its strings
+s9:A626	ReportRow::setText	copies a text
+s9:A640	RoboCmdDlg::RoboCmdDlg	dialog 497 "Robot Command" (vtable AC08)
+s9:A67E	RoboCmdDlg::onCtlColor	(vslot 13)
+s9:A784	RoboCmdDlg::onCommand	(vslot 4)
+s9:A84A	RoboCmdDlg::refresh	(vslot 20)
+s9:A85A	RoboCmdDlg::message	a message box
+s9:A94A	RoboCmdDlg::fill	the robots and their jobs
+s9:ABE2	RoboCmdDlg::scalar_dtor	deleting destructor
+s9:AC84	RoboCmdDetailsDlg::RoboCmdDetailsDlg	dialog 499 "Robot Command Details" (vtable AFC4)
+s9:ACE8	RoboCmdDetailsDlg::~RoboCmdDetailsDlg	dtor
+s9:AD14	RoboCmdDetailsDlg::refresh	(vslot 20)
+s9:AD24	RoboCmdDetailsDlg::onCommand	(vslot 4)
+s9:AD66	RoboCmdDetailsDlg::message	a message box
+s9:AE04	RoboCmdDetailsDlg::fill	the vehicle, its cargo and route
+s9:AF9E	RoboCmdDetailsDlg::scalar_dtor	deleting destructor
+s9:B040	BuildingDlgBase::BuildingDlgBase	a building's window base (dialog id from the type's record +0x12; vtable B772)
+s9:B082	ReportDlgBase::ReportDlgBase	a report window base (dialog id)
+s9:B0BC	ObjectDlgBase::ObjectDlgBase	a window about an object (dialog id, object)
+s9:B0F8	BuildingDlgBase::~BuildingDlgBase	dtor: closes the object's windows
+s9:B17C	BuildingDlgBase::fieldText	(vslot 29) a field's text (s3:B038)
+s9:B230	BuildingDlgBase::position	(vslot 2) its place by the building
+s9:B316	BuildingDlgBase::dlgProc	(vslot 3)
+s9:B372	BuildingDlgBase::onCtlColor	(vslot 13)
+s9:B43C	BuildingDlgBase::show	(vslot 27)
+s9:B45E	BuildingDlgBase::setText	(vslot 28)
+s9:B4C8	BuildingDlgBase::openRelated	(vslot 23)
+s9:B54A	BuildingDlgBase::onCommand	(vslot 4) the shared buttons (reports, building windows)
+s9:B726	BuildingDlgBase::close	(vslot 5)
+s9:B74C	BuildingDlgBase::scalar_dtor	deleting destructor
+s9:B7EE	UgLabDlg::UgLabDlg	dialog 4011 for an underground lab (vtable BEBA)
+s9:B864	UgLabDlg::dlgProc	(vslot 3)
+s9:B8BE	UgLabDlg::refresh	(vslot 9)
+s9:B8D2	UgLabDlg::init	(vslot 2)
+s9:BB5A	UgLabDlg::onCommand	(vslot 24)
+s9:BB78	UgLabDlg::destroy	(vslot 32)
+s9:BBE2	UgLabDlg::onTopic	(vslot 31)
+s9:BE94	UgLabDlg::scalar_dtor	deleting destructor
+s9:BF3E	TreeView::TreeView	the research tree's lines (vtable C53E)
+s9:BF92	TreeView::~TreeView	dtor
+s9:BFDE	TreeView::attach	attaches a tree
+s9:C028	TreeView::onNotify	(vslot 1) invalidates
+s9:C226	TreeView::paint	(vslot 2)
+s9:C302	TreeView::drawLines	lines between buttons
+s9:C38E	TreeView::drawBranch	a branch
+s9:C518	TreeView::scalar_dtor	deleting destructor
+s9:C54A	TreeButton::TreeButton	a research topic button (vtable C9F2)
+s9:C5AC	TreeButton::~TreeButton	dtor
+s9:C60E	TreeButton::nodeId	its node's id
+s9:C630	TreeButton::loadPicture	treebutn picture
+s9:C71E	TreeButton::layout	(vslot 1)
+s9:C74C	TreeButton::paint	(vslot 3)
+s9:C85A	TreeButton::click	(vslot 7) SendMessage 0xFA to the dialog
+s9:C882	TreeButton::nop	empty virtual
+s9:C886	TreeButton::releasePalette	(vslot 4)
+s9:C94A	TreeButton::label	(vslot 5) with the topic's progress
+s9:C9CC	TreeButton::scalar_dtor	deleting destructor
+s9:CA16	TransferAssetsDlg::TransferAssetsDlg	dialog 6208 "Transfer Assets" (vtable D07C)
+s9:CA74	TransferAssetsDlg::~TransferAssetsDlg	dtor
+s9:CAA6	TransferAssetsDlg::close	(vslot 5)
+s9:CACE	TransferAssetsDlg::apply	(vslot 30) moves the cargo
+s9:CC66	TransferAssetsDlg::refresh	(vslot 20)
+s9:CC8C	TransferAssetsDlg::onCommand	(vslot 4)
+s9:CCE4	TransferAssetsDlg::message	a message box
+s9:CDAC	TransferAssetsDlg::setQuantity	(vslot 21)
+s9:CE12	TransferAssetsDlg::fillList	the cargo list
+s9:CE76	TransferAssetsDlg::select	an entry
+s9:CF1C	TransferAssetsDlg::fill	the colony and its cargo
+s9:D056	TransferAssetsDlg::scalar_dtor	deleting destructor
+s9:D0F8	TransitInfoDlg::TransitInfoDlg	dialog 6213 "Transit Information": a vehicle's route (vtable D8C4)
+s9:D1BC	TransitInfoDlg::~TransitInfoDlg	dtor
+s9:D20C	TransitInfoDlg::showRoute	the route's stops
+s9:D29C	TransitInfoDlg::refresh	(vslot 20)
+s9:D2AC	TransitInfoDlg::onCommand	(vslot 4) add/remove stops, OK
+s9:D3D0	TransitInfoDlg::message	a message box
+s9:D60E	TransitInfoDlg::enableAdd	buttons
+s9:D6BE	TransitInfoDlg::enableRemove	buttons
+s9:D76E	TransitInfoDlg::addStop	(vslot 30)
+s9:D79C	TransitInfoDlg::fillRoute	the stop list
+s9:D89E	TransitInfoDlg::scalar_dtor	deleting destructor
+# Found by the improved disassembler (2026-10-22).
+s9:9684	OPCtrl::subclassProc	the custom controls' subclass procedure ("button %08lx rdown")
+s9:9824	OPButtonData::init	zeroes an OPButton's data
+s9:9948	OPButton::paint	draws an OPButton (frame, picture, text, grey when disabled)
+s9:9CDE	OPButton::wndProc	the OPButton window procedure
+s9:A40E	LabTopicDlg::listProc	subclass procedure of the topic list
+s9:A564	SmallRecord::init	zeroes 10 bytes

@@ -1,0 +1,303 @@
+# Segment 4: view models (registry objects the windows draw), the movie views (78 classes,
+# names in seg04_patterns.tsv), the story pages, the trade market, and the new-game screens
+# (modes 3, 4, 6, 9 and the shared screen class).
+# Registry ids: 0x04 s4:2B10, 0x06 star map s4:18B8, 0x0C..0x24 map view models s4:0570,
+# 0x25 s4:4AAA, 0x29 planet area s4:229C, 0x2E view constants s4:1FF4, 0x3C trade market s4:331C,
+# 0x3E s4:5070, 0x47 s4:56E6.
+s4:0000	View::load	chunk 0x02: current planet, star, site, colony, positions
+s4:017C	View::setField1E	+0x1E, notice 4
+s4:0196	MapViews::registerView	records a map view (positions list) for a colony
+s4:028C	MapViewModel::build	builds the site's object list for drawing
+s4:03EA	MapViewModel::onNotify	(vslot 5) forwards notices
+s4:0412	MapViewModel::putBuilding	queues SCPutBldg for a tile placement
+s4:04A4	View::setPlanet	current planet (+0x16)
+s4:04B8	View::planetHandle	current planet (+0x16)
+s4:04CA	View::setStar	current star (+0x1A)
+s4:04DE	View::setSite	current site (+0x20)
+s4:04F2	View::deleteCalendar	deletes the object at +0x12
+s4:0526	View::thunk_dtor	this-adjusting thunk
+s4:0532	View::scalar_dtor	deleting destructor
+s4:0570	MapViewModel::MapViewModel	registry 0x0C..0x24: a colony map window's model (vtable 1874)
+s4:078E	MapViewModel::~MapViewModel	dtor
+s4:0902	MapViewModel::levelCount	levels open on the site
+s4:09A8	MapViewModel::rect	(vslot 8) the window rectangle
+s4:0A50	MapViewModel::currentList	the surface or underground list (+0x84 mode)
+s4:0A76	MapViewModel::toggleMode	switches mode 1 <-> 2, notice 4
+s4:0AA0	MapViewModel::setLevel	(vslot 10) the level, and the view's site
+s4:0AC0	MapViewModel::setSelection	+0x80
+s4:0AD4	MapViewModel::selection	+0x80
+s4:0AE8	MapViewModel::setTool	+0x5E
+s4:0AFA	MapViewModel::tool	+0x5E
+s4:0B08	MapViewModel::siteHandle	the site of the model's colony
+s4:0B1E	MapViewModel::scrollTo	scroll box from a position
+s4:0BF4	MapViewModel::onChange	(vslot 16) rebuilds lists, scroll, buildings
+s4:0D76	MapViewModel::isCurrentColony	(vslot 9) is the model's colony the view's
+s4:0D9A	MapViewModel::siteInfo	site record fields
+s4:0DC6	MapViewModel::listColonyObjects	the colony's objects (trade markers...)
+s4:1054	MapViewModel::objectsSurface	list at +0x94 (made on first use)
+s4:108C	MapViewModel::objectsUnderground	list at +0x9A (made on first use)
+s4:10C4	MapViewModel::listBuildings	the buildings by group
+s4:1320	MapViewModel::buildingsList	list at +0x88/+0x86
+s4:1346	MapViewModel::listButtons	the list buttons (listbutn.bmp)
+s4:15F6	MapViewModel::buttonsList	list at +0x8E/+0x8C
+s4:161C	MapViewModel::cellOf	map cell of a window point
+s4:1662	MapViewModel::scrollBy	scrolls by an offset
+s4:169E	MapViewModel::scrollToLevel	scrolls on the current level
+s4:16B8	MapViewModel::setOrigin	the map origin, notice 4
+s4:179E	MapViewModel::restoreOrigin	origin from a saved position
+s4:17CE	MapViewModel::place	places a building at a cell
+s4:17F0	firstFreeLevel	first level with no object (DGROUP 0x3962)
+s4:181C	MapViewModel::pickSite	the colony picks a site object
+s4:1842	MapViewModel::thunk_dtor	this-adjusting thunk
+s4:184E	MapViewModel::scalar_dtor	deleting destructor
+s4:18B8	StarMapModel::StarMapModel	registry 0x06: the star map (vtable 1FB0)
+s4:1A04	StarMapModel::~StarMapModel	dtor
+s4:1A8E	StarMapModel::build	lays out the stars
+s4:1B02	StarMapModel::scroll	scrolls the map
+s4:1BDA	StarMapModel::hit	the star under a point (PtInRect)
+s4:1C9A	StarMapModel::selectButton	selects the star of a button
+s4:1CE8	StarMapModel::project	star positions on the map
+s4:1E78	starText	star text row (30 bytes at DGROUP 0x3C18)
+s4:1EA0	StarMapModel::metrics	window frame metrics
+s4:1EDA	StarMapModel::select	selects a star, notice
+s4:1F1A	StarMapModel::countSelected	stars marked
+s4:1F6A	StarMapModel::thunk_dtor	this-adjusting thunk
+s4:1F76	StarMapModel::nop	empty virtual
+s4:1F7A	StarMapModel::name	(vslot 4) returns this+0x2A
+s4:1F8A	StarMapModel::scalar_dtor	deleting destructor
+s4:1FF4	ViewConstants::ViewConstants	registry 0x2E: view constants and animation caches (0x806 bytes)
+s4:2076	ViewConstants::~ViewConstants	dtor
+s4:209C	ViewConstants::freeAnimations	frees the cached animations
+s4:20EE	AnimRef::frameDib	the DIB of the current frame
+s4:214E	AnimRef::frameOffset	where a type's frames sit on its picture (DGROUP 0x3E8E)
+s4:216E	AnimRef::loadFrames	loads the frames of an animation
+s4:21C2	ViewConstants::scalar_dtor	deleting destructor
+s4:229C	PlanetArea::PlanetArea	registry 0x29: the planet area view (plntarea.bmp, timer)
+s4:2440	PlanetArea::~PlanetArea	dtor
+s4:2504	PlayerHasColony	does player 1 have a colony
+s4:2548	defaultPosA	copies a fixed position (DGROUP 0x4228)
+s4:255E	PlanetArea::hover	the object under the cursor
+s4:2580	PlanetArea::click	places at the clicked cell
+s4:25D2	PlanetArea::open	opens the clicked building's window
+s4:262E	PlanetArea::resetAnim	restarts the animation
+s4:2646	defaultPosB	copies a fixed position (DGROUP 0x4222)
+s4:265C	currentTurnB	the turn number
+s4:266A	PlanetArea::animStarted	+0x44
+s4:2678	defaultPosC	copies a fixed position (DGROUP 0x4216)
+s4:268E	PlanetArea::currentFrame	the current frame's DIB
+s4:26C2	defaultPosD	copies a fixed position (DGROUP 0x421C)
+s4:26D8	cursorOffset	position of cursor n (DGROUP 0x65CA)
+s4:26F8	defaultPosE	copies a fixed position (DGROUP 0x4210)
+s4:270E	PlanetArea::setTarget	the object followed
+s4:280C	PlanetArea::takeEvent	takes the pending event
+s4:2862	PlanetArea::targetField	the target's +0x4C
+s4:289C	PlanetArea::onTimer	(vslot 7) advances
+s4:2922	PlanetArea::step	next of 10 frames
+s4:294A	PlanetArea::paint	(vslot 4) draws (resolution 640 check)
+s4:2978	PlanetArea::loadPictures	(vslot 5) the planet's sheets
+s4:2AA8	PlanetArea::thunk_dtor	this-adjusting thunk
+s4:2AB4	PlanetArea::scalar_dtor	deleting destructor
+s4:2AFA	deletePtrField	deletes the pointer at +0
+s4:2B10	ListModel04::ListModel04	registry 0x04: a scrolling list of objects (PtrArray +0x17E, index +0x174)
+s4:2C60	ListModel04::~ListModel04	dtor
+s4:2D22	ListModel04::rect	window rectangle
+s4:2D84	ListModel04::currentName	the current entry's name
+s4:2D9A	ListModel04::previous	previous entry (wraps)
+s4:2DDE	ListModel04::next	next entry (wraps)
+s4:2E28	ListModel04::current	the current entry's object
+s4:2E5E	ListModel04::currentDetail	the current entry's details
+s4:2EE4	ListModel04::onNotify	(vslot 16) refreshes
+s4:2F56	ListModel04::frameRect	(vslot 8)
+s4:2FE8	ListModel04::find	entry by name
+s4:30CA	ListModel04::setFilter	the filter string (+0x186)
+s4:30FC	ListModel04::rebuild	rebuilds the entries
+s4:31D0	ListModel04::hasEntries	whether the list has entries
+s4:31FA	ListModel04::refresh	refreshes the current entry
+s4:32A6	ListModel04::thunk_dtor	this-adjusting thunk
+s4:32B2	ListModel04::scalar_dtor	deleting destructor
+s4:331C	TradeMarket::TradeMarket	registry 0x3C: the trade market (draws registry 0x3B, random prices)
+s4:33B4	TradeMarket::~TradeMarket	dtor
+s4:3424	TradeMarket::colonyPopulation	a colony by name, its population
+s4:34A6	TradeMarket::endTurn	SCEndSim: the price swing moves (s4:3D6C)
+s4:34B6	TradeMarket::offerText	"%ld %s" of an offer
+s4:35B0	TradeMarket::priceText	the price of an offer
+s4:36E6	TradeMarket::setOffer	the chosen offer (+0x12E..)
+s4:3710	TradeMarket::trade	makes the trade (queues the step)
+s4:39D8	TradeMarket::partnerByName	the partner colony by name
+s4:3A42	TradeMarket::partner	the partner colony
+s4:3A5C	TradeMarket::diplomacy	diplomacy text
+s4:3A7A	TradeMarket::partnerName	the partner's name
+s4:3A94	TradeMarket::colonyLists	the colony lists
+s4:3AB2	TradeMarket::listText	the text of a list
+s4:3B9E	TradeMarket::pageList	the entries of a page (colonies, cargo, resources, buildings...)
+s4:3CDA	TradeMarket::setPartner	the partner's name
+s4:3D44	TradeMarket::prices	two prices (+0x126, +0x12A)
+s4:3D6C	TradeMarket::swingPrices	the price swing walks 0 -> +-10 -> +-20 -> +-30 -> 0
+s4:3E8C	TradeMarket::defaultQuantity	1 and 25
+s4:3EA4	TradeMarket::clear	(vslot 4)
+s4:3EE6	TradeMarket::rebelOffers	what the rebels offer (dialog 402)
+s4:427C	TradeMarket::unitPrice	base + base * swing / 100 (page 392)
+s4:435E	TradeMarket::pickOffer	picks an offer at random
+s4:43EC	TradeMarket::offerAmount	amount of an offer
+s4:451E	TradeMarket::productPrice	page 396 product prices
+s4:456A	TradeMarket::resourcePrice	page 392 resource prices with the swing
+s4:45D4	TradeMarket::robotPrice	3 -> 22, 4 -> 23, else 20
+s4:4608	TradeMarket::findColony	colony by name in a list
+s4:46E6	TradeMarket::scalar_dtor	deleting destructor
+s4:4720	MarketEntry::MarketEntry	market list entry base (vtable 4AA6): name, object, kind
+s4:4760	MarketEntry::~MarketEntry	dtor
+s4:4790	MarketRobot::MarketRobot	kind 1: a robot
+s4:47C8	MarketGroup::MarketGroup	kind 2: a building group
+s4:4808	MarketBuilding::MarketBuilding	kind 3: a building
+s4:4842	MarketResource::MarketResource	kind 4: a resource
+s4:4882	MarketResource::~MarketResource	dtor
+s4:48B0	MarketCargo::MarketCargo	kind 5: cargo
+s4:48E8	MarketProduct::MarketProduct	kind 6: a product
+s4:4920	MarketColony::MarketColony	kind 7: a colony
+s4:495A	MarketColony::scalar_dtor	deleting destructor
+s4:4980	MarketRobot::scalar_dtor	deleting destructor
+s4:49A6	MarketBuilding::scalar_dtor	deleting destructor
+s4:49CC	MarketProduct::scalar_dtor	deleting destructor
+s4:49F2	MarketResource::scalar_dtor	deleting destructor
+s4:4A18	MarketCargo::scalar_dtor	deleting destructor
+s4:4A3E	MarketGroup::scalar_dtor	deleting destructor
+s4:4A64	MarketEntry::scalar_dtor	deleting destructor
+s4:4AAA	RegObj25::RegObj25	registry 0x25: command target 0x9A
+s4:4AE0	RegObj25::scalar_dtor	deleting destructor
+s4:4B1E	WindowModel::WindowModel	model of a window (vtable 4C9E): id +0x12, frame metrics
+s4:4B78	WindowModel::restorePlace	(vslot 6) the saved window place
+s4:4C2C	WindowModel::savePlace	(vslot 5) stores the window place
+s4:4C78	WindowModel::scalar_dtor	deleting destructor
+s4:4CDA	CmdTarget::CmdTarget	a registry object with a DIB DC (vtable 5058)
+s4:4D22	CmdTarget::~CmdTarget	releases the DC, palette and bitmap
+s4:4DB0	CmdTarget::getDC	GetDC of the window
+s4:4DCE	CmdTarget::setCommand	command id, palette from registry 0x48
+s4:4E04	CmdTarget::paint	(vslot 4) draws its DIB (CreateDC "dib")
+s4:4F18	CmdTarget::loadPicture	(vslot 5) the catalog picture into a DIB
+s4:5032	CmdTarget::scalar_dtor	deleting destructor
+s4:5070	RegObj3E::RegObj3E	registry 0x3E: a list holder (vtable 56D2)
+s4:50AC	RegObj3E::~RegObj3E	dtor
+s4:50EA	CargoList::CargoList	cargo list for the transfer window
+s4:51D2	RegObj3E::clear	(vslot 5)
+s4:5206	CargoList::find	entry by name
+s4:526A	CargoList::entries	the entries (made on first use)
+s4:5292	CargoList::build	the cargo a colony can move (robots, cargo, products)
+s4:567C	CargoEntry::scalar_dtor	deleting destructor (MemFreeFS)
+s4:56A8	RegObj3E::scalar_dtor	deleting destructor
+s4:56E6	RouteEdit::RouteEdit	registry 0x47: the route being edited
+s4:5714	RouteEdit::~RouteEdit	dtor
+s4:5732	RouteEdit::start	starts a route for a truck
+s4:5742	RouteEdit::addStop	adds a stop
+s4:57D2	RouteEdit::setRoute	+0x0A
+s4:57E6	RouteEdit::commit	hands the route to the truck
+s4:580A	RouteEdit::scalar_dtor	deleting destructor
+s4:5840	Mode6View::Mode6View	mode 6 view (after New Game): the A.I. greeting sequence
+s4:58B6	Mode6View::~Mode6View	dtor
+s4:58E2	Mode6View::onTimer	(vslot 16) timer 0x105: counts, then posts command 0xCA
+s4:5932	Mode6View::onShow	(vslot 13) opens the window list 10, 11, 12, 13, 4 (s8:AF40)
+s4:598C	Mode6View::create	(vslot 2) creates the window and its picture
+s4:59F0	Mode6View::destroy	(vslot 36)
+s4:5A2E	Mode6View::thunk_dtor	this-adjusting thunk
+s4:5A3C	Mode6View::scalar_dtor	deleting destructor
+s4:5B06	PictureLayer::PictureLayer	a picture drawn on a view (saves what is under it)
+s4:5CC8	PictureLayer::~PictureLayer	dtor
+s4:5D32	PictureLayer::onNotify	(vslot 1) invalidates
+s4:5D6C	PictureLayer::paint	(vslot 2)
+s4:5DF4	PictureLayer::scalar_dtor	deleting destructor
+s4:5E26	StarSystemInfoDialog::StarSystemInfoDialog	dialog 4048 "Star System:" (information only)
+s4:5E5A	StarSystemInfoDialog::~StarSystemInfoDialog	dtor
+s4:5E86	StarSystemInfoDialog::refresh	(vslot 9)
+s4:5E9A	StarSystemInfoDialog::init	(vslot 2) lists the star's planets, sizes the window
+s4:5FFA	StarSystemInfoDialog::onClose	(vslot 27)
+s4:6048	StarSystemInfoDialog::onCommand	(vslot 24)
+s4:6066	setDlgItemText	GetDlgItem + SetWindowText
+s4:6086	showProbeDepth	a planet's depth after a geological penetrator
+s4:60EA	Dialog::nop_A	empty virtual
+s4:60EE	Dialog::zero_A	virtual returning 0
+s4:60F4	Dialog::zero_Ab	virtual returning 0
+s4:60FA	Dialog::nop_4	empty virtual
+s4:60FE	Dialog::nop_Ab	empty virtual
+s4:6102	StarSystemInfoDialog::scalar_dtor	deleting destructor
+s4:6198	PlanetFactsPainter::PlanetFactsPainter	painter of the Star System window
+s4:620C	PlanetFactsPainter::~PlanetFactsPainter	dtor
+s4:623E	PlanetFactsPainter::paint	(vslot 2) the planets in a row, the selected one's facts
+s4:642E	PlanetFactsPainter::barTop	(100 - n) / 2
+s4:6444	PlanetFactsPainter::drawOrbit	draws lines
+s4:6544	PlanetFactsPainter::drawMarker	a triangle under the selected planet
+s4:659A	PlanetFactsPainter::markerPoints	the triangle's points
+s4:661C	PlanetFactsPainter::polygon	GDI Polygon
+s4:6630	PlanetFactsPainter::showFacts	the RCDATA fact sheet into the dialog
+s4:669A	PlanetFactsPainter::scalar_dtor	deleting destructor
+s4:66CC	Mode8View::Mode8View	mode view with a picture layer (getKid)
+s4:673C	Mode8View::~Mode8View	dtor
+s4:6768	Mode8View::onShow	(vslot 13) opens its window (s8:AF40)
+s4:67B6	Mode8View::create	(vslot 2)
+s4:681A	Mode8View::destroy	(vslot 36)
+s4:684C	Mode8View::thunk_dtor	this-adjusting thunk
+s4:685A	Mode8View::scalar_dtor	deleting destructor
+s4:6924	Mode8Layer::Mode8Layer	its picture layer
+s4:69AC	Mode8Layer::~Mode8Layer	dtor
+s4:69DC	Mode8Layer::scalar_dtor	deleting destructor
+s4:6A0E	MovieView::MovieView	movie view base (sound, mode, movie, next command); 640x480
+s4:6A76	MovieView::nop	empty virtual
+s4:6A7A	MovieView::paint	(vslot 13) plays the movie on the first paint, or posts the next command
+s4:6ADC	MovieView::play	hides the cursor, plays the FLC centred (MCI), its sound
+s4:6BB6	MovieView::done	posts the next command and closes
+s4:6C1E	MovieView::scalar_dtor	deleting destructor (vtable 6C66)
+s4:742E	MovieView57::paint	(vslot 13 of the mode 57 view, movie 187) paints the movie, then plays smlstp (489) once a run (DGROUP 0x4254, set when it starts)
+s4:8FA6	MovieViewUnused::scalar_dtor	movie view deleting destructor whose class no ctor installs
+s4:9396	MovieView_vtables	DATA, not code: the 78 movie views' vtables (39 slots each)
+s4:C402	StoryPage::StoryPage	story page base (on s5:0762): strings, picture, voice, ms, next command
+s4:C518	StoryPage::~StoryPage	dtor
+s4:C578	StoryPage::paint	(vslot 13) background, text, voice on the first paint, mars.mid
+s4:C742	StoryPage::drawText	DrawText in the 400x30 box
+s4:C896	StoryPage::scalar_dtor	deleting destructor
+s4:CD60	StoryPage51::StoryPage51	story page, mode 51: picture 254, 10000 ms, then command 201
+s4:CDA8	StoryPage51::paint	(vslot 13) the last page's paint
+s4:CF74	StoryPage52::StoryPage52	story page, mode 52: picture 254, voice 128, 10000 ms, then command 207 (after the landing site)
+s4:CFC0	StoryPage52::paint	the landing page's paint
+s4:D386	StoryPage51::scalar_dtor	deleting destructor
+s4:D3AC	StoryPage_vtables	DATA, not code: the story pages' vtables
+s4:DCF6	BuildingSprite::BuildingSprite	a building's picture on the map (vtable DF3C)
+s4:DD1E	BuildingSprite::make	picture and animation of a building type
+s4:DD7C	BuildingSprite::forObject	picture of a map object (underground empty cells: terrain 7, 8, 9)
+s4:DF10	BuildingSprite::scalar_dtor	deleting destructor
+s4:DF40	Mode5View::create	creates the window and its painter
+s4:DF92	Mode5View::destroy	destroys the painter
+s4:DFD4	Mode5View::onShow	opens the destination window (registry 0x36)
+s4:E01C	Mode5View::scalar_dtor	deleting destructor
+s4:E100	Mode5Painter::Mode5Painter	painter of the mode 5 view
+s4:E16C	Mode5Painter::paint	draws the picture
+s4:E1EE	Mode5Painter::scalar_dtor	deleting destructor
+s4:E230	Mode4View::Mode4View	mode 4 view: the voyage (posted 198 by the ship screen)
+s4:E2A0	Mode4View::~Mode4View	dtor
+s4:E2CC	Mode4View::onShow	(vslot 13) says fem122, adds its controls
+s4:E384	Mode4View::create	(vslot 2)
+s4:E3E8	Mode4View::destroy	(vslot 36)
+s4:E41A	Mode4View::thunk_dtor	this-adjusting thunk
+s4:E428	Mode4View::scalar_dtor	deleting destructor
+s4:E4F2	Mode4Layer::Mode4Layer	its picture layer
+s4:E57A	Mode4Layer::~Mode4Layer	dtor
+s4:E5AA	Mode4Layer::scalar_dtor	deleting destructor
+s4:E5DC	Mode9View::Mode9View	mode 9 view: after Destination Launch
+s4:E64C	Mode9View::~Mode9View	dtor
+s4:E678	Mode9View::onShow	(vslot 13) opens window mode 21 (Interstellar Launch System, dialog 318)
+s4:E6C6	Mode9View::create	(vslot 2)
+s4:E72A	Mode9View::destroy	(vslot 36)
+s4:E75C	Mode9View::thunk_dtor	this-adjusting thunk
+s4:E76A	Mode9View::scalar_dtor	deleting destructor
+s4:E834	Mode9Layer::Mode9Layer	its picture layer
+s4:E8BC	Mode9Layer::~Mode9Layer	dtor
+s4:E8EC	Mode9Layer::scalar_dtor	deleting destructor
+s4:E91E	Mode3View::Mode3View	mode 3 view: the ship screen
+s4:E9DE	Mode3View::~Mode3View	dtor
+s4:EA0A	Mode3View::onCommand	(vslot 16) command 0xED (Launch): posts 198 (mode 4)
+s4:EA2C	Mode3View::onNotify	(vslot 40) mirrors a value into its layer
+s4:EA66	Mode3View::onShow	(vslot 13) add9 and window id 8 (Ship Configuration) once
+s4:EADA	Mode3View::create	(vslot 2)
+s4:EB3E	Mode3View::destroy	(vslot 36)
+s4:EB9C	Mode3View::thunk_dtor	this-adjusting thunk
+s4:EBAA	Mode3View::scalar_dtor	deleting destructor
+s4:EC74	ShipLayer::ShipLayer	the ship picture layer (registry 0x28 picture)
+s4:ED98	ShipLayer::~ShipLayer	dtor
+s4:EDD8	ShipLayer::onNotify	(vslot 1) redraws the current picture

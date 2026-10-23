@@ -1,0 +1,258 @@
+# Segment 6: the simulation core. The SC step classes (base SCBase s6:D1DC, vtable 6AD2), the turn's
+# step queue, events and incidents, building placement steps, the base Building class (vtable CF6A)
+# and its rules, units, the object database (create/select/destroy, save and load), and helper
+# methods of several building classes (their virtual methods are named in seg00_auto.tsv).
+s6:0138	FactoryBase::~FactoryBase	dtor of the factory classes (vtable 08EC)
+s6:081E	Factory::progress	one step of progress, scaled by the colony value at +0x18
+s6:0954	Lander::Lander()	base of the landers and the Seed (loader; vtable 0ADA)
+s6:0982	Lander::Lander(type,owner)	lander base ctor
+s6:09B8	Lander::reserveNeeds	(vslot 6) only marks its tile (+0x14 = 1)
+s6:0AB4	Lander::scalar_dtor	deleting destructor
+s6:0D80	Mine::currentOre	the ore of the mine's cycle
+s6:1024	Mine::oreBelow	ore left below (mine information)
+s6:1106	Mine::oreBelowB	ore left below (second variant)
+s6:11DE	Mine::siteRecord	the mine's site record
+s6:121E	Mine::oreTarget	a surface mine keeps its ore; an underground one sends it up
+s6:1416	Mine::info	mine information for its window
+s6:1556	Mine::oreLeft	ore left going down from level 1
+s6:1646	Mine::nextOre	4 -> 5 -> ... -> 13 -> 4
+s6:1C1C	Monorail::connectionMask	stub returning 0
+s6:1E14	typeAtCell	the building type on a cell (0 when none)
+s6:2042	MonoStation::~MonoStation	its train goes with it
+s6:20B0	MonoStation::connectionMask	stub returning 0
+s6:21BA	MonoStation::transformerNear	a MonoXFormer (64) next to it
+s6:2220	typeAtCell2	the building type on a cell (second copy)
+s6:297C	ordinaryBuildingAt	an ordinary building on the cell (not a DisMine)
+s6:2F18	Seed::putParts	the Seed puts its parts down around it
+s6:3246	Seed::giveStartingStock	the colony's starting stock
+s6:388E	Smelter::~Smelter	dtor (vtable 3E2C)
+s6:3C32	Smelter::room	none when full
+s6:3FA2	Spew::initRate	its rate by type (5 or 10)
+s6:4530	Storage::~Storage	dtor (vtable 4836)
+s6:45E2	Storage::room	a tank holds 1000 units of anything on its tile
+s6:45FE	Storage::contentsList	the tank's contents (report)
+s6:478A	Storage::stored	units stored
+s6:4A9A	TerraForm::system	setting n (+0x20)
+s6:4AB2	TerraForm::setSystem	sets setting n
+s6:4F62	Tokamak::siteRecord	the tokamak's site record
+s6:4FAA	Tokamak::connected	is the tokamak connected
+s6:5714	nop_5714	empty function
+s6:5718	UGBuilding::scalar_dtor	deleting destructor of an underground building class
+s6:5A94	policeNearRedLight	the first police station within 4 of a red-light district
+s6:5CA0	redLightUpgrade	queues SCInternalPutBldg with type 101
+s6:6186	Warehouse::~Warehouse	dtor (vtable 6876)
+s6:6228	Warehouse::takeA	takes an amount of a product A, item by item
+s6:62C8	Warehouse::room	units it can still take (0 unless operational)
+s6:6302	Warehouse::luxury	the quantity of items with a product B
+s6:6356	Warehouse::takeB	takes product B items (kind 15 only when asked)
+s6:6408	Warehouse::addItem	merges into every matching item, else appends
+s6:6744	Warehouse::quantityOfA	the first item of a product A
+s6:678C	Warehouse::firstKind15	the first kind-15 item
+s6:67D4	Warehouse::storedUnits	units stored
+s6:68DE	SCAddSpew	SCAddSpew(colony, amount) ctor (priority 1000)
+s6:6926	SCAddSpew::calcMe	adds sewage to the colony's Spew tiles
+s6:69CC	SCAddSpew::clone	(vslot 3)
+s6:6A7A	SCAddSpew::dtor	(vslot 0)
+s6:6AA6	SCBase::scalar_dtor	base step deleting destructor (vtable 6AD2)
+s6:6AF2	Incident::Incident	incident step base (priority 4999; vtable 6E50)
+s6:6B2C	Incident::calcMe	(vslot 1) wrecks the target and its neighbours
+s6:6B40	Incident::wreckAround	the 8 neighbours, clamped to the site's map
+s6:6D24	Incident::wreckCell	wrecks a cell's building (not terrain or robots)
+s6:6DAA	Incident::clampToMap	both axes clamped with the width (quirk Q51)
+s6:6E24	Incident::dtor	(vslot 0)
+s6:6E60	SCConstruct	SCConstruct ctor (priority 12999)
+s6:6E96	SCConstruct::calcMe	constructTick of every building in states 1..4
+s6:6EF6	SCConstruct::clone	(vslot 3)
+s6:6F84	SCConstruct::dtor	(vslot 0)
+s6:6FC0	SCEndSim	SCEndSim ctor (priority 999)
+s6:6FF6	SCEndSim::calcMe	the last step of the turn: messages, trade lapses, prices, RoboCmd tables
+s6:737E	SCEndSim::clone	(vslot 3)
+s6:740C	endSimGroup36	tiles of group 36 (log 0x14)
+s6:7472	SCEndSim::dtor	(vslot 0)
+s6:74AE	SCEvent	SCEvent ctor (priority 4999)
+s6:74E4	SCEvent::calcMe	hot labs, Nano, Tokamaks, the calendar, the AI advisor, the plague
+s6:752E	SCEvent::clone	(vslot 3)
+s6:75BC	eventPlague	every 123 turns from turn 150 each colony catches the plague
+s6:767E	eventAiAdvisor	with Multiple AI, every 100 turns the AI advisor speaks
+s6:76DA	eventMoraleCrisis	the scheduled morale crisis opens its dialog
+s6:7742	dirtNear	an operational DIRT facility within a radius
+s6:780C	seedWearOut	turn 150: the Seed's equipment wears out (alert 0x1D)
+s6:78B8	eventCalendar	the scripted calendar and the Medium/Hard disaster schedule
+s6:7C4E	eventNano	Medium/Hard, every 20 turns from turn 22: Nano incidents
+s6:7DFC	eventTokamak	Medium/Hard, every 20 turns: Tokamak meltdowns
+s6:7FB6	eventHotLab	from turn 12, every 50 turns: hot lab accidents (5%)
+s6:816E	SCEvent::dtor	(vslot 0)
+s6:81AA	SCFactory	SCFactory ctor (priority 6999)
+s6:81E0	SCFactory::calcMe	produce() of every operational building
+s6:82B4	SCFactory::clone	(vslot 3)
+s6:8342	SCFactory::dtor	(vslot 0)
+s6:837E	SCFillResources	the Fill Resources cheat ctor (priority 3999)
+s6:83B4	SCFillResources::calcMe	sets the free resources (+0x206)
+s6:8400	SCFillResources::clone	(vslot 3)
+s6:848E	SCFillResources::dtor	(vslot 0)
+s6:84CA	SCForceMorale	the Force Morale cheat ctor (dialog 4043, priority 999)
+s6:853E	SCForceMorale::calcMe	applies only the morale (quirk Q21)
+s6:858C	SCForceMorale::clone	(vslot 3)
+s6:865C	SCForceMorale::dtor	(vslot 0)
+s6:8698	HotLabIncident::HotLabIncident	hot lab accident (vtable 87E0)
+s6:86C2	HotLabIncident::calcMe	(vslot 1) logs 0x1D, wrecks
+s6:86F4	HotLabIncident::clone	(vslot 3)
+s6:87B4	HotLabIncident::dtor	(vslot 0)
+s6:87F0	SCInternalPutBldg	SCInternalPutBldg ctor (priority 1000)
+s6:8888	SCInternalPutBldg2	SCInternalPutBldg2 ctor (priority 1000)
+s6:8920	SCInternalPutBldg::shouldRun	(vslot 2) puts the building down when queued
+s6:8C46	SCInternalPutBldg::clone	(vslot 3)
+s6:8D62	SCInternalPutBldg::dtor	(vslot 0)
+s6:8D9E	SCMoveColonists::SCMoveColonists	Move Colonists step (vtable 8FB0)
+s6:8DEC	SCMoveColonists::~SCMoveColonists	dtor
+s6:8E1E	SCMoveColonists::calcMe	(vslot 1) the people arrive
+s6:8E5C	SCMoveColonists::shouldRun	(vslot 2) the people leave the source
+s6:8EA6	SCMoveColonists::clone	(vslot 3)
+s6:8F8A	SCMoveColonists::scalar_dtor	(vslot 0)
+s6:8FC0	NanoIncident::NanoIncident	Nano incident (vtable 90D6)
+s6:8FEA	NanoIncident::clone	(vslot 3)
+s6:90AA	NanoIncident::dtor	(vslot 0)
+s6:90E6	SCDisaster::SCDisaster	scheduled disaster step, kinds 1..8 (priority 4999; vtable 932C)
+s6:9114	SCDisaster::calcMe	(vslot 1) kinds 1..6 only post their message
+s6:9264	SCDisaster::clone	(vslot 3)
+s6:9300	SCDisaster::dtor	(vslot 0)
+s6:933C	SCPutBldg	SCPutBldg ctor (priority 1000): the player puts a building down
+s6:93D4	SCPutBldg::shouldRun	(vslot 2) the work, when queued (refused: SCKillBldg)
+s6:94E4	SCPutBldg::clone	(vslot 3)
+s6:9600	SCPutBldg::tellRebels	the rebels hear of the building
+s6:9624	SCPutBldg::place	the building goes down (its reserve can found a colony)
+s6:9908	SCPutBldg::dtor	(vslot 0)
+s6:9944	SCDefect::SCDefect	the step that moves people to the rebels (priority 4999; vtable 9C52)
+s6:9992	SCDefect::~SCDefect	dtor
+s6:99C4	SCDefect::calcMe	(vslot 1) adds them to the rebels
+s6:9A02	SCDefect::shouldRun	(vslot 2) takes them from the source at random ages
+s6:9B48	SCDefect::clone	(vslot 3)
+s6:9C2C	SCDefect::scalar_dtor	(vslot 0)
+s6:9C62	SCStep::SCStep(type)	a per-turn step code (vtable 9EB6)
+s6:9C90	SCStep::makeByType	(vslot 1) the per-turn step class for a code
+s6:9DEE	SCStep::clone	(vslot 3)
+s6:9E8A	SCStep::dtor	(vslot 0)
+s6:9EC6	SCPop	SCPop ctor (priority 8999)
+s6:9EFC	SCPop::calcMe	population: food, crowding, births, deaths, cryo colonists
+s6:A0FA	SCPop::clone	(vslot 3)
+s6:A188	deathRoll	kills deathRate[g] percent of an age group
+s6:A28A	residenceCrowding	people per operational residence -> crowding
+s6:A3AE	colonyEats	one Food feeds 10 people; a shortfall queues SCStarve
+s6:A4EE	birthsAndAgeing	red-light babies, ageing, births, death rolls
+s6:A61E	yearlyBirths	(group 3 + group 4) / birthDivisor
+s6:A6CA	SCPop::dtor	(vslot 0)
+s6:A706	SCPrelimAlloc	SCPrelimAlloc ctor (priority 2999)
+s6:A73C	SCPrelimAlloc::calcMe	clears and allocates every colony
+s6:A79C	SCPrelimAlloc::clone	(vslot 3)
+s6:A82A	SCPrelimAlloc::dtor	(vslot 0)
+s6:A866	SCProdSched	SCProdSched ctor (priority 13999)
+s6:A89C	SCProdSched::calcMe	what runs this turn, for every non-rebel colony
+s6:A8F4	SCProdSched::clone	(vslot 3)
+s6:A982	SCProdSched::dtor	(vslot 0)
+s6:A9BE	SCPower	SCPower ctor (priority 5999)
+s6:A9F4	SCPower::calcMe	power() of group 12
+s6:AA68	SCPower::clone	(vslot 3)
+s6:AAF6	SCPower::dtor	(vslot 0)
+s6:AB32	SCRchSched	SCRchSched ctor (priority 11999)
+s6:AB68	SCRchSched::calcMe	every operational lab does one turn
+s6:ABEC	SCRchSched::clone	(vslot 3)
+s6:AC7A	SCRchSched::dtor	(vslot 0)
+s6:ACB6	SCSetup	SCSetup ctor (priority 15999)
+s6:ACEC	SCSetup::calcMe	clears every colony, sums the tiles, players' new turn
+s6:AD9C	SCSetup::clone	(vslot 3)
+s6:AE2A	SCSetup::dtor	(vslot 0)
+s6:AE66	SCStarve	SCStarve(colony, fed, population) ctor (priority 4999)
+s6:AEC0	SCStarve::calcMe	kills them, oldest first
+s6:AF08	SCStarve::shouldRun	draws how many die
+s6:AFCE	SCStarve::clone	(vslot 3)
+s6:B0A2	SCStarve::dtor	(vslot 0)
+s6:B0DE	TokamakMeltdown::TokamakMeltdown	Tokamak meltdown incident (vtable B1F4)
+s6:B108	TokamakMeltdown::clone	(vslot 3)
+s6:B1C8	TokamakMeltdown::dtor	(vslot 0)
+s6:B204	UnitBase::UnitBase()	unit object base (loader; vtable B33C)
+s6:B22C	UnitBase::UnitBase(type,owner)	unit base ctor
+s6:B260	UnitBase::~UnitBase	dtor
+s6:B27E	UnitBase::nop	(vslot 5) empty virtual
+s6:B282	UnitBase::save	(vslot 3) DbObj + word kind
+s6:B2C8	UnitBase::load	(vslot 4) DbObj + word kind (v1 translated)
+s6:B316	UnitBase::scalar_dtor	deleting destructor
+s6:B354	Building::Building()	building base (loader; vtable CF6A)
+s6:B39E	Building::Building(type,owner)	building base ctor (registers DB type 7)
+s6:B418	Building::~Building	dtor
+s6:B4F2	Building::colony	the building's colony
+s6:B58E	DbObj::getOwner	resolve(+0x08)
+s6:BAB6	Building::siteOfTile	the tile's site
+s6:BAD4	Building::siteOf	the site object
+s6:BAF6	Building::siteHandle	the site handle
+s6:BB24	Building::tileSite	the owner tile's site
+s6:BB6A	Building::needOf	a value of the needs record
+s6:BB96	Building::setProduct	the product (10 bytes at +0xA4)
+s6:BC4A	Building::sewageWord	BLDGBLD word +0x96 (dozers)
+s6:BDAC	Building::setState	state change (calls onStateEntered)
+s6:BF76	Building::pickSprite	random 1..3 picks 0x48..0x4A or 0x70..0x72 (rubble)
+s6:C00A	takeLuxury	Luxury from operational warehouses
+s6:C0F0	luxuryNeeds	running needs plus Luxury from the warehouses
+s6:C1F8	positionOnSite	a position inside the site's map
+s6:C23E	ownerRule	a tile of another colony of the same player changes colony
+s6:C314	marginRule	inside the map with a margin of 2
+s6:C3AA	commRange	within 30 of the hub; else a ComSat; else a tower
+s6:C5A6	tubeAt	a tube of an axis on a cell
+s6:C724	productCycle	the product's cycle turns
+s6:C7B6	cellKindRule	the cell must be prepared ground (kind 5 or 6)
+s6:C89C	cellMark	a cell's raw value as a number (a tile's mark)
+s6:C8EE	stepInDirection	a position moved one step in a digger's direction
+s6:C952	payNeeds	pays the current needs record
+s6:CB04	canPayNeeds	can the colony pay the needs record this turn
+s6:CCD0	softenAroundDug	the empty ground around a dug cell softens
+s6:CFD2	Sim::initQueue	the step queue
+s6:CFF2	Sim::freeQueue	deletes the step queue
+s6:D01A	StepQueue::runAll	pop the head, run calcMe, delete, repeat
+s6:D078	SpriteList::build	the drawable objects of a site (building sprites)
+s6:D172	SpriteList::addTile	a tile's sprite
+s6:D1DC	SCBase::SCBase	step base ctor (priority)
+s6:D222	SCBase::calcMe_default	empty calcMe
+s6:D228	SCBase::shouldRun_default	returns true
+s6:D22E	ScheduleList::create	the future steps list
+s6:D282	ScheduleList::destroy	deletes it
+s6:D2B0	Sim::enqueueTurnSteps	queues the per-turn steps
+s6:D52C	Sim::scheduleAt	a step for a later turn
+s6:D566	StepQueue::enqueueIfShouldRun	queues a step when shouldRun says so
+s6:D59C	ScheduleList::ScheduleList	future steps by turn (vtable D804)
+s6:D658	ScheduleList::free	frees the entries
+s6:D69E	Sim::hasPlayerColony	a colony of player 1
+s6:D6B2	Sim::releaseScheduled	steps due this turn
+s6:D728	StepQueue::popHead	the first step
+s6:D742	StepQueue::insertClone	inserts without asking shouldRun
+s6:D776	ScheduleList::insert	keyed insert
+s6:D7A0	Sim::saveChunk08	chunk 0x08: the tag only
+s6:D7BA	Sim::loadChunk08	chunk 0x08: the tag only
+s6:D7DE	ScheduleList::scalar_dtor	deleting destructor
+s6:D81C	ObjectDb::ObjectDb	the object database: tables, creators, groups, site grids
+s6:DABA	ObjectDb::~ObjectDb	dtor
+s6:DC52	DbIter::DbIter(typeMask)	all objects of a type
+s6:DCE2	ObjectDb::save	chunk 0x0A, tables 1..8 as chunks 0x0C..0x13
+s6:DEF2	ObjectDb::load	chunk 0x0A and the tables
+s6:E0A0	ObjectDb::fillSite	a site record
+s6:E0BC	Building::bldRecordCopy	a fresh copy of the type's BLDGBLD record
+s6:E100	Building::opsRecordCopy	a copy of the type's BLDGOPS record
+s6:E198	Db::siteLevels	a site's levels
+s6:E1BC	Db::lookup2	resolve through the DB
+s6:E1EC	Db::resolveHandle	handle -> object (type 0 NULL, 0xFF the galaxy)
+s6:E242	Sim::advanceTurn	turn + 1, tells the main window
+s6:E28A	Sim::notifyTurn	the turn notice
+s6:E2AC	Db::makeHandle	a handle of a type and index
+s6:E2E0	Db::create	creates an object of a DB type (creator table)
+s6:E332	Db::destroyObject	destroys an object
+s6:E372	Db::selectObject	every other object of the target's type is deleted
+s6:E44A	Db::selectSite	a site; then every tile not owned by it goes
+s6:E4EC	DbIter::next	the next object
+s6:E56C	ObjectDb::saveTable	one table chunk
+s6:E628	ObjectDb::loadTable	one table chunk (creates and loads each object)
+s6:EBEE	createGalaxy	the galaxy and its stars
+s6:ED2C	createSite	a site, its grid and map size
+s6:EE54	createTile	a new tile on a cell, remembering its terrain
+s6:EF00	createUnit	a unit object (DB type 6)
+# Found by the improved disassembler (2026-10-22): creator functions of the object DB (db+0x2E).
+s6:EC36	createStar	creator: a star from its table row
+s6:ECAC	createPlanet	creator: a planet from its table row
+s6:EDC4	createColony	creator: a colony on a site cell

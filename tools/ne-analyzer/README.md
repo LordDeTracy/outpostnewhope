@@ -11,6 +11,12 @@ Python 3.10+. `ne_disasm.py` needs Capstone (`pip install capstone`).
 | `research_switch.py DISASM_DIR [out.json]` | Walks the topic → discovery switch (`s3:6CF8`) symbolically, including the "all these topics done" conditions → `reference/outpost-exe/research-discoveries.json` |
 | `save_layout.py DISASM_DIR ADDR...` | Lists the fields a save/load method writes or reads, in order (`File_write`/`File_read` of `this+OFF`, helper writers, branches) |
 | `switch_map.py DISASM_DIR ADDR` | Resolves a value-mapping switch into an `in -> out` table (the save-version translators `s2:73EA`, `s2:72BC`) |
+| `catalog.py build` | Writes `reference/outpost-exe/function-catalog.csv` (`addr,name,size,status,purpose,cited`) from the listings, `names/*.tsv` and the `sN:XXXX` citations in `rebuild/` and `specs/` |
+| `catalog.py digest SEG [all]` | Compact per-function summary of a segment (calls, APIs, strings, vtable slots) for decoding in bulk; `all` includes functions already named |
+| `catalog.py stats` | Named functions and bytes per segment |
+| `name_patterns.py` | Regenerates `names/seg00_auto.tsv`: virtual methods named from their vtable slot (buildings, steps, views) |
+| `undecoded.py EXE OUT` | Classifies every byte not decoded as code: data, padding or code (needs Capstone) |
+| `code_gaps.py` | Lists the gaps between decoded functions |
 
 ```bash
 python ne_parse.py     "../../Resource.000 extract/OUTPOST.EXE" ../../reference/outpost-exe/ne.json
@@ -42,6 +48,15 @@ python ne_disasm.py    "../../Resource.000 extract/OUTPOST.EXE" ../../reference/
    references to their own name string; their vtable slots become
    `SCxxx::dtor/calcMe/shouldRun/clone`. Other names come from API
    fingerprints (MessageLoop, BlitDib_*, Mci_*, IniAccess_*, FileDialog_*).
+   `symbols.json` overrides those, and `names/*.tsv` (`addr<TAB>name<TAB>purpose`,
+   one file per segment plus `seg00_auto.tsv`) override everything; the
+   purpose is printed under each function's header. Files load in name
+   order, so the hand files win over `seg00_auto.tsv`.
+7. **Late seeds.** Far pointers stored in code (`offset` + `SEGMENT` fixup
+   pairs that are not instructions) and prologues after padding (`55 8B EC`,
+   `8C D0 C8`, `8C D8 90 45`, `1E 58 90 45`) are seeded again on each of the
+   20 passes; this found 57 functions reached only through vtables and
+   callbacks.
 
 Annotations in the listings: imported APIs (`USER.MessageBox`), internal
 targets (`SCMorale@s7:ECC2`, `sub_s6:D1DC`), DGROUP string literals for

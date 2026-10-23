@@ -67,21 +67,21 @@ v1.50). Full format: [../contracts/archive-format.md](../contracts/archive-forma
 | Exports | `___EXPORTEDSTUB` (1:29EC), `_SHI_INVOKEERRORHANDLER1` (1:1E70) |
 | Imports | 172 distinct functions from KERNEL (42), USER (101), GDI (25), MMSYSTEM (2), COMMDLG (2) |
 | Resources | 156: 882 strings, 61 dialogs, 6 menus, 1 accelerator table, 10 RCDATA, icons, cursors |
-| Code recovered | 3,378 functions, 89.5 % of code bytes decoded, 77 switch tables |
+| Code recovered | 3,435 functions, all named with a purpose ([15-function-map.md](15-function-map.md)); 91.2 % of code bytes decode as instructions, the rest is data (vtables, switch tables) and padding |
 
 ### Segment map
 
 | Seg | File off | Size | Role (from APIs + strings) |
 |-----|---------:|-----:|----------------------------|
 | 1 | 0x000A20 | 0x55B7 | C runtime, SmartHeap, startup, DOS/Global memory |
-| 2 | 0x0060E0 | 0xEFE0 | App framework: `Op`/`OpWnd` classes, window classes, message loop, main window proc (Run Turn), file I/O, save-file chunk I/O, DIB blitting, palette, MCI sound/movie, file dialogs |
-| 3 | 0x015420 | 0xEE9F | Window placement and INI persistence, string resources, preferences |
-| 4 | 0x024460 | 0xEE6A | View painting (GDI), building-class constructors (vtable family at s2:380A) |
-| 5 | 0x033420 | 0xEFBA | View windows (planet/site/tile), popup menus, `VrMode` view modes, tile picker, save chunks 0x0B |
-| 6 | 0x0426A0 | 0xEFBE | **Simulation core**: SC step classes, step queue, building placement, sim save chunks |
-| 7 | 0x0516C0 | 0xEF76 | Simulation (population, mines, AI, kill/move), BLDGBLD/BLDGOPS loader, trucking |
-| 8 | 0x0606C0 | 0xEF91 | Movement / robots, report dialogs |
-| 9 | 0x06F820 | 0xD974 | Dialogs and custom controls (`OPButton`, `MicroSpinControl`) |
+| 2 | 0x0060E0 | 0xEFE0 | App framework: `Op`/`OpWnd` classes, SOL window classes, message loop, main window proc (Run Turn), file I/O, save-file chunk I/O, DIB blitting, palette, MCI sound/movie, file dialogs, `MicroSpinControl`, AI managers, trade agreements |
+| 3 | 0x015420 | 0xEE9F | Registry objects (`Registry_get` s3:20BA), window placement and INI options, alerts, research trees, orbitals, mothership, build menu, picture/sound catalogue, planet window, reports |
+| 4 | 0x024460 | 0xEE6A | View models (map, star map, planet area), the 78 movie views and the story pages, the trade market, the new-game screens |
+| 5 | 0x033420 | 0xEFBA | View windows (planet/site/star map/tile list, colony view), popup menus, `VrMode` view modes, the Star System dialog, the rebels' AI, landers, robots, save chunks 0x0B |
+| 6 | 0x0426A0 | 0xEFBE | **Simulation core**: SC step classes, step queue, events, building placement, the `Building` base class (vtable CF6A), the object database, sim save chunks |
+| 7 | 0x0516C0 | 0xEF76 | Object DB tables, galaxy/star/planet/site, players and research, population, BLDGBLD/BLDGOPS loader, tiles and site grids, AI builder, trains, robots, `Sim::runTurns` |
+| 8 | 0x0606C0 | 0xEF91 | Morale helpers, trucking (`SCMove`) and `SCRoboMove`, the `Colony` class, the vehicle manager, the dialog container and many in-game dialogs |
+| 9 | 0x06F820 | 0xD974 | Dialog base `OPDialog`, the message box, building/report window bases, custom controls (`OPCtrl`, `OPButton`), research tree views, the concrete dialogs |
 | 10 | 0x07D4C0 | 0x423C | DATA (far data) |
 | 11 | 0x081720 | 0x68B6 | DGROUP: strings, file-name tables, INI keys, sim tables |
 
@@ -343,7 +343,8 @@ Outputs in `reference/outpost-exe/`:
 | `resources.txt/json` | All strings, menus, dialogs, accelerators, RCDATA |
 | `dgroup-strings.txt` | Every string in the data segments with `seg:offset` |
 | `disasm/segNN.asm` | Annotated listing per code segment (APIs, internal call names, string refs, switch tables) |
-| `disasm/functions.csv/json` | 3,378 functions: address, name, size, APIs, strings, callers/callees |
+| `disasm/functions.csv/json` | 3,435 functions: address, name, size, APIs, strings, callers/callees |
+| `function-catalog.csv` | The same functions with their decoded purpose and whether the rebuild cites them |
 | `disasm/vtables.txt/json` | Far-pointer install sites / vtables and their slots |
 | `disasm/api_usage.txt` | Every imported API → the functions that call it |
 
@@ -356,9 +357,10 @@ Outputs in `reference/outpost-exe/`:
 2. Trace consumers of the BLDGBLD/BLDGOPS arrays (`sim+0x12`, `sim+0x15C`) to
    confirm column semantics and the meaning of the trailing values.
 3. Map each save chunk 0x01–0x17 to its owning class and field layout.
-4. Recover the class hierarchy: the 73-slot vtable `s2:380A` with 72
-   constructors spaced 0x48 apart in seg 4 is very likely the building class
-   family (one subclass per building type).
+4. ~~Recover the class hierarchy.~~ Done 2026-10-22: `s2:380A` is the SOL
+   window family and the seg 4 constructors are the movie views; buildings
+   derive from `Building` (vtable `s6:CF6A`). See
+   [15-function-map.md](15-function-map.md) and ERRATA §H.
 5. Identify the map/tile data structures (site grid, levels 0–4) from the
    view code in segs 4–5.
 6. Identify the star data columns and the fifth "habitability" value.

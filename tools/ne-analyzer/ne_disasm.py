@@ -262,6 +262,69 @@ def main(exe, outdir):
             head[:3] == b"\x55\x8b\xec" or head[:4] == b"\x45\x55\x8b\xec" or \
             head[:2] in (b"\x8c\xd8", b"\x1e\x58")
 
+    def code_farptrs(i):
+        """Far pointers built by code: `push SEG; push off` (callbacks such as
+        qsort comparators) and `mov [m], off` + `mov [m+2], SEG` (procedure
+        pointers stored in memory, e.g. the object DB's creator table)."""
+        d = dis[i]
+        out = []
+        ordered = sorted(d.insns)
+        for a, b2 in zip(ordered, ordered[1:]):
+            i1, i2 = d.insns[a], d.insns[b2]
+            if i1.mnemonic == "push" and i2.mnemonic == "push" and \
+                    i1.operands and i2.operands and \
+                    i1.operands[0].type == i2.operands[0].type == x86.X86_OP_IMM:
+                _, fx = d.fixup_at(i1)
+                m = re.match(r"s(\d+):0000$", fx[1]) if fx and fx[0] == "SEGMENT" else None
+                if m:
+                    out.append((int(m.group(1)), i2.operands[0].imm & 0xFFFF))
+            if i1.mnemonic == "mov" and i2.mnemonic == "mov" and \
+                    len(i1.operands) == len(i2.operands) == 2:
+                o1, v1 = i1.operands
+                o2, v2 = i2.operands
+                if o1.type == o2.type == x86.X86_OP_MEM and \
+                        v1.type == v2.type == x86.X86_OP_IMM and \
+                        o2.mem.disp == o1.mem.disp + 2 and o1.mem.base == o2.mem.base:
+                    _, fx = d.fixup_at(i2)
+                    m = re.match(r"s(\d+):0000$", fx[1]) if fx and fx[0] == "SEGMENT" else None
+                    if m:
+                        out.append((int(m.group(1)), v1.imm & 0xFFFF))
+        return out
+
+    PROLOGUES = (b"\x55\x8b\xec", b"\x8c\xd0\xc8", b"\x8c\xd8\x90\x45", b"\x1e\x58\x90\x45")
+
+    def gap_prologues(i):
+        """Function starts inside undecoded runs: a prologue at the run start
+        (or after one pad byte) whose linear decode reaches a RET in the run."""
+        d = dis[i]
+        out = []
+        o = 0
+        n = len(d.data)
+        while o < n:
+            if d.cov[o]:
+                o += 1
+                continue
+            e = o
+            while e < n and not d.cov[e]:
+                e += 1
+            for s in (o, o + 1):
+                if s >= e or (s == o + 1 and d.data[o] not in (0x00, 0x90)):
+                    continue
+                head = d.data[s:s + 4]
+                if not ((head[:1] == b"\xc8" and head[3:4] == b"\x00") or
+                        any(head.startswith(p) for p in PROLOGUES)):
+                    continue
+                ok = False
+                for insn in d.md.disasm(d.data[s:e], s):
+                    if insn.mnemonic in ("ret", "retf"):
+                        ok = True
+                        break
+                if ok:
+                    out.append(s)
+                    break
+            o = e
+        return out
+
     for _ in range(20):
         new = defaultdict(set)
         for i in dis:
@@ -271,6 +334,12 @@ def main(exe, outdir):
                 in_run = (p - 4) in pos_set or (p + 4) in pos_set
                 if t in dis and (in_run or plausible(t, off)) and off not in dis[t].insns:
                     new[t].add(off)
+            for t, off in code_farptrs(i):
+                if t in dis and plausible(t, off) and off not in dis[t].insns:
+                    new[t].add(off)
+            for off in gap_prologues(i):
+                if off not in dis[i].insns:
+                    new[i].add(off)
         if not new:
             break
         for t, offs in new.items():
@@ -423,6 +492,21 @@ def main(exe, outdir):
             funcs[k]["name"] = n
         else:
             print(f"warn: symbols.json function {a} ({n}) is not a discovered function")
+    # the function catalogue's names (names/seg*.tsv: addr TAB name TAB purpose) win
+    import glob
+    purposes = {}
+    for fn in sorted(glob.glob(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                            "names", "seg*.tsv"))):
+        for line in open(fn, encoding="utf-8"):
+            parts = line.rstrip("\n").split("\t")
+            m = re.match(r"s(\d+):([0-9A-Fa-f]{4})$", parts[0].strip()) if parts else None
+            if not m or len(parts) < 2 or not parts[1].strip():
+                continue
+            k = (int(m.group(1)), int(m.group(2), 16))
+            if k in funcs:
+                funcs[k]["name"] = parts[1].strip()
+                if len(parts) > 2 and parts[2].strip():
+                    purposes[k] = parts[2].strip()
     gsyms = {int(a, 16): n for a, n in syms.get("globals", {}).items()}
 
     def global_note(insn):
@@ -455,6 +539,8 @@ def main(exe, outdir):
                             f" callers={len(fr['callers'])}\n")
                     if fr["apis"]:
                         f.write(f";   apis: {', '.join(sorted(fr['apis']))}\n")
+                    if (i, o) in purposes:
+                        f.write(f";   {purposes[(i, o)]}\n")
                 if o in d.tables:
                     f.write(f"switch_table_{o:04X}:\n")
                     for t in d.tables[o]:

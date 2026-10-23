@@ -1,6 +1,7 @@
 ; OUTPOST.EXE segment 2 (CODE), 61408 bytes
 
-; ---------------- sub_s2:0000 FAR size=54 callers=1
+; ---------------- Op::Op@s2:0000 FAR size=54 callers=1
+;   application object ctor (AppBase then Op vtable 051E); made by WinMain
 2:0000  c8040000             enter 4, 0
 2:0004  c45e06               les bx, ptr [bp + 6]
 2:0007  26c7072a05           mov word ptr es:[bx], 0x52a
@@ -17,7 +18,8 @@
 2:0032  ca0400               retf 4
 2:0035  db 00
 
-; ---------------- sub_s2:0036 FAR size=312 callers=1
+; ---------------- Op::~Op@s2:0036 FAR size=312 callers=1
+;   application dtor: deletes the simulator, resource library, dialog objects
 2:0036  c8100000             enter 0x10, 0
 2:003A  c45e06               les bx, ptr [bp + 6]
 2:003D  26c7071e05           mov word ptr es:[bx], 0x51e
@@ -33,7 +35,7 @@
 2:0060  50                   push ax
 2:0061  90                   nop
 2:0062  0e                   push cs
-2:0063  e84453               call 0x53aa  ; sub_s2:53AA
+2:0063  e84453               call 0x53aa  ; Op::nop@s2:53AA
 2:0066  66ff76fc             push dword ptr [bp - 4]
 2:006A  9ace179d00           lcall 0x9d, 0x17ce  ; operator_delete@s1:17CE
 2:006F  83c404               add sp, 4
@@ -46,7 +48,7 @@ loc_0072:
 2:008A  7416                 je 0xa2
 2:008C  ff364a57             push word ptr [0x574a]  ; g_sim+2
 2:0090  50                   push ax
-2:0091  9a1082ffff           lcall 0xffff, 0x8210  ; sub_s7:8210
+2:0091  9a1082ffff           lcall 0xffff, 0x8210  ; Sim::~Sim@s7:8210
 2:0096  66ff76f8             push dword ptr [bp - 8]
 2:009A  9ace17c400           lcall 0xc4, 0x17ce  ; operator_delete@s1:17CE
 2:009F  83c404               add sp, 4
@@ -58,7 +60,7 @@ loc_00A2:
 2:00B1  7416                 je 0xc9
 2:00B3  ff36d20e             push word ptr [0xed2]  ; g_registry+2
 2:00B7  50                   push ax
-2:00B8  9a5020e200           lcall 0xe2, 0x2050  ; sub_s3:2050
+2:00B8  9a5020e200           lcall 0xe2, 0x2050  ; Registry::~Registry@s3:2050
 2:00BD  66ff76fc             push dword ptr [bp - 4]
 2:00C1  9ace17eb00           lcall 0xeb, 0x17ce  ; operator_delete@s1:17CE
 2:00C6  83c404               add sp, 4
@@ -70,7 +72,7 @@ loc_00C9:
 2:00D8  7416                 je 0xf0
 2:00DA  ff36ce14             push word ptr [0x14ce]  ; g_hInstRes+2
 2:00DE  50                   push ax
-2:00DF  9afc7effff           lcall 0xffff, 0x7efc  ; sub_s3:7EFC
+2:00DF  9afc7effff           lcall 0xffff, 0x7efc  ; ResLibr::~ResLibr@s3:7EFC
 2:00E4  66ff76f8             push dword ptr [bp - 8]
 2:00E8  9ace170e01           lcall 0x10e, 0x17ce  ; operator_delete@s1:17CE
 2:00ED  83c404               add sp, 4
@@ -81,7 +83,7 @@ loc_00F0:
 2:00FB  7416                 je 0x113
 2:00FD  ff367e5b             push word ptr [0x5b7e]
 2:0101  50                   push ax
-2:0102  9a34afffff           lcall 0xffff, 0xaf34  ; sub_s8:AF34
+2:0102  9a34afffff           lcall 0xffff, 0xaf34  ; DialogCtr::clear@s8:AF34
 2:0107  66ff76fc             push dword ptr [bp - 4]
 2:010B  9ace17ffff           lcall 0xffff, 0x17ce  ; operator_delete@s1:17CE
 2:0110  83c404               add sp, 4
@@ -123,13 +125,14 @@ loc_0160:
 2:0160  66ff7606             push dword ptr [bp + 6]
 2:0164  90                   nop
 2:0165  0e                   push cs
-2:0166  e8fd92               call 0xffff9466  ; sub_s2:9466
+2:0166  e8fd92               call 0xffff9466  ; AppBase::~AppBase@s2:9466
 2:0169  c9                   leave
 2:016A  ca0400               retf 4
 2:016D  db 00
 
-; ---------------- sub_s2:016E FAR size=814 callers=0
+; ---------------- Op::init@s2:016E FAR size=814 callers=0
 ;   apis: KERNEL.GetVersion, USER.LoadString, USER.MessageBox, USER.UpdateWindow
+;   application start-up (vslot 2): checks the Windows version, creates ResLibr, DialogCtr, DialogHandler, the Simulator, the sound manager and the main window
 2:016E  c8be0100             enter 0x1be, 0
 2:0172  9affff0000           lcall 0, 0xffff  ; KERNEL.GetVersion
 2:0177  8946fc               mov word ptr [bp - 4], ax
@@ -158,7 +161,7 @@ loc_0197:
 2:01B8  6a00                 push 0
 2:01BA  ff76f2               push word ptr [bp - 0xe]
 2:01BD  50                   push ax
-2:01BE  9a2085ffff           lcall 0xffff, 0x8520  ; sub_s9:8520
+2:01BE  9a2085ffff           lcall 0xffff, 0x8520  ; OPMessageBox::OPMessageBox(ids)@s9:8520
 2:01C3  83c40e               add sp, 0xe
 2:01C6  eb03                 jmp 0x1cb
 loc_01C8:
@@ -173,7 +176,7 @@ loc_01CB:
 2:01D6  26c41f               les bx, ptr es:[bx]
 2:01D9  26ff5f74             lcall es:[bx + 0x74]
 2:01DD  6a01                 push 1
-2:01DF  9acd243102           lcall 0x231, 0x24cd  ; sub_s1:24CD
+2:01DF  9acd243102           lcall 0x231, 0x24cd  ; exit@s1:24CD
 2:01E4  83c402               add sp, 2
 loc_01E7:
 2:01E7  ff76f8               push word ptr [bp - 8]
@@ -182,7 +185,7 @@ loc_01E7:
 2:01EE  681200               push 0x12  ; 'version %d %d'
 2:01F1  90                   nop
 2:01F2  0e                   push cs
-2:01F3  e8525e               call 0x6048  ; sub_s2:6048
+2:01F3  e8525e               call 0x6048  ; debugPrintf@s2:6048
 2:01F6  83c408               add sp, 8
 2:01F9  837efa03             cmp word ptr [bp - 6], 3
 2:01FD  750c                 jne 0x20b
@@ -204,7 +207,7 @@ loc_020B:
 2:0228  8d8670ff             lea ax, [bp - 0x90]
 2:022C  16                   push ss
 2:022D  50                   push ax
-2:022E  9aaa517e02           lcall 0x27e, 0x51aa  ; sub_s1:51AA
+2:022E  9aaa517e02           lcall 0x27e, 0x51aa  ; _stat?@s1:51AA
 2:0233  83c40a               add sp, 0xa
 2:0236  0bc0                 or ax, ax
 2:0238  7449                 je 0x283
@@ -232,7 +235,7 @@ loc_020B:
 2:0272  6a10                 push 0x10
 2:0274  9affff0000           lcall 0, 0xffff  ; USER.MessageBox
 2:0279  6a01                 push 1
-2:027B  9acd248802           lcall 0x288, 0x24cd  ; sub_s1:24CD
+2:027B  9acd248802           lcall 0x288, 0x24cd  ; exit@s1:24CD
 2:0280  83c402               add sp, 2
 loc_0283:
 2:0283  6a04                 push 4
@@ -246,7 +249,7 @@ loc_0283:
 2:029A  50                   push ax
 2:029B  90                   nop
 2:029C  0e                   push cs
-2:029D  e8f450               call 0x5394  ; sub_s2:5394
+2:029D  e8f450               call 0x5394  ; NullPtr::init@s2:5394
 2:02A0  eb03                 jmp 0x2a5
 loc_02A2:
 2:02A2  33c0                 xor ax, ax
@@ -270,7 +273,7 @@ loc_02A5:
 2:02DE  7409                 je 0x2e9
 2:02E0  ff76f2               push word ptr [bp - 0xe]
 2:02E3  50                   push ax
-2:02E4  9a24202303           lcall 0x323, 0x2024  ; sub_s3:2024
+2:02E4  9a24202303           lcall 0x323, 0x2024  ; Registry::Registry@s3:2024
 loc_02E9:
 2:02E9  66833ed00e00         cmp dword ptr [0xed0], 0  ; g_registry
 2:02EF  7516                 jne 0x307
@@ -278,10 +281,10 @@ loc_02E9:
 2:02F2  682000               push 0x20  ; 'New failed in Op::Op'
 2:02F5  90                   nop
 2:02F6  0e                   push cs
-2:02F7  e84e5d               call 0x6048  ; sub_s2:6048
+2:02F7  e84e5d               call 0x6048  ; debugPrintf@s2:6048
 2:02FA  83c404               add sp, 4
 2:02FD  6a01                 push 1
-2:02FF  9acd240d03           lcall 0x30d, 0x24cd  ; sub_s1:24CD
+2:02FF  9acd240d03           lcall 0x30d, 0x24cd  ; exit@s1:24CD
 2:0304  83c402               add sp, 2
 loc_0307:
 2:0307  688c0e               push 0xe8c
@@ -293,7 +296,7 @@ loc_0307:
 2:031A  7409                 je 0x325
 2:031C  ff76f2               push word ptr [bp - 0xe]
 2:031F  50                   push ax
-2:0320  9a407ebb00           lcall 0xbb, 0x7e40  ; sub_s3:7E40
+2:0320  9a407ebb00           lcall 0xbb, 0x7e40  ; ResLibr::ResLibr@s3:7E40
 loc_0325:
 2:0325  66833ecc1400         cmp dword ptr [0x14cc], 0  ; g_hInstRes
 2:032B  7516                 jne 0x343
@@ -301,10 +304,10 @@ loc_0325:
 2:032E  683500               push 0x35  ; 'New failed in Op::Op->ResLibr'
 2:0331  90                   nop
 2:0332  0e                   push cs
-2:0333  e8125d               call 0x6048  ; sub_s2:6048
+2:0333  e8125d               call 0x6048  ; debugPrintf@s2:6048
 2:0336  83c404               add sp, 4
 2:0339  6a01                 push 1
-2:033B  9acd244903           lcall 0x349, 0x24cd  ; sub_s1:24CD
+2:033B  9acd244903           lcall 0x349, 0x24cd  ; exit@s1:24CD
 2:0340  83c402               add sp, 2
 loc_0343:
 2:0343  68b000               push 0xb0
@@ -316,7 +319,7 @@ loc_0343:
 2:0356  7409                 je 0x361
 2:0358  ff76f2               push word ptr [bp - 0xe]
 2:035B  50                   push ax
-2:035C  9acaae9a03           lcall 0x39a, 0xaeca  ; sub_s8:AECA
+2:035C  9acaae9a03           lcall 0x39a, 0xaeca  ; DialogCtr::DialogCtr@s8:AECA
 loc_0361:
 2:0361  66833e7c5b00         cmp dword ptr [0x5b7c], 0
 2:0367  7516                 jne 0x37f
@@ -324,10 +327,10 @@ loc_0361:
 2:036A  685300               push 0x53  ; 'New failed in Op::Op->DialogCtr'
 2:036D  90                   nop
 2:036E  0e                   push cs
-2:036F  e8d65c               call 0x6048  ; sub_s2:6048
+2:036F  e8d65c               call 0x6048  ; debugPrintf@s2:6048
 2:0372  83c404               add sp, 4
 2:0375  6a01                 push 1
-2:0377  9acd248403           lcall 0x384, 0x24cd  ; sub_s1:24CD
+2:0377  9acd248403           lcall 0x384, 0x24cd  ; exit@s1:24CD
 2:037C  83c402               add sp, 2
 loc_037F:
 2:037F  6a0a                 push 0xa
@@ -339,7 +342,7 @@ loc_037F:
 2:0391  7409                 je 0x39c
 2:0393  ff76f2               push word ptr [bp - 0xe]
 2:0396  50                   push ax
-2:0397  9a6ccf0501           lcall 0x105, 0xcf6c  ; sub_s8:CF6C
+2:0397  9a6ccf0501           lcall 0x105, 0xcf6c  ; DialogHandler::DialogHandler@s8:CF6C
 loc_039C:
 2:039C  66833ec85b00         cmp dword ptr [0x5bc8], 0
 2:03A2  7516                 jne 0x3ba
@@ -347,10 +350,10 @@ loc_039C:
 2:03A5  687300               push 0x73  ; 'New failed in Op::Op->DialogHandler'
 2:03A8  90                   nop
 2:03A9  0e                   push cs
-2:03AA  e89b5c               call 0x6048  ; sub_s2:6048
+2:03AA  e89b5c               call 0x6048  ; debugPrintf@s2:6048
 2:03AD  83c404               add sp, 4
 2:03B0  6a01                 push 1
-2:03B2  9acd24bf03           lcall 0x3bf, 0x24cd  ; sub_s1:24CD
+2:03B2  9acd24bf03           lcall 0x3bf, 0x24cd  ; exit@s1:24CD
 2:03B7  83c402               add sp, 2
 loc_03BA:
 2:03BA  6a14                 push 0x14
@@ -364,7 +367,7 @@ loc_03BA:
 2:03D1  50                   push ax
 2:03D2  90                   nop
 2:03D3  0e                   push cs
-2:03D4  e80558               call 0x5bdc  ; sub_s2:5BDC
+2:03D4  e80558               call 0x5bdc  ; SoundMgr::SoundMgr@s2:5BDC
 loc_03D7:
 2:03D7  66833ea00200         cmp dword ptr [0x2a0], 0
 2:03DD  7516                 jne 0x3f5
@@ -372,10 +375,10 @@ loc_03D7:
 2:03E0  689700               push 0x97  ; 'New failed in Op::Op->Simulator'
 2:03E3  90                   nop
 2:03E4  0e                   push cs
-2:03E5  e8605c               call 0x6048  ; sub_s2:6048
+2:03E5  e8605c               call 0x6048  ; debugPrintf@s2:6048
 2:03E8  83c404               add sp, 4
 2:03EB  6a01                 push 1
-2:03ED  9acd24fb03           lcall 0x3fb, 0x24cd  ; sub_s1:24CD
+2:03ED  9acd24fb03           lcall 0x3fb, 0x24cd  ; exit@s1:24CD
 2:03F2  83c402               add sp, 2
 loc_03F5:
 2:03F5  68fc00               push 0xfc
@@ -389,7 +392,7 @@ loc_03F5:
 2:040D  50                   push ax
 2:040E  90                   nop
 2:040F  0e                   push cs
-2:0410  e82301               call 0x536  ; sub_s2:0536
+2:0410  e82301               call 0x536  ; OpWnd::OpWnd@s2:0536
 2:0413  eb04                 jmp 0x419
 2:0415  db 90
 loc_0416:
@@ -406,17 +409,17 @@ loc_0419:
 2:0430  68b700               push 0xb7  ; 'New failed in Op::Op'
 2:0433  90                   nop
 2:0434  0e                   push cs
-2:0435  e8105c               call 0x6048  ; sub_s2:6048
+2:0435  e8105c               call 0x6048  ; debugPrintf@s2:6048
 2:0438  83c404               add sp, 4
 2:043B  6a01                 push 1
-2:043D  9acd246d00           lcall 0x6d, 0x24cd  ; sub_s1:24CD
+2:043D  9acd246d00           lcall 0x6d, 0x24cd  ; exit@s1:24CD
 2:0442  83c402               add sp, 2
 loc_0445:
 2:0445  c45e06               les bx, ptr [bp + 6]
 2:0448  6626ff7704           push dword ptr es:[bx + 4]
 2:044D  90                   nop
 2:044E  0e                   push cs
-2:044F  e88092               call 0xffff96d2  ; RegisterWindowClass@s2:96D2
+2:044F  e88092               call 0xffff96d2  ; SOLWnd::registerClass@s2:96D2
 2:0452  c45e06               les bx, ptr [bp + 6]
 2:0455  6626ff7704           push dword ptr es:[bx + 4]
 2:045A  26c45f04             les bx, ptr es:[bx + 4]
@@ -439,13 +442,14 @@ loc_0445:
 2:0498  c9                   leave
 2:0499  ca0400               retf 4
 
-; ---------------- sub_s2:049C FAR size=54 callers=0
+; ---------------- Op::parseCmdLine@s2:049C FAR size=54 callers=0
+;   (vslot 1) command line: "nomono2" turns the debug output off
 2:049C  55                   push bp
 2:049D  8bec                 mov bp, sp
 2:049F  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:04A4  7428                 je 0x4ce
 2:04A6  66ff760a             push dword ptr [bp + 0xa]
-2:04AA  9aa43dc304           lcall 0x4c3, 0x3da4  ; sub_s1:3DA4
+2:04AA  9aa43dc304           lcall 0x4c3, 0x3da4  ; _fstrlen@s1:3DA4
 2:04AF  8be5                 mov sp, bp
 2:04B1  0bc0                 or ax, ax
 2:04B3  7419                 je 0x4ce
@@ -454,7 +458,7 @@ loc_0445:
 2:04B9  668b460a             mov eax, dword ptr [bp + 0xa]
 2:04BD  40                   inc ax
 2:04BE  6650                 push eax
-2:04C0  9a5a549d01           lcall 0x19d, 0x545a  ; sub_s1:545A
+2:04C0  9a5a549d01           lcall 0x19d, 0x545a  ; _fstricmp2@s1:545A
 2:04C5  8be5                 mov sp, bp
 2:04C7  0bc0                 or ax, ax
 2:04C9  7503                 jne 0x4ce
@@ -463,13 +467,14 @@ loc_04CE:
 2:04CE  c9                   leave
 2:04CF  ca0800               retf 8
 
-; ---------------- sub_s2:04D2 FAR size=38 callers=0
+; ---------------- AppBase::scalar_dtor@s2:04D2 FAR size=38 callers=0
+;   AppBase deleting destructor
 2:04D2  55                   push bp
 2:04D3  8bec                 mov bp, sp
 2:04D5  66ff7606             push dword ptr [bp + 6]
 2:04D9  90                   nop
 2:04DA  0e                   push cs
-2:04DB  e8888f               call 0xffff9466  ; sub_s2:9466
+2:04DB  e8888f               call 0xffff9466  ; AppBase::~AppBase@s2:9466
 2:04DE  f6460a01             test byte ptr [bp + 0xa], 1
 2:04E2  7409                 je 0x4ed
 2:04E4  66ff7606             push dword ptr [bp + 6]
@@ -481,13 +486,14 @@ loc_04ED:
 2:04F4  ca0600               retf 6
 2:04F7  db 00
 
-; ---------------- sub_s2:04F8 FAR size=62 callers=0
+; ---------------- Op::scalar_dtor@s2:04F8 FAR size=62 callers=0
+;   Op deleting destructor
 2:04F8  55                   push bp
 2:04F9  8bec                 mov bp, sp
 2:04FB  66ff7606             push dword ptr [bp + 6]
 2:04FF  90                   nop
 2:0500  0e                   push cs
-2:0501  e832fb               call 0x36  ; sub_s2:0036
+2:0501  e832fb               call 0x36  ; Op::~Op@s2:0036
 2:0504  f6460a01             test byte ptr [bp + 0xa], 1
 2:0508  7409                 je 0x513
 2:050A  66ff7606             push dword ptr [bp + 6]
@@ -500,14 +506,15 @@ loc_0513:
 2:051D  db 90 f8 04 24 05 9c 04 28 05 6e 01 46 00 d2 04 30
 2:052D  db 05 94 94 34 05 90 94 20 05
 
-; ---------------- sub_s2:0536 FAR size=226 callers=1
+; ---------------- OpWnd::OpWnd@s2:0536 FAR size=226 callers=1
 ;   apis: GDI.GetStockObject, USER.LoadCursor, USER.LoadIcon
+;   main window ctor (class "Outpost", icon, cursor, system colours)
 2:0536  55                   push bp
 2:0537  8bec                 mov bp, sp
 2:0539  66ff7606             push dword ptr [bp + 6]
 2:053D  90                   nop
 2:053E  0e                   push cs
-2:053F  e87635               call 0x3ab8  ; sub_s2:3AB8
+2:053F  e87635               call 0x3ab8  ; SOLDefaultWnd::SOLDefaultWnd@s2:3AB8
 2:0542  c45e06               les bx, ptr [bp + 6]
 2:0545  662bc0               sub eax, eax
 2:0548  66268987e000         mov dword ptr es:[bx + 0xe0], eax
@@ -540,7 +547,7 @@ loc_0513:
 2:05C6  268987c600           mov word ptr es:[bx + 0xc6], ax
 2:05CB  6a48                 push 0x48
 2:05CD  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:05D2  9aba20f605           lcall 0x5f6, 0x20ba  ; sub_s3:20BA
+2:05D2  9aba20f605           lcall 0x5f6, 0x20ba  ; Registry_get@s3:20BA
 2:05D7  1e                   push ds
 2:05D8  68d700               push 0xd7  ; 'Outpost'
 2:05DB  668b4606             mov eax, dword ptr [bp + 6]
@@ -550,7 +557,7 @@ loc_0513:
 2:05E9  83c408               add sp, 8
 2:05EC  6a32                 push 0x32
 2:05EE  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:05F3  9aba20e702           lcall 0x2e7, 0x20ba  ; sub_s3:20BA
+2:05F3  9aba20e702           lcall 0x2e7, 0x20ba  ; Registry_get@s3:20BA
 2:05F8  c45e06               les bx, ptr [bp + 6]
 2:05FB  268987f400           mov word ptr es:[bx + 0xf4], ax
 2:0600  268997f600           mov word ptr es:[bx + 0xf6], dx
@@ -559,14 +566,15 @@ loc_0513:
 2:0608  53                   push bx
 2:0609  90                   nop
 2:060A  0e                   push cs
-2:060B  e8702f               call 0x357e  ; sub_s2:357E
+2:060B  e8702f               call 0x357e  ; setGameSysColors@s2:357E
 2:060E  8b4606               mov ax, word ptr [bp + 6]
 2:0611  8b5608               mov dx, word ptr [bp + 8]
 2:0614  c9                   leave
 2:0615  ca0400               retf 4
 
-; ---------------- sub_s2:0618 FAR size=168 callers=1
+; ---------------- OpWnd::~OpWnd@s2:0618 FAR size=168 callers=1
 ;   apis: USER.DestroyIcon, USER.DestroyMenu
+;   main window dtor: restores the system colours, destroys icon and menu
 2:0618  c81c0000             enter 0x1c, 0
 2:061C  56                   push si
 2:061D  c45e06               les bx, ptr [bp + 6]
@@ -577,7 +585,7 @@ loc_0513:
 2:062E  53                   push bx
 2:062F  90                   nop
 2:0630  0e                   push cs
-2:0631  e84a2f               call 0x357e  ; sub_s2:357E
+2:0631  e84a2f               call 0x357e  ; setGameSysColors@s2:357E
 2:0634  c45e06               les bx, ptr [bp + 6]
 2:0637  66268b87f800         mov eax, dword ptr es:[bx + 0xf8]
 2:063D  6650                 push eax
@@ -612,7 +620,7 @@ loc_0691:
 2:0698  6650                 push eax
 2:069A  90                   nop
 2:069B  0e                   push cs
-2:069C  e82551               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:069C  e82551               call 0x57c4  ; List::~List@s2:57C4
 2:069F  c45e06               les bx, ptr [bp + 6]
 2:06A2  26c7070a38           mov word ptr es:[bx], 0x380a
 2:06A7  26c74702b906         mov word ptr es:[bx + 2], 0x6b9  ; SEGMENT s2:0000
@@ -623,14 +631,15 @@ loc_0691:
 2:06BC  c9                   leave
 2:06BD  ca0400               retf 4
 
-; ---------------- sub_s2:06C0 size=280 callers=0
+; ---------------- OpWnd::onRunTurn@s2:06C0 size=280 callers=0
 ;   apis: USER.LoadCursor, USER.MessageBox, USER.PostMessage, USER.SetCursor
+;   WM_USER on the main window: runs n turns (s7:83BA) unless the game is over
 2:06C0  c8660000             enter 0x66, 0
 2:06C4  817e100004           cmp word ptr [bp + 0x10], 0x400
 2:06C9  0f850601             jne 0x7d3
 2:06CD  666801000004         push 0x4000001
 2:06D3  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:06D8  9a44833907           lcall 0x739, 0x8344  ; sub_s7:8344
+2:06D8  9a44833907           lcall 0x739, 0x8344  ; Sim::resolve@s7:8344
 2:06DD  0bd0                 or dx, ax
 2:06DF  0f84f000             je 0x7d3
 2:06E3  833ee84f00           cmp word ptr [0x4fe8], 0
@@ -666,12 +675,12 @@ loc_0716:
 2:073F  26c747080100         mov word ptr es:[bx + 8], 1
 2:0745  6a29                 push 0x29
 2:0747  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:074C  9aba207507           lcall 0x775, 0x20ba  ; sub_s3:20BA
+2:074C  9aba207507           lcall 0x775, 0x20ba  ; Registry_get@s3:20BA
 2:0751  8946f8               mov word ptr [bp - 8], ax
 2:0754  8956fa               mov word ptr [bp - 6], dx
 2:0757  52                   push dx
 2:0758  50                   push ax
-2:0759  9a2e26ffff           lcall 0xffff, 0x262e  ; sub_s4:262E
+2:0759  9a2e26ffff           lcall 0xffff, 0x262e  ; PlanetArea::resetAnim@s4:262E
 2:075E  66ff364857           push dword ptr [0x5748]  ; g_sim
 2:0763  9a26839400           lcall 0x94, 0x8326  ; Sim::getTurnNumber@s7:8326
 2:0768  52                   push dx
@@ -699,14 +708,14 @@ loc_0716:
 2:0799  26ff5f14             lcall es:[bx + 0x14]
 2:079D  6a37                 push 0x37
 2:079F  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:07A4  9aba20d505           lcall 0x5d5, 0x20ba  ; sub_s3:20BA
+2:07A4  9aba20d505           lcall 0x5d5, 0x20ba  ; Registry_get@s3:20BA
 2:07A9  8946a4               mov word ptr [bp - 0x5c], ax
 2:07AC  8956a6               mov word ptr [bp - 0x5a], dx
 2:07AF  52                   push dx
 2:07B0  50                   push ax
 2:07B1  90                   nop
 2:07B2  0e                   push cs
-2:07B3  e836a2               call 0xffffa9ec  ; sub_s2:A9EC
+2:07B3  e836a2               call 0xffffa9ec  ; SoundQueue::playNext@s2:A9EC
 2:07B6  ff76fc               push word ptr [bp - 4]
 2:07B9  9affff0000           lcall 0, 0xffff  ; USER.SetCursor
 2:07BE  c45e06               les bx, ptr [bp + 6]
@@ -719,7 +728,8 @@ loc_07D3:
 2:07D4  ca0c00               retf 0xc
 2:07D7  db 00
 
-; ---------------- sub_s2:07D8 FAR size=166 callers=1
+; ---------------- OpWnd::newSimulatorForLoad@s2:07D8 FAR size=166 callers=1
+;   creates an empty Simulator before a saved game is read
 2:07D8  c8040000             enter 4, 0
 2:07DC  66833e485700         cmp dword ptr [0x5748], 0  ; g_sim
 2:07E2  0f859400             jne 0x87a
@@ -731,7 +741,7 @@ loc_07D3:
 2:07F5  7409                 je 0x800
 2:07F7  ff76fe               push word ptr [bp - 2]
 2:07FA  50                   push ax
-2:07FB  9a28816e08           lcall 0x86e, 0x8128  ; sub_s7:8128
+2:07FB  9a28816e08           lcall 0x86e, 0x8128  ; Sim::Sim@s7:8128
 loc_0800:
 2:0800  66833e485700         cmp dword ptr [0x5748], 0  ; g_sim
 2:0806  7516                 jne 0x81e
@@ -739,10 +749,10 @@ loc_0800:
 2:0809  681001               push 0x110  ; 'New failed in Op::Op->Simulator'
 2:080C  90                   nop
 2:080D  0e                   push cs
-2:080E  e83758               call 0x6048  ; sub_s2:6048
+2:080E  e83758               call 0x6048  ; debugPrintf@s2:6048
 2:0811  83c404               add sp, 4
 2:0814  6a01                 push 1
-2:0816  9acd248507           lcall 0x785, 0x24cd  ; sub_s1:24CD
+2:0816  9acd248507           lcall 0x785, 0x24cd  ; exit@s1:24CD
 2:081B  83c402               add sp, 2
 loc_081E:
 2:081E  666a00               push 0
@@ -750,28 +760,29 @@ loc_081E:
 2:0827  666a00               push 0
 2:082A  6a00                 push 0
 2:082C  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:0831  9ae0e24c08           lcall 0x84c, 0xe2e0  ; sub_s6:E2E0
+2:0831  9ae0e24c08           lcall 0x84c, 0xe2e0  ; Db::create@s6:E2E0
 2:0836  666a00               push 0
 2:0839  666800000008         push 0x8000000
 2:083F  666a00               push 0
 2:0842  6a00                 push 0
 2:0844  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:0849  9ae0e26408           lcall 0x864, 0xe2e0  ; sub_s6:E2E0
+2:0849  9ae0e26408           lcall 0x864, 0xe2e0  ; Db::create@s6:E2E0
 2:084E  666a00               push 0
 2:0851  6668000000ff         push 0xff000000
 2:0857  666a00               push 0
 2:085A  6a00                 push 0
 2:085C  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:0861  9ae0e2ffff           lcall 0xffff, 0xe2e0  ; sub_s6:E2E0
+2:0861  9ae0e2ffff           lcall 0xffff, 0xe2e0  ; Db::create@s6:E2E0
 2:0866  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:086B  9a8e837808           lcall 0x878, 0x838e  ; sub_s7:838E
+2:086B  9a8e837808           lcall 0x878, 0x838e  ; Sim::runOneTurn@s7:838E
 2:0870  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:0875  9a3483db06           lcall 0x6db, 0x8334  ; sub_s7:8334
+2:0875  9a3483db06           lcall 0x6db, 0x8334  ; Sim::setTurn0@s7:8334
 loc_087A:
 2:087A  c9                   leave
 2:087B  ca0400               retf 4
 
-; ---------------- sub_s2:087E FAR size=180 callers=1
+; ---------------- OpWnd::newGame@s2:087E FAR size=180 callers=1
+;   New Game: creates the Simulator, the two players and the galaxy, queues SCSelect
 2:087E  c81c0100             enter 0x11c, 0
 2:0882  6a0a                 push 0xa
 2:0884  9a9c17b808           lcall 0x8b8, 0x179c  ; operator_new@s1:179C
@@ -782,7 +793,7 @@ loc_087A:
 2:0894  7409                 je 0x89f
 2:0896  ff76fe               push word ptr [bp - 2]
 2:0899  50                   push ax
-2:089A  9a2881fc08           lcall 0x8fc, 0x8128  ; sub_s7:8128
+2:089A  9a2881fc08           lcall 0x8fc, 0x8128  ; Sim::Sim@s7:8128
 loc_089F:
 2:089F  66833e485700         cmp dword ptr [0x5748], 0  ; g_sim
 2:08A5  7516                 jne 0x8bd
@@ -790,10 +801,10 @@ loc_089F:
 2:08A8  683001               push 0x130  ; 'New failed in Op::Op->Simulator'
 2:08AB  90                   nop
 2:08AC  0e                   push cs
-2:08AD  e89857               call 0x6048  ; sub_s2:6048
+2:08AD  e89857               call 0x6048  ; debugPrintf@s2:6048
 2:08B0  83c404               add sp, 4
 2:08B3  6a01                 push 1
-2:08B5  9acd24eb07           lcall 0x7eb, 0x24cd  ; sub_s1:24CD
+2:08B5  9acd24eb07           lcall 0x7eb, 0x24cd  ; exit@s1:24CD
 2:08BA  83c402               add sp, 2
 loc_08BD:
 2:08BD  666a00               push 0
@@ -801,13 +812,13 @@ loc_08BD:
 2:08C6  666a00               push 0
 2:08C9  6a00                 push 0
 2:08CB  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:08D0  9ae0e2eb08           lcall 0x8eb, 0xe2e0  ; sub_s6:E2E0
+2:08D0  9ae0e2eb08           lcall 0x8eb, 0xe2e0  ; Db::create@s6:E2E0
 2:08D5  666a00               push 0
 2:08D8  666800000008         push 0x8000000
 2:08DE  666a00               push 0
 2:08E1  6a00                 push 0
 2:08E3  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:08E8  9ae0e23408           lcall 0x834, 0xe2e0  ; sub_s6:E2E0
+2:08E8  9ae0e23408           lcall 0x834, 0xe2e0  ; Db::create@s6:E2E0
 2:08ED  6668000000ff         push 0xff000000
 2:08F3  8d86f0fe             lea ax, [bp - 0x110]
 2:08F7  16                   push ss
@@ -819,43 +830,45 @@ loc_08BD:
 2:0904  66ff364857           push dword ptr [0x5748]  ; g_sim
 2:0909  9a5a831609           lcall 0x916, 0x835a  ; Sim::enqueue@s7:835A
 2:090E  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:0913  9a8e832c09           lcall 0x92c, 0x838e  ; sub_s7:838E
+2:0913  9a8e832c09           lcall 0x92c, 0x838e  ; Sim::runOneTurn@s7:838E
 2:0918  c786f0fe9a38         mov word ptr [bp - 0x110], 0x389a
 2:091E  c786f2fe2906         mov word ptr [bp - 0x10e], 0x629  ; SEGMENT s2:0000
 2:0924  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:0929  9a3483fe07           lcall 0x7fe, 0x8334  ; sub_s7:8334
+2:0929  9a3483fe07           lcall 0x7fe, 0x8334  ; Sim::setTurn0@s7:8334
 2:092E  c9                   leave
 2:092F  ca0400               retf 4
 
-; ---------------- sub_s2:0932 FAR size=82 callers=0
+; ---------------- OpWnd::releaseResources@s2:0932 FAR size=82 callers=0
+;   frees the resource library and the memory pools at shutdown
 2:0932  66833ecc1400         cmp dword ptr [0x14cc], 0  ; g_hInstRes
 2:0938  740a                 je 0x944
 2:093A  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:093F  9ad67ff506           lcall 0x6f5, 0x7fd6  ; sub_s3:7FD6
+2:093F  9ad67ff506           lcall 0x6f5, 0x7fd6  ; ResLibr::release@s3:7FD6
 loc_0944:
 2:0944  66ff36a003           push dword ptr [0x3a0]
-2:0949  9a16005609           lcall 0x956, 0x16  ; sub_s1:0016
+2:0949  9a16005609           lcall 0x956, 0x16  ; SH_MemPoolSize?@s1:0016
 2:094E  66ff369c02           push dword ptr [0x29c]
-2:0953  9a16006009           lcall 0x960, 0x16  ; sub_s1:0016
+2:0953  9a16006009           lcall 0x960, 0x16  ; SH_MemPoolSize?@s1:0016
 2:0958  66ff36b84f           push dword ptr [0x4fb8]
-2:095D  9a16006a09           lcall 0x96a, 0x16  ; sub_s1:0016
+2:095D  9a16006a09           lcall 0x96a, 0x16  ; SH_MemPoolSize?@s1:0016
 2:0962  66ff36a268           push dword ptr [0x68a2]
-2:0967  9a16007409           lcall 0x974, 0x16  ; sub_s1:0016
+2:0967  9a16007409           lcall 0x974, 0x16  ; SH_MemPoolSize?@s1:0016
 2:096C  66ff364457           push dword ptr [0x5744]
-2:0971  9a16007e09           lcall 0x97e, 0x16  ; sub_s1:0016
+2:0971  9a16007e09           lcall 0x97e, 0x16  ; SH_MemPoolSize?@s1:0016
 2:0976  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
-2:097B  9a16008708           lcall 0x887, 0x16  ; sub_s1:0016
+2:097B  9a16008708           lcall 0x887, 0x16  ; SH_MemPoolSize?@s1:0016
 2:0980  ca0400               retf 4
 2:0983  db 00
 
-; ---------------- sub_s2:0984 FAR size=54 callers=0
+; ---------------- OpWnd::onActivateApp@s2:0984 FAR size=54 callers=0
+;   re-applies the game's system colours and tells the child view
 2:0984  55                   push bp
 2:0985  8bec                 mov bp, sp
 2:0987  66ff7608             push dword ptr [bp + 8]
 2:098B  ff7606               push word ptr [bp + 6]
 2:098E  90                   nop
 2:098F  0e                   push cs
-2:0990  e8eb2b               call 0x357e  ; sub_s2:357E
+2:0990  e8eb2b               call 0x357e  ; setGameSysColors@s2:357E
 2:0993  c45e06               les bx, ptr [bp + 6]
 2:0996  662683bfe80000       cmp dword ptr es:[bx + 0xe8], 0
 2:099D  7416                 je 0x9b5
@@ -869,8 +882,9 @@ loc_09B5:
 2:09B6  ca0600               retf 6
 2:09B9  db 00
 
-; ---------------- sub_s2:09BA FAR size=130 callers=0
+; ---------------- OpWnd::onRightButton@s2:09BA FAR size=130 callers=0
 ;   apis: USER.ClientToScreen, USER.GetSubMenu, USER.LoadMenu, USER.TrackPopupMenu
+;   shows the OPPOPMENU popup menu at the mouse
 2:09BA  c8040000             enter 4, 0
 2:09BE  c45e06               les bx, ptr [bp + 6]
 2:09C1  2683bfec0000         cmp word ptr es:[bx + 0xec], 0
@@ -915,8 +929,9 @@ loc_0A38:
 2:0A38  c9                   leave
 2:0A39  ca0a00               retf 0xa
 
-; ---------------- sub_s2:0A3C FAR size=86 callers=0
+; ---------------- OpWnd::onSysCommand@s2:0A3C FAR size=86 callers=0
 ;   apis: USER.IsIconic, USER.PostMessage
+;   SC_CLOSE / screen-saver handling for the main window
 2:0A3C  55                   push bp
 2:0A3D  8bec                 mov bp, sp
 2:0A3F  8b460a               mov ax, word ptr [bp + 0xa]
@@ -954,7 +969,8 @@ loc_0A8A:
 2:0A8E  ca0600               retf 6
 2:0A91  db 00
 
-; ---------------- sub_s2:0A92 FAR size=102 callers=0
+; ---------------- OpWnd::onClose@s2:0A92 FAR size=102 callers=0
+;   asks to quit, then PostQuitMessage
 2:0A92  c8080000             enter 8, 0
 2:0A96  c45e06               les bx, ptr [bp + 6]
 2:0A99  662683bfee0000       cmp dword ptr es:[bx + 0xee], 0
@@ -985,16 +1001,17 @@ loc_0AEB:
 2:0AEB  66ff7606             push dword ptr [bp + 6]
 2:0AEF  90                   nop
 2:0AF0  0e                   push cs
-2:0AF1  e80030               call 0x3af4  ; sub_s2:3AF4
+2:0AF1  e80030               call 0x3af4  ; SOLDefaultWnd::onDestroy@s2:3AF4
 2:0AF4  c9                   leave
 2:0AF5  ca0400               retf 4
 
-; ---------------- sub_s2:0AF8 size=360 callers=0
+; ---------------- OpWnd::create@s2:0AF8 size=360 callers=0
+;   creates the main window, its timer and the first view
 2:0AF8  c8040000             enter 4, 0
 2:0AFC  66ff7606             push dword ptr [bp + 6]
 2:0B00  90                   nop
 2:0B01  0e                   push cs
-2:0B02  e85b8c               call 0xffff9760  ; sub_s2:9760
+2:0B02  e85b8c               call 0xffff9760  ; SOLWnd::create@s2:9760
 2:0B05  c45e06               les bx, ptr [bp + 6]
 2:0B08  268b4708             mov ax, word ptr es:[bx + 8]
 2:0B0C  a39603               mov word ptr [0x396], ax
@@ -1009,7 +1026,7 @@ loc_0AEB:
 2:0B26  50                   push ax
 2:0B27  90                   nop
 2:0B28  0e                   push cs
-2:0B29  e88e86               call 0xffff91ba  ; sub_s2:91BA
+2:0B29  e88e86               call 0xffff91ba  ; Timer::Timer@s2:91BA
 loc_0B2C:
 2:0B2C  6a06                 push 6
 2:0B2E  9a9c17850b           lcall 0xb85, 0x179c  ; operator_new@s1:179C
@@ -1024,7 +1041,7 @@ loc_0B2C:
 2:0B4A  50                   push ax
 2:0B4B  90                   nop
 2:0B4C  0e                   push cs
-2:0B4D  e8de2d               call 0x392e  ; sub_s2:392E
+2:0B4D  e8de2d               call 0x392e  ; WndHandler::WndHandler@s2:392E
 2:0B50  c45e06               les bx, ptr [bp + 6]
 2:0B53  268987e000           mov word ptr es:[bx + 0xe0], ax
 2:0B58  268997e200           mov word ptr es:[bx + 0xe2], dx
@@ -1055,7 +1072,7 @@ loc_0B6D:
 2:0B9D  53                   push bx
 2:0B9E  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:0BA3  66ff76fc             push dword ptr [bp - 4]
-2:0BA7  9ab608ffff           lcall 0xffff, 0x8b6  ; sub_s5:08B6
+2:0BA7  9ab608ffff           lcall 0xffff, 0x8b6  ; Mode1View::Mode1View@s5:08B6
 2:0BAC  c45e06               les bx, ptr [bp + 6]
 2:0BAF  268987e400           mov word ptr es:[bx + 0xe4], ax
 2:0BB4  268997e600           mov word ptr es:[bx + 0xe6], dx
@@ -1104,13 +1121,14 @@ loc_0BE9:
 2:0C55  53                   push bx
 2:0C56  90                   nop
 2:0C57  0e                   push cs
-2:0C58  e81d5d               call 0x6978  ; sub_s2:6978
+2:0C58  e81d5d               call 0x6978  ; SOLChildWnd::addChild@s2:6978
 2:0C5B  c9                   leave
 2:0C5C  ca0400               retf 4
 2:0C5F  db 00
 
-; ---------------- sub_s2:0C60 FAR size=1488 callers=0
+; ---------------- OpWnd::onCommand@s2:0C60 FAR size=1488 callers=0
 ;   apis: KERNEL.WinExec, USER.LoadCursor, USER.MessageBox, USER.PostMessage, USER.SendMessage, USER.SetCursor, USER.WinHelp
+;   menu and screen commands 100..302 (Run Turn, Load, Save, help, read.me, screens)
 2:0C60  c8700000             enter 0x70, 0
 2:0C64  8b460a               mov ax, word ptr [bp + 0xa]
 2:0C67  e91c04               jmp 0x1086
@@ -1119,12 +1137,12 @@ loc_0C6A:
 2:0C6D  66ff36a002           push dword ptr [0x2a0]
 2:0C72  90                   nop
 2:0C73  0e                   push cs
-2:0C74  e8e54f               call 0x5c5c  ; sub_s2:5C5C
+2:0C74  e8e54f               call 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 2:0C77  e9b205               jmp 0x122c
 loc_0C7A:
 2:0C7A  68f801               push 0x1f8
 2:0C7D  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:0C82  9a0a836c0d           lcall 0xd6c, 0x830a  ; sub_s3:830A
+2:0C82  9a0a836c0d           lcall 0xd6c, 0x830a  ; ResLibr::picture@s3:830A
 2:0C87  8946fc               mov word ptr [bp - 4], ax
 2:0C8A  8956fe               mov word ptr [bp - 2], dx
 2:0C8D  c45e06               les bx, ptr [bp + 6]
@@ -1150,36 +1168,36 @@ loc_0CBA:
 2:0CBA  c45e06               les bx, ptr [bp + 6]
 2:0CBD  26ff7708             push word ptr es:[bx + 8]
 2:0CC1  66ff367c5b           push dword ptr [0x5b7c]
-2:0CC6  9a40af5f03           lcall 0x35f, 0xaf40  ; sub_s8:AF40
+2:0CC6  9a40af5f03           lcall 0x35f, 0xaf40  ; DialogCtr::open@s8:AF40
 2:0CCB  e95e05               jmp 0x122c
 loc_0CCE:
 2:0CCE  66ff7606             push dword ptr [bp + 6]
 2:0CD2  90                   nop
 2:0CD3  0e                   push cs
-2:0CD4  e801fb               call 0x7d8  ; sub_s2:07D8
+2:0CD4  e801fb               call 0x7d8  ; OpWnd::newSimulatorForLoad@s2:07D8
 2:0CD7  66ff7606             push dword ptr [bp + 6]
 2:0CDB  90                   nop
 2:0CDC  0e                   push cs
-2:0CDD  e8ba21               call 0x2e9a  ; sub_s2:2E9A
+2:0CDD  e8ba21               call 0x2e9a  ; OpWnd::cmdLoadGame@s2:2E9A
 2:0CE0  e94905               jmp 0x122c
 2:0CE3  db 90
 loc_0CE4:
 2:0CE4  66ff7606             push dword ptr [bp + 6]
 2:0CE8  90                   nop
 2:0CE9  0e                   push cs
-2:0CEA  e82b23               call 0x3018  ; sub_s2:3018
+2:0CEA  e82b23               call 0x3018  ; OpWnd::cmdSave@s2:3018
 2:0CED  e93c05               jmp 0x122c
 loc_0CF0:
 2:0CF0  66ff7606             push dword ptr [bp + 6]
 2:0CF4  90                   nop
 2:0CF5  0e                   push cs
-2:0CF6  e8d323               call 0x30cc  ; sub_s2:30CC
+2:0CF6  e8d323               call 0x30cc  ; OpWnd::cmdSaveAs@s2:30CC
 2:0CF9  e93005               jmp 0x122c
 loc_0CFC:
 2:0CFC  66ff7606             push dword ptr [bp + 6]
 2:0D00  90                   nop
 2:0D01  0e                   push cs
-2:0D02  e84f1e               call 0x2b54  ; sub_s2:2B54
+2:0D02  e84f1e               call 0x2b54  ; OpWnd::confirmExit@s2:2B54
 2:0D05  0bc0                 or ax, ax
 2:0D07  0f842105             je 0x122c
 loc_0D0B:
@@ -1205,7 +1223,7 @@ loc_0D34:
 loc_0D44:
 2:0D44  666801000004         push 0x4000001
 2:0D4A  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:0D4F  9a4483c40d           lcall 0xdc4, 0x8344  ; sub_s7:8344
+2:0D4F  9a4483c40d           lcall 0xdc4, 0x8344  ; Sim::resolve@s7:8344
 2:0D54  0bd0                 or dx, ax
 2:0D56  0f84d204             je 0x122c
 2:0D5A  833ee84f00           cmp word ptr [0x4fe8], 0
@@ -1235,14 +1253,14 @@ loc_0D8C:
 2:0DA0  8946f2               mov word ptr [bp - 0xe], ax
 2:0DA3  6a29                 push 0x29
 2:0DA5  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:0DAA  9aba20e70d           lcall 0xde7, 0x20ba  ; sub_s3:20BA
+2:0DAA  9aba20e70d           lcall 0xde7, 0x20ba  ; Registry_get@s3:20BA
 2:0DAF  8946ee               mov word ptr [bp - 0x12], ax
 2:0DB2  8956f0               mov word ptr [bp - 0x10], dx
 2:0DB5  52                   push dx
 2:0DB6  50                   push ax
-2:0DB7  9a2e265c07           lcall 0x75c, 0x262e  ; sub_s4:262E
+2:0DB7  9a2e265c07           lcall 0x75c, 0x262e  ; PlanetArea::resetAnim@s4:262E
 2:0DBC  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:0DC1  9a8e83d80d           lcall 0xdd8, 0x838e  ; sub_s7:838E
+2:0DC1  9a8e83d80d           lcall 0xdd8, 0x838e  ; Sim::runOneTurn@s7:838E
 2:0DC6  c41e4857             les bx, ptr [0x5748]  ; g_sim
 2:0DCA  26c747080100         mov word ptr es:[bx + 8], 1
 2:0DD0  66ff364857           push dword ptr [0x5748]  ; g_sim
@@ -1272,14 +1290,14 @@ loc_0D8C:
 2:0E0B  26ff5f14             lcall es:[bx + 0x14]
 2:0E0F  6a37                 push 0x37
 2:0E11  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:0E16  9aba204209           lcall 0x942, 0x20ba  ; sub_s3:20BA
+2:0E16  9aba204209           lcall 0x942, 0x20ba  ; Registry_get@s3:20BA
 2:0E1B  89469a               mov word ptr [bp - 0x66], ax
 2:0E1E  89569c               mov word ptr [bp - 0x64], dx
 2:0E21  52                   push dx
 2:0E22  50                   push ax
 2:0E23  90                   nop
 2:0E24  0e                   push cs
-2:0E25  e8c49b               call 0xffffa9ec  ; sub_s2:A9EC
+2:0E25  e8c49b               call 0xffffa9ec  ; SoundQueue::playNext@s2:A9EC
 2:0E28  ff76f2               push word ptr [bp - 0xe]
 2:0E2B  9a26070000           lcall 0, 0x726  ; USER.SetCursor
 2:0E30  c45e06               les bx, ptr [bp + 6]
@@ -1307,7 +1325,7 @@ loc_0E5C:
 2:0E5C  66ff7606             push dword ptr [bp + 6]
 2:0E60  90                   nop
 2:0E61  0e                   push cs
-2:0E62  e819fa               call 0x87e  ; sub_s2:087E
+2:0E62  e819fa               call 0x87e  ; OpWnd::newGame@s2:087E
 2:0E65  6a06                 push 6
 2:0E67  e9d400               jmp 0xf3e
 loc_0E6A:
@@ -1466,7 +1484,7 @@ loc_0F3E:
 2:0F3E  66ff7606             push dword ptr [bp + 6]
 2:0F42  90                   nop
 2:0F43  0e                   push cs
-2:0F44  e8851e               call 0x2dcc  ; sub_s2:2DCC
+2:0F44  e8851e               call 0x2dcc  ; OpWnd::replaceView@s2:2DCC
 2:0F47  c9                   leave
 2:0F48  ca0600               retf 6
 2:0F4B  db 90
@@ -1474,7 +1492,7 @@ loc_0F4C:
 2:0F4C  66ff7606             push dword ptr [bp + 6]
 2:0F50  90                   nop
 2:0F51  0e                   push cs
-2:0F52  e8cd1d               call 0x2d22  ; sub_s2:2D22
+2:0F52  e8cd1d               call 0x2d22  ; OpWnd::overlayDone@s2:2D22
 2:0F55  c9                   leave
 2:0F56  ca0600               retf 6
 2:0F59  db 90
@@ -1656,7 +1674,7 @@ loc_104E:
 2:104E  66ff7606             push dword ptr [bp + 6]
 2:1052  90                   nop
 2:1053  0e                   push cs
-2:1054  e8f71b               call 0x2c4e  ; sub_s2:2C4E
+2:1054  e8f71b               call 0x2c4e  ; OpWnd::showOverlay@s2:2C4E
 2:1057  c9                   leave
 2:1058  ca0600               retf 6
 2:105B  db 90
@@ -1887,19 +1905,21 @@ loc_122C:
 2:122C  c9                   leave
 2:122D  ca0600               retf 6
 
-; ---------------- sub_s2:1230 FAR size=22 callers=0
+; ---------------- OpWnd::onPaint@s2:1230 FAR size=22 callers=0
+;   paints the main window background
 2:1230  55                   push bp
 2:1231  8bec                 mov bp, sp
 2:1233  c45e06               les bx, ptr [bp + 6]
 2:1236  6626ffb7e000         push dword ptr es:[bx + 0xe0]
 2:123C  90                   nop
 2:123D  0e                   push cs
-2:123E  e86b27               call 0x39ac  ; sub_s2:39AC
+2:123E  e86b27               call 0x39ac  ; paintSolidBackground@s2:39AC
 2:1241  c9                   leave
 2:1242  ca0400               retf 4
 2:1245  db 00
 
-; ---------------- sub_s2:1246 FAR size=44 callers=0
+; ---------------- OpWnd::forwardToView_4C@s2:1246 FAR size=44 callers=0
+;   forwards to the child view's vslot 0x4C
 2:1246  55                   push bp
 2:1247  8bec                 mov bp, sp
 2:1249  c45e06               les bx, ptr [bp + 6]
@@ -1915,7 +1935,8 @@ loc_126E:
 2:126E  c9                   leave
 2:126F  ca0a00               retf 0xa
 
-; ---------------- sub_s2:1272 FAR size=56 callers=0
+; ---------------- OpWnd::forwardToView_88@s2:1272 FAR size=56 callers=0
+;   forwards to the child view's vslot 0x88 (or the base)
 2:1272  55                   push bp
 2:1273  8bec                 mov bp, sp
 2:1275  c45e06               les bx, ptr [bp + 6]
@@ -1935,11 +1956,12 @@ loc_129C:
 2:12A0  53                   push bx
 2:12A1  90                   nop
 2:12A2  0e                   push cs
-2:12A3  e81e8a               call 0xffff9cc4  ; sub_s2:9CC4
+2:12A3  e81e8a               call 0xffff9cc4  ; SOLWnd::isOtherWindow@s2:9CC4
 2:12A6  c9                   leave
 2:12A7  ca0600               retf 6
 
-; ---------------- sub_s2:12AA FAR size=50 callers=0
+; ---------------- OpWnd::forwardToView_8C@s2:12AA FAR size=50 callers=0
+;   forwards to the child view's vslot 0x8C (or the base)
 2:12AA  55                   push bp
 2:12AB  8bec                 mov bp, sp
 2:12AD  c45e06               les bx, ptr [bp + 6]
@@ -1956,13 +1978,14 @@ loc_12D0:
 2:12D1  53                   push bx
 2:12D2  90                   nop
 2:12D3  0e                   push cs
-2:12D4  e8098a               call 0xffff9ce0  ; sub_s2:9CE0
+2:12D4  e8098a               call 0xffff9ce0  ; SOLWnd::zero@s2:9CE0
 2:12D7  c9                   leave
 2:12D8  ca0400               retf 4
 2:12DB  db 00
 
-; ---------------- sub_s2:12DC FAR size=312 callers=2
+; ---------------- OpWnd::saveGameTo@s2:12DC FAR size=312 callers=2
 ;   apis: USER.LoadCursor, USER.MessageBeep, USER.MessageBox, USER.SetCursor
+;   writes a saved game to a file (SaveFile create, write, close)
 2:12DC  c8260000             enter 0x26, 0
 2:12E0  666a00               push 0
 2:12E3  68027f               push 0x7f02
@@ -1977,13 +2000,13 @@ loc_12D0:
 2:12FF  50                   push ax
 2:1300  90                   nop
 2:1301  0e                   push cs
-2:1302  e8855a               call 0x6d8a  ; sub_s2:6D8A
+2:1302  e8855a               call 0x6d8a  ; SaveFile::create@s2:6D8A
 2:1305  8d46f6               lea ax, [bp - 0xa]
 2:1308  16                   push ss
 2:1309  50                   push ax
 2:130A  90                   nop
 2:130B  0e                   push cs
-2:130C  e8f35a               call 0x6e02  ; sub_s2:6E02
+2:130C  e8f35a               call 0x6e02  ; SaveFile::writeAll@s2:6E02
 2:130F  0bc0                 or ax, ax
 2:1311  7575                 jne 0x1388
 2:1313  ff76fc               push word ptr [bp - 4]
@@ -2000,7 +2023,7 @@ loc_12D0:
 2:1338  50                   push ax
 2:1339  90                   nop
 2:133A  0e                   push cs
-2:133B  e8aa4d               call 0x60e8  ; sub_s2:60E8
+2:133B  e8aa4d               call 0x60e8  ; _strdup@s2:60E8
 2:133E  83c404               add sp, 4
 2:1341  8946f2               mov word ptr [bp - 0xe], ax
 2:1344  8956f4               mov word ptr [bp - 0xc], dx
@@ -2036,7 +2059,7 @@ loc_1388:
 2:13AE  50                   push ax
 2:13AF  90                   nop
 2:13B0  0e                   push cs
-2:13B1  e8344d               call 0x60e8  ; sub_s2:60E8
+2:13B1  e8344d               call 0x60e8  ; _strdup@s2:60E8
 2:13B4  83c404               add sp, 4
 2:13B7  8946de               mov word ptr [bp - 0x22], ax
 2:13BA  8956e0               mov word ptr [bp - 0x20], dx
@@ -2067,12 +2090,13 @@ loc_13FC:
 2:140A  50                   push ax
 2:140B  90                   nop
 2:140C  0e                   push cs
-2:140D  e8c059               call 0x6dd0  ; sub_s2:6DD0
+2:140D  e8c059               call 0x6dd0  ; SaveFile::destroy@s2:6DD0
 2:1410  c9                   leave
 2:1411  ca0800               retf 8
 
-; ---------------- sub_s2:1414 FAR size=448 callers=1
+; ---------------- OpWnd::loadGameFrom@s2:1414 FAR size=448 callers=1
 ;   apis: USER.MessageBeep, USER.MessageBox
+;   reads a saved game from a file and rebuilds the views
 2:1414  c8560000             enter 0x56, 0
 2:1418  57                   push di
 2:1419  56                   push si
@@ -2082,13 +2106,13 @@ loc_13FC:
 2:1422  50                   push ax
 2:1423  90                   nop
 2:1424  0e                   push cs
-2:1425  e86259               call 0x6d8a  ; sub_s2:6D8A
+2:1425  e86259               call 0x6d8a  ; SaveFile::create@s2:6D8A
 2:1428  8d46fa               lea ax, [bp - 6]
 2:142B  16                   push ss
 2:142C  50                   push ax
 2:142D  90                   nop
 2:142E  0e                   push cs
-2:142F  e8465a               call 0x6e78  ; sub_s2:6E78
+2:142F  e8465a               call 0x6e78  ; SaveFile::readAll@s2:6E78
 2:1432  0bc0                 or ax, ax
 2:1434  0f858800             jne 0x14c0
 2:1438  39061003             cmp word ptr [0x310], ax
@@ -2107,7 +2131,7 @@ loc_1444:
 2:1461  50                   push ax
 2:1462  90                   nop
 2:1463  0e                   push cs
-2:1464  e8814c               call 0x60e8  ; sub_s2:60E8
+2:1464  e8814c               call 0x60e8  ; _strdup@s2:60E8
 2:1467  83c404               add sp, 4
 2:146A  8946ca               mov word ptr [bp - 0x36], ax
 2:146D  8956cc               mov word ptr [bp - 0x34], dx
@@ -2131,17 +2155,17 @@ loc_1444:
 2:14AE  9ace17bb14           lcall 0x14bb, 0x17ce  ; operator_delete@s1:17CE
 2:14B3  83c404               add sp, 4
 2:14B6  6a01                 push 1
-2:14B8  9acd240114           lcall 0x1401, 0x24cd  ; sub_s1:24CD
+2:14B8  9acd240114           lcall 0x1401, 0x24cd  ; exit@s1:24CD
 2:14BD  83c402               add sp, 2
 loc_14C0:
 2:14C0  6a08                 push 8
 2:14C2  66ff7606             push dword ptr [bp + 6]
 2:14C6  90                   nop
 2:14C7  0e                   push cs
-2:14C8  e80119               call 0x2dcc  ; sub_s2:2DCC
+2:14C8  e80119               call 0x2dcc  ; OpWnd::replaceView@s2:2DCC
 2:14CB  6a2f                 push 0x2f
 2:14CD  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:14D2  9aba209215           lcall 0x1592, 0x20ba  ; sub_s3:20BA
+2:14D2  9aba209215           lcall 0x1592, 0x20ba  ; Registry_get@s3:20BA
 2:14D7  8946f6               mov word ptr [bp - 0xa], ax
 2:14DA  8956f8               mov word ptr [bp - 8], dx
 2:14DD  c45ef6               les bx, ptr [bp - 0xa]
@@ -2149,7 +2173,7 @@ loc_14C0:
 2:14E5  668946f2             mov dword ptr [bp - 0xe], eax
 2:14E9  6650                 push eax
 2:14EB  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:14F0  9a44833915           lcall 0x1539, 0x8344  ; sub_s7:8344
+2:14F0  9a44833915           lcall 0x1539, 0x8344  ; Sim::resolve@s7:8344
 2:14F5  8946ee               mov word ptr [bp - 0x12], ax
 2:14F8  8956f0               mov word ptr [bp - 0x10], dx
 2:14FB  c45eee               les bx, ptr [bp - 0x12]
@@ -2168,7 +2192,7 @@ loc_14C0:
 2:1527  26ff5f04             lcall es:[bx + 4]
 2:152B  666801000004         push 0x4000001
 2:1531  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:1536  9a44835715           lcall 0x1557, 0x8344  ; sub_s7:8344
+2:1536  9a44835715           lcall 0x1557, 0x8344  ; Sim::resolve@s7:8344
 2:153B  8946e6               mov word ptr [bp - 0x1a], ax
 2:153E  8956e8               mov word ptr [bp - 0x18], dx
 2:1541  c45ee6               les bx, ptr [bp - 0x1a]
@@ -2176,7 +2200,7 @@ loc_14C0:
 2:1549  668946e2             mov dword ptr [bp - 0x1e], eax
 2:154D  6650                 push eax
 2:154F  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:1554  9a44837d15           lcall 0x157d, 0x8344  ; sub_s7:8344
+2:1554  9a44837d15           lcall 0x157d, 0x8344  ; Sim::resolve@s7:8344
 2:1559  8946de               mov word ptr [bp - 0x22], ax
 2:155C  8956e0               mov word ptr [bp - 0x20], dx
 2:155F  050c00               add ax, 0xc
@@ -2192,40 +2216,41 @@ loc_14C0:
 2:1570  8d46d8               lea ax, [bp - 0x28]
 2:1573  8946b6               mov word ptr [bp - 0x4a], ax
 2:1576  66ff76ee             push dword ptr [bp - 0x12]
-2:157A  9a005b520d           lcall 0xd52, 0x5b00  ; sub_s7:5B00
+2:157A  9a005b520d           lcall 0xd52, 0x5b00  ; Site::listIndex@s7:5B00
 2:157F  8946d6               mov word ptr [bp - 0x2a], ax
 2:1582  8d46d8               lea ax, [bp - 0x28]
 2:1585  16                   push ss
 2:1586  50                   push ax
 2:1587  ff76d6               push word ptr [bp - 0x2a]
 2:158A  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:158F  9aba20b515           lcall 0x15b5, 0x20ba  ; sub_s3:20BA
+2:158F  9aba20b515           lcall 0x15b5, 0x20ba  ; Registry_get@s3:20BA
 2:1594  8946d2               mov word ptr [bp - 0x2e], ax
 2:1597  8956d4               mov word ptr [bp - 0x2c], dx
 2:159A  52                   push dx
 2:159B  50                   push ax
-2:159C  9a9e17ba0d           lcall 0xdba, 0x179e  ; sub_s4:179E
+2:159C  9a9e17ba0d           lcall 0xdba, 0x179e  ; MapViewModel::restoreOrigin@s4:179E
 2:15A1  666800041b00         push 0x1b0400
 2:15A7  66682b000100         push 0x1002b
 2:15AD  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:15B2  9aba20c215           lcall 0x15c2, 0x20ba  ; sub_s3:20BA
+2:15B2  9aba20c215           lcall 0x15c2, 0x20ba  ; Registry_get@s3:20BA
 2:15B7  8946ce               mov word ptr [bp - 0x32], ax
 2:15BA  8956d0               mov word ptr [bp - 0x30], dx
 2:15BD  52                   push dx
 2:15BE  50                   push ax
-2:15BF  9a3a042f13           lcall 0x132f, 0x43a  ; sub_s3:043A
+2:15BF  9a3a042f13           lcall 0x132f, 0x43a  ; Alerts::post@s3:043A
 2:15C4  8d46fa               lea ax, [bp - 6]
 2:15C7  16                   push ss
 2:15C8  50                   push ax
 2:15C9  90                   nop
 2:15CA  0e                   push cs
-2:15CB  e80258               call 0x6dd0  ; sub_s2:6DD0
+2:15CB  e80258               call 0x6dd0  ; SaveFile::destroy@s2:6DD0
 2:15CE  5e                   pop si
 2:15CF  5f                   pop di
 2:15D0  c9                   leave
 2:15D1  ca0800               retf 8
 
-; ---------------- sub_s2:15D4 FAR size=5504 callers=2
+; ---------------- OpWnd::getKid@s2:15D4 FAR size=5504 callers=2
+;   window factory: makes the view/window for a target mode (105 modes)
 2:15D4  c81e0000             enter 0x1e, 0
 2:15D8  66c746fc00000000     mov dword ptr [bp - 4], 0
 2:15E0  668b4606             mov eax, dword ptr [bp + 6]
@@ -2236,7 +2261,7 @@ loc_14C0:
 2:15ED  50                   push ax
 2:15EE  90                   nop
 2:15EF  0e                   push cs
-2:15F0  e8b141               call 0x57a4  ; sub_s2:57A4
+2:15F0  e8b141               call 0x57a4  ; ListIter::ListIter_b@s2:57A4
 loc_15F3:
 2:15F3  8d46f4               lea ax, [bp - 0xc]
 2:15F6  16                   push ss
@@ -2278,7 +2303,7 @@ loc_163A:
 2:1658  53                   push bx
 2:1659  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:165E  66ff76e2             push dword ptr [bp - 0x1e]
-2:1662  9adce59516           lcall 0x1695, 0xe5dc  ; sub_s4:E5DC
+2:1662  9adce59516           lcall 0x1695, 0xe5dc  ; Mode9View::Mode9View@s4:E5DC
 2:1667  e9cb13               jmp 0x2a35
 loc_166A:
 2:166A  68f600               push 0xf6
@@ -2294,7 +2319,7 @@ loc_166A:
 2:1688  53                   push bx
 2:1689  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:168E  66ff76e2             push dword ptr [bp - 0x1e]
-2:1692  9acc663317           lcall 0x1733, 0x66cc  ; sub_s4:66CC
+2:1692  9acc663317           lcall 0x1733, 0x66cc  ; Mode8View::Mode8View@s4:66CC
 2:1697  e99b13               jmp 0x2a35
 loc_169A:
 2:169A  66c746fc00000000     mov dword ptr [bp - 4], 0
@@ -2314,7 +2339,7 @@ loc_16A6:
 2:16C4  53                   push bx
 2:16C5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:16CA  66ff76e2             push dword ptr [bp - 0x1e]
-2:16CE  9ac8410117           lcall 0x1701, 0x41c8  ; sub_s5:41C8
+2:16CE  9ac8410117           lcall 0x1701, 0x41c8  ; ColonyView::ColonyView@s5:41C8
 2:16D3  e95f13               jmp 0x2a35
 loc_16D6:
 2:16D6  68f600               push 0xf6
@@ -2330,7 +2355,7 @@ loc_16D6:
 2:16F4  53                   push bx
 2:16F5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:16FA  66ff76e2             push dword ptr [bp - 0x1e]
-2:16FE  9a24256517           lcall 0x1765, 0x2524  ; sub_s5:2524
+2:16FE  9a24256517           lcall 0x1765, 0x2524  ; Mode2View::Mode2View@s5:2524
 2:1703  e92f13               jmp 0x2a35
 loc_1706:
 2:1706  68f600               push 0xf6
@@ -2346,7 +2371,7 @@ loc_1706:
 2:1726  53                   push bx
 2:1727  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:172C  66ff76e2             push dword ptr [bp - 0x1e]
-2:1730  9a30e29717           lcall 0x1797, 0xe230  ; sub_s4:E230
+2:1730  9a30e29717           lcall 0x1797, 0xe230  ; Mode4View::Mode4View@s4:E230
 2:1735  e9fd12               jmp 0x2a35
 loc_1738:
 2:1738  68f600               push 0xf6
@@ -2362,7 +2387,7 @@ loc_1738:
 2:1758  53                   push bx
 2:1759  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:175E  66ff76e2             push dword ptr [bp - 0x1e]
-2:1762  9a5475fb17           lcall 0x17fb, 0x7554  ; sub_s5:7554
+2:1762  9a5475fb17           lcall 0x17fb, 0x7554  ; Mode5View::Mode5View@s5:7554
 2:1767  e9cb12               jmp 0x2a35
 loc_176A:
 2:176A  68fa00               push 0xfa
@@ -2378,7 +2403,7 @@ loc_176A:
 2:178A  53                   push bx
 2:178B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1790  66ff76e2             push dword ptr [bp - 0x1e]
-2:1794  9a1ee9c917           lcall 0x17c9, 0xe91e  ; sub_s4:E91E
+2:1794  9a1ee9c917           lcall 0x17c9, 0xe91e  ; Mode3View::Mode3View@s4:E91E
 2:1799  e99912               jmp 0x2a35
 loc_179C:
 2:179C  68f800               push 0xf8
@@ -2394,7 +2419,7 @@ loc_179C:
 2:17BC  53                   push bx
 2:17BD  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:17C2  66ff76e2             push dword ptr [bp - 0x1e]
-2:17C6  9a40583a18           lcall 0x183a, 0x5840  ; sub_s4:5840
+2:17C6  9a40583a18           lcall 0x183a, 0x5840  ; Mode6View::Mode6View@s4:5840
 2:17CB  e96712               jmp 0x2a35
 loc_17CE:
 2:17CE  68ec00               push 0xec
@@ -2410,14 +2435,14 @@ loc_17CE:
 2:17EE  53                   push bx
 2:17EF  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:17F4  66ff76e2             push dword ptr [bp - 0x1e]
-2:17F8  9ab608aa0b           lcall 0xbaa, 0x8b6  ; sub_s5:08B6
+2:17F8  9ab608aa0b           lcall 0xbaa, 0x8b6  ; Mode1View::Mode1View@s5:08B6
 2:17FD  e93512               jmp 0x2a35
 loc_1800:
 2:1800  68d301               push 0x1d3
 2:1803  66ff36a002           push dword ptr [0x2a0]
 2:1808  90                   nop
 2:1809  0e                   push cs
-2:180A  e84f44               call 0x5c5c  ; sub_s2:5C5C
+2:180A  e84f44               call 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 2:180D  68f200               push 0xf2
 2:1810  9a9c174618           lcall 0x1846, 0x179c  ; operator_new@s1:179C
 2:1815  83c402               add sp, 2
@@ -2431,7 +2456,7 @@ loc_1800:
 2:182D  53                   push bx
 2:182E  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1833  66ff76e2             push dword ptr [bp - 0x1e]
-2:1837  9a026d6d18           lcall 0x186d, 0x6d02  ; sub_s4:6D02
+2:1837  9a026d6d18           lcall 0x186d, 0x6d02  ; MovieView11::MovieView11@s4:6D02
 2:183C  e9f611               jmp 0x2a35
 2:183F  db 90
 loc_1840:
@@ -2448,7 +2473,7 @@ loc_1840:
 2:1860  53                   push bx
 2:1861  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1866  66ff76e2             push dword ptr [bp - 0x1e]
-2:186A  9a386d9f18           lcall 0x189f, 0x6d38  ; sub_s4:6D38
+2:186A  9a386d9f18           lcall 0x189f, 0x6d38  ; MovieView12::MovieView12@s4:6D38
 2:186F  e9c311               jmp 0x2a35
 loc_1872:
 2:1872  68f200               push 0xf2
@@ -2464,7 +2489,7 @@ loc_1872:
 2:1892  53                   push bx
 2:1893  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1898  66ff76e2             push dword ptr [bp - 0x1e]
-2:189C  9a6e6dd118           lcall 0x18d1, 0x6d6e  ; sub_s4:6D6E
+2:189C  9a6e6dd118           lcall 0x18d1, 0x6d6e  ; MovieView13::MovieView13@s4:6D6E
 2:18A1  e99111               jmp 0x2a35
 loc_18A4:
 2:18A4  68f200               push 0xf2
@@ -2480,7 +2505,7 @@ loc_18A4:
 2:18C4  53                   push bx
 2:18C5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:18CA  66ff76e2             push dword ptr [bp - 0x1e]
-2:18CE  9aa46d0319           lcall 0x1903, 0x6da4  ; sub_s4:6DA4
+2:18CE  9aa46d0319           lcall 0x1903, 0x6da4  ; MovieView14::MovieView14@s4:6DA4
 2:18D3  e95f11               jmp 0x2a35
 loc_18D6:
 2:18D6  68f200               push 0xf2
@@ -2496,7 +2521,7 @@ loc_18D6:
 2:18F6  53                   push bx
 2:18F7  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:18FC  66ff76e2             push dword ptr [bp - 0x1e]
-2:1900  9ada6d3519           lcall 0x1935, 0x6dda  ; sub_s4:6DDA
+2:1900  9ada6d3519           lcall 0x1935, 0x6dda  ; MovieView15::MovieView15@s4:6DDA
 2:1905  e92d11               jmp 0x2a35
 loc_1908:
 2:1908  68f200               push 0xf2
@@ -2512,7 +2537,7 @@ loc_1908:
 2:1928  53                   push bx
 2:1929  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:192E  66ff76e2             push dword ptr [bp - 0x1e]
-2:1932  9a106e6719           lcall 0x1967, 0x6e10  ; sub_s4:6E10
+2:1932  9a106e6719           lcall 0x1967, 0x6e10  ; MovieView16::MovieView16@s4:6E10
 2:1937  e9fb10               jmp 0x2a35
 loc_193A:
 2:193A  68f200               push 0xf2
@@ -2528,7 +2553,7 @@ loc_193A:
 2:195A  53                   push bx
 2:195B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1960  66ff76e2             push dword ptr [bp - 0x1e]
-2:1964  9a466e9f15           lcall 0x159f, 0x6e46  ; sub_s4:6E46
+2:1964  9a466e9f15           lcall 0x159f, 0x6e46  ; MovieView17::MovieView17@s4:6E46
 2:1969  e9c910               jmp 0x2a35
 loc_196C:
 2:196C  68f200               push 0xf2
@@ -2544,7 +2569,7 @@ loc_196C:
 2:198C  53                   push bx
 2:198D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1992  66ff76e2             push dword ptr [bp - 0x1e]
-2:1996  9a7c6ecb19           lcall 0x19cb, 0x6e7c  ; sub_s4:6E7C
+2:1996  9a7c6ecb19           lcall 0x19cb, 0x6e7c  ; MovieView18::MovieView18@s4:6E7C
 2:199B  e99710               jmp 0x2a35
 loc_199E:
 2:199E  68f200               push 0xf2
@@ -2560,7 +2585,7 @@ loc_199E:
 2:19BE  53                   push bx
 2:19BF  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:19C4  66ff76e2             push dword ptr [bp - 0x1e]
-2:19C8  9ab26efd19           lcall 0x19fd, 0x6eb2  ; sub_s4:6EB2
+2:19C8  9ab26efd19           lcall 0x19fd, 0x6eb2  ; MovieView19::MovieView19@s4:6EB2
 2:19CD  e96510               jmp 0x2a35
 loc_19D0:
 2:19D0  68f200               push 0xf2
@@ -2576,7 +2601,7 @@ loc_19D0:
 2:19F0  53                   push bx
 2:19F1  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:19F6  66ff76e2             push dword ptr [bp - 0x1e]
-2:19FA  9ae86e2f1a           lcall 0x1a2f, 0x6ee8  ; sub_s4:6EE8
+2:19FA  9ae86e2f1a           lcall 0x1a2f, 0x6ee8  ; MovieView20::MovieView20@s4:6EE8
 2:19FF  e93310               jmp 0x2a35
 loc_1A02:
 2:1A02  68f200               push 0xf2
@@ -2592,7 +2617,7 @@ loc_1A02:
 2:1A22  53                   push bx
 2:1A23  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1A28  66ff76e2             push dword ptr [bp - 0x1e]
-2:1A2C  9a1e6f611a           lcall 0x1a61, 0x6f1e  ; sub_s4:6F1E
+2:1A2C  9a1e6f611a           lcall 0x1a61, 0x6f1e  ; MovieView21::MovieView21@s4:6F1E
 2:1A31  e90110               jmp 0x2a35
 loc_1A34:
 2:1A34  68f200               push 0xf2
@@ -2608,7 +2633,7 @@ loc_1A34:
 2:1A54  53                   push bx
 2:1A55  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1A5A  66ff76e2             push dword ptr [bp - 0x1e]
-2:1A5E  9a546f931a           lcall 0x1a93, 0x6f54  ; sub_s4:6F54
+2:1A5E  9a546f931a           lcall 0x1a93, 0x6f54  ; MovieView22::MovieView22@s4:6F54
 2:1A63  e9cf0f               jmp 0x2a35
 loc_1A66:
 2:1A66  68f200               push 0xf2
@@ -2624,7 +2649,7 @@ loc_1A66:
 2:1A86  53                   push bx
 2:1A87  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1A8C  66ff76e2             push dword ptr [bp - 0x1e]
-2:1A90  9a8a6fc51a           lcall 0x1ac5, 0x6f8a  ; sub_s4:6F8A
+2:1A90  9a8a6fc51a           lcall 0x1ac5, 0x6f8a  ; MovieView23::MovieView23@s4:6F8A
 2:1A95  e99d0f               jmp 0x2a35
 loc_1A98:
 2:1A98  68f200               push 0xf2
@@ -2640,7 +2665,7 @@ loc_1A98:
 2:1AB8  53                   push bx
 2:1AB9  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1ABE  66ff76e2             push dword ptr [bp - 0x1e]
-2:1AC2  9ac06ff71a           lcall 0x1af7, 0x6fc0  ; sub_s4:6FC0
+2:1AC2  9ac06ff71a           lcall 0x1af7, 0x6fc0  ; MovieView24::MovieView24@s4:6FC0
 2:1AC7  e96b0f               jmp 0x2a35
 loc_1ACA:
 2:1ACA  68f200               push 0xf2
@@ -2656,7 +2681,7 @@ loc_1ACA:
 2:1AEA  53                   push bx
 2:1AEB  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1AF0  66ff76e2             push dword ptr [bp - 0x1e]
-2:1AF4  9af66f291b           lcall 0x1b29, 0x6ff6  ; sub_s4:6FF6
+2:1AF4  9af66f291b           lcall 0x1b29, 0x6ff6  ; MovieView25::MovieView25@s4:6FF6
 2:1AF9  e9390f               jmp 0x2a35
 loc_1AFC:
 2:1AFC  68f200               push 0xf2
@@ -2672,7 +2697,7 @@ loc_1AFC:
 2:1B1C  53                   push bx
 2:1B1D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1B22  66ff76e2             push dword ptr [bp - 0x1e]
-2:1B26  9a2c705b1b           lcall 0x1b5b, 0x702c  ; sub_s4:702C
+2:1B26  9a2c705b1b           lcall 0x1b5b, 0x702c  ; MovieView26::MovieView26@s4:702C
 2:1B2B  e9070f               jmp 0x2a35
 loc_1B2E:
 2:1B2E  68f200               push 0xf2
@@ -2688,7 +2713,7 @@ loc_1B2E:
 2:1B4E  53                   push bx
 2:1B4F  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1B54  66ff76e2             push dword ptr [bp - 0x1e]
-2:1B58  9a62708d1b           lcall 0x1b8d, 0x7062  ; sub_s4:7062
+2:1B58  9a62708d1b           lcall 0x1b8d, 0x7062  ; MovieView27::MovieView27@s4:7062
 2:1B5D  e9d50e               jmp 0x2a35
 loc_1B60:
 2:1B60  68f200               push 0xf2
@@ -2704,7 +2729,7 @@ loc_1B60:
 2:1B80  53                   push bx
 2:1B81  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1B86  66ff76e2             push dword ptr [bp - 0x1e]
-2:1B8A  9a9870bf1b           lcall 0x1bbf, 0x7098  ; sub_s4:7098
+2:1B8A  9a9870bf1b           lcall 0x1bbf, 0x7098  ; MovieView28::MovieView28@s4:7098
 2:1B8F  e9a30e               jmp 0x2a35
 loc_1B92:
 2:1B92  68f200               push 0xf2
@@ -2720,7 +2745,7 @@ loc_1B92:
 2:1BB2  53                   push bx
 2:1BB3  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1BB8  66ff76e2             push dword ptr [bp - 0x1e]
-2:1BBC  9ace70f11b           lcall 0x1bf1, 0x70ce  ; sub_s4:70CE
+2:1BBC  9ace70f11b           lcall 0x1bf1, 0x70ce  ; MovieView29::MovieView29@s4:70CE
 2:1BC1  e9710e               jmp 0x2a35
 loc_1BC4:
 2:1BC4  68f200               push 0xf2
@@ -2736,7 +2761,7 @@ loc_1BC4:
 2:1BE4  53                   push bx
 2:1BE5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1BEA  66ff76e2             push dword ptr [bp - 0x1e]
-2:1BEE  9a0471231c           lcall 0x1c23, 0x7104  ; sub_s4:7104
+2:1BEE  9a0471231c           lcall 0x1c23, 0x7104  ; MovieView30::MovieView30@s4:7104
 2:1BF3  e93f0e               jmp 0x2a35
 loc_1BF6:
 2:1BF6  68f200               push 0xf2
@@ -2752,7 +2777,7 @@ loc_1BF6:
 2:1C16  53                   push bx
 2:1C17  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1C1C  66ff76e2             push dword ptr [bp - 0x1e]
-2:1C20  9a3a71551c           lcall 0x1c55, 0x713a  ; sub_s4:713A
+2:1C20  9a3a71551c           lcall 0x1c55, 0x713a  ; MovieView31::MovieView31@s4:713A
 2:1C25  e90d0e               jmp 0x2a35
 loc_1C28:
 2:1C28  68f200               push 0xf2
@@ -2768,7 +2793,7 @@ loc_1C28:
 2:1C48  53                   push bx
 2:1C49  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1C4E  66ff76e2             push dword ptr [bp - 0x1e]
-2:1C52  9a7071871c           lcall 0x1c87, 0x7170  ; sub_s4:7170
+2:1C52  9a7071871c           lcall 0x1c87, 0x7170  ; MovieView33::MovieView33@s4:7170
 2:1C57  e9db0d               jmp 0x2a35
 loc_1C5A:
 2:1C5A  68f200               push 0xf2
@@ -2784,7 +2809,7 @@ loc_1C5A:
 2:1C7A  53                   push bx
 2:1C7B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1C80  66ff76e2             push dword ptr [bp - 0x1e]
-2:1C84  9ac273b91c           lcall 0x1cb9, 0x73c2  ; sub_s4:73C2
+2:1C84  9ac273b91c           lcall 0x1cb9, 0x73c2  ; MovieView53::MovieView53@s4:73C2
 2:1C89  e9a90d               jmp 0x2a35
 loc_1C8C:
 2:1C8C  68f200               push 0xf2
@@ -2800,7 +2825,7 @@ loc_1C8C:
 2:1CAC  53                   push bx
 2:1CAD  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1CB2  66ff76e2             push dword ptr [bp - 0x1e]
-2:1CB6  9a5e74eb1c           lcall 0x1ceb, 0x745e  ; sub_s4:745E
+2:1CB6  9a5e74eb1c           lcall 0x1ceb, 0x745e  ; MovieView34::MovieView34@s4:745E
 2:1CBB  e9770d               jmp 0x2a35
 loc_1CBE:
 2:1CBE  68f200               push 0xf2
@@ -2816,7 +2841,7 @@ loc_1CBE:
 2:1CDE  53                   push bx
 2:1CDF  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1CE4  66ff76e2             push dword ptr [bp - 0x1e]
-2:1CE8  9aa6711d1d           lcall 0x1d1d, 0x71a6  ; sub_s4:71A6
+2:1CE8  9aa6711d1d           lcall 0x1d1d, 0x71a6  ; MovieView35::MovieView35@s4:71A6
 2:1CED  e9450d               jmp 0x2a35
 loc_1CF0:
 2:1CF0  68f200               push 0xf2
@@ -2832,7 +2857,7 @@ loc_1CF0:
 2:1D10  53                   push bx
 2:1D11  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1D16  66ff76e2             push dword ptr [bp - 0x1e]
-2:1D1A  9adc716516           lcall 0x1665, 0x71dc  ; sub_s4:71DC
+2:1D1A  9adc716516           lcall 0x1665, 0x71dc  ; MovieView36::MovieView36@s4:71DC
 2:1D1F  e9130d               jmp 0x2a35
 loc_1D22:
 2:1D22  68f200               push 0xf2
@@ -2848,7 +2873,7 @@ loc_1D22:
 2:1D42  53                   push bx
 2:1D43  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1D48  66ff76e2             push dword ptr [bp - 0x1e]
-2:1D4C  9a1272811d           lcall 0x1d81, 0x7212  ; sub_s4:7212
+2:1D4C  9a1272811d           lcall 0x1d81, 0x7212  ; MovieView37::MovieView37@s4:7212
 2:1D51  e9e10c               jmp 0x2a35
 loc_1D54:
 2:1D54  68f200               push 0xf2
@@ -2864,7 +2889,7 @@ loc_1D54:
 2:1D74  53                   push bx
 2:1D75  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1D7A  66ff76e2             push dword ptr [bp - 0x1e]
-2:1D7E  9a987cb31d           lcall 0x1db3, 0x7c98  ; sub_s4:7C98
+2:1D7E  9a987cb31d           lcall 0x1db3, 0x7c98  ; MovieView94::MovieView94@s4:7C98
 2:1D83  e9af0c               jmp 0x2a35
 loc_1D86:
 2:1D86  68f200               push 0xf2
@@ -2880,7 +2905,7 @@ loc_1D86:
 2:1DA6  53                   push bx
 2:1DA7  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1DAC  66ff76e2             push dword ptr [bp - 0x1e]
-2:1DB0  9a9474e51d           lcall 0x1de5, 0x7494  ; sub_s4:7494
+2:1DB0  9a9474e51d           lcall 0x1de5, 0x7494  ; MovieView54::MovieView54@s4:7494
 2:1DB5  e97d0c               jmp 0x2a35
 loc_1DB8:
 2:1DB8  68f200               push 0xf2
@@ -2896,7 +2921,7 @@ loc_1DB8:
 2:1DD8  53                   push bx
 2:1DD9  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1DDE  66ff76e2             push dword ptr [bp - 0x1e]
-2:1DE2  9aca74171e           lcall 0x1e17, 0x74ca  ; sub_s4:74CA
+2:1DE2  9aca74171e           lcall 0x1e17, 0x74ca  ; MovieView55::MovieView55@s4:74CA
 2:1DE7  e94b0c               jmp 0x2a35
 loc_1DEA:
 2:1DEA  68f200               push 0xf2
@@ -2912,7 +2937,7 @@ loc_1DEA:
 2:1E0A  53                   push bx
 2:1E0B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1E10  66ff76e2             push dword ptr [bp - 0x1e]
-2:1E14  9a0075491e           lcall 0x1e49, 0x7500  ; sub_s4:7500
+2:1E14  9a0075491e           lcall 0x1e49, 0x7500  ; MovieView56::MovieView56@s4:7500
 2:1E19  e9190c               jmp 0x2a35
 loc_1E1C:
 2:1E1C  68f200               push 0xf2
@@ -2928,7 +2953,7 @@ loc_1E1C:
 2:1E3C  53                   push bx
 2:1E3D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1E42  66ff76e2             push dword ptr [bp - 0x1e]
-2:1E46  9af8737b1e           lcall 0x1e7b, 0x73f8  ; sub_s4:73F8
+2:1E46  9af8737b1e           lcall 0x1e7b, 0x73f8  ; MovieView57::MovieView57@s4:73F8
 2:1E4B  e9e70b               jmp 0x2a35
 loc_1E4E:
 2:1E4E  68f200               push 0xf2
@@ -2944,7 +2969,7 @@ loc_1E4E:
 2:1E6E  53                   push bx
 2:1E6F  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1E74  66ff76e2             push dword ptr [bp - 0x1e]
-2:1E78  9a3675ad1e           lcall 0x1ead, 0x7536  ; sub_s4:7536
+2:1E78  9a3675ad1e           lcall 0x1ead, 0x7536  ; MovieView58::MovieView58@s4:7536
 2:1E7D  e9b50b               jmp 0x2a35
 loc_1E80:
 2:1E80  68f200               push 0xf2
@@ -2960,7 +2985,7 @@ loc_1E80:
 2:1EA0  53                   push bx
 2:1EA1  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1EA6  66ff76e2             push dword ptr [bp - 0x1e]
-2:1EAA  9a6c75df1e           lcall 0x1edf, 0x756c  ; sub_s4:756C
+2:1EAA  9a6c75df1e           lcall 0x1edf, 0x756c  ; MovieView59::MovieView59@s4:756C
 2:1EAF  e9830b               jmp 0x2a35
 loc_1EB2:
 2:1EB2  68f200               push 0xf2
@@ -2976,7 +3001,7 @@ loc_1EB2:
 2:1ED2  53                   push bx
 2:1ED3  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1ED8  66ff76e2             push dword ptr [bp - 0x1e]
-2:1EDC  9aa275111f           lcall 0x1f11, 0x75a2  ; sub_s4:75A2
+2:1EDC  9aa275111f           lcall 0x1f11, 0x75a2  ; MovieView60::MovieView60@s4:75A2
 2:1EE1  e9510b               jmp 0x2a35
 loc_1EE4:
 2:1EE4  68f200               push 0xf2
@@ -2992,7 +3017,7 @@ loc_1EE4:
 2:1F04  53                   push bx
 2:1F05  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1F0A  66ff76e2             push dword ptr [bp - 0x1e]
-2:1F0E  9ad875431f           lcall 0x1f43, 0x75d8  ; sub_s4:75D8
+2:1F0E  9ad875431f           lcall 0x1f43, 0x75d8  ; MovieView61::MovieView61@s4:75D8
 2:1F13  e91f0b               jmp 0x2a35
 loc_1F16:
 2:1F16  68f200               push 0xf2
@@ -3008,7 +3033,7 @@ loc_1F16:
 2:1F36  53                   push bx
 2:1F37  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1F3C  66ff76e2             push dword ptr [bp - 0x1e]
-2:1F40  9a0e76751f           lcall 0x1f75, 0x760e  ; sub_s4:760E
+2:1F40  9a0e76751f           lcall 0x1f75, 0x760e  ; MovieView62::MovieView62@s4:760E
 2:1F45  e9ed0a               jmp 0x2a35
 loc_1F48:
 2:1F48  68f200               push 0xf2
@@ -3024,7 +3049,7 @@ loc_1F48:
 2:1F68  53                   push bx
 2:1F69  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1F6E  66ff76e2             push dword ptr [bp - 0x1e]
-2:1F72  9a4476a71f           lcall 0x1fa7, 0x7644  ; sub_s4:7644
+2:1F72  9a4476a71f           lcall 0x1fa7, 0x7644  ; MovieView63::MovieView63@s4:7644
 2:1F77  e9bb0a               jmp 0x2a35
 loc_1F7A:
 2:1F7A  68f200               push 0xf2
@@ -3040,7 +3065,7 @@ loc_1F7A:
 2:1F9A  53                   push bx
 2:1F9B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1FA0  66ff76e2             push dword ptr [bp - 0x1e]
-2:1FA4  9a7a76d91f           lcall 0x1fd9, 0x767a  ; sub_s4:767A
+2:1FA4  9a7a76d91f           lcall 0x1fd9, 0x767a  ; MovieView64::MovieView64@s4:767A
 2:1FA9  e9890a               jmp 0x2a35
 loc_1FAC:
 2:1FAC  68f200               push 0xf2
@@ -3056,7 +3081,7 @@ loc_1FAC:
 2:1FCC  53                   push bx
 2:1FCD  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:1FD2  66ff76e2             push dword ptr [bp - 0x1e]
-2:1FD6  9ab0760b20           lcall 0x200b, 0x76b0  ; sub_s4:76B0
+2:1FD6  9ab0760b20           lcall 0x200b, 0x76b0  ; MovieView65::MovieView65@s4:76B0
 2:1FDB  e9570a               jmp 0x2a35
 loc_1FDE:
 2:1FDE  68f200               push 0xf2
@@ -3072,7 +3097,7 @@ loc_1FDE:
 2:1FFE  53                   push bx
 2:1FFF  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2004  66ff76e2             push dword ptr [bp - 0x1e]
-2:2008  9ae6763d20           lcall 0x203d, 0x76e6  ; sub_s4:76E6
+2:2008  9ae6763d20           lcall 0x203d, 0x76e6  ; MovieView66::MovieView66@s4:76E6
 2:200D  e9250a               jmp 0x2a35
 loc_2010:
 2:2010  68f200               push 0xf2
@@ -3088,7 +3113,7 @@ loc_2010:
 2:2030  53                   push bx
 2:2031  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2036  66ff76e2             push dword ptr [bp - 0x1e]
-2:203A  9a1c776f20           lcall 0x206f, 0x771c  ; sub_s4:771C
+2:203A  9a1c776f20           lcall 0x206f, 0x771c  ; MovieView67::MovieView67@s4:771C
 2:203F  e9f309               jmp 0x2a35
 loc_2042:
 2:2042  68f200               push 0xf2
@@ -3104,7 +3129,7 @@ loc_2042:
 2:2062  53                   push bx
 2:2063  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2068  66ff76e2             push dword ptr [bp - 0x1e]
-2:206C  9a5277a120           lcall 0x20a1, 0x7752  ; sub_s4:7752
+2:206C  9a5277a120           lcall 0x20a1, 0x7752  ; MovieView68::MovieView68@s4:7752
 2:2071  e9c109               jmp 0x2a35
 loc_2074:
 2:2074  68f200               push 0xf2
@@ -3120,7 +3145,7 @@ loc_2074:
 2:2094  53                   push bx
 2:2095  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:209A  66ff76e2             push dword ptr [bp - 0x1e]
-2:209E  9a8877d320           lcall 0x20d3, 0x7788  ; sub_s4:7788
+2:209E  9a8877d320           lcall 0x20d3, 0x7788  ; MovieView69::MovieView69@s4:7788
 2:20A3  e98f09               jmp 0x2a35
 loc_20A6:
 2:20A6  68f200               push 0xf2
@@ -3136,7 +3161,7 @@ loc_20A6:
 2:20C6  53                   push bx
 2:20C7  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:20CC  66ff76e2             push dword ptr [bp - 0x1e]
-2:20D0  9abe779919           lcall 0x1999, 0x77be  ; sub_s4:77BE
+2:20D0  9abe779919           lcall 0x1999, 0x77be  ; MovieView70::MovieView70@s4:77BE
 2:20D5  e95d09               jmp 0x2a35
 loc_20D8:
 2:20D8  68f200               push 0xf2
@@ -3152,7 +3177,7 @@ loc_20D8:
 2:20F8  53                   push bx
 2:20F9  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:20FE  66ff76e2             push dword ptr [bp - 0x1e]
-2:2102  9af4773721           lcall 0x2137, 0x77f4  ; sub_s4:77F4
+2:2102  9af4773721           lcall 0x2137, 0x77f4  ; MovieView71::MovieView71@s4:77F4
 2:2107  e92b09               jmp 0x2a35
 loc_210A:
 2:210A  68f200               push 0xf2
@@ -3168,7 +3193,7 @@ loc_210A:
 2:212A  53                   push bx
 2:212B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2130  66ff76e2             push dword ptr [bp - 0x1e]
-2:2134  9a2a786921           lcall 0x2169, 0x782a  ; sub_s4:782A
+2:2134  9a2a786921           lcall 0x2169, 0x782a  ; MovieView72::MovieView72@s4:782A
 2:2139  e9f908               jmp 0x2a35
 loc_213C:
 2:213C  68f200               push 0xf2
@@ -3184,7 +3209,7 @@ loc_213C:
 2:215C  53                   push bx
 2:215D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2162  66ff76e2             push dword ptr [bp - 0x1e]
-2:2166  9a60789b21           lcall 0x219b, 0x7860  ; sub_s4:7860
+2:2166  9a60789b21           lcall 0x219b, 0x7860  ; MovieView73::MovieView73@s4:7860
 2:216B  e9c708               jmp 0x2a35
 loc_216E:
 2:216E  68f200               push 0xf2
@@ -3200,7 +3225,7 @@ loc_216E:
 2:218E  53                   push bx
 2:218F  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2194  66ff76e2             push dword ptr [bp - 0x1e]
-2:2198  9a9678cd21           lcall 0x21cd, 0x7896  ; sub_s4:7896
+2:2198  9a9678cd21           lcall 0x21cd, 0x7896  ; MovieView74::MovieView74@s4:7896
 2:219D  e99508               jmp 0x2a35
 loc_21A0:
 2:21A0  68f200               push 0xf2
@@ -3216,7 +3241,7 @@ loc_21A0:
 2:21C0  53                   push bx
 2:21C1  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:21C6  66ff76e2             push dword ptr [bp - 0x1e]
-2:21CA  9acc78ff21           lcall 0x21ff, 0x78cc  ; sub_s4:78CC
+2:21CA  9acc78ff21           lcall 0x21ff, 0x78cc  ; MovieView75::MovieView75@s4:78CC
 2:21CF  e96308               jmp 0x2a35
 loc_21D2:
 2:21D2  68f200               push 0xf2
@@ -3232,7 +3257,7 @@ loc_21D2:
 2:21F2  53                   push bx
 2:21F3  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:21F8  66ff76e2             push dword ptr [bp - 0x1e]
-2:21FC  9a02793122           lcall 0x2231, 0x7902  ; sub_s4:7902
+2:21FC  9a02793122           lcall 0x2231, 0x7902  ; MovieView76::MovieView76@s4:7902
 2:2201  e93108               jmp 0x2a35
 loc_2204:
 2:2204  68f200               push 0xf2
@@ -3248,7 +3273,7 @@ loc_2204:
 2:2224  53                   push bx
 2:2225  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:222A  66ff76e2             push dword ptr [bp - 0x1e]
-2:222E  9a38796322           lcall 0x2263, 0x7938  ; sub_s4:7938
+2:222E  9a38796322           lcall 0x2263, 0x7938  ; MovieView77::MovieView77@s4:7938
 2:2233  e9ff07               jmp 0x2a35
 loc_2236:
 2:2236  68f200               push 0xf2
@@ -3264,7 +3289,7 @@ loc_2236:
 2:2256  53                   push bx
 2:2257  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:225C  66ff76e2             push dword ptr [bp - 0x1e]
-2:2260  9a6e799522           lcall 0x2295, 0x796e  ; sub_s4:796E
+2:2260  9a6e799522           lcall 0x2295, 0x796e  ; MovieView78::MovieView78@s4:796E
 2:2265  e9cd07               jmp 0x2a35
 loc_2268:
 2:2268  68f200               push 0xf2
@@ -3280,7 +3305,7 @@ loc_2268:
 2:2288  53                   push bx
 2:2289  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:228E  66ff76e2             push dword ptr [bp - 0x1e]
-2:2292  9aa479c722           lcall 0x22c7, 0x79a4  ; sub_s4:79A4
+2:2292  9aa479c722           lcall 0x22c7, 0x79a4  ; MovieView79::MovieView79@s4:79A4
 2:2297  e99b07               jmp 0x2a35
 loc_229A:
 2:229A  68f200               push 0xf2
@@ -3296,7 +3321,7 @@ loc_229A:
 2:22BA  53                   push bx
 2:22BB  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:22C0  66ff76e2             push dword ptr [bp - 0x1e]
-2:22C4  9ada79f922           lcall 0x22f9, 0x79da  ; sub_s4:79DA
+2:22C4  9ada79f922           lcall 0x22f9, 0x79da  ; MovieView80::MovieView80@s4:79DA
 2:22C9  e96907               jmp 0x2a35
 loc_22CC:
 2:22CC  68f200               push 0xf2
@@ -3312,7 +3337,7 @@ loc_22CC:
 2:22EC  53                   push bx
 2:22ED  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:22F2  66ff76e2             push dword ptr [bp - 0x1e]
-2:22F6  9a107a2b23           lcall 0x232b, 0x7a10  ; sub_s4:7A10
+2:22F6  9a107a2b23           lcall 0x232b, 0x7a10  ; MovieView81::MovieView81@s4:7A10
 2:22FB  e93707               jmp 0x2a35
 loc_22FE:
 2:22FE  68f200               push 0xf2
@@ -3328,7 +3353,7 @@ loc_22FE:
 2:231E  53                   push bx
 2:231F  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2324  66ff76e2             push dword ptr [bp - 0x1e]
-2:2328  9a467a5d23           lcall 0x235d, 0x7a46  ; sub_s4:7A46
+2:2328  9a467a5d23           lcall 0x235d, 0x7a46  ; MovieView82::MovieView82@s4:7A46
 2:232D  e90507               jmp 0x2a35
 loc_2330:
 2:2330  68f200               push 0xf2
@@ -3344,7 +3369,7 @@ loc_2330:
 2:2350  53                   push bx
 2:2351  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2356  66ff76e2             push dword ptr [bp - 0x1e]
-2:235A  9a7c7a8f23           lcall 0x238f, 0x7a7c  ; sub_s4:7A7C
+2:235A  9a7c7a8f23           lcall 0x238f, 0x7a7c  ; MovieView83::MovieView83@s4:7A7C
 2:235F  e9d306               jmp 0x2a35
 loc_2362:
 2:2362  68f200               push 0xf2
@@ -3360,7 +3385,7 @@ loc_2362:
 2:2382  53                   push bx
 2:2383  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2388  66ff76e2             push dword ptr [bp - 0x1e]
-2:238C  9ab27ac123           lcall 0x23c1, 0x7ab2  ; sub_s4:7AB2
+2:238C  9ab27ac123           lcall 0x23c1, 0x7ab2  ; MovieView85::MovieView85@s4:7AB2
 2:2391  e9a106               jmp 0x2a35
 loc_2394:
 2:2394  68f200               push 0xf2
@@ -3376,7 +3401,7 @@ loc_2394:
 2:23B4  53                   push bx
 2:23B5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:23BA  66ff76e2             push dword ptr [bp - 0x1e]
-2:23BE  9ae87af323           lcall 0x23f3, 0x7ae8  ; sub_s4:7AE8
+2:23BE  9ae87af323           lcall 0x23f3, 0x7ae8  ; MovieView86::MovieView86@s4:7AE8
 2:23C3  e96f06               jmp 0x2a35
 loc_23C6:
 2:23C6  68f200               push 0xf2
@@ -3392,7 +3417,7 @@ loc_23C6:
 2:23E6  53                   push bx
 2:23E7  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:23EC  66ff76e2             push dword ptr [bp - 0x1e]
-2:23F0  9a1e7b2524           lcall 0x2425, 0x7b1e  ; sub_s4:7B1E
+2:23F0  9a1e7b2524           lcall 0x2425, 0x7b1e  ; MovieView87::MovieView87@s4:7B1E
 2:23F5  e93d06               jmp 0x2a35
 loc_23F8:
 2:23F8  68f200               push 0xf2
@@ -3408,7 +3433,7 @@ loc_23F8:
 2:2418  53                   push bx
 2:2419  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:241E  66ff76e2             push dword ptr [bp - 0x1e]
-2:2422  9a547b5724           lcall 0x2457, 0x7b54  ; sub_s4:7B54
+2:2422  9a547b5724           lcall 0x2457, 0x7b54  ; MovieView88::MovieView88@s4:7B54
 2:2427  e90b06               jmp 0x2a35
 loc_242A:
 2:242A  68f200               push 0xf2
@@ -3424,7 +3449,7 @@ loc_242A:
 2:244A  53                   push bx
 2:244B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2450  66ff76e2             push dword ptr [bp - 0x1e]
-2:2454  9a8a7b8924           lcall 0x2489, 0x7b8a  ; sub_s4:7B8A
+2:2454  9a8a7b8924           lcall 0x2489, 0x7b8a  ; MovieView89::MovieView89@s4:7B8A
 2:2459  e9d905               jmp 0x2a35
 loc_245C:
 2:245C  68f200               push 0xf2
@@ -3440,7 +3465,7 @@ loc_245C:
 2:247C  53                   push bx
 2:247D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2482  66ff76e2             push dword ptr [bp - 0x1e]
-2:2486  9ac07b4f1d           lcall 0x1d4f, 0x7bc0  ; sub_s4:7BC0
+2:2486  9ac07b4f1d           lcall 0x1d4f, 0x7bc0  ; MovieView90::MovieView90@s4:7BC0
 2:248B  e9a705               jmp 0x2a35
 loc_248E:
 2:248E  68f200               push 0xf2
@@ -3456,7 +3481,7 @@ loc_248E:
 2:24AE  53                   push bx
 2:24AF  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:24B4  66ff76e2             push dword ptr [bp - 0x1e]
-2:24B8  9af67bed24           lcall 0x24ed, 0x7bf6  ; sub_s4:7BF6
+2:24B8  9af67bed24           lcall 0x24ed, 0x7bf6  ; MovieView91::MovieView91@s4:7BF6
 2:24BD  e97505               jmp 0x2a35
 loc_24C0:
 2:24C0  68f200               push 0xf2
@@ -3472,7 +3497,7 @@ loc_24C0:
 2:24E0  53                   push bx
 2:24E1  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:24E6  66ff76e2             push dword ptr [bp - 0x1e]
-2:24EA  9a2c7c1f25           lcall 0x251f, 0x7c2c  ; sub_s4:7C2C
+2:24EA  9a2c7c1f25           lcall 0x251f, 0x7c2c  ; MovieView92::MovieView92@s4:7C2C
 2:24EF  e94305               jmp 0x2a35
 loc_24F2:
 2:24F2  68f200               push 0xf2
@@ -3488,7 +3513,7 @@ loc_24F2:
 2:2512  53                   push bx
 2:2513  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2518  66ff76e2             push dword ptr [bp - 0x1e]
-2:251C  9a627c5125           lcall 0x2551, 0x7c62  ; sub_s4:7C62
+2:251C  9a627c5125           lcall 0x2551, 0x7c62  ; MovieView93::MovieView93@s4:7C62
 2:2521  e91105               jmp 0x2a35
 loc_2524:
 2:2524  68f200               push 0xf2
@@ -3504,7 +3529,7 @@ loc_2524:
 2:2544  53                   push bx
 2:2545  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:254A  66ff76e2             push dword ptr [bp - 0x1e]
-2:254E  9ace7c8325           lcall 0x2583, 0x7cce  ; sub_s4:7CCE
+2:254E  9ace7c8325           lcall 0x2583, 0x7cce  ; MovieView95::MovieView95@s4:7CCE
 2:2553  e9df04               jmp 0x2a35
 loc_2556:
 2:2556  68f200               push 0xf2
@@ -3520,7 +3545,7 @@ loc_2556:
 2:2576  53                   push bx
 2:2577  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:257C  66ff76e2             push dword ptr [bp - 0x1e]
-2:2580  9a047db525           lcall 0x25b5, 0x7d04  ; sub_s4:7D04
+2:2580  9a047db525           lcall 0x25b5, 0x7d04  ; MovieView96::MovieView96@s4:7D04
 2:2585  e9ad04               jmp 0x2a35
 loc_2588:
 2:2588  68f200               push 0xf2
@@ -3536,7 +3561,7 @@ loc_2588:
 2:25A8  53                   push bx
 2:25A9  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:25AE  66ff76e2             push dword ptr [bp - 0x1e]
-2:25B2  9a3a7de725           lcall 0x25e7, 0x7d3a  ; sub_s4:7D3A
+2:25B2  9a3a7de725           lcall 0x25e7, 0x7d3a  ; MovieView97::MovieView97@s4:7D3A
 2:25B7  e97b04               jmp 0x2a35
 loc_25BA:
 2:25BA  68f200               push 0xf2
@@ -3552,7 +3577,7 @@ loc_25BA:
 2:25DA  53                   push bx
 2:25DB  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:25E0  66ff76e2             push dword ptr [bp - 0x1e]
-2:25E4  9a707d1926           lcall 0x2619, 0x7d70  ; sub_s4:7D70
+2:25E4  9a707d1926           lcall 0x2619, 0x7d70  ; MovieView98::MovieView98@s4:7D70
 2:25E9  e94904               jmp 0x2a35
 loc_25EC:
 2:25EC  68f200               push 0xf2
@@ -3568,7 +3593,7 @@ loc_25EC:
 2:260C  53                   push bx
 2:260D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2612  66ff76e2             push dword ptr [bp - 0x1e]
-2:2616  9a48724b26           lcall 0x264b, 0x7248  ; sub_s4:7248
+2:2616  9a48724b26           lcall 0x264b, 0x7248  ; MovieView99::MovieView99@s4:7248
 2:261B  e91704               jmp 0x2a35
 loc_261E:
 2:261E  68f200               push 0xf2
@@ -3584,7 +3609,7 @@ loc_261E:
 2:263E  53                   push bx
 2:263F  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2644  66ff76e2             push dword ptr [bp - 0x1e]
-2:2648  9a7e727d26           lcall 0x267d, 0x727e  ; sub_s4:727E
+2:2648  9a7e727d26           lcall 0x267d, 0x727e  ; MovieView100::MovieView100@s4:727E
 2:264D  e9e503               jmp 0x2a35
 loc_2650:
 2:2650  68f200               push 0xf2
@@ -3600,7 +3625,7 @@ loc_2650:
 2:2670  53                   push bx
 2:2671  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2676  66ff76e2             push dword ptr [bp - 0x1e]
-2:267A  9ab472af26           lcall 0x26af, 0x72b4  ; sub_s4:72B4
+2:267A  9ab472af26           lcall 0x26af, 0x72b4  ; MovieView101::MovieView101@s4:72B4
 2:267F  e9b303               jmp 0x2a35
 loc_2682:
 2:2682  68f200               push 0xf2
@@ -3616,7 +3641,7 @@ loc_2682:
 2:26A2  53                   push bx
 2:26A3  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:26A8  66ff76e2             push dword ptr [bp - 0x1e]
-2:26AC  9aea72e126           lcall 0x26e1, 0x72ea  ; sub_s4:72EA
+2:26AC  9aea72e126           lcall 0x26e1, 0x72ea  ; MovieView102::MovieView102@s4:72EA
 2:26B1  e98103               jmp 0x2a35
 loc_26B4:
 2:26B4  68f200               push 0xf2
@@ -3632,7 +3657,7 @@ loc_26B4:
 2:26D4  53                   push bx
 2:26D5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:26DA  66ff76e2             push dword ptr [bp - 0x1e]
-2:26DE  9a20731327           lcall 0x2713, 0x7320  ; sub_s4:7320
+2:26DE  9a20731327           lcall 0x2713, 0x7320  ; MovieView103::MovieView103@s4:7320
 2:26E3  e94f03               jmp 0x2a35
 loc_26E6:
 2:26E6  68f200               push 0xf2
@@ -3648,7 +3673,7 @@ loc_26E6:
 2:2706  53                   push bx
 2:2707  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:270C  66ff76e2             push dword ptr [bp - 0x1e]
-2:2710  9a56734527           lcall 0x2745, 0x7356  ; sub_s4:7356
+2:2710  9a56734527           lcall 0x2745, 0x7356  ; MovieView104::MovieView104@s4:7356
 2:2715  e91d03               jmp 0x2a35
 loc_2718:
 2:2718  68f200               push 0xf2
@@ -3664,7 +3689,7 @@ loc_2718:
 2:2738  53                   push bx
 2:2739  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:273E  66ff76e2             push dword ptr [bp - 0x1e]
-2:2742  9a8c737727           lcall 0x2777, 0x738c  ; sub_s4:738C
+2:2742  9a8c737727           lcall 0x2777, 0x738c  ; MovieView105::MovieView105@s4:738C
 2:2747  e9eb02               jmp 0x2a35
 loc_274A:
 2:274A  681401               push 0x114
@@ -3680,7 +3705,7 @@ loc_274A:
 2:276A  53                   push bx
 2:276B  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2770  66ff76e2             push dword ptr [bp - 0x1e]
-2:2774  9a58c9a927           lcall 0x27a9, 0xc958  ; sub_s4:C958
+2:2774  9a58c9a927           lcall 0x27a9, 0xc958  ; StoryPage38::StoryPage38@s4:C958
 2:2779  e9b902               jmp 0x2a35
 loc_277C:
 2:277C  681401               push 0x114
@@ -3696,7 +3721,7 @@ loc_277C:
 2:279C  53                   push bx
 2:279D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:27A2  66ff76e2             push dword ptr [bp - 0x1e]
-2:27A6  9aa6c9db27           lcall 0x27db, 0xc9a6  ; sub_s4:C9A6
+2:27A6  9aa6c9db27           lcall 0x27db, 0xc9a6  ; StoryPage39::StoryPage39@s4:C9A6
 2:27AB  e98702               jmp 0x2a35
 loc_27AE:
 2:27AE  681401               push 0x114
@@ -3712,7 +3737,7 @@ loc_27AE:
 2:27CE  53                   push bx
 2:27CF  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:27D4  66ff76e2             push dword ptr [bp - 0x1e]
-2:27D8  9af4c90d28           lcall 0x280d, 0xc9f4  ; sub_s4:C9F4
+2:27D8  9af4c90d28           lcall 0x280d, 0xc9f4  ; StoryPage40::StoryPage40@s4:C9F4
 2:27DD  e95502               jmp 0x2a35
 loc_27E0:
 2:27E0  681401               push 0x114
@@ -3728,7 +3753,7 @@ loc_27E0:
 2:2800  53                   push bx
 2:2801  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2806  66ff76e2             push dword ptr [bp - 0x1e]
-2:280A  9a48ca0521           lcall 0x2105, 0xca48  ; sub_s4:CA48
+2:280A  9a48ca0521           lcall 0x2105, 0xca48  ; StoryPage41::StoryPage41@s4:CA48
 2:280F  e92302               jmp 0x2a35
 loc_2812:
 2:2812  681401               push 0x114
@@ -3744,7 +3769,7 @@ loc_2812:
 2:2832  53                   push bx
 2:2833  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2838  66ff76e2             push dword ptr [bp - 0x1e]
-2:283C  9a96ca7128           lcall 0x2871, 0xca96  ; sub_s4:CA96
+2:283C  9a96ca7128           lcall 0x2871, 0xca96  ; StoryPage42::StoryPage42@s4:CA96
 2:2841  e9f101               jmp 0x2a35
 loc_2844:
 2:2844  681401               push 0x114
@@ -3760,7 +3785,7 @@ loc_2844:
 2:2864  53                   push bx
 2:2865  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:286A  66ff76e2             push dword ptr [bp - 0x1e]
-2:286E  9aeacaa328           lcall 0x28a3, 0xcaea  ; sub_s4:CAEA
+2:286E  9aeacaa328           lcall 0x28a3, 0xcaea  ; StoryPage43::StoryPage43@s4:CAEA
 2:2873  e9bf01               jmp 0x2a35
 loc_2876:
 2:2876  681401               push 0x114
@@ -3776,7 +3801,7 @@ loc_2876:
 2:2896  53                   push bx
 2:2897  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:289C  66ff76e2             push dword ptr [bp - 0x1e]
-2:28A0  9a38cbd528           lcall 0x28d5, 0xcb38  ; sub_s4:CB38
+2:28A0  9a38cbd528           lcall 0x28d5, 0xcb38  ; StoryPage44::StoryPage44@s4:CB38
 2:28A5  e98d01               jmp 0x2a35
 loc_28A8:
 2:28A8  681401               push 0x114
@@ -3792,7 +3817,7 @@ loc_28A8:
 2:28C8  53                   push bx
 2:28C9  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:28CE  66ff76e2             push dword ptr [bp - 0x1e]
-2:28D2  9a86cb0729           lcall 0x2907, 0xcb86  ; sub_s4:CB86
+2:28D2  9a86cb0729           lcall 0x2907, 0xcb86  ; StoryPage45::StoryPage45@s4:CB86
 2:28D7  e95b01               jmp 0x2a35
 loc_28DA:
 2:28DA  681401               push 0x114
@@ -3808,7 +3833,7 @@ loc_28DA:
 2:28FA  53                   push bx
 2:28FB  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2900  66ff76e2             push dword ptr [bp - 0x1e]
-2:2904  9adacb3929           lcall 0x2939, 0xcbda  ; sub_s4:CBDA
+2:2904  9adacb3929           lcall 0x2939, 0xcbda  ; StoryPage46::StoryPage46@s4:CBDA
 2:2909  e92901               jmp 0x2a35
 loc_290C:
 2:290C  681401               push 0x114
@@ -3824,7 +3849,7 @@ loc_290C:
 2:292C  53                   push bx
 2:292D  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2932  66ff76e2             push dword ptr [bp - 0x1e]
-2:2936  9a28cc6b29           lcall 0x296b, 0xcc28  ; sub_s4:CC28
+2:2936  9a28cc6b29           lcall 0x296b, 0xcc28  ; StoryPage47::StoryPage47@s4:CC28
 2:293B  e9f700               jmp 0x2a35
 loc_293E:
 2:293E  681401               push 0x114
@@ -3840,7 +3865,7 @@ loc_293E:
 2:295E  53                   push bx
 2:295F  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2964  66ff76e2             push dword ptr [bp - 0x1e]
-2:2968  9a76cc9d29           lcall 0x299d, 0xcc76  ; sub_s4:CC76
+2:2968  9a76cc9d29           lcall 0x299d, 0xcc76  ; StoryPage48::StoryPage48@s4:CC76
 2:296D  e9c500               jmp 0x2a35
 loc_2970:
 2:2970  681401               push 0x114
@@ -3856,7 +3881,7 @@ loc_2970:
 2:2990  53                   push bx
 2:2991  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2996  66ff76e2             push dword ptr [bp - 0x1e]
-2:299A  9ac4cccf29           lcall 0x29cf, 0xccc4  ; sub_s4:CCC4
+2:299A  9ac4cccf29           lcall 0x29cf, 0xccc4  ; StoryPage49::StoryPage49@s4:CCC4
 2:299F  e99300               jmp 0x2a35
 loc_29A2:
 2:29A2  681401               push 0x114
@@ -3872,7 +3897,7 @@ loc_29A2:
 2:29C2  53                   push bx
 2:29C3  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:29C8  66ff76e2             push dword ptr [bp - 0x1e]
-2:29CC  9a12cd012a           lcall 0x2a01, 0xcd12  ; sub_s4:CD12
+2:29CC  9a12cd012a           lcall 0x2a01, 0xcd12  ; StoryPage50::StoryPage50@s4:CD12
 2:29D1  eb62                 jmp 0x2a35
 2:29D3  db 90
 loc_29D4:
@@ -3889,7 +3914,7 @@ loc_29D4:
 2:29F4  53                   push bx
 2:29F5  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:29FA  66ff76e2             push dword ptr [bp - 0x1e]
-2:29FE  9a60cd332a           lcall 0x2a33, 0xcd60  ; sub_s4:CD60
+2:29FE  9a60cd332a           lcall 0x2a33, 0xcd60  ; StoryPage51::StoryPage51@s4:CD60
 2:2A03  eb30                 jmp 0x2a35
 2:2A05  db 90
 loc_2A06:
@@ -3906,7 +3931,7 @@ loc_2A06:
 2:2A26  53                   push bx
 2:2A27  26ffb7cc00           push word ptr es:[bx + 0xcc]
 2:2A2C  66ff76e2             push dword ptr [bp - 0x1e]
-2:2A30  9a74cfbb24           lcall 0x24bb, 0xcf74  ; sub_s4:CF74
+2:2A30  9a74cfbb24           lcall 0x24bb, 0xcf74  ; StoryPage52::StoryPage52@s4:CF74
 loc_2A35:
 2:2A35  8946fc               mov word ptr [bp - 4], ax
 2:2A38  8956fe               mov word ptr [bp - 2], dx
@@ -3917,10 +3942,10 @@ loc_2A3E:
 2:2A42  68a301               push 0x1a3  ; 'OpWnd::getKid->Unknown target mode->%d'
 2:2A45  90                   nop
 2:2A46  0e                   push cs
-2:2A47  e8fe35               call 0x6048  ; sub_s2:6048
+2:2A47  e8fe35               call 0x6048  ; debugPrintf@s2:6048
 2:2A4A  83c406               add sp, 6
 2:2A4D  6a01                 push 1
-2:2A4F  9acd249424           lcall 0x2494, 0x24cd  ; sub_s1:24CD
+2:2A4F  9acd249424           lcall 0x2494, 0x24cd  ; exit@s1:24CD
 2:2A54  83c402               add sp, 2
 2:2A57  e9e000               jmp 0x2b3a
 loc_2A5A:
@@ -4042,7 +4067,7 @@ loc_2B3A:
 2:2B40  66ff7606             push dword ptr [bp + 6]
 2:2B44  90                   nop
 2:2B45  0e                   push cs
-2:2B46  e82f3e               call 0x6978  ; sub_s2:6978
+2:2B46  e82f3e               call 0x6978  ; SOLChildWnd::addChild@s2:6978
 loc_2B49:
 2:2B49  8b46fc               mov ax, word ptr [bp - 4]
 2:2B4C  8b56fe               mov dx, word ptr [bp - 2]
@@ -4050,8 +4075,9 @@ loc_2B49:
 2:2B50  ca0600               retf 6
 2:2B53  db 00
 
-; ---------------- sub_s2:2B54 FAR size=250 callers=1
+; ---------------- OpWnd::confirmExit@s2:2B54 FAR size=250 callers=1
 ;   apis: USER.MessageBox, USER.PostMessage
+;   "Ready to leave Outpost?" (MessageBox, or the Outpost dialog when one is open)
 2:2B54  c8a80000             enter 0xa8, 0
 2:2B58  c746fe0000           mov word ptr [bp - 2], 0
 2:2B5D  66833e304200         cmp dword ptr [0x4230], 0
@@ -4099,7 +4125,7 @@ loc_2BB6:
 2:2BD9  ff369603             push word ptr [0x396]
 2:2BDD  ffb65aff             push word ptr [bp - 0xa6]
 2:2BE1  50                   push ax
-2:2BE2  9a2085c101           lcall 0x1c1, 0x8520  ; sub_s9:8520
+2:2BE2  9a2085c101           lcall 0x1c1, 0x8520  ; OPMessageBox::OPMessageBox(ids)@s9:8520
 2:2BE7  83c40e               add sp, 0xe
 2:2BEA  eb03                 jmp 0x2bef
 loc_2BEC:
@@ -4140,8 +4166,9 @@ loc_2C47:
 2:2C4A  c9                   leave
 2:2C4B  ca0400               retf 4
 
-; ---------------- sub_s2:2C4E FAR size=212 callers=2
+; ---------------- OpWnd::showOverlay@s2:2C4E FAR size=212 callers=2
 ;   apis: USER.BringWindowToTop, USER.LoadCursor, USER.SetCursor
+;   shows an overlay view (movie, window) over the colony view
 2:2C4E  c80a0000             enter 0xa, 0
 2:2C52  666a00               push 0
 2:2C55  68027f               push 0x7f02
@@ -4162,7 +4189,7 @@ loc_2C8A:
 2:2C8E  ff7606               push word ptr [bp + 6]
 2:2C91  90                   nop
 2:2C92  0e                   push cs
-2:2C93  e83ee9               call 0x15d4  ; sub_s2:15D4
+2:2C93  e83ee9               call 0x15d4  ; OpWnd::getKid@s2:15D4
 2:2C96  c45e06               les bx, ptr [bp + 6]
 2:2C99  268987ee00           mov word ptr es:[bx + 0xee], ax
 2:2C9E  268997f000           mov word ptr es:[bx + 0xf0], dx
@@ -4181,10 +4208,10 @@ loc_2C8A:
 2:2CD1  26ff5f0c             lcall es:[bx + 0xc]
 loc_2CD5:
 2:2CD5  66ff367c5b           push dword ptr [0x5b7c]
-2:2CDA  9a34b6c90c           lcall 0xcc9, 0xb634  ; sub_s8:B634
+2:2CDA  9a34b6c90c           lcall 0xcc9, 0xb634  ; DialogCtr::hideAll@s8:B634
 2:2CDF  c45e06               les bx, ptr [bp + 6]
 2:2CE2  6626ffb7f400         push dword ptr es:[bx + 0xf4]
-2:2CE8  9a767a702b           lcall 0x2b70, 0x7a76  ; sub_s3:7A76
+2:2CE8  9a767a702b           lcall 0x2b70, 0x7a76  ; BuildingWindows::hideAll@s3:7A76
 2:2CED  6a05                 push 5
 2:2CEF  c45e06               les bx, ptr [bp + 6]
 2:2CF2  6626ffb7ee00         push dword ptr es:[bx + 0xee]
@@ -4201,8 +4228,9 @@ loc_2CD5:
 2:2D1E  ca0600               retf 6
 2:2D21  db 00
 
-; ---------------- sub_s2:2D22 FAR size=170 callers=1
+; ---------------- OpWnd::overlayDone@s2:2D22 FAR size=170 callers=1
 ;   apis: USER.PostMessage
+;   command 121: the overlay ended, the colony view returns
 2:2D22  55                   push bp
 2:2D23  8bec                 mov bp, sp
 2:2D25  c45e06               les bx, ptr [bp + 6]
@@ -4228,10 +4256,10 @@ loc_2CD5:
 2:2D7F  26c41f               les bx, ptr es:[bx]
 2:2D82  26ff5f0c             lcall es:[bx + 0xc]
 2:2D86  66ff367c5b           push dword ptr [0x5b7c]
-2:2D8B  9a8ab6dd2c           lcall 0x2cdd, 0xb68a  ; sub_s8:B68A
+2:2D8B  9a8ab6dd2c           lcall 0x2cdd, 0xb68a  ; DialogCtr::showAll@s8:B68A
 2:2D90  c45e06               les bx, ptr [bp + 6]
 2:2D93  6626ffb7f400         push dword ptr es:[bx + 0xf4]
-2:2D99  9ace7aeb2c           lcall 0x2ceb, 0x7ace  ; sub_s3:7ACE
+2:2D99  9ace7aeb2c           lcall 0x2ceb, 0x7ace  ; BuildingWindows::showAll@s3:7ACE
 2:2D9E  6a01                 push 1
 2:2DA0  c45e06               les bx, ptr [bp + 6]
 2:2DA3  6626ffb7e800         push dword ptr es:[bx + 0xe8]
@@ -4246,8 +4274,9 @@ loc_2DC8:
 2:2DC8  c9                   leave
 2:2DC9  ca0400               retf 4
 
-; ---------------- sub_s2:2DCC FAR size=206 callers=2
+; ---------------- OpWnd::replaceView@s2:2DCC FAR size=206 callers=2
 ;   apis: USER.LoadCursor, USER.SetCursor
+;   replaces the main view (introduction, voyage)
 2:2DCC  c80a0000             enter 0xa, 0
 2:2DD0  666a00               push 0
 2:2DD3  68027f               push 0x7f02
@@ -4267,7 +4296,7 @@ loc_2E03:
 2:2E07  ff7606               push word ptr [bp + 6]
 2:2E0A  90                   nop
 2:2E0B  0e                   push cs
-2:2E0C  e8c5e7               call 0x15d4  ; sub_s2:15D4
+2:2E0C  e8c5e7               call 0x15d4  ; OpWnd::getKid@s2:15D4
 2:2E0F  c45e06               les bx, ptr [bp + 6]
 2:2E12  268987e800           mov word ptr es:[bx + 0xe8], ax
 2:2E17  268997ea00           mov word ptr es:[bx + 0xea], dx
@@ -4282,7 +4311,7 @@ loc_2E03:
 2:2E3D  53                   push bx
 2:2E3E  90                   nop
 2:2E3F  0e                   push cs
-2:2E40  e80bfe               call 0x2c4e  ; sub_s2:2C4E
+2:2E40  e80bfe               call 0x2c4e  ; OpWnd::showOverlay@s2:2C4E
 2:2E43  c45e06               les bx, ptr [bp + 6]
 2:2E46  6626c787ce0000000000 mov dword ptr es:[bx + 0xce], 0
 2:2E50  eb3b                 jmp 0x2e8d
@@ -4308,14 +4337,15 @@ loc_2E8D:
 2:2E96  ca0600               retf 6
 2:2E99  db 00
 
-; ---------------- sub_s2:2E9A FAR size=382 callers=1
+; ---------------- OpWnd::cmdLoadGame@s2:2E9A FAR size=382 callers=1
 ;   apis: USER.LoadCursor, USER.PostMessage, USER.SetCursor, USER.UpdateWindow
+;   Load Game: file dialog, then loadGameFrom
 2:2E9A  c82c0200             enter 0x22c, 0
 2:2E9E  56                   push si
 2:2E9F  c68600ff00           mov byte ptr [bp - 0x100], 0
 2:2EA4  6a02                 push 2
 2:2EA6  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:2EAB  9aba20b22f           lcall 0x2fb2, 0x20ba  ; sub_s3:20BA
+2:2EAB  9aba20b22f           lcall 0x2fb2, 0x20ba  ; Registry_get@s3:20BA
 2:2EB0  8986fcfe             mov word ptr [bp - 0x104], ax
 2:2EB4  8996fefe             mov word ptr [bp - 0x102], dx
 2:2EB8  c49efcfe             les bx, ptr [bp - 0x104]
@@ -4336,7 +4366,7 @@ loc_2E8D:
 2:2EEC  8d8600ff             lea ax, [bp - 0x100]
 2:2EF0  16                   push ss
 2:2EF1  50                   push ax
-2:2EF2  9aa43d1f2f           lcall 0x2f1f, 0x3da4  ; sub_s1:3DA4
+2:2EF2  9aa43d1f2f           lcall 0x2f1f, 0x3da4  ; _fstrlen@s1:3DA4
 2:2EF7  83c404               add sp, 4
 2:2EFA  8bf0                 mov si, ax
 2:2EFC  8986e6fe             mov word ptr [bp - 0x11a], ax
@@ -4349,7 +4379,7 @@ loc_2F11:
 2:2F16  8d8600ff             lea ax, [bp - 0x100]
 2:2F1A  16                   push ss
 2:2F1B  50                   push ax
-2:2F1C  9aea3c642f           lcall 0x2f64, 0x3cea  ; sub_s1:3CEA
+2:2F1C  9aea3c642f           lcall 0x2f64, 0x3cea  ; _fstrcat@s1:3CEA
 2:2F21  83c408               add sp, 8
 2:2F24  e98d00               jmp 0x2fb4
 2:2F27  db 90
@@ -4358,7 +4388,7 @@ loc_2F28:
 2:2F2A  66ff7606             push dword ptr [bp + 6]
 2:2F2E  90                   nop
 2:2F2F  0e                   push cs
-2:2F30  e84502               call 0x3178  ; FileDialog_s2_3178@s2:3178
+2:2F30  e84502               call 0x3178  ; FileDialog::run@s2:3178
 2:2F33  8986f8fe             mov word ptr [bp - 0x108], ax
 2:2F37  8996fafe             mov word ptr [bp - 0x106], dx
 2:2F3B  0bd0                 or dx, ax
@@ -4389,7 +4419,7 @@ loc_2F56:
 2:2F7B  8d8e00ff             lea cx, [bp - 0x100]
 2:2F7F  16                   push ss
 2:2F80  51                   push cx
-2:2F81  9a584d9f2f           lcall 0x2f9f, 0x4d58  ; sub_s1:4D58
+2:2F81  9a584d9f2f           lcall 0x2f9f, 0x4d58  ; _splitpath@s1:4D58
 2:2F86  83c414               add sp, 0x14
 2:2F89  80bed4fd00           cmp byte ptr [bp - 0x22c], 0
 2:2F8E  7414                 je 0x2fa4
@@ -4399,14 +4429,14 @@ loc_2F56:
 2:2F96  8d86defd             lea ax, [bp - 0x222]
 2:2F9A  16                   push ss
 2:2F9B  50                   push ax
-2:2F9C  9aea3c7c2b           lcall 0x2b7c, 0x3cea  ; sub_s1:3CEA
+2:2F9C  9aea3c7c2b           lcall 0x2b7c, 0x3cea  ; _fstrcat@s1:3CEA
 2:2FA1  83c408               add sp, 8
 loc_2FA4:
 2:2FA4  8d86defd             lea ax, [bp - 0x222]
 2:2FA8  16                   push ss
 2:2FA9  50                   push ax
 2:2FAA  66ffb6fcfe           push dword ptr [bp - 0x104]
-2:2FAF  9a1e5f9c2d           lcall 0x2d9c, 0x5f1e  ; sub_s3:5F1E
+2:2FAF  9a1e5f9c2d           lcall 0x2d9c, 0x5f1e  ; Options::setLoadPath@s3:5F1E
 loc_2FB4:
 2:2FB4  80be00ff00           cmp byte ptr [bp - 0x100], 0
 2:2FB9  7457                 je 0x3012
@@ -4414,7 +4444,7 @@ loc_2FB4:
 2:2FBE  66268b87e800         mov eax, dword ptr es:[bx + 0xe8]
 2:2FC4  668986f4fe           mov dword ptr [bp - 0x10c], eax
 2:2FC9  6650                 push eax
-2:2FCB  9a7e09d116           lcall 0x16d1, 0x97e  ; sub_s5:097E
+2:2FCB  9a7e09d116           lcall 0x16d1, 0x97e  ; Mode1View::closeMenu@s5:097E
 2:2FD0  c45e06               les bx, ptr [bp + 6]
 2:2FD3  26c49fe800           les bx, ptr es:[bx + 0xe8]
 2:2FD8  26ff7708             push word ptr es:[bx + 8]
@@ -4432,7 +4462,7 @@ loc_2FB4:
 2:3000  66ff7606             push dword ptr [bp + 6]
 2:3004  90                   nop
 2:3005  0e                   push cs
-2:3006  e80be4               call 0x1414  ; sub_s2:1414
+2:3006  e80be4               call 0x1414  ; OpWnd::loadGameFrom@s2:1414
 2:3009  ffb6f0fe             push word ptr [bp - 0x110]
 2:300D  9add2d0000           lcall 0, 0x2ddd  ; USER.SetCursor
 loc_3012:
@@ -4441,13 +4471,14 @@ loc_3012:
 2:3014  ca0400               retf 4
 2:3017  db 00
 
-; ---------------- sub_s2:3018 FAR size=180 callers=1
+; ---------------- OpWnd::cmdSave@s2:3018 FAR size=180 callers=1
+;   Save: current file name, or Save As
 2:3018  c81a0100             enter 0x11a, 0
 2:301C  56                   push si
 2:301D  c68600ff00           mov byte ptr [bp - 0x100], 0
 2:3022  6a02                 push 2
 2:3024  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:3029  9aba20ae2e           lcall 0x2eae, 0x20ba  ; sub_s3:20BA
+2:3029  9aba20ae2e           lcall 0x2eae, 0x20ba  ; Registry_get@s3:20BA
 2:302E  8986fcfe             mov word ptr [bp - 0x104], ax
 2:3032  8996fefe             mov word ptr [bp - 0x102], dx
 2:3036  c49efcfe             les bx, ptr [bp - 0x104]
@@ -4468,7 +4499,7 @@ loc_3012:
 2:306A  8d8600ff             lea ax, [bp - 0x100]
 2:306E  16                   push ss
 2:306F  50                   push ax
-2:3070  9aa43d9d30           lcall 0x309d, 0x3da4  ; sub_s1:3DA4
+2:3070  9aa43d9d30           lcall 0x309d, 0x3da4  ; _fstrlen@s1:3DA4
 2:3075  83c404               add sp, 4
 2:3078  8bf0                 mov si, ax
 2:307A  8986eefe             mov word ptr [bp - 0x112], ax
@@ -4481,7 +4512,7 @@ loc_308F:
 2:3094  8d8600ff             lea ax, [bp - 0x100]
 2:3098  16                   push ss
 2:3099  50                   push ax
-2:309A  9aea3ce72e           lcall 0x2ee7, 0x3cea  ; sub_s1:3CEA
+2:309A  9aea3ce72e           lcall 0x2ee7, 0x3cea  ; _fstrcat@s1:3CEA
 2:309F  83c408               add sp, 8
 2:30A2  80be00ff00           cmp byte ptr [bp - 0x100], 0
 2:30A7  741e                 je 0x30c7
@@ -4491,7 +4522,7 @@ loc_308F:
 2:30AF  66ff7606             push dword ptr [bp + 6]
 2:30B3  90                   nop
 2:30B4  0e                   push cs
-2:30B5  e824e2               call 0x12dc  ; sub_s2:12DC
+2:30B5  e824e2               call 0x12dc  ; OpWnd::saveGameTo@s2:12DC
 2:30B8  5e                   pop si
 2:30B9  c9                   leave
 2:30BA  ca0400               retf 4
@@ -4500,20 +4531,21 @@ loc_30BE:
 2:30BE  66ff7606             push dword ptr [bp + 6]
 2:30C2  90                   nop
 2:30C3  0e                   push cs
-2:30C4  e80500               call 0x30cc  ; sub_s2:30CC
+2:30C4  e80500               call 0x30cc  ; OpWnd::cmdSaveAs@s2:30CC
 loc_30C7:
 2:30C7  5e                   pop si
 2:30C8  c9                   leave
 2:30C9  ca0400               retf 4
 
-; ---------------- sub_s2:30CC FAR size=172 callers=2
+; ---------------- OpWnd::cmdSaveAs@s2:30CC FAR size=172 callers=2
+;   Save As: file dialog, then saveGameTo
 2:30CC  c8120200             enter 0x212, 0
 2:30D0  c68600ff00           mov byte ptr [bp - 0x100], 0
 2:30D5  6a02                 push 2
 2:30D7  66ff7606             push dword ptr [bp + 6]
 2:30DB  90                   nop
 2:30DC  0e                   push cs
-2:30DD  e89800               call 0x3178  ; FileDialog_s2_3178@s2:3178
+2:30DD  e89800               call 0x3178  ; FileDialog::run@s2:3178
 2:30E0  8986fcfe             mov word ptr [bp - 0x104], ax
 2:30E4  8996fefe             mov word ptr [bp - 0x102], dx
 2:30E8  0bd0                 or dx, ax
@@ -4536,7 +4568,7 @@ loc_30C7:
 2:3113  8d8e00ff             lea cx, [bp - 0x100]
 2:3117  16                   push ss
 2:3118  51                   push cx
-2:3119  9a584d3731           lcall 0x3137, 0x4d58  ; sub_s1:4D58
+2:3119  9a584d3731           lcall 0x3137, 0x4d58  ; _splitpath@s1:4D58
 2:311E  83c414               add sp, 0x14
 2:3121  80bef2fd00           cmp byte ptr [bp - 0x20e], 0
 2:3126  7414                 je 0x313c
@@ -4546,7 +4578,7 @@ loc_30C7:
 2:312E  8d86fcfd             lea ax, [bp - 0x204]
 2:3132  16                   push ss
 2:3133  50                   push ax
-2:3134  9aea3c6530           lcall 0x3065, 0x3cea  ; sub_s1:3CEA
+2:3134  9aea3c6530           lcall 0x3065, 0x3cea  ; _fstrcat@s1:3CEA
 2:3139  83c408               add sp, 8
 loc_313C:
 2:313C  8d86fcfd             lea ax, [bp - 0x204]
@@ -4554,12 +4586,12 @@ loc_313C:
 2:3141  50                   push ax
 2:3142  6a02                 push 2
 2:3144  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:3149  9aba205b31           lcall 0x315b, 0x20ba  ; sub_s3:20BA
+2:3149  9aba205b31           lcall 0x315b, 0x20ba  ; Registry_get@s3:20BA
 2:314E  8986eefd             mov word ptr [bp - 0x212], ax
 2:3152  8996f0fd             mov word ptr [bp - 0x210], dx
 2:3156  52                   push dx
 2:3157  50                   push ax
-2:3158  9a4c5f2c30           lcall 0x302c, 0x5f4c  ; sub_s3:5F4C
+2:3158  9a4c5f2c30           lcall 0x302c, 0x5f4c  ; Options::setSavePath@s3:5F4C
 2:315D  80be00ff00           cmp byte ptr [bp - 0x100], 0
 2:3162  740f                 je 0x3173
 2:3164  8d8600ff             lea ax, [bp - 0x100]
@@ -4568,14 +4600,15 @@ loc_313C:
 2:316A  66ff7606             push dword ptr [bp + 6]
 2:316E  90                   nop
 2:316F  0e                   push cs
-2:3170  e869e1               call 0x12dc  ; sub_s2:12DC
+2:3170  e869e1               call 0x12dc  ; OpWnd::saveGameTo@s2:12DC
 loc_3173:
 2:3173  c9                   leave
 2:3174  ca0400               retf 4
 2:3177  db 00
 
-; ---------------- FileDialog_s2_3178@s2:3178 FAR size=1030 callers=2
+; ---------------- FileDialog::run@s2:3178 FAR size=1030 callers=2
 ;   apis: COMMDLG.GetOpenFileName, COMMDLG.GetSaveFileName, USER.MessageBox
+;   GetOpenFileName/GetSaveFileName for *.ops (initFileStruct)
 2:3178  c8840700             enter 0x784, 0
 2:317C  56                   push si
 2:317D  32c0                 xor al, al
@@ -4584,7 +4617,7 @@ loc_3173:
 2:3187  888600fe             mov byte ptr [bp - 0x200], al
 2:318B  6a02                 push 2
 2:318D  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:3192  9aba20b032           lcall 0x32b0, 0x20ba  ; sub_s3:20BA
+2:3192  9aba20b032           lcall 0x32b0, 0x20ba  ; Registry_get@s3:20BA
 2:3197  8986fcfc             mov word ptr [bp - 0x304], ax
 2:319B  8996fefc             mov word ptr [bp - 0x302], dx
 2:319F  c49efcfc             les bx, ptr [bp - 0x304]
@@ -4635,12 +4668,12 @@ loc_3214:
 2:3217  8d86f6fb             lea ax, [bp - 0x40a]
 2:321B  16                   push ss
 2:321C  50                   push ax
-2:321D  9a08502e32           lcall 0x322e, 0x5008  ; sub_s1:5008
+2:321D  9a08502e32           lcall 0x322e, 0x5008  ; _getcwd@s1:5008
 2:3222  83c406               add sp, 6
 2:3225  8d86f6fb             lea ax, [bp - 0x40a]
 2:3229  16                   push ss
 2:322A  50                   push ax
-2:322B  9aa43d4e32           lcall 0x324e, 0x3da4  ; sub_s1:3DA4
+2:322B  9aa43d4e32           lcall 0x324e, 0x3da4  ; _fstrlen@s1:3DA4
 2:3230  83c404               add sp, 4
 2:3233  8bf0                 mov si, ax
 2:3235  8986f4fb             mov word ptr [bp - 0x40c], ax
@@ -4651,7 +4684,7 @@ loc_3245:
 2:3245  8d8600ff             lea ax, [bp - 0x100]
 2:3249  16                   push ss
 2:324A  50                   push ax
-2:324B  9aa43d6e32           lcall 0x326e, 0x3da4  ; sub_s1:3DA4
+2:324B  9aa43d6e32           lcall 0x326e, 0x3da4  ; _fstrlen@s1:3DA4
 2:3250  83c404               add sp, 4
 2:3253  8bf0                 mov si, ax
 2:3255  8986f4fb             mov word ptr [bp - 0x40c], ax
@@ -4662,7 +4695,7 @@ loc_3265:
 2:3265  8d8600ff             lea ax, [bp - 0x100]
 2:3269  16                   push ss
 2:326A  50                   push ax
-2:326B  9a2e4f9b32           lcall 0x329b, 0x4f2e  ; sub_s1:4F2E
+2:326B  9a2e4f9b32           lcall 0x329b, 0x4f2e  ; _chdir@s1:4F2E
 2:3270  83c404               add sp, 4
 2:3273  c49efcfc             les bx, ptr [bp - 0x304]
 2:3277  66268b4712           mov eax, dword ptr es:[bx + 0x12]
@@ -4693,7 +4726,7 @@ loc_32A0:
 2:32C2  8d86ecfb             lea ax, [bp - 0x414]
 2:32C6  16                   push ss
 2:32C7  50                   push ax
-2:32C8  9aa43df432           lcall 0x32f4, 0x3da4  ; sub_s1:3DA4
+2:32C8  9aa43df432           lcall 0x32f4, 0x3da4  ; _fstrlen@s1:3DA4
 2:32CD  83c404               add sp, 4
 2:32D0  8986f4fb             mov word ptr [bp - 0x40c], ax
 2:32D4  8986eafb             mov word ptr [bp - 0x416], ax
@@ -4737,7 +4770,7 @@ loc_3311:
 2:333A  8d86eafa             lea ax, [bp - 0x516]
 2:333E  16                   push ss
 2:333F  50                   push ax
-2:3340  9aa43d8b33           lcall 0x338b, 0x3da4  ; sub_s1:3DA4
+2:3340  9aa43d8b33           lcall 0x338b, 0x3da4  ; _fstrlen@s1:3DA4
 2:3345  83c404               add sp, 4
 2:3348  8bf0                 mov si, ax
 2:334A  8986f4fb             mov word ptr [bp - 0x40c], ax
@@ -4760,7 +4793,7 @@ loc_3371:
 2:3382  8d86a0fa             lea ax, [bp - 0x560]
 2:3386  16                   push ss
 2:3387  50                   push ax
-2:3388  9a06493734           lcall 0x3437, 0x4906  ; sub_s1:4906
+2:3388  9a06493734           lcall 0x3437, 0x4906  ; _fmemset@s1:4906
 2:338D  83c408               add sp, 8
 2:3390  66c786a0fa48000000   mov dword ptr [bp - 0x560], 0x48
 2:3399  c45e06               les bx, ptr [bp + 6]
@@ -4796,7 +4829,7 @@ loc_3371:
 2:3408  68ca01               push 0x1ca  ; 'Unsupported FileStructType in Opwnd::initFileStruct'
 2:340B  90                   nop
 2:340C  0e                   push cs
-2:340D  e8382c               call 0x6048  ; sub_s2:6048
+2:340D  e8382c               call 0x6048  ; debugPrintf@s2:6048
 2:3410  83c404               add sp, 4
 2:3413  eb4c                 jmp 0x3461
 2:3415  db 90
@@ -4840,7 +4873,7 @@ loc_3461:
 2:348F  50                   push ax
 2:3490  90                   nop
 2:3491  0e                   push cs
-2:3492  e8532c               call 0x60e8  ; sub_s2:60E8
+2:3492  e8532c               call 0x60e8  ; _strdup@s2:60E8
 2:3495  83c404               add sp, 4
 2:3498  89868cf9             mov word ptr [bp - 0x674], ax
 2:349C  89968ef9             mov word ptr [bp - 0x672], dx
@@ -4890,7 +4923,7 @@ loc_352E:
 2:3534  8d8680f8             lea ax, [bp - 0x780]
 2:3538  16                   push ss
 2:3539  50                   push ax
-2:353A  9abe3d6b35           lcall 0x356b, 0x3dbe  ; sub_s1:3DBE
+2:353A  9abe3d6b35           lcall 0x356b, 0x3dbe  ; _fstrncpy@s1:3DBE
 2:353F  83c40a               add sp, 0xa
 2:3542  8bb6d4fa             mov si, word ptr [bp - 0x52c]
 2:3546  c68280f800           mov byte ptr [bp + si - 0x780], 0
@@ -4900,12 +4933,12 @@ loc_352E:
 2:3556  16                   push ss
 2:3557  50                   push ax
 2:3558  66ffb6fcfc           push dword ptr [bp - 0x304]
-2:355D  9acc609531           lcall 0x3195, 0x60cc  ; sub_s3:60CC
+2:355D  9acc609531           lcall 0x3195, 0x60cc  ; Options::setDialogDir@s3:60CC
 loc_3562:
 2:3562  8d86f6fb             lea ax, [bp - 0x40a]
 2:3566  16                   push ss
 2:3567  50                   push ax
-2:3568  9a2e4f0f32           lcall 0x320f, 0x4f2e  ; sub_s1:4F2E
+2:3568  9a2e4f0f32           lcall 0x320f, 0x4f2e  ; _chdir@s1:4F2E
 2:356D  83c404               add sp, 4
 2:3570  8b869cfa             mov ax, word ptr [bp - 0x564]
 2:3574  8b969efa             mov dx, word ptr [bp - 0x562]
@@ -4914,8 +4947,9 @@ loc_3562:
 2:357A  ca0600               retf 6
 2:357D  db 00
 
-; ---------------- sub_s2:357E FAR size=406 callers=3
+; ---------------- setGameSysColors@s2:357E FAR size=406 callers=3
 ;   apis: USER.GetSysColor, USER.SetSysColors
+;   saves/restores the Windows system colours around the game
 2:357E  c8820000             enter 0x82, 0
 2:3582  56                   push si
 2:3583  66c746d604000700     mov dword ptr [bp - 0x2a], 0x70004
@@ -5031,7 +5065,8 @@ loc_370E:
 2:3710  ca0600               retf 6
 2:3713  db 00
 
-; ---------------- sub_s2:3714 FAR size=24 callers=0
+; ---------------- SOLWnd::vslot1_forward@s2:3714 FAR size=24 callers=0
+;   forwards to the attached handler's vslot 1
 2:3714  55                   push bp
 2:3715  8bec                 mov bp, sp
 2:3717  66ff760e             push dword ptr [bp + 0xe]
@@ -5039,11 +5074,12 @@ loc_370E:
 2:371F  66ff7606             push dword ptr [bp + 6]
 2:3723  90                   nop
 2:3724  0e                   push cs
-2:3725  e8e606               call 0x3e0e  ; sub_s2:3E0E
+2:3725  e8e606               call 0x3e0e  ; Handler::callVslot1@s2:3E0E
 2:3728  c9                   leave
 2:3729  ca0c00               retf 0xc
 
-; ---------------- sub_s2:372C FAR size=16 callers=0
+; ---------------- SOLWnd::textBuffer@s2:372C FAR size=16 callers=0
+;   returns this+0x0A (the title buffer)
 2:372C  55                   push bp
 2:372D  8bec                 mov bp, sp
 2:372F  8b4606               mov ax, word ptr [bp + 6]
@@ -5052,71 +5088,88 @@ loc_370E:
 2:3738  c9                   leave
 2:3739  ca0400               retf 4
 
-; ---------------- sub_s2:373C FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6@s2:373C FAR size=4 callers=0
+;   empty virtual (retf 6)
 2:373C  ca0600               retf 6
 2:373F  db 00
 
-; ---------------- sub_s2:3740 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_A@s2:3740 FAR size=4 callers=0
+;   empty virtual (retf 0xA)
 2:3740  ca0a00               retf 0xa
 2:3743  db 00
 
-; ---------------- sub_s2:3744 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_C@s2:3744 FAR size=4 callers=0
+;   empty virtual (retf 0xC)
 2:3744  ca0c00               retf 0xc
 2:3747  db 00
 
-; ---------------- sub_s2:3748 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_4@s2:3748 FAR size=4 callers=0
+;   empty virtual (retf 4)
 2:3748  ca0400               retf 4
 2:374B  db 00
 
-; ---------------- sub_s2:374C FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6b@s2:374C FAR size=4 callers=0
+;   empty virtual (retf 6)
 2:374C  ca0600               retf 6
 2:374F  db 00
 
-; ---------------- sub_s2:3750 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_4b@s2:3750 FAR size=4 callers=0
+;   empty virtual (retf 4)
 2:3750  ca0400               retf 4
 2:3753  db 00
 
-; ---------------- sub_s2:3754 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6c@s2:3754 FAR size=4 callers=0
+;   empty virtual (retf 6)
 2:3754  ca0600               retf 6
 2:3757  db 00
 
-; ---------------- sub_s2:3758 FAR size=6 callers=0
+; ---------------- SOLWnd::returnTrue@s2:3758 FAR size=6 callers=0
+;   virtual returning 1
 2:3758  b80100               mov ax, 1
 2:375B  ca0600               retf 6
 
-; ---------------- sub_s2:375E FAR size=4 callers=0
+; ---------------- SOLWnd::nop_Ab@s2:375E FAR size=4 callers=0
+;   empty virtual (retf 0xA)
 2:375E  ca0a00               retf 0xa
 2:3761  db 00
 
-; ---------------- sub_s2:3762 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_8@s2:3762 FAR size=4 callers=0
+;   empty virtual (retf 8)
 2:3762  ca0800               retf 8
 2:3765  db 00
 
-; ---------------- sub_s2:3766 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_Ac@s2:3766 FAR size=4 callers=0
+;   empty virtual (retf 0xA)
 2:3766  ca0a00               retf 0xa
 2:3769  db 00
 
-; ---------------- sub_s2:376A FAR size=4 callers=0
+; ---------------- SOLWnd::nop_Ad@s2:376A FAR size=4 callers=0
+;   empty virtual (retf 0xA)
 2:376A  ca0a00               retf 0xa
 2:376D  db 00
 
-; ---------------- sub_s2:376E FAR size=4 callers=0
+; ---------------- SOLWnd::nop_Ae@s2:376E FAR size=4 callers=0
+;   empty virtual (retf 0xA)
 2:376E  ca0a00               retf 0xa
 2:3771  db 00
 
-; ---------------- sub_s2:3772 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6d@s2:3772 FAR size=4 callers=0
+;   empty virtual (retf 6)
 2:3772  ca0600               retf 6
 2:3775  db 00
 
-; ---------------- sub_s2:3776 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6e@s2:3776 FAR size=4 callers=0
+;   empty virtual (retf 6)
 2:3776  ca0600               retf 6
 2:3779  db 00
 
-; ---------------- sub_s2:377A FAR size=4 callers=0
+; ---------------- SOLWnd::nop_8b@s2:377A FAR size=4 callers=0
+;   empty virtual (retf 8)
 2:377A  ca0800               retf 8
 2:377D  db 00
 
-; ---------------- sub_s2:377E FAR size=44 callers=0
+; ---------------- Object::scalar_dtor@s2:377E FAR size=44 callers=0
+;   base Object deleting destructor (vtable 389A, the root class)
 2:377E  c8040000             enter 4, 0
 2:3782  c45e06               les bx, ptr [bp + 6]
 2:3785  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -5132,7 +5185,8 @@ loc_379F:
 2:37A6  ca0600               retf 6
 2:37A9  db 00
 
-; ---------------- sub_s2:37AA FAR size=58 callers=0
+; ---------------- SOLWnd::scalar_dtor@s2:37AA FAR size=58 callers=0
+;   SOLWnd deleting destructor (vtable 380A)
 2:37AA  c80c0000             enter 0xc, 0
 2:37AE  c45e06               les bx, ptr [bp + 6]
 2:37B1  26c7070a38           mov word ptr es:[bx], 0x380a
@@ -5151,13 +5205,14 @@ loc_37D9:
 2:37E0  ca0600               retf 6
 2:37E3  db 00
 
-; ---------------- sub_s2:37E4 FAR size=330 callers=0
+; ---------------- OpWnd::scalar_dtor@s2:37E4 FAR size=330 callers=0
+;   main window deleting destructor (vtable 389E)
 2:37E4  55                   push bp
 2:37E5  8bec                 mov bp, sp
 2:37E7  66ff7606             push dword ptr [bp + 6]
 2:37EB  90                   nop
 2:37EC  0e                   push cs
-2:37ED  e828ce               call 0x618  ; sub_s2:0618
+2:37ED  e828ce               call 0x618  ; OpWnd::~OpWnd@s2:0618
 2:37F0  f6460a01             test byte ptr [bp + 0xa], 1
 2:37F4  7409                 je 0x37ff
 2:37F6  66ff7606             push dword ptr [bp + 6]
@@ -5187,7 +5242,8 @@ loc_37FF:
 2:3919  db 39 16 9c 20 39 30 9c 24 39 86 9c 28 39 72 12 2c
 2:3929  db 39 aa 12 9c 38
 
-; ---------------- sub_s2:392E FAR size=76 callers=1
+; ---------------- WndHandler::WndHandler@s2:392E FAR size=76 callers=1
+;   handler object attached to a window (vtables 3AA0/3AA8)
 2:392E  c8100000             enter 0x10, 0
 2:3932  c45e06               les bx, ptr [bp + 6]
 2:3935  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -5209,7 +5265,8 @@ loc_37FF:
 2:3976  ca0600               retf 6
 2:3979  db 00
 
-; ---------------- sub_s2:397A FAR size=50 callers=1
+; ---------------- WndHandler::~WndHandler@s2:397A FAR size=50 callers=1
+;   handler dtor
 2:397A  c80c0000             enter 0xc, 0
 2:397E  c45e06               les bx, ptr [bp + 6]
 2:3981  26c707a03a           mov word ptr es:[bx], 0x3aa0  ; '0.76'
@@ -5223,8 +5280,9 @@ loc_37FF:
 2:39A8  c9                   leave
 2:39A9  ca0400               retf 4
 
-; ---------------- sub_s2:39AC FAR size=100 callers=1
+; ---------------- paintSolidBackground@s2:39AC FAR size=100 callers=1
 ;   apis: GDI.CreateSolidBrush, GDI.DeleteObject, USER.BeginPaint, USER.EndPaint, USER.FillRect, USER.GetClientRect
+;   BeginPaint + FillRect with a solid brush
 2:39AC  c82c0000             enter 0x2c, 0
 2:39B0  c45e06               les bx, ptr [bp + 6]
 2:39B3  26ff7704             push word ptr es:[bx + 4]
@@ -5259,11 +5317,13 @@ loc_37FF:
 2:3A0C  c9                   leave
 2:3A0D  ca0400               retf 4
 
-; ---------------- sub_s2:3A10 FAR size=4 callers=0
+; ---------------- WndHandler::nop@s2:3A10 FAR size=4 callers=0
+;   empty virtual
 2:3A10  ca0600               retf 6
 2:3A13  db 00
 
-; ---------------- sub_s2:3A14 FAR size=44 callers=0
+; ---------------- WndHandlerBase::scalar_dtor@s2:3A14 FAR size=44 callers=0
+;   handler base deleting destructor
 2:3A14  c8080000             enter 8, 0
 2:3A18  c45e06               les bx, ptr [bp + 6]
 2:3A1B  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -5279,7 +5339,8 @@ loc_3A35:
 2:3A3C  ca0600               retf 6
 2:3A3F  db 00
 
-; ---------------- sub_s2:3A40 FAR size=58 callers=0
+; ---------------- WndHandler2::scalar_dtor@s2:3A40 FAR size=58 callers=0
+;   second handler base deleting destructor
 2:3A40  c80c0000             enter 0xc, 0
 2:3A44  c45e06               les bx, ptr [bp + 6]
 2:3A47  26c707b03a           mov word ptr es:[bx], 0x3ab0  ; '0.020'
@@ -5298,13 +5359,14 @@ loc_3A6F:
 2:3A76  ca0600               retf 6
 2:3A79  db 00
 
-; ---------------- sub_s2:3A7A FAR size=62 callers=0
+; ---------------- WndHandler::scalar_dtor@s2:3A7A FAR size=62 callers=0
+;   handler deleting destructor
 2:3A7A  55                   push bp
 2:3A7B  8bec                 mov bp, sp
 2:3A7D  66ff7606             push dword ptr [bp + 6]
 2:3A81  90                   nop
 2:3A82  0e                   push cs
-2:3A83  e8f4fe               call 0x397a  ; sub_s2:397A
+2:3A83  e8f4fe               call 0x397a  ; WndHandler::~WndHandler@s2:397A
 2:3A86  f6460a01             test byte ptr [bp + 0xa], 1
 2:3A8A  7409                 je 0x3a95
 2:3A8C  66ff7606             push dword ptr [bp + 6]
@@ -5317,14 +5379,15 @@ loc_3A95:
 2:3A9F  db 90 7a 3a a6 3a 10 3a 50 3a 14 3a ae 3a 10 3a a2
 2:3AAF  db 3a 40 3a b6 3a 10 3a aa 3a
 
-; ---------------- sub_s2:3AB8 FAR size=60 callers=1
+; ---------------- SOLDefaultWnd::SOLDefaultWnd@s2:3AB8 FAR size=60 callers=1
+;   top-level window ctor (class SOLDefaultWindowClass)
 2:3AB8  55                   push bp
 2:3AB9  8bec                 mov bp, sp
 2:3ABB  666a00               push 0
 2:3ABE  66ff7606             push dword ptr [bp + 6]
 2:3AC2  90                   nop
 2:3AC3  0e                   push cs
-2:3AC4  e8b32d               call 0x687a  ; sub_s2:687A
+2:3AC4  e8b32d               call 0x687a  ; SOLChildWnd::SOLChildWnd@s2:687A
 2:3AC7  c45e06               les bx, ptr [bp + 6]
 2:3ACA  26c787de000000       mov word ptr es:[bx + 0xde], 0
 2:3AD1  26c707463b           mov word ptr es:[bx], 0x3b46  ; '0.000'
@@ -5340,20 +5403,22 @@ loc_3A95:
 2:3AF0  c9                   leave
 2:3AF1  ca0400               retf 4
 
-; ---------------- sub_s2:3AF4 FAR size=10 callers=1
+; ---------------- SOLDefaultWnd::onDestroy@s2:3AF4 FAR size=10 callers=1
 ;   apis: USER.PostQuitMessage
+;   PostQuitMessage
 2:3AF4  6a00                 push 0
 2:3AF6  9affff0000           lcall 0, 0xffff  ; USER.PostQuitMessage
 2:3AFB  ca0400               retf 4
 
-; ---------------- sub_s2:3AFE size=216 callers=0
+; ---------------- SOLDefaultWnd::scalar_dtor@s2:3AFE size=216 callers=0
+;   deleting destructor
 2:3AFE  c8140000             enter 0x14, 0
 2:3B02  668b4606             mov eax, dword ptr [bp + 6]
 2:3B06  05d200               add ax, 0xd2
 2:3B09  6650                 push eax
 2:3B0B  90                   nop
 2:3B0C  0e                   push cs
-2:3B0D  e8b41c               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:3B0D  e8b41c               call 0x57c4  ; List::~List@s2:57C4
 2:3B10  c45e06               les bx, ptr [bp + 6]
 2:3B13  26c7070a38           mov word ptr es:[bx], 0x380a
 2:3B18  26c747022a3b         mov word ptr es:[bx + 2], 0x3b2a  ; SEGMENT s2:0000 | '0.011'
@@ -5380,7 +5445,8 @@ loc_3B3B:
 2:3BC5  db 3b 30 9c cc 3b 86 9c d0 3b c4 9c d4 3b e0 9c 1c
 2:3BD5  db 3b
 
-; ---------------- sub_s2:3BD6 FAR size=94 callers=15
+; ---------------- PalDialog::PalDialog@s2:3BD6 FAR size=94 callers=15
+;   dialog with its own palette (base of the game's DIB dialogs: launch, report, interview...)
 2:3BD6  55                   push bp
 2:3BD7  8bec                 mov bp, sp
 2:3BD9  66ff7616             push dword ptr [bp + 0x16]
@@ -5389,7 +5455,7 @@ loc_3B3B:
 2:3BE4  666a00               push 0
 2:3BE7  66ff7608             push dword ptr [bp + 8]
 2:3BEB  ff7606               push word ptr [bp + 6]
-2:3BEE  9ab88f123c           lcall 0x3c12, 0x8fb8  ; sub_s9:8FB8
+2:3BEE  9ab88f123c           lcall 0x3c12, 0x8fb8  ; OPCtrl::OPCtrl@s9:8FB8
 2:3BF3  c45e06               les bx, ptr [bp + 6]
 2:3BF6  26c707fc3c           mov word ptr es:[bx], 0x3cfc
 2:3BFB  26c74702483b         mov word ptr es:[bx + 2], 0x3b48  ; SEGMENT s2:0000
@@ -5398,19 +5464,20 @@ loc_3B3B:
 2:3C08  6626894726           mov dword ptr es:[bx + 0x26], eax
 2:3C0D  06                   push es
 2:3C0E  53                   push bx
-2:3C0F  9a52921b3c           lcall 0x3c1b, 0x9252  ; sub_s9:9252
+2:3C0F  9a52921b3c           lcall 0x3c1b, 0x9252  ; OPCtrl::layout@s9:9252
 2:3C14  66ff7606             push dword ptr [bp + 6]
-2:3C18  9adc92283c           lcall 0x3c28, 0x92dc  ; sub_s9:92DC
+2:3C18  9adc92283c           lcall 0x3c28, 0x92dc  ; OPCtrl::create@s9:92DC
 2:3C1D  66ff760c             push dword ptr [bp + 0xc]
 2:3C21  66ff7606             push dword ptr [bp + 6]
-2:3C25  9aaa93e52b           lcall 0x2be5, 0x93aa  ; sub_s9:93AA
+2:3C25  9aaa93e52b           lcall 0x2be5, 0x93aa  ; OPCtrl::move@s9:93AA
 2:3C2A  8b4606               mov ax, word ptr [bp + 6]
 2:3C2D  8b5608               mov dx, word ptr [bp + 8]
 2:3C30  c9                   leave
 2:3C31  ca1400               retf 0x14
 
-; ---------------- sub_s2:3C34 size=158 callers=0
+; ---------------- PalDialog::onDestroy@s2:3C34 size=158 callers=0
 ;   apis: GDI.DeleteObject, USER.SelectPalette
+;   releases the dialog palette
 2:3C34  c8120000             enter 0x12, 0
 2:3C38  c45e06               les bx, ptr [bp + 6]
 2:3C3B  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -5443,7 +5510,7 @@ loc_3C7E:
 2:3C93  ff76f8               push word ptr [bp - 8]
 2:3C96  90                   nop
 2:3C97  0e                   push cs
-2:3C98  e86d11               call 0x4e08  ; sub_s2:4E08
+2:3C98  e86d11               call 0x4e08  ; Palette::selectAndRealize@s2:4E08
 2:3C9B  8946f6               mov word ptr [bp - 0xa], ax
 2:3C9E  8d460c               lea ax, [bp + 0xc]
 2:3CA1  16                   push ss
@@ -5467,14 +5534,16 @@ loc_3CCD:
 2:3CCE  ca0800               retf 8
 2:3CD1  db 00
 
-; ---------------- sub_s2:3CD2 FAR size=4 callers=0
+; ---------------- PalDialog::nop@s2:3CD2 FAR size=4 callers=0
+;   empty virtual
 2:3CD2  ca0800               retf 8
 2:3CD5  db 00
 
-; ---------------- sub_s2:3CD6 FAR size=74 callers=0
+; ---------------- PalDialog::scalar_dtor@s2:3CD6 FAR size=74 callers=0
+;   deleting destructor
 2:3CD6  c8040000             enter 4, 0
 2:3CDA  66ff7606             push dword ptr [bp + 6]
-2:3CDE  9a1e91f13b           lcall 0x3bf1, 0x911e  ; sub_s9:911E
+2:3CDE  9a1e91f13b           lcall 0x3bf1, 0x911e  ; OPCtrl::~OPCtrl@s9:911E
 2:3CE3  f6460a01             test byte ptr [bp + 0xa], 1
 2:3CE7  7409                 je 0x3cf2
 2:3CE9  66ff7606             push dword ptr [bp + 6]
@@ -5488,8 +5557,9 @@ loc_3CF2:
 2:3D0C  db 34 3c 16 3d fc 94 1a 3d d2 3c ff 3b e6 93 1e 3d
 2:3D1C  db 04 94 e1 3c
 
-; ---------------- sub_s2:3D20 FAR size=32 callers=0
+; ---------------- SOLControl::notifyParent@s2:3D20 FAR size=32 callers=0
 ;   apis: USER.PostMessage
+;   posts WM_COMMAND(id) to the parent window
 2:3D20  55                   push bp
 2:3D21  8bec                 mov bp, sp
 2:3D23  c45e06               les bx, ptr [bp + 6]
@@ -5502,11 +5572,13 @@ loc_3CF2:
 2:3D3C  ca0a00               retf 0xa
 2:3D3F  db 00
 
-; ---------------- sub_s2:3D40 FAR size=4 callers=0
+; ---------------- SOLControl::nop@s2:3D40 FAR size=4 callers=0
+;   empty virtual
 2:3D40  ca0a00               retf 0xa
 2:3D43  db 00
 
-; ---------------- sub_s2:3D44 FAR size=202 callers=0
+; ---------------- SOLWndDerived::scalar_dtor@s2:3D44 FAR size=202 callers=0
+;   deleting destructor of a SOLWnd subclass
 2:3D44  c8100000             enter 0x10, 0
 2:3D48  c45e06               les bx, ptr [bp + 6]
 2:3D4B  26c7070a38           mov word ptr es:[bx], 0x380a
@@ -5534,7 +5606,8 @@ loc_3D73:
 2:3DFD  db 3e 30 9c 04 3e 86 9c 08 3e c4 9c 0c 3e e0 9c 54
 2:3E0D  db 3d
 
-; ---------------- sub_s2:3E0E FAR size=42 callers=7
+; ---------------- Handler::callVslot1@s2:3E0E FAR size=42 callers=7
+;   calls the handler at this+4, vslot 1
 2:3E0E  55                   push bp
 2:3E0F  8bec                 mov bp, sp
 2:3E11  c45e06               les bx, ptr [bp + 6]
@@ -5550,7 +5623,8 @@ loc_3E34:
 2:3E34  c9                   leave
 2:3E35  ca0c00               retf 0xc
 
-; ---------------- sub_s2:3E38 FAR size=28 callers=53
+; ---------------- Pos3::Pos3@s2:3E38 FAR size=28 callers=54
+;   position (x, y, level) = 0
 2:3E38  55                   push bp
 2:3E39  8bec                 mov bp, sp
 2:3E3B  33c0                 xor ax, ax
@@ -5564,7 +5638,8 @@ loc_3E34:
 2:3E50  ca0400               retf 4
 2:3E53  db 00
 
-; ---------------- sub_s2:3E54 FAR size=34 callers=19
+; ---------------- Pos3::Pos3(x,y,z)@s2:3E54 FAR size=34 callers=19
+;   position ctor
 2:3E54  55                   push bp
 2:3E55  8bec                 mov bp, sp
 2:3E57  8b460e               mov ax, word ptr [bp + 0xe]
@@ -5579,7 +5654,8 @@ loc_3E34:
 2:3E72  c9                   leave
 2:3E73  ca0a00               retf 0xa
 
-; ---------------- sub_s2:3E76 FAR size=30 callers=32
+; ---------------- Pos3::set@s2:3E76 FAR size=30 callers=32
+;   sets x, y, level
 2:3E76  55                   push bp
 2:3E77  8bec                 mov bp, sp
 2:3E79  8b460e               mov ax, word ptr [bp + 0xe]
@@ -5592,7 +5668,8 @@ loc_3E34:
 2:3E90  c9                   leave
 2:3E91  ca0a00               retf 0xa
 
-; ---------------- sub_s2:3E94 FAR size=32 callers=51
+; ---------------- Pos3::getXY@s2:3E94 FAR size=32 callers=51
+;   unpacks x, y
 2:3E94  55                   push bp
 2:3E95  8bec                 mov bp, sp
 2:3E97  c45e06               les bx, ptr [bp + 6]
@@ -5606,7 +5683,8 @@ loc_3E34:
 2:3EB0  c9                   leave
 2:3EB1  ca0c00               retf 0xc
 
-; ---------------- sub_s2:3EB4 FAR size=46 callers=42
+; ---------------- Pos3::get@s2:3EB4 FAR size=46 callers=42
+;   unpacks x, y, level
 2:3EB4  55                   push bp
 2:3EB5  8bec                 mov bp, sp
 2:3EB7  c45e06               les bx, ptr [bp + 6]
@@ -5625,7 +5703,8 @@ loc_3E34:
 2:3EDE  ca1000               retf 0x10
 2:3EE1  db 00
 
-; ---------------- sub_s2:3EE2 FAR size=80 callers=1
+; ---------------- Pos3::spanTo@s2:3EE2 FAR size=80 callers=1
+;   |b - a| + 1 on each axis (size of a box between two corners)
 2:3EE2  c8120000             enter 0x12, 0
 2:3EE6  c45e0a               les bx, ptr [bp + 0xa]
 2:3EE9  268b07               mov ax, word ptr es:[bx]
@@ -5660,7 +5739,8 @@ loc_3F29:
 2:3F2E  c9                   leave
 2:3F2F  ca0800               retf 8
 
-; ---------------- sub_s2:3F32 FAR size=48 callers=6
+; ---------------- Pos3::add@s2:3F32 FAR size=48 callers=6
+;   adds another position
 2:3F32  55                   push bp
 2:3F33  8bec                 mov bp, sp
 2:3F35  c45e0a               les bx, ptr [bp + 0xa]
@@ -5679,7 +5759,8 @@ loc_3F29:
 2:3F5E  ca0800               retf 8
 2:3F61  db 00
 
-; ---------------- sub_s2:3F62 FAR size=48 callers=44
+; ---------------- Pos3::assign@s2:3F62 FAR size=48 callers=44
+;   copies another position
 2:3F62  55                   push bp
 2:3F63  8bec                 mov bp, sp
 2:3F65  c45e0a               les bx, ptr [bp + 0xa]
@@ -5698,13 +5779,14 @@ loc_3F29:
 2:3F8E  ca0800               retf 8
 2:3F91  db 00
 
-; ---------------- sub_s2:3F92 FAR size=132 callers=5
+; ---------------- DIB::DIB(copy)@s2:3F92 FAR size=132 callers=5
+;   DIB copy ctor (vtable 48DE)
 2:3F92  55                   push bp
 2:3F93  8bec                 mov bp, sp
 2:3F95  66ff7606             push dword ptr [bp + 6]
 2:3F99  90                   nop
 2:3F9A  0e                   push cs
-2:3F9B  e81617               call 0x56b4  ; sub_s2:56B4
+2:3F9B  e81617               call 0x56b4  ; PaletteHolder::PaletteHolder@s2:56B4
 2:3F9E  c45e06               les bx, ptr [bp + 6]
 2:3FA1  662bc0               sub eax, eax
 2:3FA4  6626894706           mov dword ptr es:[bx + 6], eax
@@ -5733,28 +5815,29 @@ loc_3FE0:
 2:3FF0  66ff7606             push dword ptr [bp + 6]
 2:3FF4  90                   nop
 2:3FF5  0e                   push cs
-2:3FF6  e81b02               call 0x4214  ; sub_s2:4214
+2:3FF6  e81b02               call 0x4214  ; DIB::takeFrom@s2:4214
 2:3FF9  66ff7606             push dword ptr [bp + 6]
 2:3FFD  90                   nop
 2:3FFE  0e                   push cs
-2:3FFF  e8ca07               call 0x47cc  ; sub_s2:47CC
+2:3FFF  e8ca07               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 2:4002  66ff7606             push dword ptr [bp + 6]
 2:4006  90                   nop
 2:4007  0e                   push cs
-2:4008  e82908               call 0x4834  ; sub_s2:4834
+2:4008  e82908               call 0x4834  ; DIB::ensureBits@s2:4834
 2:400B  8b4606               mov ax, word ptr [bp + 6]
 2:400E  8b5608               mov dx, word ptr [bp + 8]
 2:4011  c9                   leave
 2:4012  ca0800               retf 8
 2:4015  db 00
 
-; ---------------- sub_s2:4016 FAR size=70 callers=3
+; ---------------- DIB::DIB@s2:4016 FAR size=70 callers=3
+;   empty DIB
 2:4016  55                   push bp
 2:4017  8bec                 mov bp, sp
 2:4019  66ff7606             push dword ptr [bp + 6]
 2:401D  90                   nop
 2:401E  0e                   push cs
-2:401F  e89216               call 0x56b4  ; sub_s2:56B4
+2:401F  e89216               call 0x56b4  ; PaletteHolder::PaletteHolder@s2:56B4
 2:4022  c45e06               les bx, ptr [bp + 6]
 2:4025  662bc0               sub eax, eax
 2:4028  6626894706           mov dword ptr es:[bx + 6], eax
@@ -5771,14 +5854,15 @@ loc_3FE0:
 2:4058  c9                   leave
 2:4059  ca0400               retf 4
 
-; ---------------- sub_s2:405C FAR size=352 callers=3
+; ---------------- DIB::DIB(w,h,bpp)@s2:405C FAR size=352 callers=3
+;   new DIB of a size
 2:405C  c8080000             enter 8, 0
 2:4060  57                   push di
 2:4061  56                   push si
 2:4062  66ff7606             push dword ptr [bp + 6]
 2:4066  90                   nop
 2:4067  0e                   push cs
-2:4068  e84916               call 0x56b4  ; sub_s2:56B4
+2:4068  e84916               call 0x56b4  ; PaletteHolder::PaletteHolder@s2:56B4
 2:406B  c45e06               les bx, ptr [bp + 6]
 2:406E  662bc0               sub eax, eax
 2:4071  6626894706           mov dword ptr es:[bx + 6], eax
@@ -5818,7 +5902,7 @@ loc_3FE0:
 2:40D6  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
 2:40DB  6650                 push eax
 2:40DD  6a01                 push 1
-2:40DF  9a480a713d           lcall 0x3d71, 0xa48  ; sub_s1:0A48
+2:40DF  9a480a713d           lcall 0x3d71, 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 2:40E4  c45e06               les bx, ptr [bp + 6]
 2:40E7  26894706             mov word ptr es:[bx + 6], ax
 2:40EB  26895708             mov word ptr es:[bx + 8], dx
@@ -5826,7 +5910,7 @@ loc_3FE0:
 2:40F0  53                   push bx
 2:40F1  90                   nop
 2:40F2  0e                   push cs
-2:40F3  e8d606               call 0x47cc  ; sub_s2:47CC
+2:40F3  e8d606               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 2:40F6  c45e06               les bx, ptr [bp + 6]
 2:40F9  26897f18             mov word ptr es:[bx + 0x18], di
 2:40FD  2689771a             mov word ptr es:[bx + 0x1a], si
@@ -5866,13 +5950,13 @@ loc_3FE0:
 2:4195  66ff7606             push dword ptr [bp + 6]
 2:4199  90                   nop
 2:419A  0e                   push cs
-2:419B  e89606               call 0x4834  ; sub_s2:4834
+2:419B  e89606               call 0x4834  ; DIB::ensureBits@s2:4834
 2:419E  66ff760a             push dword ptr [bp + 0xa]
 2:41A2  c45e06               les bx, ptr [bp + 6]
 2:41A5  6626ff770a           push dword ptr es:[bx + 0xa]
 2:41AA  90                   nop
 2:41AB  0e                   push cs
-2:41AC  e8d50b               call 0x4d84  ; sub_s2:4D84
+2:41AC  e8d50b               call 0x4d84  ; MemBlock::copyFrom@s2:4D84
 2:41AF  8b4606               mov ax, word ptr [bp + 6]
 2:41B2  8b5608               mov dx, word ptr [bp + 8]
 2:41B5  5e                   pop si
@@ -5881,7 +5965,8 @@ loc_3FE0:
 2:41B8  ca0c00               retf 0xc
 2:41BB  db 00
 
-; ---------------- sub_s2:41BC FAR size=88 callers=6
+; ---------------- DIB::~DIB@s2:41BC FAR size=88 callers=6
+;   frees the bits and the header
 2:41BC  c8100000             enter 0x10, 0
 2:41C0  56                   push si
 2:41C1  c45e06               les bx, ptr [bp + 6]
@@ -5914,7 +5999,8 @@ loc_4200:
 2:4210  ca0400               retf 4
 2:4213  db 00
 
-; ---------------- sub_s2:4214 FAR size=96 callers=2
+; ---------------- DIB::takeFrom@s2:4214 FAR size=96 callers=2
+;   moves another DIB's bits into this one
 2:4214  c8080000             enter 8, 0
 2:4218  56                   push si
 2:4219  c45e0a               les bx, ptr [bp + 0xa]
@@ -5947,8 +6033,9 @@ loc_4251:
 2:4270  c9                   leave
 2:4271  ca0800               retf 8
 
-; ---------------- sub_s2:4274 size=168 callers=0
+; ---------------- DIB::clone@s2:4274 size=168 callers=0
 ;   apis: KERNEL.hmemcpy
+;   (vslot 7) copies header and bits
 2:4274  c8100000             enter 0x10, 0
 2:4278  c45e06               les bx, ptr [bp + 6]
 2:427B  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -5960,14 +6047,14 @@ loc_4283:
 2:4287  ca0400               retf 4
 loc_428A:
 2:428A  6626ff7706           push dword ptr es:[bx + 6]
-2:428F  9a8412a642           lcall 0x42a6, 0x1284  ; sub_s1:1284
+2:428F  9a8412a642           lcall 0x42a6, 0x1284  ; SH_MemSizePtr@s1:1284
 2:4294  8946fc               mov word ptr [bp - 4], ax
 2:4297  8956fe               mov word ptr [bp - 2], dx
 2:429A  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
 2:429F  52                   push dx
 2:42A0  50                   push ax
 2:42A1  6a01                 push 1
-2:42A3  9a480acc42           lcall 0x42cc, 0xa48  ; sub_s1:0A48
+2:42A3  9a480acc42           lcall 0x42cc, 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 2:42A8  8946f8               mov word ptr [bp - 8], ax
 2:42AB  8956fa               mov word ptr [bp - 6], dx
 2:42AE  0bd0                 or dx, ax
@@ -5988,7 +6075,7 @@ loc_428A:
 2:42DB  50                   push ax
 2:42DC  90                   nop
 2:42DD  0e                   push cs
-2:42DE  e835fd               call 0x4016  ; sub_s2:4016
+2:42DE  e835fd               call 0x4016  ; DIB::DIB@s2:4016
 2:42E1  8ec2                 mov es, dx
 2:42E3  8bd8                 mov bx, ax
 2:42E5  eb05                 jmp 0x42ec
@@ -6005,11 +6092,11 @@ loc_42EC:
 2:42FC  53                   push bx
 2:42FD  90                   nop
 2:42FE  0e                   push cs
-2:42FF  e8ca04               call 0x47cc  ; sub_s2:47CC
+2:42FF  e8ca04               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 2:4302  66ff76f4             push dword ptr [bp - 0xc]
 2:4306  90                   nop
 2:4307  0e                   push cs
-2:4308  e82905               call 0x4834  ; sub_s2:4834
+2:4308  e82905               call 0x4834  ; DIB::ensureBits@s2:4834
 2:430B  c45ef4               les bx, ptr [bp - 0xc]
 2:430E  26c7471c0100         mov word ptr es:[bx + 0x1c], 1
 2:4314  8bc3                 mov ax, bx
@@ -6017,7 +6104,8 @@ loc_42EC:
 2:4318  c9                   leave
 2:4319  ca0400               retf 4
 
-; ---------------- sub_s2:431C FAR size=176 callers=1
+; ---------------- DIB::fill@s2:431C FAR size=176 callers=1
+;   fills the bits with a colour index
 2:431C  c80a0000             enter 0xa, 0
 2:4320  c45e06               les bx, ptr [bp + 6]
 2:4323  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6026,7 +6114,7 @@ loc_42EC:
 2:432C  53                   push bx
 2:432D  90                   nop
 2:432E  0e                   push cs
-2:432F  e89a04               call 0x47cc  ; sub_s2:47CC
+2:432F  e89a04               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_4332:
 2:4332  c45e06               les bx, ptr [bp + 6]
 2:4335  268b4708             mov ax, word ptr es:[bx + 8]
@@ -6051,7 +6139,7 @@ loc_435C:
 2:4367  53                   push bx
 2:4368  90                   nop
 2:4369  0e                   push cs
-2:436A  e8c704               call 0x4834  ; sub_s2:4834
+2:436A  e8c704               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_436D:
 2:436D  c746fa0100           mov word ptr [bp - 6], 1
 2:4372  ebd0                 jmp 0x4344
@@ -6073,7 +6161,7 @@ loc_4382:
 2:439C  66ff7606             push dword ptr [bp + 6]
 2:43A0  90                   nop
 2:43A1  0e                   push cs
-2:43A2  e89f01               call 0x4544  ; sub_s2:4544
+2:43A2  e89f01               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:43A5  8946f6               mov word ptr [bp - 0xa], ax
 2:43A8  c45e06               les bx, ptr [bp + 6]
 2:43AB  26c45f10             les bx, ptr es:[bx + 0x10]
@@ -6083,7 +6171,7 @@ loc_4382:
 2:43B8  50                   push ax
 2:43B9  52                   push dx
 2:43BA  ff76f6               push word ptr [bp - 0xa]
-2:43BD  9a06499242           lcall 0x4292, 0x4906  ; sub_s1:4906
+2:43BD  9a06499242           lcall 0x4292, 0x4906  ; _fmemset@s1:4906
 2:43C2  83c408               add sp, 8
 2:43C5  ebb7                 jmp 0x437e
 2:43C7  db 90
@@ -6091,7 +6179,8 @@ loc_43C8:
 2:43C8  c9                   leave
 2:43C9  ca0600               retf 6
 
-; ---------------- sub_s2:43CC FAR size=90 callers=1
+; ---------------- DIB::width@s2:43CC FAR size=90 callers=1
+;   width from the header (loads it first)
 2:43CC  c8060000             enter 6, 0
 2:43D0  c45e06               les bx, ptr [bp + 6]
 2:43D3  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6100,7 +6189,7 @@ loc_43C8:
 2:43DC  53                   push bx
 2:43DD  90                   nop
 2:43DE  0e                   push cs
-2:43DF  e8ea03               call 0x47cc  ; sub_s2:47CC
+2:43DF  e8ea03               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_43E2:
 2:43E2  c45e06               les bx, ptr [bp + 6]
 2:43E5  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6121,7 +6210,7 @@ loc_4400:
 2:4409  53                   push bx
 2:440A  90                   nop
 2:440B  0e                   push cs
-2:440C  e82504               call 0x4834  ; sub_s2:4834
+2:440C  e82504               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_440F:
 2:440F  c746fe0100           mov word ptr [bp - 2], 1
 2:4414  ebdc                 jmp 0x43f2
@@ -6133,7 +6222,8 @@ loc_4416:
 2:4422  ca0400               retf 4
 2:4425  db 00
 
-; ---------------- sub_s2:4426 FAR size=90 callers=0
+; ---------------- DIB::height@s2:4426 FAR size=90 callers=0
+;   (vslot 5) height from the header
 2:4426  c8060000             enter 6, 0
 2:442A  c45e06               les bx, ptr [bp + 6]
 2:442D  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6142,7 +6232,7 @@ loc_4416:
 2:4436  53                   push bx
 2:4437  90                   nop
 2:4438  0e                   push cs
-2:4439  e89003               call 0x47cc  ; sub_s2:47CC
+2:4439  e89003               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_443C:
 2:443C  c45e06               les bx, ptr [bp + 6]
 2:443F  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6163,7 +6253,7 @@ loc_445A:
 2:4463  53                   push bx
 2:4464  90                   nop
 2:4465  0e                   push cs
-2:4466  e8cb03               call 0x4834  ; sub_s2:4834
+2:4466  e8cb03               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_4469:
 2:4469  c746fe0100           mov word ptr [bp - 2], 1
 2:446E  ebdc                 jmp 0x444c
@@ -6175,7 +6265,8 @@ loc_4470:
 2:447C  ca0400               retf 4
 2:447F  db 00
 
-; ---------------- sub_s2:4480 FAR size=196 callers=15
+; ---------------- DIB::blitRect@s2:4480 FAR size=196 callers=15
+;   copies a rectangle into another DIB
 2:4480  c81a0000             enter 0x1a, 0
 2:4484  8d46fe               lea ax, [bp - 2]
 2:4487  16                   push ss
@@ -6186,11 +6277,11 @@ loc_4470:
 2:448E  66ff760a             push dword ptr [bp + 0xa]
 2:4492  90                   nop
 2:4493  0e                   push cs
-2:4494  e8fdf9               call 0x3e94  ; sub_s2:3E94
+2:4494  e8fdf9               call 0x3e94  ; Pos3::getXY@s2:3E94
 2:4497  66ff760e             push dword ptr [bp + 0xe]
 2:449B  90                   nop
 2:449C  0e                   push cs
-2:449D  e8d202               call 0x4772  ; sub_s2:4772
+2:449D  e8d202               call 0x4772  ; DIB::rect@s2:4772
 2:44A0  8ec2                 mov es, dx
 2:44A2  8bd8                 mov bx, ax
 2:44A4  8946f8               mov word ptr [bp - 8], ax
@@ -6218,7 +6309,7 @@ loc_44C3:
 2:44DB  66ff7606             push dword ptr [bp + 6]
 2:44DF  90                   nop
 2:44E0  0e                   push cs
-2:44E1  e86000               call 0x4544  ; sub_s2:4544
+2:44E1  e86000               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:44E4  8946ee               mov word ptr [bp - 0x12], ax
 2:44E7  8956f0               mov word ptr [bp - 0x10], dx
 2:44EA  666a00               push 0
@@ -6227,7 +6318,7 @@ loc_44C3:
 2:44F4  66ff760e             push dword ptr [bp + 0xe]
 2:44F8  90                   nop
 2:44F9  0e                   push cs
-2:44FA  e84700               call 0x4544  ; sub_s2:4544
+2:44FA  e84700               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:44FD  8946ea               mov word ptr [bp - 0x16], ax
 2:4500  8956ec               mov word ptr [bp - 0x14], dx
 2:4503  8b46f6               mov ax, word ptr [bp - 0xa]
@@ -6258,7 +6349,8 @@ loc_4540:
 2:4540  c9                   leave
 2:4541  ca0c00               retf 0xc
 
-; ---------------- sub_s2:4544 FAR size=146 callers=8
+; ---------------- DIB::pixelPtr@s2:4544 FAR size=146 callers=8
+;   address of (x, y) in the bottom-up bits, no bounds check
 2:4544  c80a0000             enter 0xa, 0
 2:4548  c45e06               les bx, ptr [bp + 6]
 2:454B  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6267,7 +6359,7 @@ loc_4540:
 2:4554  53                   push bx
 2:4555  90                   nop
 2:4556  0e                   push cs
-2:4557  e87202               call 0x47cc  ; sub_s2:47CC
+2:4557  e87202               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_455A:
 2:455A  c45e06               les bx, ptr [bp + 6]
 2:455D  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6288,7 +6380,7 @@ loc_4578:
 2:4581  53                   push bx
 2:4582  90                   nop
 2:4583  0e                   push cs
-2:4584  e8ad02               call 0x4834  ; sub_s2:4834
+2:4584  e8ad02               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_4587:
 2:4587  c746fa0100           mov word ptr [bp - 6], 1
 2:458C  ebdc                 jmp 0x456a
@@ -6317,8 +6409,9 @@ loc_458E:
 2:45D2  ca0c00               retf 0xc
 2:45D5  db 00
 
-; ---------------- BlitDib_s2_45D6@s2:45D6 FAR size=132 callers=0
+; ---------------- DIB::drawToDC@s2:45D6 FAR size=132 callers=0
 ;   apis: GDI.SetDIBitsToDevice
+;   (vslot 1) SetDIBitsToDevice
 2:45D6  c8080000             enter 8, 0
 2:45DA  56                   push si
 2:45DB  c45e06               les bx, ptr [bp + 6]
@@ -6328,7 +6421,7 @@ loc_458E:
 2:45E7  53                   push bx
 2:45E8  90                   nop
 2:45E9  0e                   push cs
-2:45EA  e8df01               call 0x47cc  ; sub_s2:47CC
+2:45EA  e8df01               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_45ED:
 2:45ED  c45e06               les bx, ptr [bp + 6]
 2:45F0  268b4708             mov ax, word ptr es:[bx + 8]
@@ -6349,7 +6442,7 @@ loc_460A:
 2:4615  53                   push bx
 2:4616  90                   nop
 2:4617  0e                   push cs
-2:4618  e81902               call 0x4834  ; sub_s2:4834
+2:4618  e81902               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_461B:
 2:461B  c746fc0100           mov word ptr [bp - 4], 1
 2:4620  ebdd                 jmp 0x45ff
@@ -6376,8 +6469,9 @@ loc_4622:
 2:4656  c9                   leave
 2:4657  ca0c00               retf 0xc
 
-; ---------------- BlitDib_s2_465A@s2:465A size=138 callers=0
+; ---------------- DIB::stretchToDC@s2:465A size=138 callers=0
 ;   apis: GDI.StretchDIBits
+;   (vslot 4) StretchDIBits
 2:465A  c8060000             enter 6, 0
 2:465E  56                   push si
 2:465F  c45e06               les bx, ptr [bp + 6]
@@ -6387,7 +6481,7 @@ loc_4622:
 2:466B  53                   push bx
 2:466C  90                   nop
 2:466D  0e                   push cs
-2:466E  e85b01               call 0x47cc  ; sub_s2:47CC
+2:466E  e85b01               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_4671:
 2:4671  c45e06               les bx, ptr [bp + 6]
 2:4674  268b4708             mov ax, word ptr es:[bx + 8]
@@ -6408,7 +6502,7 @@ loc_468E:
 2:4699  53                   push bx
 2:469A  90                   nop
 2:469B  0e                   push cs
-2:469C  e89501               call 0x4834  ; sub_s2:4834
+2:469C  e89501               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_469F:
 2:469F  c746fe0100           mov word ptr [bp - 2], 1
 2:46A4  ebdd                 jmp 0x4683
@@ -6437,8 +6531,9 @@ loc_46A6:
 2:46E0  c9                   leave
 2:46E1  ca0c00               retf 0xc
 
-; ---------------- sub_s2:46E4 FAR size=142 callers=1
+; ---------------- DIB::selectPalette@s2:46E4 FAR size=142 callers=1
 ;   apis: USER.RealizePalette, USER.SelectPalette
+;   (vslot 2) makes and realises the DIB's palette
 2:46E4  c8060000             enter 6, 0
 2:46E8  c45e06               les bx, ptr [bp + 6]
 2:46EB  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6447,7 +6542,7 @@ loc_46A6:
 2:46F4  53                   push bx
 2:46F5  90                   nop
 2:46F6  0e                   push cs
-2:46F7  e8d200               call 0x47cc  ; sub_s2:47CC
+2:46F7  e8d200               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_46FA:
 2:46FA  c45e06               les bx, ptr [bp + 6]
 2:46FD  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6466,7 +6561,7 @@ loc_4716:
 2:471F  53                   push bx
 2:4720  90                   nop
 2:4721  0e                   push cs
-2:4722  e80f01               call 0x4834  ; sub_s2:4834
+2:4722  e80f01               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_4725:
 2:4725  c746fe0100           mov word ptr [bp - 2], 1
 2:472A  ebde                 jmp 0x470a
@@ -6475,7 +6570,7 @@ loc_472C:
 2:472F  6626ff770a           push dword ptr es:[bx + 0xa]
 2:4734  90                   nop
 2:4735  0e                   push cs
-2:4736  e8ff06               call 0x4e38  ; CreateGamePalette_s2_4E38@s2:4E38
+2:4736  e8ff06               call 0x4e38  ; CreateGamePalette@s2:4E38
 2:4739  c45e06               les bx, ptr [bp + 6]
 2:473C  2689470e             mov word ptr es:[bx + 0xe], ax
 2:4740  c45e0a               les bx, ptr [bp + 0xa]
@@ -6495,7 +6590,8 @@ loc_472C:
 2:476E  ca0800               retf 8
 2:4771  db 00
 
-; ---------------- sub_s2:4772 FAR size=90 callers=41
+; ---------------- DIB::rect@s2:4772 FAR size=90 callers=41
+;   (0,0)-(w-1,h-1) from the header
 2:4772  c8060000             enter 6, 0
 2:4776  c45e06               les bx, ptr [bp + 6]
 2:4779  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6504,7 +6600,7 @@ loc_472C:
 2:4782  53                   push bx
 2:4783  90                   nop
 2:4784  0e                   push cs
-2:4785  e84400               call 0x47cc  ; sub_s2:47CC
+2:4785  e84400               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 loc_4788:
 2:4788  c45e06               les bx, ptr [bp + 6]
 2:478B  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -6525,7 +6621,7 @@ loc_47A6:
 2:47AF  53                   push bx
 2:47B0  90                   nop
 2:47B1  0e                   push cs
-2:47B2  e87f00               call 0x4834  ; sub_s2:4834
+2:47B2  e87f00               call 0x4834  ; DIB::ensureBits@s2:4834
 loc_47B5:
 2:47B5  c746fe0100           mov word ptr [bp - 2], 1
 2:47BA  ebdc                 jmp 0x4798
@@ -6537,7 +6633,8 @@ loc_47BC:
 2:47C8  ca0400               retf 4
 2:47CB  db 00
 
-; ---------------- sub_s2:47CC FAR size=104 callers=12
+; ---------------- DIB::ensureHeader@s2:47CC FAR size=104 callers=12
+;   loads the header on first use
 2:47CC  55                   push bp
 2:47CD  8bec                 mov bp, sp
 2:47CF  c45e06               les bx, ptr [bp + 6]
@@ -6572,7 +6669,8 @@ loc_4830:
 2:4830  c9                   leave
 2:4831  ca0400               retf 4
 
-; ---------------- sub_s2:4834 FAR size=118 callers=12
+; ---------------- DIB::ensureBits@s2:4834 FAR size=118 callers=12
+;   allocates/loads the bits on first use
 2:4834  c8080000             enter 8, 0
 2:4838  c45e06               les bx, ptr [bp + 6]
 2:483B  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -6605,7 +6703,7 @@ loc_485D:
 2:4881  66ff76f8             push dword ptr [bp - 8]
 2:4885  90                   nop
 2:4886  0e                   push cs
-2:4887  e80e04               call 0x4c98  ; sub_s2:4C98
+2:4887  e80e04               call 0x4c98  ; MemBlock::MemBlock(ptr,size)@s2:4C98
 2:488A  c45e06               les bx, ptr [bp + 6]
 2:488D  2689470a             mov word ptr es:[bx + 0xa], ax
 2:4891  2689570c             mov word ptr es:[bx + 0xc], dx
@@ -6618,7 +6716,8 @@ loc_489A:
 2:48A6  c9                   leave
 2:48A7  ca0400               retf 4
 
-; ---------------- sub_s2:48AA FAR size=14 callers=0
+; ---------------- DIB::field0E@s2:48AA FAR size=14 callers=0
+;   (vslot 6) returns +0x0E
 2:48AA  55                   push bp
 2:48AB  8bec                 mov bp, sp
 2:48AD  c45e06               les bx, ptr [bp + 6]
@@ -6626,13 +6725,14 @@ loc_489A:
 2:48B4  c9                   leave
 2:48B5  ca0400               retf 4
 
-; ---------------- sub_s2:48B8 FAR size=70 callers=0
+; ---------------- DIB::scalar_dtor@s2:48B8 FAR size=70 callers=0
+;   deleting destructor
 2:48B8  55                   push bp
 2:48B9  8bec                 mov bp, sp
 2:48BB  66ff7606             push dword ptr [bp + 6]
 2:48BF  90                   nop
 2:48C0  0e                   push cs
-2:48C1  e8f8f8               call 0x41bc  ; sub_s2:41BC
+2:48C1  e8f8f8               call 0x41bc  ; DIB::~DIB@s2:41BC
 2:48C4  f6460a01             test byte ptr [bp + 0xa], 1
 2:48C8  7409                 je 0x48d3
 2:48CA  66ff7606             push dword ptr [bp + 6]
@@ -6646,7 +6746,8 @@ loc_48D3:
 2:48ED  db 48 5a 46 f4 48 26 44 f8 48 aa 48 fc 48 74 42 cd
 2:48FD  db 41
 
-; ---------------- sub_s2:48FE FAR size=110 callers=6
+; ---------------- BmpFile::BmpFile@s2:48FE FAR size=110 callers=6
+;   a .bmp on disk (name copied)
 2:48FE  c8040000             enter 4, 0
 2:4902  c45e06               les bx, ptr [bp + 6]
 2:4905  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -6668,7 +6769,7 @@ loc_48D3:
 2:4950  66ff760c             push dword ptr [bp + 0xc]
 2:4954  90                   nop
 2:4955  0e                   push cs
-2:4956  e88f17               call 0x60e8  ; sub_s2:60E8
+2:4956  e88f17               call 0x60e8  ; _strdup@s2:60E8
 2:4959  c45e06               les bx, ptr [bp + 6]
 2:495C  26894708             mov word ptr es:[bx + 8], ax
 2:4960  2689570a             mov word ptr es:[bx + 0xa], dx
@@ -6677,8 +6778,9 @@ loc_48D3:
 2:4968  c9                   leave
 2:4969  ca0a00               retf 0xa
 
-; ---------------- sub_s2:496C FAR size=124 callers=7
+; ---------------- BmpFile::~BmpFile@s2:496C FAR size=124 callers=7
 ;   apis: KERNEL._lclose
+;   closes the file, frees the data
 2:496C  c80c0000             enter 0xc, 0
 2:4970  56                   push si
 2:4971  c45e06               les bx, ptr [bp + 6]
@@ -6721,8 +6823,9 @@ loc_49D5:
 2:49E4  c9                   leave
 2:49E5  ca0400               retf 4
 
-; ---------------- sub_s2:49E8 FAR size=374 callers=1
+; ---------------- BmpFile::load@s2:49E8 FAR size=374 callers=1
 ;   apis: KERNEL._hread, KERNEL._lclose, KERNEL._llseek, KERNEL._lopen
+;   (vslot 2) _lopen/_hread the bitmap
 2:49E8  c81a0000             enter 0x1a, 0
 2:49EC  c45e06               les bx, ptr [bp + 6]
 2:49EF  6626837f0800         cmp dword ptr es:[bx + 8], 0
@@ -6783,7 +6886,7 @@ loc_4A68:
 2:4A88  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
 2:4A8D  66ff76fc             push dword ptr [bp - 4]
 2:4A91  6a01                 push 1
-2:4A93  9a480a074b           lcall 0x4b07, 0xa48  ; sub_s1:0A48
+2:4A93  9a480a074b           lcall 0x4b07, 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 2:4A98  c45e06               les bx, ptr [bp + 6]
 2:4A9B  2689471a             mov word ptr es:[bx + 0x1a], ax
 2:4A9F  2689571c             mov word ptr es:[bx + 0x1c], dx
@@ -6825,7 +6928,7 @@ loc_4A68:
 2:4B26  66ff76e6             push dword ptr [bp - 0x1a]
 2:4B2A  90                   nop
 2:4B2B  0e                   push cs
-2:4B2C  e86901               call 0x4c98  ; sub_s2:4C98
+2:4B2C  e86901               call 0x4c98  ; MemBlock::MemBlock(ptr,size)@s2:4C98
 2:4B2F  c45e06               les bx, ptr [bp + 6]
 2:4B32  26894704             mov word ptr es:[bx + 4], ax
 2:4B36  26895706             mov word ptr es:[bx + 6], dx
@@ -6841,10 +6944,11 @@ loc_4B48:
 2:4B55  53                   push bx
 2:4B56  90                   nop
 2:4B57  0e                   push cs
-2:4B58  e83300               call 0x4b8e  ; sub_s2:4B8E
+2:4B58  e83300               call 0x4b8e  ; BmpFile::parseHeader@s2:4B8E
 2:4B5B  e9a7fe               jmp 0x4a05
 
-; ---------------- sub_s2:4B5E FAR size=48 callers=0
+; ---------------- BmpFile::ensureLoaded@s2:4B5E FAR size=48 callers=0
+;   (vslot 1)
 2:4B5E  55                   push bp
 2:4B5F  8bec                 mov bp, sp
 2:4B61  c45e06               les bx, ptr [bp + 6]
@@ -6868,11 +6972,12 @@ loc_4B7E:
 2:4B8A  ca0400               retf 4
 2:4B8D  db 00
 
-; ---------------- sub_s2:4B8E FAR size=152 callers=1
+; ---------------- BmpFile::parseHeader@s2:4B8E FAR size=152 callers=1
+;   reads BITMAPFILEHEADER/INFOHEADER
 2:4B8E  c8180000             enter 0x18, 0
 2:4B92  6a48                 push 0x48
 2:4B94  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:4B99  9aba206035           lcall 0x3560, 0x20ba  ; sub_s3:20BA
+2:4B99  9aba206035           lcall 0x3560, 0x20ba  ; Registry_get@s3:20BA
 2:4B9E  8946fc               mov word ptr [bp - 4], ax
 2:4BA1  8956fe               mov word ptr [bp - 2], dx
 2:4BA4  c45efc               les bx, ptr [bp - 4]
@@ -6898,7 +7003,7 @@ loc_4BC4:
 2:4BD6  6626ff7704           push dword ptr es:[bx + 4]
 2:4BDB  90                   nop
 2:4BDC  0e                   push cs
-2:4BDD  e84601               call 0x4d26  ; sub_s2:4D26
+2:4BDD  e84601               call 0x4d26  ; MemBlock::at@s2:4D26
 2:4BE0  ff46f2               inc word ptr [bp - 0xe]
 loc_4BE3:
 2:4BE3  8b46f4               mov ax, word ptr [bp - 0xc]
@@ -6920,7 +7025,7 @@ loc_4BF6:
 2:4C0A  6626ff7704           push dword ptr es:[bx + 4]
 2:4C0F  90                   nop
 2:4C10  0e                   push cs
-2:4C11  e81201               call 0x4d26  ; sub_s2:4D26
+2:4C11  e81201               call 0x4d26  ; MemBlock::at@s2:4D26
 2:4C14  ff46f0               inc word ptr [bp - 0x10]
 2:4C17  ff46f2               inc word ptr [bp - 0xe]
 loc_4C1A:
@@ -6930,13 +7035,14 @@ loc_4C1A:
 2:4C22  ca0400               retf 4
 2:4C25  db 00
 
-; ---------------- sub_s2:4C26 FAR size=50 callers=0
+; ---------------- BmpFile::scalar_dtor@s2:4C26 FAR size=50 callers=0
+;   deleting destructor
 2:4C26  55                   push bp
 2:4C27  8bec                 mov bp, sp
 2:4C29  66ff7606             push dword ptr [bp + 6]
 2:4C2D  90                   nop
 2:4C2E  0e                   push cs
-2:4C2F  e83afd               call 0x496c  ; sub_s2:496C
+2:4C2F  e83afd               call 0x496c  ; BmpFile::~BmpFile@s2:496C
 2:4C32  f6460a01             test byte ptr [bp + 0xa], 1
 2:4C36  7409                 je 0x4c41
 2:4C38  66ff7606             push dword ptr [bp + 6]
@@ -6948,7 +7054,8 @@ loc_4C41:
 2:4C48  ca0600               retf 6
 2:4C4B  db 90 26 4c 52 4c 5e 4b 56 4c e8 49 7d 49
 
-; ---------------- sub_s2:4C58 FAR size=64 callers=6
+; ---------------- MemBlock::MemBlock@s2:4C58 FAR size=64 callers=6
+;   empty memory block (vtable 4F1C)
 2:4C58  c8040000             enter 4, 0
 2:4C5C  c45e06               les bx, ptr [bp + 6]
 2:4C5F  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -6967,7 +7074,8 @@ loc_4C41:
 2:4C94  ca0400               retf 4
 2:4C97  db 00
 
-; ---------------- sub_s2:4C98 FAR size=68 callers=2
+; ---------------- MemBlock::MemBlock(ptr,size)@s2:4C98 FAR size=68 callers=2
+;   memory block over a buffer
 2:4C98  c8040000             enter 4, 0
 2:4C9C  c45e06               les bx, ptr [bp + 6]
 2:4C9F  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -6987,7 +7095,8 @@ loc_4C41:
 2:4CD8  c9                   leave
 2:4CD9  ca0a00               retf 0xa
 
-; ---------------- sub_s2:4CDC FAR size=74 callers=1
+; ---------------- MemBlock::~MemBlock@s2:4CDC FAR size=74 callers=1
+;   frees owned data
 2:4CDC  c80c0000             enter 0xc, 0
 2:4CE0  c45e06               les bx, ptr [bp + 6]
 2:4CE3  26c7071c4f           mov word ptr es:[bx], 0x4f1c
@@ -7010,7 +7119,8 @@ loc_4D13:
 2:4D22  ca0400               retf 4
 2:4D25  db 00
 
-; ---------------- sub_s2:4D26 FAR size=76 callers=1
+; ---------------- MemBlock::at@s2:4D26 FAR size=76 callers=1
+;   element n, or 0 out of range
 2:4D26  55                   push bp
 2:4D27  8bec                 mov bp, sp
 2:4D29  56                   push si
@@ -7043,7 +7153,8 @@ loc_4D4C:
 2:4D6E  c9                   leave
 2:4D6F  ca0a00               retf 0xa
 
-; ---------------- sub_s2:4D72 FAR size=18 callers=9
+; ---------------- MemBlock::data@s2:4D72 FAR size=18 callers=9
+;   returns the data pointer
 2:4D72  55                   push bp
 2:4D73  8bec                 mov bp, sp
 2:4D75  c45e06               les bx, ptr [bp + 6]
@@ -7052,7 +7163,8 @@ loc_4D4C:
 2:4D80  c9                   leave
 2:4D81  ca0400               retf 4
 
-; ---------------- sub_s2:4D84 FAR size=132 callers=9
+; ---------------- MemBlock::copyFrom@s2:4D84 FAR size=132 callers=9
+;   reallocates and copies another block
 2:4D84  c8080000             enter 8, 0
 2:4D88  c45e06               les bx, ptr [bp + 6]
 2:4D8B  26837f1200           cmp word ptr es:[bx + 0x12], 0
@@ -7089,21 +7201,22 @@ loc_4DE8:
 2:4DEE  6626ff7704           push dword ptr es:[bx + 4]
 2:4DF3  c45e06               les bx, ptr [bp + 6]
 2:4DF6  6626ff7704           push dword ptr es:[bx + 4]
-2:4DFB  9aa848f84c           lcall 0x4cf8, 0x48a8  ; sub_s1:48A8
+2:4DFB  9aa848f84c           lcall 0x4cf8, 0x48a8  ; _fmemcpy@s1:48A8
 2:4E00  b80100               mov ax, 1
 2:4E03  c9                   leave
 2:4E04  ca0800               retf 8
 2:4E07  db 00
 
-; ---------------- sub_s2:4E08 FAR size=48 callers=11
+; ---------------- Palette::selectAndRealize@s2:4E08 FAR size=48 callers=11
 ;   apis: USER.RealizePalette, USER.SelectPalette
+;   makes the palette, SelectPalette + RealizePalette into a DC
 2:4E08  c8020000             enter 2, 0
 2:4E0C  c45e0a               les bx, ptr [bp + 0xa]
 2:4E0F  26ff37               push word ptr es:[bx]
 2:4E12  66ff7606             push dword ptr [bp + 6]
 2:4E16  90                   nop
 2:4E17  0e                   push cs
-2:4E18  e81d00               call 0x4e38  ; CreateGamePalette_s2_4E38@s2:4E38
+2:4E18  e81d00               call 0x4e38  ; CreateGamePalette@s2:4E38
 2:4E1B  50                   push ax
 2:4E1C  6a00                 push 0
 2:4E1E  9a50470000           lcall 0, 0x4750  ; USER.SelectPalette
@@ -7115,8 +7228,9 @@ loc_4DE8:
 2:4E34  c9                   leave
 2:4E35  ca0800               retf 8
 
-; ---------------- CreateGamePalette_s2_4E38@s2:4E38 FAR size=190 callers=4
+; ---------------- CreateGamePalette@s2:4E38 FAR size=190 callers=4
 ;   apis: GDI.CreatePalette
+;   CreatePalette from a DIB colour table
 2:4E38  c80c0000             enter 0xc, 0
 2:4E3C  c45e06               les bx, ptr [bp + 6]
 2:4E3F  268b470c             mov ax, word ptr es:[bx + 0xc]
@@ -7174,13 +7288,14 @@ loc_4EE8:
 2:4EF2  c9                   leave
 2:4EF3  ca0400               retf 4
 
-; ---------------- sub_s2:4EF6 FAR size=42 callers=0
+; ---------------- MemBlock::scalar_dtor@s2:4EF6 FAR size=42 callers=0
+;   deleting destructor
 2:4EF6  55                   push bp
 2:4EF7  8bec                 mov bp, sp
 2:4EF9  66ff7606             push dword ptr [bp + 6]
 2:4EFD  90                   nop
 2:4EFE  0e                   push cs
-2:4EFF  e8dafd               call 0x4cdc  ; sub_s2:4CDC
+2:4EFF  e8dafd               call 0x4cdc  ; MemBlock::~MemBlock@s2:4CDC
 2:4F02  f6460a01             test byte ptr [bp + 0xa], 1
 2:4F06  7409                 je 0x4f11
 2:4F08  66ff7606             push dword ptr [bp + 6]
@@ -7192,13 +7307,14 @@ loc_4F11:
 2:4F18  ca0600               retf 6
 2:4F1B  db 90 f6 4e ec 4c
 
-; ---------------- sub_s2:4F20 FAR size=328 callers=1
+; ---------------- DibDC::DibDC@s2:4F20 FAR size=328 callers=1
 ;   apis: GDI.CreateDC, GDI.DeleteDC, GDI.DeleteObject, GDI.SetBkColor, GDI.SetTextColor, GDI.TextOut, USER.SelectPalette
+;   device context over a DIB (CreateDC "dib"), text drawing (vtable 50A2)
 2:4F20  c8360000             enter 0x36, 0
 2:4F24  66ff7606             push dword ptr [bp + 6]
 2:4F28  90                   nop
 2:4F29  0e                   push cs
-2:4F2A  e8e9f0               call 0x4016  ; sub_s2:4016
+2:4F2A  e8e9f0               call 0x4016  ; DIB::DIB@s2:4016
 2:4F2D  668b4610             mov eax, dword ptr [bp + 0x10]
 2:4F31  c45e06               les bx, ptr [bp + 6]
 2:4F34  662689471e           mov dword ptr es:[bx + 0x1e], eax
@@ -7210,7 +7326,7 @@ loc_4F11:
 2:4F4E  26c747021e4f         mov word ptr es:[bx + 2], 0x4f1e  ; SEGMENT s2:0000
 2:4F54  6a02                 push 2
 2:4F56  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:4F5B  9a0a839c4b           lcall 0x4b9c, 0x830a  ; sub_s3:830A
+2:4F5B  9a0a839c4b           lcall 0x4b9c, 0x830a  ; ResLibr::picture@s3:830A
 2:4F60  52                   push dx
 2:4F61  50                   push ax
 2:4F62  6a01                 push 1
@@ -7219,28 +7335,28 @@ loc_4F11:
 2:4F68  50                   push ax
 2:4F69  90                   nop
 2:4F6A  0e                   push cs
-2:4F6B  e890f9               call 0x48fe  ; sub_s2:48FE
+2:4F6B  e890f9               call 0x48fe  ; BmpFile::BmpFile@s2:48FE
 2:4F6E  8d46dc               lea ax, [bp - 0x24]
 2:4F71  16                   push ss
 2:4F72  50                   push ax
 2:4F73  90                   nop
 2:4F74  0e                   push cs
-2:4F75  e870fa               call 0x49e8  ; sub_s2:49E8
+2:4F75  e870fa               call 0x49e8  ; BmpFile::load@s2:49E8
 2:4F78  8d46dc               lea ax, [bp - 0x24]
 2:4F7B  16                   push ss
 2:4F7C  50                   push ax
 2:4F7D  66ff7606             push dword ptr [bp + 6]
 2:4F81  90                   nop
 2:4F82  0e                   push cs
-2:4F83  e8e200               call 0x5068  ; sub_s2:5068
+2:4F83  e8e200               call 0x5068  ; DibDC::attach@s2:5068
 2:4F86  66ff7606             push dword ptr [bp + 6]
 2:4F8A  90                   nop
 2:4F8B  0e                   push cs
-2:4F8C  e83df8               call 0x47cc  ; sub_s2:47CC
+2:4F8C  e83df8               call 0x47cc  ; DIB::ensureHeader@s2:47CC
 2:4F8F  66ff7606             push dword ptr [bp + 6]
 2:4F93  90                   nop
 2:4F94  0e                   push cs
-2:4F95  e89cf8               call 0x4834  ; sub_s2:4834
+2:4F95  e89cf8               call 0x4834  ; DIB::ensureBits@s2:4834
 2:4F98  1e                   push ds
 2:4F99  687e02               push 0x27e  ; 'dib'
 2:4F9C  666a00               push 0
@@ -7248,7 +7364,7 @@ loc_4F11:
 2:4FA2  66ff7606             push dword ptr [bp + 6]
 2:4FA6  90                   nop
 2:4FA7  0e                   push cs
-2:4FA8  e8c7f7               call 0x4772  ; sub_s2:4772
+2:4FA8  e8c7f7               call 0x4772  ; DIB::rect@s2:4772
 2:4FAB  8946d8               mov word ptr [bp - 0x28], ax
 2:4FAE  8956da               mov word ptr [bp - 0x26], dx
 2:4FB1  52                   push dx
@@ -7261,7 +7377,7 @@ loc_4F11:
 2:4FC0  66ff7606             push dword ptr [bp + 6]
 2:4FC4  90                   nop
 2:4FC5  0e                   push cs
-2:4FC6  e81bf7               call 0x46e4  ; sub_s2:46E4
+2:4FC6  e81bf7               call 0x46e4  ; DIB::selectPalette@s2:46E4
 2:4FC9  8946d4               mov word ptr [bp - 0x2c], ax
 2:4FCC  ff76d6               push word ptr [bp - 0x2a]
 2:4FCF  6668ffffff00         push 0xffffff
@@ -7277,7 +7393,7 @@ loc_4F11:
 2:4FF5  8956ce               mov word ptr [bp - 0x32], dx
 2:4FF8  c45e06               les bx, ptr [bp + 6]
 2:4FFB  6626ff771e           push dword ptr es:[bx + 0x1e]
-2:5000  9aa43d0f4f           lcall 0x4f0f, 0x3da4  ; sub_s1:3DA4
+2:5000  9aa43d0f4f           lcall 0x4f0f, 0x3da4  ; _fstrlen@s1:3DA4
 2:5005  83c404               add sp, 4
 2:5008  8946ca               mov word ptr [bp - 0x36], ax
 2:500B  ff76d6               push word ptr [bp - 0x2a]
@@ -7305,30 +7421,32 @@ loc_4F11:
 2:5057  50                   push ax
 2:5058  90                   nop
 2:5059  0e                   push cs
-2:505A  e80ff9               call 0x496c  ; sub_s2:496C
+2:505A  e80ff9               call 0x496c  ; BmpFile::~BmpFile@s2:496C
 2:505D  8b4606               mov ax, word ptr [bp + 6]
 2:5060  8b5608               mov dx, word ptr [bp + 8]
 2:5063  c9                   leave
 2:5064  ca0e00               retf 0xe
 2:5067  db 00
 
-; ---------------- sub_s2:5068 FAR size=20 callers=1
+; ---------------- DibDC::attach@s2:5068 FAR size=20 callers=1
+;   takes a DIB's bits
 2:5068  55                   push bp
 2:5069  8bec                 mov bp, sp
 2:506B  66ff760a             push dword ptr [bp + 0xa]
 2:506F  66ff7606             push dword ptr [bp + 6]
 2:5073  90                   nop
 2:5074  0e                   push cs
-2:5075  e89cf1               call 0x4214  ; sub_s2:4214
+2:5075  e89cf1               call 0x4214  ; DIB::takeFrom@s2:4214
 2:5078  c9                   leave
 2:5079  ca0800               retf 8
 
-; ---------------- sub_s2:507C size=70 callers=0
+; ---------------- DibDC::scalar_dtor@s2:507C size=70 callers=0
+;   deleting destructor
 2:507C  c8040000             enter 4, 0
 2:5080  66ff7606             push dword ptr [bp + 6]
 2:5084  90                   nop
 2:5085  0e                   push cs
-2:5086  e833f1               call 0x41bc  ; sub_s2:41BC
+2:5086  e833f1               call 0x41bc  ; DIB::~DIB@s2:41BC
 2:5089  f6460a01             test byte ptr [bp + 0xa], 1
 2:508D  7409                 je 0x5098
 2:508F  66ff7606             push dword ptr [bp + 6]
@@ -7341,7 +7459,8 @@ loc_5098:
 2:50A2  db 7c 50 a8 50 d6 45 ac 50 e4 46 b0 50 e2 56 b4 50
 2:50B2  db 5a 46 b8 50 26 44 bc 50 aa 48 c0 50 74 42 52 4f
 
-; ---------------- sub_s2:50C2 FAR size=86 callers=6
+; ---------------- DibRegion::DibRegion@s2:50C2 FAR size=86 callers=6
+;   a rectangle of a DIB (for saving/restoring what is under an overlay)
 2:50C2  c8040000             enter 4, 0
 2:50C6  c45e12               les bx, ptr [bp + 0x12]
 2:50C9  268b07               mov ax, word ptr es:[bx]
@@ -7363,13 +7482,14 @@ loc_5098:
 2:5108  53                   push bx
 2:5109  90                   nop
 2:510A  0e                   push cs
-2:510B  e8ee01               call 0x52fc  ; sub_s2:52FC
+2:510B  e8ee01               call 0x52fc  ; DibRegion::clip@s2:52FC
 2:510E  8b4606               mov ax, word ptr [bp + 6]
 2:5111  8b5608               mov dx, word ptr [bp + 8]
 2:5114  c9                   leave
 2:5115  ca1400               retf 0x14
 
-; ---------------- sub_s2:5118 FAR size=28 callers=8
+; ---------------- DibRegion::free@s2:5118 FAR size=28 callers=8
+;   frees the saved pixels
 2:5118  55                   push bp
 2:5119  8bec                 mov bp, sp
 2:511B  c45e06               les bx, ptr [bp + 6]
@@ -7381,7 +7501,8 @@ loc_5130:
 2:5130  c9                   leave
 2:5131  ca0400               retf 4
 
-; ---------------- sub_s2:5134 FAR size=258 callers=6
+; ---------------- DibRegion::save@s2:5134 FAR size=258 callers=6
+;   copies the rectangle's pixels into a new buffer
 2:5134  c8180000             enter 0x18, 0
 2:5138  57                   push di
 2:5139  56                   push si
@@ -7393,7 +7514,7 @@ loc_5130:
 2:514C  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
 2:5151  6650                 push eax
 2:5153  6a01                 push 1
-2:5155  9a480a0252           lcall 0x5202, 0xa48  ; sub_s1:0A48
+2:5155  9a480a0252           lcall 0x5202, 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 2:515A  c45e06               les bx, ptr [bp + 6]
 2:515D  26894710             mov word ptr es:[bx + 0x10], ax
 2:5161  26895712             mov word ptr es:[bx + 0x12], dx
@@ -7451,13 +7572,13 @@ loc_51C8:
 2:51E8  6626ff770c           push dword ptr es:[bx + 0xc]
 2:51ED  90                   nop
 2:51EE  0e                   push cs
-2:51EF  e852f3               call 0x4544  ; sub_s2:4544
+2:51EF  e852f3               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:51F2  c45e06               les bx, ptr [bp + 6]
 2:51F5  26ff7704             push word ptr es:[bx + 4]
 2:51F9  52                   push dx
 2:51FA  50                   push ax
 2:51FB  66ff76f8             push dword ptr [bp - 8]
-2:51FF  9aa8482e51           lcall 0x512e, 0x48a8  ; sub_s1:48A8
+2:51FF  9aa8482e51           lcall 0x512e, 0x48a8  ; _fmemcpy@s1:48A8
 2:5204  83c40a               add sp, 0xa
 2:5207  c45e06               les bx, ptr [bp + 6]
 2:520A  268b4704             mov ax, word ptr es:[bx + 4]
@@ -7481,7 +7602,8 @@ loc_522C:
 2:5232  ca0400               retf 4
 2:5235  db 00
 
-; ---------------- sub_s2:5236 FAR size=198 callers=7
+; ---------------- DibRegion::restore@s2:5236 FAR size=198 callers=7
+;   copies the saved pixels back
 2:5236  c8140000             enter 0x14, 0
 2:523A  57                   push di
 2:523B  56                   push si
@@ -7529,13 +7651,13 @@ loc_528E:
 2:52AE  6626ff770c           push dword ptr es:[bx + 0xc]
 2:52B3  90                   nop
 2:52B4  0e                   push cs
-2:52B5  e88cf2               call 0x4544  ; sub_s2:4544
+2:52B5  e88cf2               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:52B8  c45e06               les bx, ptr [bp + 6]
 2:52BB  26ff7704             push word ptr es:[bx + 4]
 2:52BF  66ff76fc             push dword ptr [bp - 4]
 2:52C3  52                   push dx
 2:52C4  50                   push ax
-2:52C5  9aa8485851           lcall 0x5158, 0x48a8  ; sub_s1:48A8
+2:52C5  9aa8485851           lcall 0x5158, 0x48a8  ; _fmemcpy@s1:48A8
 2:52CA  83c40a               add sp, 0xa
 2:52CD  c45e06               les bx, ptr [bp + 6]
 2:52D0  268b4704             mov ax, word ptr es:[bx + 4]
@@ -7559,14 +7681,15 @@ loc_52F2:
 2:52F8  ca0400               retf 4
 2:52FB  db 00
 
-; ---------------- sub_s2:52FC FAR size=152 callers=1
+; ---------------- DibRegion::clip@s2:52FC FAR size=152 callers=1
+;   clips the rectangle to the DIB
 2:52FC  c8100000             enter 0x10, 0
 2:5300  56                   push si
 2:5301  c45e06               les bx, ptr [bp + 6]
 2:5304  6626ff770c           push dword ptr es:[bx + 0xc]
 2:5309  90                   nop
 2:530A  0e                   push cs
-2:530B  e864f4               call 0x4772  ; sub_s2:4772
+2:530B  e864f4               call 0x4772  ; DIB::rect@s2:4772
 2:530E  8bd8                 mov bx, ax
 2:5310  8ec2                 mov es, dx
 2:5312  268b4704             mov ax, word ptr es:[bx + 4]
@@ -7621,7 +7744,8 @@ loc_538E:
 2:5390  ca0400               retf 4
 2:5393  db 90
 
-; ---------------- sub_s2:5394 FAR size=22 callers=1
+; ---------------- NullPtr::init@s2:5394 FAR size=22 callers=1
+;   sets a far pointer to 0
 2:5394  55                   push bp
 2:5395  8bec                 mov bp, sp
 2:5397  c45e06               les bx, ptr [bp + 6]
@@ -7631,12 +7755,14 @@ loc_538E:
 2:53A6  c9                   leave
 2:53A7  ca0400               retf 4
 
-; ---------------- sub_s2:53AA FAR size=4 callers=1
+; ---------------- Op::nop@s2:53AA FAR size=4 callers=1
+;   empty
 2:53AA  ca0400               retf 4
 2:53AD  db 00
 
-; ---------------- Mci_s2_53AE@s2:53AE FAR size=252 callers=1
+; ---------------- playMovieMci@s2:53AE FAR size=252 callers=1
 ;   apis: MMSYSTEM.mciGetErrorString, MMSYSTEM.mciSendCommand
+;   plays an FLC with mciaap.drv (MCI_PLAY, MCI_WAIT)
 2:53AE  c8300400             enter 0x430, 0
 2:53B2  66c746e400000000     mov dword ptr [bp - 0x1c], 0
 2:53BA  c746ec8c02           mov word ptr [bp - 0x14], 0x28c  ; 'mciaap.drv'
@@ -7674,7 +7800,7 @@ loc_541C:
 2:5422  8d46d4               lea ax, [bp - 0x2c]
 2:5425  16                   push ss
 2:5426  50                   push ax
-2:5427  9a0649c852           lcall 0x52c8, 0x4906  ; sub_s1:4906
+2:5427  9a0649c852           lcall 0x52c8, 0x4906  ; _fmemset@s1:4906
 2:542C  83c408               add sp, 8
 2:542F  8b460a               mov ax, word ptr [bp + 0xa]
 2:5432  8946d4               mov word ptr [bp - 0x2c], ax
@@ -7724,7 +7850,8 @@ loc_54A7:
 2:54A8  cb                   retf
 2:54A9  db 90
 
-; ---------------- sub_s2:54AA FAR size=522 callers=1
+; ---------------- WinMain@s2:54AA FAR size=392 callers=1
+;   creates the memory pool, srand(time()), the Op object, runs the message loop
 2:54AA  c8140000             enter 0x14, 0
 2:54AE  57                   push di
 2:54AF  56                   push si
@@ -7737,40 +7864,40 @@ loc_54A7:
 2:54BB  ca0a00               retf 0xa
 loc_54BE:
 2:54BE  666a00               push 0
-2:54C1  9a5c43cd54           lcall 0x54cd, 0x435c  ; sub_s1:435C
+2:54C1  9a5c43cd54           lcall 0x54cd, 0x435c  ; time@s1:435C
 2:54C6  83c404               add sp, 4
 2:54C9  50                   push ax
-2:54CA  9a0c4dd554           lcall 0x54d5, 0x4d0c  ; sub_s1:4D0C
+2:54CA  9a0c4dd554           lcall 0x54d5, 0x4d0c  ; srand@s1:4D0C
 2:54CF  83c402               add sp, 2
-2:54D2  9aea1fe654           lcall 0x54e6, 0x1fea  ; sub_s1:1FEA
+2:54D2  9aea1fe654           lcall 0x54e6, 0x1fea  ; SH_MemRegisterTask@s1:1FEA
 2:54D7  666800001200         push 0x120000
 2:54DD  666800003200         push 0x320000
-2:54E3  9a0219fe54           lcall 0x54fe, 0x1902  ; sub_s1:1902
+2:54E3  9a0219fe54           lcall 0x54fe, 0x1902  ; SH_MemPoolInit@s1:1902
 2:54E8  a3a003               mov word ptr [0x3a0], ax
 2:54EB  8916a203             mov word ptr [0x3a2], dx
 2:54EF  666800000c00         push 0xc0000
 2:54F5  666800006400         push 0x640000
-2:54FB  9a02191655           lcall 0x5516, 0x1902  ; sub_s1:1902
+2:54FB  9a02191655           lcall 0x5516, 0x1902  ; SH_MemPoolInit@s1:1902
 2:5500  a39c02               mov word ptr [0x29c], ax
 2:5503  89169e02             mov word ptr [0x29e], dx
 2:5507  666800001000         push 0x100000
 2:550D  666800006400         push 0x640000
-2:5513  9a02192e55           lcall 0x552e, 0x1902  ; sub_s1:1902
+2:5513  9a02192e55           lcall 0x552e, 0x1902  ; SH_MemPoolInit@s1:1902
 2:5518  a3b84f               mov word ptr [0x4fb8], ax
 2:551B  8916ba4f             mov word ptr [0x4fba], dx
 2:551F  666800000e00         push 0xe0000
 2:5525  666800006400         push 0x640000
-2:552B  9a02194655           lcall 0x5546, 0x1902  ; sub_s1:1902
+2:552B  9a02194655           lcall 0x5546, 0x1902  ; SH_MemPoolInit@s1:1902
 2:5530  a3a268               mov word ptr [0x68a2], ax
 2:5533  8916a468             mov word ptr [0x68a4], dx
 2:5537  666800004200         push 0x420000
 2:553D  66680000f401         push 0x1f40000
-2:5543  9a02195e55           lcall 0x555e, 0x1902  ; sub_s1:1902
+2:5543  9a02195e55           lcall 0x555e, 0x1902  ; SH_MemPoolInit@s1:1902
 2:5548  a34457               mov word ptr [0x5744], ax
 2:554B  89164657             mov word ptr [0x5746], dx
 2:554F  666800000600         push 0x60000
 2:5555  666800003200         push 0x320000
-2:555B  9a02199155           lcall 0x5591, 0x1902  ; sub_s1:1902
+2:555B  9a02199155           lcall 0x5591, 0x1902  ; SH_MemPoolInit@s1:1902
 2:5560  a36857               mov word ptr [0x5768], ax
 2:5563  89166a57             mov word ptr [0x576a], dx
 2:5567  8b460e               mov ax, word ptr [bp + 0xe]
@@ -7782,7 +7909,7 @@ loc_54BE:
 2:5579  66ff7608             push dword ptr [bp + 8]
 2:557D  90                   nop
 2:557E  0e                   push cs
-2:557F  e8660b               call 0x60e8  ; sub_s2:60E8
+2:557F  e8660b               call 0x60e8  ; _strdup@s2:60E8
 2:5582  83c404               add sp, 4
 2:5585  a39203               mov word ptr [0x392], ax
 2:5588  89169403             mov word ptr [0x394], dx
@@ -7796,7 +7923,7 @@ loc_54BE:
 2:55A0  50                   push ax
 2:55A1  90                   nop
 2:55A2  0e                   push cs
-2:55A3  e85aaa               call 0  ; sub_s2:0000
+2:55A3  e85aaa               call 0  ; Op::Op@s2:0000
 2:55A6  eb03                 jmp 0x55ab
 loc_55A8:
 2:55A8  33c0                 xor ax, ax
@@ -7834,31 +7961,79 @@ loc_55CA:
 2:55F3  26ff1c               lcall es:[si]
 loc_55F6:
 2:55F6  66ff36a003           push dword ptr [0x3a0]
-2:55FB  9a681b0856           lcall 0x5608, 0x1b68  ; sub_s1:1B68
+2:55FB  9a681b0856           lcall 0x5608, 0x1b68  ; SH_MemPoolFree@s1:1B68
 2:5600  66ff369c02           push dword ptr [0x29c]
-2:5605  9a681b1256           lcall 0x5612, 0x1b68  ; sub_s1:1B68
+2:5605  9a681b1256           lcall 0x5612, 0x1b68  ; SH_MemPoolFree@s1:1B68
 2:560A  66ff36b84f           push dword ptr [0x4fb8]
-2:560F  9a681b1c56           lcall 0x561c, 0x1b68  ; sub_s1:1B68
+2:560F  9a681b1c56           lcall 0x561c, 0x1b68  ; SH_MemPoolFree@s1:1B68
 2:5614  66ff36a268           push dword ptr [0x68a2]
-2:5619  9a681b2656           lcall 0x5626, 0x1b68  ; sub_s1:1B68
+2:5619  9a681b2656           lcall 0x5626, 0x1b68  ; SH_MemPoolFree@s1:1B68
 2:561E  66ff364457           push dword ptr [0x5744]
-2:5623  9a681b2a54           lcall 0x542a, 0x1b68  ; sub_s1:1B68
+2:5623  9a681b2a54           lcall 0x542a, 0x1b68  ; SH_MemPoolFree@s1:1B68
 2:5628  8b46f4               mov ax, word ptr [bp - 0xc]
 2:562B  5e                   pop si
 2:562C  5f                   pop di
 2:562D  c9                   leave
 2:562E  ca0a00               retf 0xa
-2:5631  db 00 8c d0 c8 18 00 00 1e 8e d8 ff 76 0e 6a 00 9a
-2:5641  db ff ff 00 00 89 46 fc 89 56 fe 8b c2 0b 46 fc 75
-2:5651  db 48 83 7e 0c 01 75 2c 8b 46 06 8b 56 08 8b d8 8e
-2:5661  db c2 66 26 8b 07 66 89 46 fc ff 76 0e 6a 00 66 50
-2:5671  db 9a ff ff 00 00 ff 76 0e 66 ff 76 fc 90 0e e8 a6
-2:5681  db 3f eb 16 66 ff 76 0c 66 ff 76 08 ff 76 06 9a ff
-2:5691  db ff 00 00 1f c9 ca 0a 00 90 66 ff 76 0a 66 ff 76
-2:56A1  db 06 c4 5e fc 06 53 26 c4 1f 26 ff 5f 1c 1f c9 ca
-2:56B1  db 0a 00 90
+2:5631  db 00
 
-; ---------------- sub_s2:56B4 FAR size=46 callers=3
+; ---------------- SOLWndProc@s2:5632 FAR size=130 callers=0
+;   apis: USER.DefWindowProc, USER.GetWindowLong, USER.SetWindowLong
+;   the window procedure of the SOL window classes: the C++ object from the window long, dispatch
+2:5632  8cd0                 mov ax, ss
+2:5634  c8180000             enter 0x18, 0
+2:5638  1e                   push ds
+2:5639  8ed8                 mov ds, ax
+2:563B  ff760e               push word ptr [bp + 0xe]
+2:563E  6a00                 push 0
+2:5640  9affff0000           lcall 0, 0xffff  ; USER.GetWindowLong
+2:5645  8946fc               mov word ptr [bp - 4], ax
+2:5648  8956fe               mov word ptr [bp - 2], dx
+2:564B  8bc2                 mov ax, dx
+2:564D  0b46fc               or ax, word ptr [bp - 4]
+2:5650  7548                 jne 0x569a
+2:5652  837e0c01             cmp word ptr [bp + 0xc], 1
+2:5656  752c                 jne 0x5684
+2:5658  8b4606               mov ax, word ptr [bp + 6]
+2:565B  8b5608               mov dx, word ptr [bp + 8]
+2:565E  8bd8                 mov bx, ax
+2:5660  8ec2                 mov es, dx
+2:5662  66268b07             mov eax, dword ptr es:[bx]
+2:5666  668946fc             mov dword ptr [bp - 4], eax
+2:566A  ff760e               push word ptr [bp + 0xe]
+2:566D  6a00                 push 0
+2:566F  6650                 push eax
+2:5671  9affff0000           lcall 0, 0xffff  ; USER.SetWindowLong
+2:5676  ff760e               push word ptr [bp + 0xe]
+2:5679  66ff76fc             push dword ptr [bp - 4]
+2:567D  90                   nop
+2:567E  0e                   push cs
+2:567F  e8a63f               call 0x9628  ; SOLWnd::setHwnd@s2:9628
+2:5682  eb16                 jmp 0x569a
+loc_5684:
+2:5684  66ff760c             push dword ptr [bp + 0xc]
+2:5688  66ff7608             push dword ptr [bp + 8]
+2:568C  ff7606               push word ptr [bp + 6]
+2:568F  9affff0000           lcall 0, 0xffff  ; USER.DefWindowProc
+2:5694  1f                   pop ds
+2:5695  c9                   leave
+2:5696  ca0a00               retf 0xa
+2:5699  db 90
+loc_569A:
+2:569A  66ff760a             push dword ptr [bp + 0xa]
+2:569E  66ff7606             push dword ptr [bp + 6]
+2:56A2  c45efc               les bx, ptr [bp - 4]
+2:56A5  06                   push es
+2:56A6  53                   push bx
+2:56A7  26c41f               les bx, ptr es:[bx]
+2:56AA  26ff5f1c             lcall es:[bx + 0x1c]
+2:56AE  1f                   pop ds
+2:56AF  c9                   leave
+2:56B0  ca0a00               retf 0xa
+2:56B3  db 90
+
+; ---------------- PaletteHolder::PaletteHolder@s2:56B4 FAR size=46 callers=3
+;   holds a palette handle (vtable 573A)
 2:56B4  c8040000             enter 4, 0
 2:56B8  c45e06               les bx, ptr [bp + 6]
 2:56BB  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -7872,8 +8047,9 @@ loc_55F6:
 2:56DE  c9                   leave
 2:56DF  ca0400               retf 4
 
-; ---------------- sub_s2:56E2 FAR size=44 callers=0
+; ---------------- PaletteHolder::release@s2:56E2 FAR size=44 callers=0
 ;   apis: GDI.DeleteObject, USER.SelectPalette
+;   (vslot 3) SelectPalette back + DeleteObject
 2:56E2  55                   push bp
 2:56E3  8bec                 mov bp, sp
 2:56E5  c45e0a               les bx, ptr [bp + 0xa]
@@ -7891,7 +8067,8 @@ loc_55F6:
 2:570A  ca0800               retf 8
 2:570D  db 00
 
-; ---------------- sub_s2:570E FAR size=60 callers=0
+; ---------------- PaletteHolder::scalar_dtor@s2:570E FAR size=60 callers=0
+;   deleting destructor
 2:570E  c8080000             enter 8, 0
 2:5712  c45e06               les bx, ptr [bp + 6]
 2:5715  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -7908,7 +8085,8 @@ loc_572F:
 2:5739  db 90 0e 57 48 57 1a 4f 44 57 1a 4f 2d 57 e2 56 1e
 2:5749  db 57
 
-; ---------------- sub_s2:574A FAR size=58 callers=42
+; ---------------- List::List@s2:574A FAR size=58 callers=42
+;   empty linked list (vtable 5BC4: +4 head, +8 count, +0A owns items)
 2:574A  c8040000             enter 4, 0
 2:574E  c45e06               les bx, ptr [bp + 6]
 2:5751  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -7926,6 +8104,7 @@ loc_572F:
 2:5781  ca0400               retf 4
 
 ; ---------------- ListIter::ListIter@s2:5784 FAR size=32 callers=75
+;   iterator over a list
 2:5784  55                   push bp
 2:5785  8bec                 mov bp, sp
 2:5787  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -7938,7 +8117,8 @@ loc_572F:
 2:57A0  ca0800               retf 8
 2:57A3  db 00
 
-; ---------------- sub_s2:57A4 FAR size=32 callers=6
+; ---------------- ListIter::ListIter_b@s2:57A4 FAR size=32 callers=6
+;   iterator over a list (second copy)
 2:57A4  55                   push bp
 2:57A5  8bec                 mov bp, sp
 2:57A7  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -7951,7 +8131,8 @@ loc_572F:
 2:57C0  ca0800               retf 8
 2:57C3  db 00
 
-; ---------------- ListIter::~ListIter@s2:57C4 FAR size=44 callers=93
+; ---------------- List::~List@s2:57C4 FAR size=44 callers=93
+;   list dtor: clears the nodes (listed as ListIter::~ListIter in symbols.json)
 2:57C4  c8040000             enter 4, 0
 2:57C8  c45e06               les bx, ptr [bp + 6]
 2:57CB  26c707c45b           mov word ptr es:[bx], 0x5bc4
@@ -7960,7 +8141,7 @@ loc_572F:
 2:57D7  53                   push bx
 2:57D8  90                   nop
 2:57D9  0e                   push cs
-2:57DA  e85300               call 0x5830  ; sub_s2:5830
+2:57DA  e85300               call 0x5830  ; List::clear@s2:5830
 2:57DD  c45e06               les bx, ptr [bp + 6]
 2:57E0  26c7079a38           mov word ptr es:[bx], 0x389a
 2:57E5  26c747025a57         mov word ptr es:[bx + 2], 0x575a  ; SEGMENT s2:0000
@@ -7968,7 +8149,8 @@ loc_572F:
 2:57EC  ca0400               retf 4
 2:57EF  db 00
 
-; ---------------- sub_s2:57F0 FAR size=64 callers=3
+; ---------------- List::countItems@s2:57F0 FAR size=64 callers=3
+;   counts the items with an iterator
 2:57F0  c8100000             enter 0x10, 0
 2:57F4  66ff7606             push dword ptr [bp + 6]
 2:57F8  8d46f8               lea ax, [bp - 8]
@@ -7999,7 +8181,8 @@ loc_5826:
 2:582C  c9                   leave
 2:582D  ca0600               retf 6
 
-; ---------------- sub_s2:5830 FAR size=118 callers=1
+; ---------------- List::clear@s2:5830 FAR size=118 callers=1
+;   (vslot 5) frees every node (and the items when owned)
 2:5830  c80c0000             enter 0xc, 0
 2:5834  56                   push si
 loc_5835:
@@ -8047,11 +8230,12 @@ loc_589A:
 2:58A2  ca0400               retf 4
 2:58A5  db 00
 
-; ---------------- sub_s2:58A6 FAR size=150 callers=0
+; ---------------- List::append@s2:58A6 FAR size=150 callers=0
+;   (vslot 1) adds an item at the end
 2:58A6  c81c0000             enter 0x1c, 0
 2:58AA  66a19c02             mov eax, dword ptr [0x29c]
 2:58AE  6650                 push eax
-2:58B0  9afc074057           lcall 0x5740, 0x7fc  ; sub_s1:07FC
+2:58B0  9afc074057           lcall 0x5740, 0x7fc  ; SH_MemAllocFS@s1:07FC
 2:58B5  8946f8               mov word ptr [bp - 8], ax
 2:58B8  8956fa               mov word ptr [bp - 6], dx
 2:58BB  0bd0                 or dx, ax
@@ -8094,7 +8278,8 @@ loc_5908:
 2:5938  ca0800               retf 8
 2:593B  db 00
 
-; ---------------- sub_s2:593C FAR size=184 callers=0
+; ---------------- List::insert@s2:593C FAR size=184 callers=0
+;   (vslot 2) adds an item at the front/before
 2:593C  c8200000             enter 0x20, 0
 2:5940  c45e06               les bx, ptr [bp + 6]
 2:5943  26837f0800           cmp word ptr es:[bx + 8], 0
@@ -8110,7 +8295,7 @@ loc_5908:
 loc_595C:
 2:595C  66a19c02             mov eax, dword ptr [0x29c]
 2:5960  6650                 push eax
-2:5962  9afc07b358           lcall 0x58b3, 0x7fc  ; sub_s1:07FC
+2:5962  9afc07b358           lcall 0x58b3, 0x7fc  ; SH_MemAllocFS@s1:07FC
 2:5967  8946f4               mov word ptr [bp - 0xc], ax
 2:596A  8956f6               mov word ptr [bp - 0xa], dx
 2:596D  0bd0                 or dx, ax
@@ -8155,7 +8340,8 @@ loc_59C9:
 2:59F0  c9                   leave
 2:59F1  ca0800               retf 8
 
-; ---------------- sub_s2:59F4 size=196 callers=0
+; ---------------- List::remove@s2:59F4 size=196 callers=0
+;   (vslot 3) removes an item
 2:59F4  c8100000             enter 0x10, 0
 2:59F8  66c746fc00000000     mov dword ptr [bp - 4], 0
 2:5A00  c45e06               les bx, ptr [bp + 6]
@@ -8233,7 +8419,8 @@ loc_5AA9:
 2:5AB4  ca0800               retf 8
 2:5AB7  db 00
 
-; ---------------- sub_s2:5AB8 FAR size=90 callers=0
+; ---------------- List::popFront@s2:5AB8 FAR size=90 callers=0
+;   (vslot 4) removes and returns the first item
 2:5AB8  c8100000             enter 0x10, 0
 2:5ABC  c45e06               les bx, ptr [bp + 6]
 2:5ABF  6626837f0400         cmp dword ptr es:[bx + 4], 0
@@ -8269,6 +8456,7 @@ loc_5B01:
 2:5B0F  ca0400               retf 4
 
 ; ---------------- ListIter::next@s2:5B12 FAR size=92 callers=81
+;   next item, or 0
 2:5B12  55                   push bp
 2:5B13  8bec                 mov bp, sp
 2:5B15  c45e06               les bx, ptr [bp + 6]
@@ -8304,7 +8492,8 @@ loc_5B66:
 2:5B6A  ca0400               retf 4
 2:5B6D  db 00
 
-; ---------------- sub_s2:5B6E FAR size=44 callers=0
+; ---------------- ListNode::scalar_dtor@s2:5B6E FAR size=44 callers=0
+;   node deleting destructor (MemFreeFS)
 2:5B6E  c8080000             enter 8, 0
 2:5B72  c45e06               les bx, ptr [bp + 6]
 2:5B75  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -8312,7 +8501,7 @@ loc_5B66:
 2:5B80  f6460a01             test byte ptr [bp + 0xa], 1
 2:5B84  7409                 je 0x5b8f
 2:5B86  66ff7606             push dword ptr [bp + 6]
-2:5B8A  9a3a096559           lcall 0x5965, 0x93a  ; sub_s1:093A
+2:5B8A  9a3a096559           lcall 0x5965, 0x93a  ; SH_MemFreeFS@s1:093A
 loc_5B8F:
 2:5B8F  8b4606               mov ax, word ptr [bp + 6]
 2:5B92  8b5608               mov dx, word ptr [bp + 8]
@@ -8320,13 +8509,14 @@ loc_5B8F:
 2:5B96  ca0600               retf 6
 2:5B99  db 00
 
-; ---------------- sub_s2:5B9A FAR size=66 callers=0
+; ---------------- List::scalar_dtor@s2:5B9A FAR size=66 callers=0
+;   deleting destructor
 2:5B9A  55                   push bp
 2:5B9B  8bec                 mov bp, sp
 2:5B9D  66ff7606             push dword ptr [bp + 6]
 2:5BA1  90                   nop
 2:5BA2  0e                   push cs
-2:5BA3  e81efc               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:5BA3  e81efc               call 0x57c4  ; List::~List@s2:57C4
 2:5BA6  f6460a01             test byte ptr [bp + 0xa], 1
 2:5BAA  7409                 je 0x5bb5
 2:5BAC  66ff7606             push dword ptr [bp + 6]
@@ -8339,12 +8529,13 @@ loc_5BB5:
 2:5BBF  db 90 6e 5b 7e 5b 9a 5b ca 5b a6 58 ce 5b 3c 59 d2
 2:5BCF  db 5b f4 59 d6 5b b8 5a da 5b 30 58 c2 5b
 
-; ---------------- sub_s2:5BDC FAR size=88 callers=2
+; ---------------- SoundMgr::SoundMgr@s2:5BDC FAR size=88 callers=2
+;   sound manager (DGROUP 0x2A0)
 2:5BDC  55                   push bp
 2:5BDD  8bec                 mov bp, sp
 2:5BDF  6a44                 push 0x44
 2:5BE1  66ff7606             push dword ptr [bp + 6]
-2:5BE5  9a481d1e5c           lcall 0x5c1e, 0x1d48  ; sub_s3:1D48
+2:5BE5  9a481d1e5c           lcall 0x5c1e, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:5BEA  c45e06               les bx, ptr [bp + 6]
 2:5BED  662bc0               sub eax, eax
 2:5BF0  2689470a             mov word ptr es:[bx + 0xa], ax
@@ -8357,7 +8548,7 @@ loc_5BB5:
 2:5C10  8c06a202             mov word ptr [0x2a2], es
 2:5C14  6a02                 push 2
 2:5C16  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:5C1B  9aba205e4f           lcall 0x4f5e, 0x20ba  ; sub_s3:20BA
+2:5C1B  9aba205e4f           lcall 0x4f5e, 0x20ba  ; Registry_get@s3:20BA
 2:5C20  c45e06               les bx, ptr [bp + 6]
 2:5C23  2689470c             mov word ptr es:[bx + 0xc], ax
 2:5C27  2689570e             mov word ptr es:[bx + 0xe], dx
@@ -8367,7 +8558,8 @@ loc_5BB5:
 2:5C30  ca0400               retf 4
 2:5C33  db 00
 
-; ---------------- sub_s2:5C34 FAR size=40 callers=2
+; ---------------- SoundMgr::~SoundMgr@s2:5C34 FAR size=40 callers=2
+;   sound manager dtor
 2:5C34  55                   push bp
 2:5C35  8bec                 mov bp, sp
 2:5C37  c45e06               les bx, ptr [bp + 6]
@@ -8375,53 +8567,57 @@ loc_5BB5:
 2:5C3F  26c747020a5c         mov word ptr es:[bx + 2], 0x5c0a  ; SEGMENT s2:0000
 2:5C45  66c706a00200000000   mov dword ptr [0x2a0], 0
 2:5C4E  66ff7606             push dword ptr [bp + 6]
-2:5C52  9a801de85b           lcall 0x5be8, 0x1d80  ; sub_s3:1D80
+2:5C52  9a801de85b           lcall 0x5be8, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:5C57  c9                   leave
 2:5C58  ca0400               retf 4
 2:5C5B  db 00
 
-; ---------------- sub_s2:5C5C FAR size=32 callers=14
+; ---------------- SoundMgr::playCatalog@s2:5C5C FAR size=32 callers=14
+;   plays catalog sound id (kind 3, 467..503)
 2:5C5C  c8040000             enter 4, 0
 2:5C60  ff760a               push word ptr [bp + 0xa]
 2:5C63  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:5C68  9af884555c           lcall 0x5c55, 0x84f8  ; sub_s3:84F8
+2:5C68  9af884555c           lcall 0x5c55, 0x84f8  ; ResLibr::soundFile@s3:84F8
 2:5C6D  52                   push dx
 2:5C6E  50                   push ax
 2:5C6F  66ff7606             push dword ptr [bp + 6]
 2:5C73  90                   nop
 2:5C74  0e                   push cs
-2:5C75  e88600               call 0x5cfe  ; Mci_s2_5CFE@s2:5CFE
+2:5C75  e88600               call 0x5cfe  ; SoundMgr::playFile@s2:5CFE
 2:5C78  c9                   leave
 2:5C79  ca0600               retf 6
 
-; ---------------- sub_s2:5C7C FAR size=34 callers=16
+; ---------------- SoundMgr::playVoice@s2:5C7C FAR size=34 callers=16
+;   plays voice line (type, index)
 2:5C7C  c8040000             enter 4, 0
 2:5C80  66ff760a             push dword ptr [bp + 0xa]
 2:5C84  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:5C89  9abe856b5c           lcall 0x5c6b, 0x85be  ; sub_s3:85BE
+2:5C89  9abe856b5c           lcall 0x5c6b, 0x85be  ; ResLibr::voiceFile@s3:85BE
 2:5C8E  52                   push dx
 2:5C8F  50                   push ax
 2:5C90  66ff7606             push dword ptr [bp + 6]
 2:5C94  90                   nop
 2:5C95  0e                   push cs
-2:5C96  e86500               call 0x5cfe  ; Mci_s2_5CFE@s2:5CFE
+2:5C96  e86500               call 0x5cfe  ; SoundMgr::playFile@s2:5CFE
 2:5C99  c9                   leave
 2:5C9A  ca0800               retf 8
 2:5C9D  db 00
 
-; ---------------- sub_s2:5C9E FAR size=24 callers=9
+; ---------------- SoundMgr::playVoicePair@s2:5C9E FAR size=24 callers=9
+;   plays a (type, index) pair from memory
 2:5C9E  c80c0000             enter 0xc, 0
 2:5CA2  c45e0a               les bx, ptr [bp + 0xa]
 2:5CA5  6626ff37             push dword ptr es:[bx]
 2:5CA9  66ff7606             push dword ptr [bp + 6]
 2:5CAD  90                   nop
 2:5CAE  0e                   push cs
-2:5CAF  e8caff               call 0x5c7c  ; sub_s2:5C7C
+2:5CAF  e8caff               call 0x5c7c  ; SoundMgr::playVoice@s2:5C7C
 2:5CB2  c9                   leave
 2:5CB3  ca0800               retf 8
 
-; ---------------- Mci_s2_5CB6@s2:5CB6 FAR size=72 callers=2
+; ---------------- SoundMgr::onMciNotify@s2:5CB6 FAR size=72 callers=2
 ;   apis: MMSYSTEM.mciSendCommand
+;   closes a device when its notification arrives
 2:5CB6  c8040000             enter 4, 0
 2:5CBA  ff760a               push word ptr [bp + 0xa]
 2:5CBD  666800000408         push 0x8040000
@@ -8443,19 +8639,20 @@ loc_5CEA:
 loc_5CF2:
 2:5CF2  06                   push es
 2:5CF3  53                   push bx
-2:5CF4  9a621f8c5c           lcall 0x5c8c, 0x1f62  ; sub_s3:1F62
+2:5CF4  9a621f8c5c           lcall 0x5c8c, 0x1f62  ; RegObj::notify@s3:1F62
 2:5CF9  c9                   leave
 2:5CFA  ca0600               retf 6
 2:5CFD  db 00
 
-; ---------------- Mci_s2_5CFE@s2:5CFE FAR size=384 callers=2
+; ---------------- SoundMgr::playFile@s2:5CFE FAR size=384 callers=2
 ;   apis: MMSYSTEM.mciSendCommand, USER.SetWindowWord
+;   opens waveaudio or sequencer (.mid) and plays; drops a request while one of its kind plays
 2:5CFE  c82e0100             enter 0x12e, 0
 2:5D02  666800001400         push 0x140000
 2:5D08  8d46ec               lea ax, [bp - 0x14]
 2:5D0B  16                   push ss
 2:5D0C  50                   push ax
-2:5D0D  9a06494e5d           lcall 0x5d4e, 0x4906  ; sub_s1:4906
+2:5D0D  9a06494e5d           lcall 0x5d4e, 0x4906  ; _fmemset@s1:4906
 2:5D12  83c408               add sp, 8
 2:5D15  668b460a             mov eax, dword ptr [bp + 0xa]
 2:5D19  668946f8             mov dword ptr [bp - 8], eax
@@ -8473,14 +8670,14 @@ loc_5CF2:
 2:5D41  666a00               push 0
 2:5D44  666a00               push 0
 2:5D47  66ff76f8             push dword ptr [bp - 8]
-2:5D4B  9a584d605d           lcall 0x5d60, 0x4d58  ; sub_s1:4D58
+2:5D4B  9a584d605d           lcall 0x5d60, 0x4d58  ; _splitpath@s1:4D58
 2:5D50  83c414               add sp, 0x14
 2:5D53  1e                   push ds
 2:5D54  68ae02               push 0x2ae  ; '.mid'
 2:5D57  8d86e4fe             lea ax, [bp - 0x11c]
 2:5D5B  16                   push ss
 2:5D5C  50                   push ax
-2:5D5D  9a5e473f5e           lcall 0x5e3f, 0x475e  ; sub_s1:475E
+2:5D5D  9a5e473f5e           lcall 0x5e3f, 0x475e  ; _fstricmp@s1:475E
 2:5D62  83c408               add sp, 8
 2:5D65  0bc0                 or ax, ax
 2:5D67  751b                 jne 0x5d84
@@ -8500,7 +8697,7 @@ loc_5D90:
 2:5D90  6a11                 push 0x11
 loc_5D92:
 2:5D92  66ff7606             push dword ptr [bp + 6]
-2:5D96  9a621ff75c           lcall 0x5cf7, 0x1f62  ; sub_s3:1F62
+2:5D96  9a621ff75c           lcall 0x5cf7, 0x1f62  ; RegObj::notify@s3:1F62
 loc_5D9B:
 2:5D9B  33c0                 xor ax, ax
 2:5D9D  c9                   leave
@@ -8549,7 +8746,7 @@ loc_5E0F:
 2:5E0F  66ff7606             push dword ptr [bp + 6]
 2:5E13  90                   nop
 2:5E14  0e                   push cs
-2:5E15  e86600               call 0x5e7e  ; RegisterWindowClass@s2:5E7E
+2:5E15  e86600               call 0x5e7e  ; SoundMgr::createNotifyWindow@s2:5E7E
 2:5E18  8986e2fe             mov word ptr [bp - 0x11e], ax
 2:5E1C  0bc0                 or ax, ax
 2:5E1E  7510                 jne 0x5e30
@@ -8557,7 +8754,7 @@ loc_5E0F:
 2:5E23  66ff7606             push dword ptr [bp + 6]
 2:5E27  90                   nop
 2:5E28  0e                   push cs
-2:5E29  e88afe               call 0x5cb6  ; Mci_s2_5CB6@s2:5CB6
+2:5E29  e88afe               call 0x5cb6  ; SoundMgr::onMciNotify@s2:5CB6
 2:5E2C  e96cff               jmp 0x5d9b
 2:5E2F  db 90
 loc_5E30:
@@ -8565,7 +8762,7 @@ loc_5E30:
 2:5E36  8d86d6fe             lea ax, [bp - 0x12a]
 2:5E3A  16                   push ss
 2:5E3B  50                   push ax
-2:5E3C  9a0649b35b           lcall 0x5bb3, 0x4906  ; sub_s1:4906
+2:5E3C  9a0649b35b           lcall 0x5bb3, 0x4906  ; _fmemset@s1:4906
 2:5E41  83c408               add sp, 8
 2:5E44  8b86e2fe             mov ax, word ptr [bp - 0x11e]
 2:5E48  8986d6fe             mov word ptr [bp - 0x12a], ax
@@ -8585,8 +8782,9 @@ loc_5E30:
 2:5E7A  c9                   leave
 2:5E7B  ca0800               retf 8
 
-; ---------------- RegisterWindowClass@s2:5E7E FAR size=198 callers=1
+; ---------------- SoundMgr::createNotifyWindow@s2:5E7E FAR size=198 callers=1
 ;   apis: GDI.GetStockObject, KERNEL.OutputDebugString, USER.CreateWindow, USER.GetClassInfo, USER.RegisterClass
+;   registers/creates the hidden MciSoundWindow
 2:5E7E  c82c0000             enter 0x2c, 0
 2:5E82  57                   push di
 2:5E83  56                   push si
@@ -8660,8 +8858,9 @@ loc_5F0E:
 2:5F40  c9                   leave
 2:5F41  ca0400               retf 4
 
-; ---------------- sub_s2:5F44 size=94 callers=0
+; ---------------- MciSoundWndProc@s2:5F44 size=94 callers=0
 ;   apis: USER.DefWindowProc, USER.DestroyWindow, USER.GetWindowWord
+;   window procedure of MciSoundWindow (MM_MCINOTIFY)
 2:5F44  c8060000             enter 6, 0
 2:5F48  8b460c               mov ax, word ptr [bp + 0xc]
 2:5F4B  48                   dec ax
@@ -8687,15 +8886,15 @@ loc_5F72:
 2:5F7D  66ff36a002           push dword ptr [0x2a0]
 2:5F82  90                   nop
 2:5F83  0e                   push cs
-2:5F84  e82ffd               call 0x5cb6  ; Mci_s2_5CB6@s2:5CB6
+2:5F84  e82ffd               call 0x5cb6  ; SoundMgr::onMciNotify@s2:5CB6
 2:5F87  6a37                 push 0x37
 2:5F89  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:5F8E  9aba20995d           lcall 0x5d99, 0x20ba  ; sub_s3:20BA
+2:5F8E  9aba20995d           lcall 0x5d99, 0x20ba  ; Registry_get@s3:20BA
 2:5F93  52                   push dx
 2:5F94  50                   push ax
 2:5F95  90                   nop
 2:5F96  0e                   push cs
-2:5F97  e88e4a               call 0xaa28  ; sub_s2:AA28
+2:5F97  e88e4a               call 0xaa28  ; SoundQueue::play@s2:AA28
 loc_5F9A:
 2:5F9A  33c0                 xor ax, ax
 2:5F9C  99                   cdq
@@ -8703,13 +8902,14 @@ loc_5F9A:
 2:5F9E  ca0a00               retf 0xa
 2:5FA1  db 00
 
-; ---------------- sub_s2:5FA2 FAR size=54 callers=0
+; ---------------- SoundMgr::scalar_dtor@s2:5FA2 FAR size=54 callers=0
+;   deleting destructor
 2:5FA2  55                   push bp
 2:5FA3  8bec                 mov bp, sp
 2:5FA5  66ff7606             push dword ptr [bp + 6]
 2:5FA9  90                   nop
 2:5FAA  0e                   push cs
-2:5FAB  e886fc               call 0x5c34  ; sub_s2:5C34
+2:5FAB  e886fc               call 0x5c34  ; SoundMgr::~SoundMgr@s2:5C34
 2:5FAE  f6460a01             test byte ptr [bp + 0xa], 1
 2:5FB2  7409                 je 0x5fbd
 2:5FB4  66ff7606             push dword ptr [bp + 6]
@@ -8722,7 +8922,8 @@ loc_5FBD:
 2:5FC7  db 90 a2 5f a6 5e f2 1d d2 5f ce 1d d6 5f d4 1d 91
 2:5FD7  db 5f
 
-; ---------------- sub_s2:5FD8 FAR size=112 callers=4
+; ---------------- joinResourceStrings@s2:5FD8 FAR size=112 callers=4
+;   loads one or two strings and joins them into a new buffer (story pages)
 2:5FD8  c8220000             enter 0x22, 0
 2:5FDC  8d4608               lea ax, [bp + 8]
 2:5FDF  8946fc               mov word ptr [bp - 4], ax
@@ -8749,7 +8950,7 @@ loc_6012:
 2:601D  52                   push dx
 2:601E  50                   push ax
 2:601F  66ff76f8             push dword ptr [bp - 8]
-2:6023  9aea3cbb5f           lcall 0x5fbb, 0x3cea  ; sub_s1:3CEA
+2:6023  9aea3cbb5f           lcall 0x5fbb, 0x3cea  ; _fstrcat@s1:3CEA
 loc_6028:
 2:6028  83c408               add sp, 8
 2:602B  c45efc               les bx, ptr [bp - 4]
@@ -8765,8 +8966,9 @@ loc_6028:
 2:6046  cb                   retf
 2:6047  db 00
 
-; ---------------- sub_s2:6048 FAR size=160 callers=7
+; ---------------- debugPrintf@s2:6048 FAR size=160 callers=8
 ;   apis: KERNEL.OutputDebugString, USER.wvsprintf
+;   debug output (MONO2: OutputDebugString / fprintf)
 2:6048  c8080100             enter 0x108, 0
 2:604C  833eec0200           cmp word ptr [0x2ec], 0
 2:6051  0f849100             je 0x60e6
@@ -8777,7 +8979,7 @@ loc_6028:
 2:6063  7522                 jne 0x6087
 2:6065  1e                   push ds
 2:6066  68f402               push 0x2f4  ; 'MONO2'
-2:6069  9ac03ecf60           lcall 0x60cf, 0x3ec0  ; sub_s1:3EC0
+2:6069  9ac03ecf60           lcall 0x60cf, 0x3ec0  ; getenv@s1:3EC0
 2:606E  83c404               add sp, 4
 2:6071  8986f8fe             mov word ptr [bp - 0x108], ax
 2:6075  8996fafe             mov word ptr [bp - 0x106], dx
@@ -8813,17 +9015,18 @@ loc_6087:
 2:60C3  1e                   push ds
 2:60C4  68fd02               push 0x2fd  ; '%s\n'
 2:60C7  66ff36f002           push dword ptr [0x2f0]
-2:60CC  9a5c2bdc60           lcall 0x60dc, 0x2b5c  ; sub_s1:2B5C
+2:60CC  9a5c2bdc60           lcall 0x60dc, 0x2b5c  ; fprintf@s1:2B5C
 2:60D1  83c40c               add sp, 0xc
 2:60D4  66ff36f002           push dword ptr [0x2f0]
-2:60D9  9a482feb5f           lcall 0x5feb, 0x2f48  ; sub_s1:2F48
+2:60D9  9a482feb5f           lcall 0x5feb, 0x2f48  ; fflush@s1:2F48
 loc_60DE:
 2:60DE  66c746fc00000000     mov dword ptr [bp - 4], 0
 loc_60E6:
 2:60E6  c9                   leave
 2:60E7  cb                   retf
 
-; ---------------- sub_s2:60E8 FAR size=70 callers=52
+; ---------------- _strdup@s2:60E8 FAR size=70 callers=53
+;   copies a string into new memory
 2:60E8  c8060000             enter 6, 0
 2:60EC  66837e0600           cmp dword ptr [bp + 6], 0
 2:60F1  7505                 jne 0x60f8
@@ -8834,7 +9037,7 @@ loc_60F3:
 2:60F7  cb                   retf
 loc_60F8:
 2:60F8  66ff7606             push dword ptr [bp + 6]
-2:60FC  9aa43d0961           lcall 0x6109, 0x3da4  ; sub_s1:3DA4
+2:60FC  9aa43d0961           lcall 0x6109, 0x3da4  ; _fstrlen@s1:3DA4
 2:6101  83c404               add sp, 4
 2:6104  40                   inc ax
 2:6105  50                   push ax
@@ -8854,9 +9057,10 @@ loc_60F8:
 2:612C  cb                   retf
 2:612D  db 00
 
-; ---------------- sub_s2:612E FAR size=132 callers=25
+; ---------------- random@s2:612E FAR size=132 callers=25
+;   random(lo, hi) from rand()
 2:612E  c8140000             enter 0x14, 0
-2:6132  9a244dff60           lcall 0x60ff, 0x4d24  ; sub_s1:4D24
+2:6132  9a244dff60           lcall 0x60ff, 0x4d24  ; rand@s1:4D24
 2:6137  8946fe               mov word ptr [bp - 2], ax
 2:613A  8b4608               mov ax, word ptr [bp + 8]
 2:613D  2b4606               sub ax, word ptr [bp + 6]
@@ -8911,14 +9115,15 @@ loc_61AC:
 2:61B0  cb                   retf
 2:61B1  db 90
 
-; ---------------- sub_s2:61B2 FAR size=220 callers=4
+; ---------------- DanWnd::DanWnd@s2:61B2 FAR size=220 callers=4
 ;   apis: GDI.GetStockObject, USER.LoadCursor
+;   child view window ctor (window class "DanBrotherton"; vtable 6378)
 2:61B2  c81a0000             enter 0x1a, 0
 2:61B6  66ff760e             push dword ptr [bp + 0xe]
 2:61BA  66ff7606             push dword ptr [bp + 6]
 2:61BE  90                   nop
 2:61BF  0e                   push cs
-2:61C0  e8b706               call 0x687a  ; sub_s2:687A
+2:61C0  e8b706               call 0x687a  ; SOLChildWnd::SOLChildWnd@s2:687A
 2:61C3  8b460a               mov ax, word ptr [bp + 0xa]
 2:61C6  c45e06               les bx, ptr [bp + 6]
 2:61C9  268987de00           mov word ptr es:[bx + 0xde], ax
@@ -8949,7 +9154,7 @@ loc_61AC:
 2:622E  268987bc00           mov word ptr es:[bx + 0xbc], ax
 2:6233  6a48                 push 0x48
 2:6235  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:623A  9aba200260           lcall 0x6002, 0x20ba  ; sub_s3:20BA
+2:623A  9aba200260           lcall 0x6002, 0x20ba  ; Registry_get@s3:20BA
 2:623F  8946fc               mov word ptr [bp - 4], ax
 2:6242  8956fe               mov word ptr [bp - 2], dx
 2:6245  33c0                 xor ax, ax
@@ -8971,14 +9176,15 @@ loc_61AC:
 2:627E  53                   push bx
 2:627F  90                   nop
 2:6280  0e                   push cs
-2:6281  e84e34               call 0x96d2  ; RegisterWindowClass@s2:96D2
+2:6281  e84e34               call 0x96d2  ; SOLWnd::registerClass@s2:96D2
 2:6284  8b4606               mov ax, word ptr [bp + 6]
 2:6287  8b5608               mov dx, word ptr [bp + 8]
 2:628A  c9                   leave
 2:628B  ca0c00               retf 0xc
 
-; ---------------- sub_s2:628E FAR size=50 callers=11
+; ---------------- DanWnd::destroy@s2:628E FAR size=50 callers=11
 ;   apis: USER.DestroyWindow
+;   (vslot 36) tells the handler, DestroyWindow
 2:628E  55                   push bp
 2:628F  8bec                 mov bp, sp
 2:6291  8b4606               mov ax, word ptr [bp + 6]
@@ -8998,8 +9204,9 @@ loc_61AC:
 2:62BC  c9                   leave
 2:62BD  ca0400               retf 4
 
-; ---------------- sub_s2:62C0 size=100 callers=0
+; ---------------- DanWnd::onPaint@s2:62C0 size=100 callers=0
 ;   apis: GDI.CreateSolidBrush, GDI.DeleteObject, USER.BeginPaint, USER.EndPaint, USER.FillRect, USER.GetClientRect
+;   paints a solid background
 2:62C0  c8380000             enter 0x38, 0
 2:62C4  c45e06               les bx, ptr [bp + 6]
 2:62C7  26ff7708             push word ptr es:[bx + 8]
@@ -9034,26 +9241,30 @@ loc_61AC:
 2:6320  c9                   leave
 2:6321  ca0400               retf 4
 
-; ---------------- sub_s2:6324 FAR size=4 callers=0
+; ---------------- DanWnd::nop_A@s2:6324 FAR size=4 callers=0
+;   empty virtual
 2:6324  ca0a00               retf 0xa
 2:6327  db 00
 
-; ---------------- sub_s2:6328 FAR size=4 callers=0
+; ---------------- DanWnd::nop_6@s2:6328 FAR size=4 callers=0
+;   empty virtual
 2:6328  ca0600               retf 6
 2:632B  db 00
 
-; ---------------- sub_s2:632C FAR size=4 callers=0
+; ---------------- DanWnd::nop_6b@s2:632C FAR size=4 callers=0
+;   empty virtual
 2:632C  ca0600               retf 6
 2:632F  db 00
 
-; ---------------- sub_s2:6330 FAR size=228 callers=0
+; ---------------- DanWnd::scalar_dtor@s2:6330 FAR size=228 callers=0
+;   deleting destructor
 2:6330  c8140000             enter 0x14, 0
 2:6334  668b4606             mov eax, dword ptr [bp + 6]
 2:6338  05d200               add ax, 0xd2
 2:633B  6650                 push eax
 2:633D  90                   nop
 2:633E  0e                   push cs
-2:633F  e882f4               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:633F  e882f4               call 0x57c4  ; List::~List@s2:57C4
 2:6342  c45e06               les bx, ptr [bp + 6]
 2:6345  26c7070a38           mov word ptr es:[bx], 0x380a
 2:634A  26c747025c63         mov word ptr es:[bx + 2], 0x635c  ; SEGMENT s2:0000
@@ -9080,7 +9291,8 @@ loc_636D:
 2:63F7  db 63 30 9c fe 63 86 9c 02 64 c4 9c 06 64 e0 9c 0a
 2:6407  db 64 8e 62 0e 64 28 63 12 64 2c 63 4e 63
 
-; ---------------- sub_s2:6414 FAR size=142 callers=2
+; ---------------- DIB::fromBmpFile@s2:6414 FAR size=142 callers=2
+;   makes a DIB from a .bmp file
 2:6414  c8280000             enter 0x28, 0
 2:6418  c45e06               les bx, ptr [bp + 6]
 2:641B  662bc0               sub eax, eax
@@ -9093,7 +9305,7 @@ loc_636D:
 2:6431  50                   push ax
 2:6432  90                   nop
 2:6433  0e                   push cs
-2:6434  e8c7e4               call 0x48fe  ; sub_s2:48FE
+2:6434  e8c7e4               call 0x48fe  ; BmpFile::BmpFile@s2:48FE
 2:6437  6a1e                 push 0x1e
 2:6439  9a9c176b63           lcall 0x636b, 0x179c  ; operator_new@s1:179C
 2:643E  83c402               add sp, 2
@@ -9107,7 +9319,7 @@ loc_636D:
 2:6450  66ff76d8             push dword ptr [bp - 0x28]
 2:6454  90                   nop
 2:6455  0e                   push cs
-2:6456  e839db               call 0x3f92  ; sub_s2:3F92
+2:6456  e839db               call 0x3f92  ; DIB::DIB(copy)@s2:3F92
 2:6459  c45e06               les bx, ptr [bp + 6]
 2:645C  268907               mov word ptr es:[bx], ax
 2:645F  26895702             mov word ptr es:[bx + 2], dx
@@ -9130,14 +9342,15 @@ loc_6471:
 2:6491  50                   push ax
 2:6492  90                   nop
 2:6493  0e                   push cs
-2:6494  e8d5e4               call 0x496c  ; sub_s2:496C
+2:6494  e8d5e4               call 0x496c  ; BmpFile::~BmpFile@s2:496C
 2:6497  8b4606               mov ax, word ptr [bp + 6]
 2:649A  8b5608               mov dx, word ptr [bp + 8]
 2:649D  c9                   leave
 2:649E  ca0800               retf 8
 2:64A1  db 00
 
-; ---------------- sub_s2:64A2 FAR size=38 callers=4
+; ---------------- deleteObjectPtr@s2:64A2 FAR size=38 callers=4
+;   deletes the object a pointer holds (virtual dtor)
 2:64A2  c8080000             enter 8, 0
 2:64A6  c45e06               les bx, ptr [bp + 6]
 2:64A9  268b07               mov ax, word ptr es:[bx]
@@ -9156,7 +9369,8 @@ loc_64C4:
 2:64C4  c9                   leave
 2:64C5  ca0400               retf 4
 
-; ---------------- sub_s2:64C8 FAR size=154 callers=2
+; ---------------- DIB::extract@s2:64C8 FAR size=154 callers=2
+;   new DIB from a rectangle of another
 2:64C8  c8180000             enter 0x18, 0
 2:64CC  c45e06               les bx, ptr [bp + 6]
 2:64CF  6626833f00           cmp dword ptr es:[bx], 0
@@ -9178,7 +9392,7 @@ loc_64DE:
 2:64F6  50                   push ax
 2:64F7  90                   nop
 2:64F8  0e                   push cs
-2:64F9  e80801               call 0x6604  ; sub_s2:6604
+2:64F9  e80801               call 0x6604  ; DibView::DibView@s2:6604
 2:64FC  eb03                 jmp 0x6501
 loc_64FE:
 2:64FE  33c0                 xor ax, ax
@@ -9200,7 +9414,7 @@ loc_650E:
 2:6521  6626ff37             push dword ptr es:[bx]
 2:6525  90                   nop
 2:6526  0e                   push cs
-2:6527  e81ae0               call 0x4544  ; sub_s2:4544
+2:6527  e81ae0               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:652A  ff760c               push word ptr [bp + 0xc]
 2:652D  52                   push dx
 2:652E  50                   push ax
@@ -9213,10 +9427,10 @@ loc_650E:
 2:653B  66ff76fc             push dword ptr [bp - 4]
 2:653F  90                   nop
 2:6540  0e                   push cs
-2:6541  e800e0               call 0x4544  ; sub_s2:4544
+2:6541  e800e0               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:6544  52                   push dx
 2:6545  50                   push ax
-2:6546  9aa8483c64           lcall 0x643c, 0x48a8  ; sub_s1:48A8
+2:6546  9aa8483c64           lcall 0x643c, 0x48a8  ; _fmemcpy@s1:48A8
 2:654B  83c40a               add sp, 0xa
 loc_654E:
 2:654E  8b460a               mov ax, word ptr [bp + 0xa]
@@ -9228,7 +9442,8 @@ loc_654E:
 2:655E  c9                   leave
 2:655F  ca0c00               retf 0xc
 
-; ---------------- sub_s2:6562 FAR size=162 callers=3
+; ---------------- DIB::copyOf@s2:6562 FAR size=162 callers=3
+;   new DIB copying another
 2:6562  c8180000             enter 0x18, 0
 2:6566  c45e06               les bx, ptr [bp + 6]
 2:6569  6626833f00           cmp dword ptr es:[bx], 0
@@ -9252,7 +9467,7 @@ loc_6578:
 2:6598  50                   push ax
 2:6599  90                   nop
 2:659A  0e                   push cs
-2:659B  e8beda               call 0x405c  ; sub_s2:405C
+2:659B  e8beda               call 0x405c  ; DIB::DIB(w,h,bpp)@s2:405C
 2:659E  eb03                 jmp 0x65a3
 loc_65A0:
 2:65A0  33c0                 xor ax, ax
@@ -9274,7 +9489,7 @@ loc_65B0:
 2:65C3  6626ff37             push dword ptr es:[bx]
 2:65C7  90                   nop
 2:65C8  0e                   push cs
-2:65C9  e878df               call 0x4544  ; sub_s2:4544
+2:65C9  e878df               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:65CC  ff760c               push word ptr [bp + 0xc]
 2:65CF  52                   push dx
 2:65D0  50                   push ax
@@ -9287,10 +9502,10 @@ loc_65B0:
 2:65DD  66ff76fc             push dword ptr [bp - 4]
 2:65E1  90                   nop
 2:65E2  0e                   push cs
-2:65E3  e85edf               call 0x4544  ; sub_s2:4544
+2:65E3  e85edf               call 0x4544  ; DIB::pixelPtr@s2:4544
 2:65E6  52                   push dx
 2:65E7  50                   push ax
-2:65E8  9aa848e364           lcall 0x64e3, 0x48a8  ; sub_s1:48A8
+2:65E8  9aa848e364           lcall 0x64e3, 0x48a8  ; _fmemcpy@s1:48A8
 2:65ED  83c40a               add sp, 0xa
 loc_65F0:
 2:65F0  8b460a               mov ax, word ptr [bp + 0xa]
@@ -9302,21 +9517,22 @@ loc_65F0:
 2:6600  c9                   leave
 2:6601  ca0c00               retf 0xc
 
-; ---------------- sub_s2:6604 FAR size=302 callers=3
+; ---------------- DibView::DibView@s2:6604 FAR size=302 callers=3
+;   DIB that shares another's palette (vtable 685A)
 2:6604  c8040000             enter 4, 0
 2:6608  57                   push di
 2:6609  56                   push si
 2:660A  66ff7606             push dword ptr [bp + 6]
 2:660E  90                   nop
 2:660F  0e                   push cs
-2:6610  e803da               call 0x4016  ; sub_s2:4016
+2:6610  e803da               call 0x4016  ; DIB::DIB@s2:4016
 2:6613  c45e06               les bx, ptr [bp + 6]
 2:6616  26c7075a68           mov word ptr es:[bx], 0x685a
 2:661B  26c747027a63         mov word ptr es:[bx + 2], 0x637a  ; SEGMENT s2:0000
 2:6621  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
 2:6626  666a28               push 0x28
 2:6629  6a01                 push 1
-2:662B  9a480a7c66           lcall 0x667c, 0xa48  ; sub_s1:0A48
+2:662B  9a480a7c66           lcall 0x667c, 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 2:6630  c45e06               les bx, ptr [bp + 6]
 2:6633  26894710             mov word ptr es:[bx + 0x10], ax
 2:6637  26895712             mov word ptr es:[bx + 0x12], dx
@@ -9347,7 +9563,7 @@ loc_65F0:
 2:6670  66ff362c5f           push dword ptr [0x5f2c]  ; g_defaultHeap
 2:6675  6650                 push eax
 2:6677  6a01                 push 1
-2:6679  9a480a7d65           lcall 0x657d, 0xa48  ; sub_s1:0A48
+2:6679  9a480a7d65           lcall 0x657d, 0xa48  ; SH_MemAllocPtr_core@s1:0A48
 2:667E  c45e06               les bx, ptr [bp + 6]
 2:6681  26894706             mov word ptr es:[bx + 6], ax
 2:6685  26895708             mov word ptr es:[bx + 8], dx
@@ -9395,7 +9611,8 @@ loc_65F0:
 2:672E  c9                   leave
 2:672F  ca0800               retf 8
 
-; ---------------- sub_s2:6732 FAR size=60 callers=1
+; ---------------- DibView::~DibView@s2:6732 FAR size=60 callers=1
+;   dtor
 2:6732  55                   push bp
 2:6733  8bec                 mov bp, sp
 2:6735  c45e06               les bx, ptr [bp + 6]
@@ -9411,12 +9628,13 @@ loc_6755:
 2:6761  66ff7606             push dword ptr [bp + 6]
 2:6765  90                   nop
 2:6766  0e                   push cs
-2:6767  e852da               call 0x41bc  ; sub_s2:41BC
+2:6767  e852da               call 0x41bc  ; DIB::~DIB@s2:41BC
 2:676A  c9                   leave
 2:676B  ca0400               retf 4
 
-; ---------------- sub_s2:676E FAR size=166 callers=1
+; ---------------- DIB::cloneForOverlay@s2:676E FAR size=166 callers=1
 ;   apis: KERNEL.hmemcpy
+;   a copy of a picture so overlays can be drawn on it
 2:676E  c80c0000             enter 0xc, 0
 2:6772  c45e06               les bx, ptr [bp + 6]
 2:6775  6626837f0600         cmp dword ptr es:[bx + 6], 0
@@ -9440,7 +9658,7 @@ loc_6784:
 2:67A7  50                   push ax
 2:67A8  90                   nop
 2:67A9  0e                   push cs
-2:67AA  e857fe               call 0x6604  ; sub_s2:6604
+2:67AA  e857fe               call 0x6604  ; DibView::DibView@s2:6604
 2:67AD  eb04                 jmp 0x67b3
 2:67AF  db 90
 loc_67B0:
@@ -9454,7 +9672,7 @@ loc_67B3:
 2:67BE  6626ff7710           push dword ptr es:[bx + 0x10]
 2:67C3  c45efc               les bx, ptr [bp - 4]
 2:67C6  6626ff7710           push dword ptr es:[bx + 0x10]
-2:67CB  9aa8485367           lcall 0x6753, 0x48a8  ; sub_s1:48A8
+2:67CB  9aa8485367           lcall 0x6753, 0x48a8  ; _fmemcpy@s1:48A8
 2:67D0  83c40a               add sp, 0xa
 2:67D3  c45e06               les bx, ptr [bp + 6]
 2:67D6  6626ff7718           push dword ptr es:[bx + 0x18]
@@ -9476,41 +9694,48 @@ loc_67B3:
 2:6810  c9                   leave
 2:6811  ca0400               retf 4
 
-; ---------------- sub_s2:6814 FAR size=6 callers=0
+; ---------------- DibView::zero_7@s2:6814 FAR size=6 callers=0
+;   virtual returning 0
 2:6814  33c0                 xor ax, ax
 2:6816  99                   cdq
 2:6817  ca0400               retf 4
 
-; ---------------- sub_s2:681A FAR size=4 callers=0
+; ---------------- DibView::nop_1@s2:681A FAR size=4 callers=0
+;   empty virtual
 2:681A  ca0c00               retf 0xc
 2:681D  db 00
 
-; ---------------- sub_s2:681E FAR size=4 callers=0
+; ---------------- DibView::nop_4@s2:681E FAR size=4 callers=0
+;   empty virtual
 2:681E  ca0c00               retf 0xc
 2:6821  db 00
 
-; ---------------- sub_s2:6822 FAR size=6 callers=0
+; ---------------- DibView::zero_2@s2:6822 FAR size=6 callers=0
+;   virtual returning 0
 2:6822  33c0                 xor ax, ax
 2:6824  ca0800               retf 8
 2:6827  db 00
 
-; ---------------- sub_s2:6828 FAR size=6 callers=0
+; ---------------- DibView::zero_5@s2:6828 FAR size=6 callers=0
+;   virtual returning 0
 2:6828  33c0                 xor ax, ax
 2:682A  99                   cdq
 2:682B  ca0400               retf 4
 
-; ---------------- sub_s2:682E FAR size=6 callers=0
+; ---------------- DibView::zero_6@s2:682E FAR size=6 callers=0
+;   virtual returning 0
 2:682E  33c0                 xor ax, ax
 2:6830  ca0400               retf 4
 2:6833  db 00
 
-; ---------------- sub_s2:6834 FAR size=70 callers=0
+; ---------------- DibView::scalar_dtor@s2:6834 FAR size=70 callers=0
+;   deleting destructor
 2:6834  55                   push bp
 2:6835  8bec                 mov bp, sp
 2:6837  66ff7606             push dword ptr [bp + 6]
 2:683B  90                   nop
 2:683C  0e                   push cs
-2:683D  e8f2fe               call 0x6732  ; sub_s2:6732
+2:683D  e8f2fe               call 0x6732  ; DibView::~DibView@s2:6732
 2:6840  f6460a01             test byte ptr [bp + 0xa], 1
 2:6844  7409                 je 0x684f
 2:6846  66ff7606             push dword ptr [bp + 6]
@@ -9524,13 +9749,14 @@ loc_684F:
 2:6869  db 68 1e 68 70 68 28 68 74 68 2e 68 78 68 14 68 41
 2:6879  db 67
 
-; ---------------- sub_s2:687A FAR size=76 callers=3
+; ---------------- SOLChildWnd::SOLChildWnd@s2:687A FAR size=76 callers=3
+;   window with a child list at +0xD2 (vtable 6BFC)
 2:687A  c8080000             enter 8, 0
 2:687E  66ff760a             push dword ptr [bp + 0xa]
 2:6882  66ff7606             push dword ptr [bp + 6]
 2:6886  90                   nop
 2:6887  0e                   push cs
-2:6888  e8f92c               call 0x9584  ; sub_s2:9584
+2:6888  e8f92c               call 0x9584  ; SOLWndBase::SOLWndBase@s2:9584
 2:688B  c45e06               les bx, ptr [bp + 6]
 2:688E  662bc0               sub eax, eax
 2:6891  268987cc00           mov word ptr es:[bx + 0xcc], ax
@@ -9540,7 +9766,7 @@ loc_684F:
 2:68A1  50                   push ax
 2:68A2  90                   nop
 2:68A3  0e                   push cs
-2:68A4  e8a3ee               call 0x574a  ; sub_s2:574A
+2:68A4  e8a3ee               call 0x574a  ; List::List@s2:574A
 2:68A7  c45e06               les bx, ptr [bp + 6]
 2:68AA  26c707fc6b           mov word ptr es:[bx], 0x6bfc
 2:68AF  26c747025c68         mov word ptr es:[bx + 2], 0x685c  ; SEGMENT s2:0000
@@ -9550,24 +9776,26 @@ loc_684F:
 2:68C2  c9                   leave
 2:68C3  ca0800               retf 8
 
-; ---------------- sub_s2:68C6 FAR size=36 callers=2
+; ---------------- SOLChildWnd::show@s2:68C6 FAR size=36 callers=2
+;   ShowWindow, then shows the children
 2:68C6  c8020000             enter 2, 0
 2:68CA  66ff7608             push dword ptr [bp + 8]
 2:68CE  ff7606               push word ptr [bp + 6]
 2:68D1  90                   nop
 2:68D2  0e                   push cs
-2:68D3  e8d82d               call 0x96ae  ; sub_s2:96AE
+2:68D3  e8d82d               call 0x96ae  ; SOLWnd::show@s2:96AE
 2:68D6  8946fe               mov word ptr [bp - 2], ax
 2:68D9  66ff7606             push dword ptr [bp + 6]
 2:68DD  90                   nop
 2:68DE  0e                   push cs
-2:68DF  e82201               call 0x6a04  ; sub_s2:6A04
+2:68DF  e82201               call 0x6a04  ; SOLChildWnd::showChildren@s2:6A04
 2:68E2  8b46fe               mov ax, word ptr [bp - 2]
 2:68E5  c9                   leave
 2:68E6  ca0600               retf 6
 2:68E9  db 00
 
-; ---------------- sub_s2:68EA FAR size=142 callers=1
+; ---------------- SOLChildWnd::vslot38@s2:68EA FAR size=142 callers=1
+;   forwards to the handler
 2:68EA  c8140000             enter 0x14, 0
 2:68EE  8b4610               mov ax, word ptr [bp + 0x10]
 2:68F1  0bc0                 or ax, ax
@@ -9612,13 +9840,14 @@ loc_6962:
 2:696B  ff7606               push word ptr [bp + 6]
 2:696E  90                   nop
 2:696F  0e                   push cs
-2:6970  e89bd4               call 0x3e0e  ; sub_s2:3E0E
+2:6970  e89bd4               call 0x3e0e  ; Handler::callVslot1@s2:3E0E
 loc_6973:
 2:6973  c9                   leave
 2:6974  ca0c00               retf 0xc
 2:6977  db 00
 
-; ---------------- sub_s2:6978 FAR size=140 callers=5
+; ---------------- SOLChildWnd::addChild@s2:6978 FAR size=140 callers=5
+;   adds a ChildRef (child, id) to the child list
 2:6978  c81e0000             enter 0x1e, 0
 2:697C  6a0a                 push 0xa
 2:697E  9a9c174d68           lcall 0x684d, 0x179c  ; operator_new@s1:179C
@@ -9667,7 +9896,8 @@ loc_69E6:
 2:6A00  c9                   leave
 2:6A01  ca0a00               retf 0xa
 
-; ---------------- sub_s2:6A04 FAR size=70 callers=1
+; ---------------- SOLChildWnd::showChildren@s2:6A04 FAR size=70 callers=1
+;   shows every child
 2:6A04  c80c0000             enter 0xc, 0
 2:6A08  668b4606             mov eax, dword ptr [bp + 6]
 2:6A0C  05d200               add ax, 0xd2
@@ -9677,7 +9907,7 @@ loc_69E6:
 2:6A15  50                   push ax
 2:6A16  90                   nop
 2:6A17  0e                   push cs
-2:6A18  e889ed               call 0x57a4  ; sub_s2:57A4
+2:6A18  e889ed               call 0x57a4  ; ListIter::ListIter_b@s2:57A4
 loc_6A1B:
 2:6A1B  8d46f8               lea ax, [bp - 8]
 2:6A1E  16                   push ss
@@ -9700,7 +9930,8 @@ loc_6A46:
 2:6A46  c9                   leave
 2:6A47  ca0400               retf 4
 
-; ---------------- sub_s2:6A4A FAR size=184 callers=0
+; ---------------- SOLChildWnd::forEachChild@s2:6A4A FAR size=184 callers=0
+;   (vslot 62) calls each child
 2:6A4A  c8100000             enter 0x10, 0
 2:6A4E  837e0e02             cmp word ptr [bp + 0xe], 2
 2:6A52  0f85a700             jne 0x6afd
@@ -9712,7 +9943,7 @@ loc_6A46:
 2:6A63  50                   push ax
 2:6A64  90                   nop
 2:6A65  0e                   push cs
-2:6A66  e83bed               call 0x57a4  ; sub_s2:57A4
+2:6A66  e83bed               call 0x57a4  ; ListIter::ListIter_b@s2:57A4
 loc_6A69:
 2:6A69  8d46f4               lea ax, [bp - 0xc]
 2:6A6C  16                   push ss
@@ -9772,7 +10003,8 @@ loc_6AFD:
 2:6AFE  ca0a00               retf 0xa
 2:6B01  db 00
 
-; ---------------- sub_s2:6B02 FAR size=44 callers=0
+; ---------------- SOLChildWnd::forward_6C@s2:6B02 FAR size=44 callers=0
+;   forwards to the object at +0xCE, vslot 0x6C
 2:6B02  55                   push bp
 2:6B03  8bec                 mov bp, sp
 2:6B05  c45e06               les bx, ptr [bp + 6]
@@ -9789,7 +10021,8 @@ loc_6B2A:
 2:6B2A  c9                   leave
 2:6B2B  ca0600               retf 6
 
-; ---------------- sub_s2:6B2E FAR size=44 callers=0
+; ---------------- SOLChildWnd::forward_68@s2:6B2E FAR size=44 callers=0
+;   forwards to the object at +0xCE, vslot 0x68
 2:6B2E  55                   push bp
 2:6B2F  8bec                 mov bp, sp
 2:6B31  c45e06               les bx, ptr [bp + 6]
@@ -9806,7 +10039,8 @@ loc_6B56:
 2:6B56  c9                   leave
 2:6B57  ca0600               retf 6
 
-; ---------------- sub_s2:6B5A size=90 callers=0
+; ---------------- ChildRef::scalar_dtor@s2:6B5A size=90 callers=0
+;   deleting destructor (vtable 6C8C)
 2:6B5A  c8100000             enter 0x10, 0
 2:6B5E  56                   push si
 2:6B5F  c45e06               les bx, ptr [bp + 6]
@@ -9840,14 +10074,15 @@ loc_6BA9:
 2:6BB0  c9                   leave
 2:6BB1  ca0600               retf 6
 
-; ---------------- sub_s2:6BB4 size=220 callers=0
+; ---------------- SOLChildWnd::scalar_dtor@s2:6BB4 size=220 callers=0
+;   deleting destructor
 2:6BB4  c8100000             enter 0x10, 0
 2:6BB8  668b4606             mov eax, dword ptr [bp + 6]
 2:6BBC  05d200               add ax, 0xd2
 2:6BBF  6650                 push eax
 2:6BC1  90                   nop
 2:6BC2  0e                   push cs
-2:6BC3  e8feeb               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:6BC3  e8feeb               call 0x57c4  ; List::~List@s2:57C4
 2:6BC6  c45e06               les bx, ptr [bp + 6]
 2:6BC9  26c7070a38           mov word ptr es:[bx], 0x380a
 2:6BCE  26c74702e06b         mov word ptr es:[bx + 2], 0x6be0  ; SEGMENT s2:0000
@@ -9874,25 +10109,27 @@ loc_6BF1:
 2:6C7B  db 6c 30 9c 82 6c 86 9c 86 6c c4 9c 8a 6c e0 9c d2
 2:6C8B  db 6b 5a 6b fe 6b
 
-; ---------------- sub_s2:6C90 FAR size=36 callers=7
+; ---------------- Box::Box@s2:6C90 FAR size=36 callers=7
+;   two Pos3 corners = 0
 2:6C90  55                   push bp
 2:6C91  8bec                 mov bp, sp
 2:6C93  66ff7606             push dword ptr [bp + 6]
 2:6C97  90                   nop
 2:6C98  0e                   push cs
-2:6C99  e89cd1               call 0x3e38  ; sub_s2:3E38
+2:6C99  e89cd1               call 0x3e38  ; Pos3::Pos3@s2:3E38
 2:6C9C  668b4606             mov eax, dword ptr [bp + 6]
 2:6CA0  050600               add ax, 6
 2:6CA3  6650                 push eax
 2:6CA5  90                   nop
 2:6CA6  0e                   push cs
-2:6CA7  e88ed1               call 0x3e38  ; sub_s2:3E38
+2:6CA7  e88ed1               call 0x3e38  ; Pos3::Pos3@s2:3E38
 2:6CAA  8b4606               mov ax, word ptr [bp + 6]
 2:6CAD  8b5608               mov dx, word ptr [bp + 8]
 2:6CB0  c9                   leave
 2:6CB1  ca0400               retf 4
 
-; ---------------- sub_s2:6CB4 FAR size=56 callers=1
+; ---------------- Box::copy@s2:6CB4 FAR size=56 callers=1
+;   copies a box
 2:6CB4  55                   push bp
 2:6CB5  8bec                 mov bp, sp
 2:6CB7  57                   push di
@@ -9924,7 +10161,8 @@ loc_6BF1:
 2:6CE8  ca0c00               retf 0xc
 2:6CEB  db 00
 
-; ---------------- sub_s2:6CEC FAR size=44 callers=4
+; ---------------- Box::set@s2:6CEC FAR size=44 callers=4
+;   sets both corners
 2:6CEC  55                   push bp
 2:6CED  8bec                 mov bp, sp
 2:6CEF  66ff7612             push dword ptr [bp + 0x12]
@@ -9932,7 +10170,7 @@ loc_6BF1:
 2:6CF6  66ff7606             push dword ptr [bp + 6]
 2:6CFA  90                   nop
 2:6CFB  0e                   push cs
-2:6CFC  e877d1               call 0x3e76  ; sub_s2:3E76
+2:6CFC  e877d1               call 0x3e76  ; Pos3::set@s2:3E76
 2:6CFF  66ff760c             push dword ptr [bp + 0xc]
 2:6D03  ff760a               push word ptr [bp + 0xa]
 2:6D06  668b4606             mov eax, dword ptr [bp + 6]
@@ -9940,65 +10178,69 @@ loc_6BF1:
 2:6D0D  6650                 push eax
 2:6D0F  90                   nop
 2:6D10  0e                   push cs
-2:6D11  e862d1               call 0x3e76  ; sub_s2:3E76
+2:6D11  e862d1               call 0x3e76  ; Pos3::set@s2:3E76
 2:6D14  c9                   leave
 2:6D15  ca1000               retf 0x10
 
-; ---------------- sub_s2:6D18 FAR size=38 callers=1
+; ---------------- Box::assign@s2:6D18 FAR size=38 callers=1
+;   copies corners from two positions
 2:6D18  55                   push bp
 2:6D19  8bec                 mov bp, sp
 2:6D1B  66ff760e             push dword ptr [bp + 0xe]
 2:6D1F  66ff7606             push dword ptr [bp + 6]
 2:6D23  90                   nop
 2:6D24  0e                   push cs
-2:6D25  e83ad2               call 0x3f62  ; sub_s2:3F62
+2:6D25  e83ad2               call 0x3f62  ; Pos3::assign@s2:3F62
 2:6D28  66ff760a             push dword ptr [bp + 0xa]
 2:6D2C  668b4606             mov eax, dword ptr [bp + 6]
 2:6D30  050600               add ax, 6
 2:6D33  6650                 push eax
 2:6D35  90                   nop
 2:6D36  0e                   push cs
-2:6D37  e828d2               call 0x3f62  ; sub_s2:3F62
+2:6D37  e828d2               call 0x3f62  ; Pos3::assign@s2:3F62
 2:6D3A  c9                   leave
 2:6D3B  ca0c00               retf 0xc
 
-; ---------------- sub_s2:6D3E FAR size=38 callers=2
+; ---------------- Box::getCorners@s2:6D3E FAR size=38 callers=2
+;   unpacks both corners
 2:6D3E  55                   push bp
 2:6D3F  8bec                 mov bp, sp
 2:6D41  66ff7606             push dword ptr [bp + 6]
 2:6D45  66ff760e             push dword ptr [bp + 0xe]
 2:6D49  90                   nop
 2:6D4A  0e                   push cs
-2:6D4B  e814d2               call 0x3f62  ; sub_s2:3F62
+2:6D4B  e814d2               call 0x3f62  ; Pos3::assign@s2:3F62
 2:6D4E  668b4606             mov eax, dword ptr [bp + 6]
 2:6D52  050600               add ax, 6
 2:6D55  6650                 push eax
 2:6D57  66ff760a             push dword ptr [bp + 0xa]
 2:6D5B  90                   nop
 2:6D5C  0e                   push cs
-2:6D5D  e802d2               call 0x3f62  ; sub_s2:3F62
+2:6D5D  e802d2               call 0x3f62  ; Pos3::assign@s2:3F62
 2:6D60  c9                   leave
 2:6D61  ca0c00               retf 0xc
 
-; ---------------- sub_s2:6D64 FAR size=38 callers=5
+; ---------------- Box::fromCorners@s2:6D64 FAR size=38 callers=5
+;   corner and size from two positions
 2:6D64  55                   push bp
 2:6D65  8bec                 mov bp, sp
 2:6D67  66ff7606             push dword ptr [bp + 6]
 2:6D6B  66ff760a             push dword ptr [bp + 0xa]
 2:6D6F  90                   nop
 2:6D70  0e                   push cs
-2:6D71  e8eed1               call 0x3f62  ; sub_s2:3F62
+2:6D71  e8eed1               call 0x3f62  ; Pos3::assign@s2:3F62
 2:6D74  668b4606             mov eax, dword ptr [bp + 6]
 2:6D78  050600               add ax, 6
 2:6D7B  6650                 push eax
 2:6D7D  66ff760a             push dword ptr [bp + 0xa]
 2:6D81  90                   nop
 2:6D82  0e                   push cs
-2:6D83  e85cd1               call 0x3ee2  ; sub_s2:3EE2
+2:6D83  e85cd1               call 0x3ee2  ; Pos3::spanTo@s2:3EE2
 2:6D86  c9                   leave
 2:6D87  ca0800               retf 8
 
-; ---------------- sub_s2:6D8A FAR size=70 callers=2
+; ---------------- SaveFile::create@s2:6D8A FAR size=70 callers=2
+;   starts a save (format version 4 at DGROUP 0x312)
 2:6D8A  55                   push bp
 2:6D8B  8bec                 mov bp, sp
 2:6D8D  c45e06               les bx, ptr [bp + 6]
@@ -10015,7 +10257,7 @@ loc_6BF1:
 2:6DB5  66ff760a             push dword ptr [bp + 0xa]
 2:6DB9  90                   nop
 2:6DBA  0e                   push cs
-2:6DBB  e82af3               call 0x60e8  ; sub_s2:60E8
+2:6DBB  e82af3               call 0x60e8  ; _strdup@s2:60E8
 2:6DBE  c45e06               les bx, ptr [bp + 6]
 2:6DC1  268907               mov word ptr es:[bx], ax
 2:6DC4  26895702             mov word ptr es:[bx + 2], dx
@@ -10024,8 +10266,9 @@ loc_6BF1:
 2:6DCC  c9                   leave
 2:6DCD  ca0800               retf 8
 
-; ---------------- sub_s2:6DD0 FAR size=50 callers=2
+; ---------------- SaveFile::destroy@s2:6DD0 FAR size=50 callers=2
 ;   apis: KERNEL._lclose
+;   closes the file and frees the object
 2:6DD0  c8080000             enter 8, 0
 2:6DD4  c45e06               les bx, ptr [bp + 6]
 2:6DD7  26837f04ff           cmp word ptr es:[bx + 4], -1
@@ -10042,14 +10285,15 @@ loc_6DF0:
 2:6DFE  c9                   leave
 2:6DFF  ca0400               retf 4
 
-; ---------------- sub_s2:6E02 FAR size=118 callers=1
+; ---------------- SaveFile::writeAll@s2:6E02 FAR size=118 callers=1
 ;   apis: KERNEL._lclose
+;   writes header, registry chunks and the simulation chunks
 2:6E02  c8020000             enter 2, 0
 2:6E06  c70610030000         mov word ptr [0x310], 0
 2:6E0C  66ff7606             push dword ptr [bp + 6]
 2:6E10  90                   nop
 2:6E11  0e                   push cs
-2:6E12  e89102               call 0x70a6  ; sub_s2:70A6
+2:6E12  e89102               call 0x70a6  ; SaveFile::writeHeader@s2:70A6
 2:6E15  0bc0                 or ax, ax
 2:6E17  7507                 jne 0x6e20
 loc_6E19:
@@ -10065,14 +10309,14 @@ loc_6E20:
 2:6E2B  50                   push ax
 2:6E2C  90                   nop
 2:6E2D  0e                   push cs
-2:6E2E  e87704               call 0x72a8  ; sub_s2:72A8
+2:6E2E  e87704               call 0x72a8  ; SaveFile::setMode@s2:72A8
 2:6E31  8d46fe               lea ax, [bp - 2]
 2:6E34  16                   push ss
 2:6E35  50                   push ax
 2:6E36  66ff7606             push dword ptr [bp + 6]
 2:6E3A  90                   nop
 2:6E3B  0e                   push cs
-2:6E3C  e8c701               call 0x7006  ; sub_s2:7006
+2:6E3C  e8c701               call 0x7006  ; SaveFile::writeRegistryChunks@s2:7006
 2:6E3F  0bc0                 or ax, ax
 2:6E41  7412                 je 0x6e55
 2:6E43  8d46fe               lea ax, [bp - 2]
@@ -10081,7 +10325,7 @@ loc_6E20:
 2:6E48  66ff7606             push dword ptr [bp + 6]
 2:6E4C  90                   nop
 2:6E4D  0e                   push cs
-2:6E4E  e89d00               call 0x6eee  ; sub_s2:6EEE
+2:6E4E  e89d00               call 0x6eee  ; SaveFile::writeSimChunks@s2:6EEE
 2:6E51  0bc0                 or ax, ax
 2:6E53  750f                 jne 0x6e64
 loc_6E55:
@@ -10094,21 +10338,22 @@ loc_6E64:
 2:6E64  66ff7606             push dword ptr [bp + 6]
 2:6E68  90                   nop
 2:6E69  0e                   push cs
-2:6E6A  e8ff03               call 0x726c  ; sub_s2:726C
+2:6E6A  e8ff03               call 0x726c  ; SaveFile::close@s2:726C
 2:6E6D  0bc0                 or ax, ax
 2:6E6F  74a8                 je 0x6e19
 2:6E71  b80100               mov ax, 1
 2:6E74  c9                   leave
 2:6E75  ca0400               retf 4
 
-; ---------------- sub_s2:6E78 FAR size=118 callers=1
+; ---------------- SaveFile::readAll@s2:6E78 FAR size=118 callers=1
 ;   apis: KERNEL._lclose
+;   reads header, registry chunks and the simulation chunks
 2:6E78  c8020000             enter 2, 0
 2:6E7C  c70610030000         mov word ptr [0x310], 0
 2:6E82  66ff7606             push dword ptr [bp + 6]
 2:6E86  90                   nop
 2:6E87  0e                   push cs
-2:6E88  e8bb02               call 0x7146  ; sub_s2:7146
+2:6E88  e8bb02               call 0x7146  ; SaveFile::openRead@s2:7146
 2:6E8B  0bc0                 or ax, ax
 2:6E8D  7507                 jne 0x6e96
 loc_6E8F:
@@ -10124,14 +10369,14 @@ loc_6E96:
 2:6EA1  50                   push ax
 2:6EA2  90                   nop
 2:6EA3  0e                   push cs
-2:6EA4  e80104               call 0x72a8  ; sub_s2:72A8
+2:6EA4  e80104               call 0x72a8  ; SaveFile::setMode@s2:72A8
 2:6EA7  8d46fe               lea ax, [bp - 2]
 2:6EAA  16                   push ss
 2:6EAB  50                   push ax
 2:6EAC  66ff7606             push dword ptr [bp + 6]
 2:6EB0  90                   nop
 2:6EB1  0e                   push cs
-2:6EB2  e8a101               call 0x7056  ; sub_s2:7056
+2:6EB2  e8a101               call 0x7056  ; SaveFile::readRegistryChunks@s2:7056
 2:6EB5  0bc0                 or ax, ax
 2:6EB7  7412                 je 0x6ecb
 2:6EB9  8d46fe               lea ax, [bp - 2]
@@ -10140,7 +10385,7 @@ loc_6E96:
 2:6EBE  66ff7606             push dword ptr [bp + 6]
 2:6EC2  90                   nop
 2:6EC3  0e                   push cs
-2:6EC4  e8b300               call 0x6f7a  ; sub_s2:6F7A
+2:6EC4  e8b300               call 0x6f7a  ; SaveFile::readSimChunks@s2:6F7A
 2:6EC7  0bc0                 or ax, ax
 2:6EC9  750f                 jne 0x6eda
 loc_6ECB:
@@ -10153,14 +10398,15 @@ loc_6EDA:
 2:6EDA  66ff7606             push dword ptr [bp + 6]
 2:6EDE  90                   nop
 2:6EDF  0e                   push cs
-2:6EE0  e88903               call 0x726c  ; sub_s2:726C
+2:6EE0  e88903               call 0x726c  ; SaveFile::close@s2:726C
 2:6EE3  0bc0                 or ax, ax
 2:6EE5  74a8                 je 0x6e8f
 2:6EE7  b80100               mov ax, 1
 2:6EEA  c9                   leave
 2:6EEB  ca0400               retf 4
 
-; ---------------- sub_s2:6EEE FAR size=140 callers=1
+; ---------------- SaveFile::writeSimChunks@s2:6EEE FAR size=140 callers=1
+;   simulation objects (players, colonies, buildings, robots, trucks...)
 2:6EEE  c8180000             enter 0x18, 0
 2:6EF2  c41e4857             les bx, ptr [0x5748]  ; g_sim
 2:6EF6  66268b07             mov eax, dword ptr es:[bx]
@@ -10171,32 +10417,32 @@ loc_6EDA:
 2:6F09  8d46f4               lea ax, [bp - 0xc]
 2:6F0C  16                   push ss
 2:6F0D  50                   push ax
-2:6F0E  9a3ea4666f           lcall 0x6f66, 0xa43e  ; sub_s5:A43E
+2:6F0E  9a3ea4666f           lcall 0x6f66, 0xa43e  ; RebelAI::RebelAI@s5:A43E
 2:6F13  66ff760a             push dword ptr [bp + 0xa]
 2:6F17  66ff76f8             push dword ptr [bp - 8]
-2:6F1B  9aa0d7426f           lcall 0x6f42, 0xd7a0  ; sub_s6:D7A0
+2:6F1B  9aa0d7426f           lcall 0x6f42, 0xd7a0  ; Sim::saveChunk08@s6:D7A0
 2:6F20  0bc0                 or ax, ax
 2:6F22  7448                 je 0x6f6c
 2:6F24  66ff760a             push dword ptr [bp + 0xa]
 2:6F28  66ff363657           push dword ptr [0x5736]  ; g_handleAllocator
-2:6F2D  9a1a5cf314           lcall 0x14f3, 0x5c1a  ; sub_s7:5C1A
+2:6F2D  9a1a5cf314           lcall 0x14f3, 0x5c1a  ; HandleAlloc::save@s7:5C1A
 2:6F32  0bc0                 or ax, ax
 2:6F34  7436                 je 0x6f6c
 2:6F36  66ff760a             push dword ptr [bp + 0xa]
 2:6F3A  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:6F3F  9ae2dcd308           lcall 0x8d3, 0xdce2  ; sub_s6:DCE2
+2:6F3F  9ae2dcd308           lcall 0x8d3, 0xdce2  ; ObjectDb::save@s6:DCE2
 2:6F44  0bc0                 or ax, ax
 2:6F46  7424                 je 0x6f6c
 2:6F48  66ff760a             push dword ptr [bp + 0xa]
 2:6F4C  66ff36645a           push dword ptr [0x5a64]
-2:6F51  9a207b8e2d           lcall 0x2d8e, 0x7b20  ; sub_s8:7B20
+2:6F51  9a207b8e2d           lcall 0x2d8e, 0x7b20  ; VehicleMgr::save@s8:7B20
 2:6F56  0bc0                 or ax, ax
 2:6F58  7412                 je 0x6f6c
 2:6F5A  66ff760a             push dword ptr [bp + 0xa]
 2:6F5E  8d46f4               lea ax, [bp - 0xc]
 2:6F61  16                   push ss
 2:6F62  50                   push ax
-2:6F63  9a44a6ce2f           lcall 0x2fce, 0xa644  ; sub_s5:A644
+2:6F63  9a44a6ce2f           lcall 0x2fce, 0xa644  ; RebelAI::save@s5:A644
 2:6F68  0bc0                 or ax, ax
 2:6F6A  7506                 jne 0x6f72
 loc_6F6C:
@@ -10209,7 +10455,8 @@ loc_6F72:
 2:6F76  ca0800               retf 8
 2:6F79  db 00
 
-; ---------------- sub_s2:6F7A FAR size=140 callers=1
+; ---------------- SaveFile::readSimChunks@s2:6F7A FAR size=140 callers=1
+;   reads the simulation objects
 2:6F7A  c8180000             enter 0x18, 0
 2:6F7E  c41e4857             les bx, ptr [0x5748]  ; g_sim
 2:6F82  66268b07             mov eax, dword ptr es:[bx]
@@ -10220,32 +10467,32 @@ loc_6F72:
 2:6F95  8d46f4               lea ax, [bp - 0xc]
 2:6F98  16                   push ss
 2:6F99  50                   push ax
-2:6F9A  9a3ea4f26f           lcall 0x6ff2, 0xa43e  ; sub_s5:A43E
+2:6F9A  9a3ea4f26f           lcall 0x6ff2, 0xa43e  ; RebelAI::RebelAI@s5:A43E
 2:6F9F  66ff760a             push dword ptr [bp + 0xa]
 2:6FA3  66ff76f8             push dword ptr [bp - 8]
-2:6FA7  9abad7ce6f           lcall 0x6fce, 0xd7ba  ; sub_s6:D7BA
+2:6FA7  9abad7ce6f           lcall 0x6fce, 0xd7ba  ; Sim::loadChunk08@s6:D7BA
 2:6FAC  0bc0                 or ax, ax
 2:6FAE  7448                 je 0x6ff8
 2:6FB0  66ff760a             push dword ptr [bp + 0xa]
 2:6FB4  66ff363657           push dword ptr [0x5736]  ; g_handleAllocator
-2:6FB9  9a525c306f           lcall 0x6f30, 0x5c52  ; sub_s7:5C52
+2:6FB9  9a525c306f           lcall 0x6f30, 0x5c52  ; HandleAlloc::load@s7:5C52
 2:6FBE  0bc0                 or ax, ax
 2:6FC0  7436                 je 0x6ff8
 2:6FC2  66ff760a             push dword ptr [bp + 0xa]
 2:6FC6  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
-2:6FCB  9af2de1e6f           lcall 0x6f1e, 0xdef2  ; sub_s6:DEF2
+2:6FCB  9af2de1e6f           lcall 0x6f1e, 0xdef2  ; ObjectDb::load@s6:DEF2
 2:6FD0  0bc0                 or ax, ax
 2:6FD2  7424                 je 0x6ff8
 2:6FD4  66ff760a             push dword ptr [bp + 0xa]
 2:6FD8  66ff36645a           push dword ptr [0x5a64]
-2:6FDD  9a027c546f           lcall 0x6f54, 0x7c02  ; sub_s8:7C02
+2:6FDD  9a027c546f           lcall 0x6f54, 0x7c02  ; VehicleMgr::load@s8:7C02
 2:6FE2  0bc0                 or ax, ax
 2:6FE4  7412                 je 0x6ff8
 2:6FE6  66ff760a             push dword ptr [bp + 0xa]
 2:6FEA  8d46f4               lea ax, [bp - 0xc]
 2:6FED  16                   push ss
 2:6FEE  50                   push ax
-2:6FEF  9a5ea6116f           lcall 0x6f11, 0xa65e  ; sub_s5:A65E
+2:6FEF  9a5ea6116f           lcall 0x6f11, 0xa65e  ; RebelAI::load@s5:A65E
 2:6FF4  0bc0                 or ax, ax
 2:6FF6  7506                 jne 0x6ffe
 loc_6FF8:
@@ -10258,7 +10505,8 @@ loc_6FFE:
 2:7002  ca0800               retf 8
 2:7005  db 00
 
-; ---------------- sub_s2:7006 FAR size=80 callers=1
+; ---------------- SaveFile::writeRegistryChunks@s2:7006 FAR size=80 callers=1
+;   every registry object in the order of DGROUP 0x320
 2:7006  c8060000             enter 6, 0
 2:700A  c746fe0000           mov word ptr [bp - 2], 0
 2:700F  eb04                 jmp 0x7015
@@ -10273,7 +10521,7 @@ loc_7015:
 2:7020  03db                 add bx, bx
 2:7022  ffb72003             push word ptr [bx + 0x320]
 2:7026  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:702B  9aba203d62           lcall 0x623d, 0x20ba  ; sub_s3:20BA
+2:702B  9aba203d62           lcall 0x623d, 0x20ba  ; Registry_get@s3:20BA
 2:7030  8946fa               mov word ptr [bp - 6], ax
 2:7033  8956fc               mov word ptr [bp - 4], dx
 2:7036  66ff760a             push dword ptr [bp + 0xa]
@@ -10292,7 +10540,8 @@ loc_704E:
 2:7052  ca0800               retf 8
 2:7055  db 00
 
-; ---------------- sub_s2:7056 FAR size=80 callers=1
+; ---------------- SaveFile::readRegistryChunks@s2:7056 FAR size=80 callers=1
+;   reads every registry object
 2:7056  c8060000             enter 6, 0
 2:705A  c746fe0000           mov word ptr [bp - 2], 0
 2:705F  eb04                 jmp 0x7065
@@ -10307,7 +10556,7 @@ loc_7065:
 2:7070  03db                 add bx, bx
 2:7072  ffb72003             push word ptr [bx + 0x320]
 2:7076  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:707B  9aba202e70           lcall 0x702e, 0x20ba  ; sub_s3:20BA
+2:707B  9aba202e70           lcall 0x702e, 0x20ba  ; Registry_get@s3:20BA
 2:7080  8946fa               mov word ptr [bp - 6], ax
 2:7083  8956fc               mov word ptr [bp - 4], dx
 2:7086  66ff760a             push dword ptr [bp + 0xa]
@@ -10326,8 +10575,9 @@ loc_709E:
 2:70A2  ca0800               retf 8
 2:70A5  db 00
 
-; ---------------- sub_s2:70A6 FAR size=160 callers=1
+; ---------------- SaveFile::writeHeader@s2:70A6 FAR size=160 callers=1
 ;   apis: KERNEL._hwrite, KERNEL._lclose, KERNEL._lcreat
+;   _lcreat and the "SC001" header
 2:70A6  c8060000             enter 6, 0
 2:70AA  57                   push di
 2:70AB  56                   push si
@@ -10365,7 +10615,7 @@ loc_70F0:
 2:7105  83c40a               add sp, 0xa
 2:7108  1e                   push ds
 2:7109  68a065               push 0x65a0
-2:710C  9aa43dfc6d           lcall 0x6dfc, 0x3da4  ; sub_s1:3DA4
+2:710C  9aa43dfc6d           lcall 0x6dfc, 0x3da4  ; _fstrlen@s1:3DA4
 2:7111  83c404               add sp, 4
 2:7114  c45e06               les bx, ptr [bp + 6]
 2:7117  26ff7704             push word ptr es:[bx + 4]
@@ -10393,8 +10643,9 @@ loc_713C:
 2:7142  ca0400               retf 4
 2:7145  db 00
 
-; ---------------- sub_s2:7146 FAR size=90 callers=1
+; ---------------- SaveFile::openRead@s2:7146 FAR size=90 callers=1
 ;   apis: KERNEL._lclose, KERNEL._lopen
+;   _lopen for reading
 2:7146  55                   push bp
 2:7147  8bec                 mov bp, sp
 2:7149  c45e06               les bx, ptr [bp + 6]
@@ -10423,22 +10674,23 @@ loc_718C:
 2:718C  66ff7606             push dword ptr [bp + 6]
 2:7190  90                   nop
 2:7191  0e                   push cs
-2:7192  e80b00               call 0x71a0  ; sub_s2:71A0
+2:7192  e80b00               call 0x71a0  ; SaveFile::readHeader@s2:71A0
 2:7195  0bc0                 or ax, ax
 2:7197  74ec                 je 0x7185
 2:7199  b80100               mov ax, 1
 2:719C  c9                   leave
 2:719D  ca0400               retf 4
 
-; ---------------- sub_s2:71A0 FAR size=204 callers=1
+; ---------------- SaveFile::readHeader@s2:71A0 FAR size=204 callers=1
 ;   apis: KERNEL._hread
+;   reads and checks the header and version
 2:71A0  c81a0000             enter 0x1a, 0
 2:71A4  57                   push di
 2:71A5  56                   push si
 2:71A6  c746fe0100           mov word ptr [bp - 2], 1
 2:71AB  1e                   push ds
 2:71AC  68a065               push 0x65a0
-2:71AF  9aa43d5d72           lcall 0x725d, 0x3da4  ; sub_s1:3DA4
+2:71AF  9aa43d5d72           lcall 0x725d, 0x3da4  ; _fstrlen@s1:3DA4
 2:71B4  83c404               add sp, 4
 2:71B7  8946f2               mov word ptr [bp - 0xe], ax
 2:71BA  c746ec0000           mov word ptr [bp - 0x14], 0
@@ -10517,8 +10769,9 @@ loc_724D:
 2:7268  ca0400               retf 4
 2:726B  db 00
 
-; ---------------- sub_s2:726C FAR size=60 callers=2
+; ---------------- SaveFile::close@s2:726C FAR size=60 callers=2
 ;   apis: KERNEL._lclose
+;   _lclose (error 0x6D1 on failure)
 2:726C  c8020000             enter 2, 0
 2:7270  c45e06               les bx, ptr [bp + 6]
 2:7273  26837f04ff           cmp word ptr es:[bx + 4], -1
@@ -10540,7 +10793,8 @@ loc_72A1:
 2:72A4  c9                   leave
 2:72A5  ca0400               retf 4
 
-; ---------------- sub_s2:72A8 FAR size=20 callers=2
+; ---------------- SaveFile::setMode@s2:72A8 FAR size=20 callers=2
+;   stores a word
 2:72A8  55                   push bp
 2:72A9  8bec                 mov bp, sp
 2:72AB  8b460a               mov ax, word ptr [bp + 0xa]
@@ -10551,7 +10805,8 @@ loc_72A1:
 2:72B8  c9                   leave
 2:72B9  ca0600               retf 6
 
-; ---------------- sub_s2:72BC FAR size=208 callers=8
+; ---------------- Save_translateV1Value@s2:72BC FAR size=208 callers=8
+;   save version 1 -> 2 value translation
 2:72BC  55                   push bp
 2:72BD  8bec                 mov bp, sp
 2:72BF  833e120301           cmp word ptr [0x312], 1
@@ -10669,7 +10924,8 @@ loc_7387:
 2:7388  ca0600               retf 6
 2:738B  db 00
 
-; ---------------- sub_s2:738C FAR size=94 callers=1
+; ---------------- Save_alertRowV1@s2:738C FAR size=94 callers=1
+;   v1 alert table row mapping
 2:738C  55                   push bp
 2:738D  8bec                 mov bp, sp
 2:738F  8b460a               mov ax, word ptr [bp + 0xa]
@@ -10728,7 +10984,8 @@ loc_73E6:
 2:73E6  c9                   leave
 2:73E7  ca0600               retf 6
 
-; ---------------- sub_s2:73EA FAR size=350 callers=4
+; ---------------- Save_translateV1BuildingType@s2:73EA FAR size=350 callers=4
+;   save version 1 -> 2 building type translation
 2:73EA  c8020000             enter 2, 0
 2:73EE  c746fe0000           mov word ptr [bp - 2], 0
 2:73F3  833e120301           cmp word ptr [0x312], 1
@@ -10902,7 +11159,8 @@ loc_7540:
 2:7544  ca0600               retf 6
 2:7547  db 00
 
-; ---------------- sub_s2:7548 FAR size=294 callers=1
+; ---------------- Save_readObjectList@s2:7548 FAR size=294 callers=1
+;   reads n objects (dword n)
 2:7548  c82e0000             enter 0x2e, 0
 2:754C  662bc0               sub eax, eax
 2:754F  668946fc             mov dword ptr [bp - 4], eax
@@ -10952,7 +11210,7 @@ loc_7590:
 2:75B8  666a64               push 0x64
 2:75BB  ff76e4               push word ptr [bp - 0x1c]
 2:75BE  50                   push ax
-2:75BF  9a44c49d6f           lcall 0x6f9d, 0xc444  ; sub_s5:C444
+2:75BF  9a44c49d6f           lcall 0x6f9d, 0xc444  ; TileList::TileList@s5:C444
 2:75C4  c45e0a               les bx, ptr [bp + 0xa]
 2:75C7  268907               mov word ptr es:[bx], ax
 2:75CA  26895702             mov word ptr es:[bx + 2], dx
@@ -11016,7 +11274,8 @@ loc_765A:
 2:7667  26ff5f1c             lcall es:[bx + 0x1c]
 2:766B  e907ff               jmp 0x7575
 
-; ---------------- sub_s2:766E FAR size=118 callers=2
+; ---------------- Save_readTruckRoute@s2:766E FAR size=118 callers=2
+;   reads a route (handle list)
 2:766E  c8080000             enter 8, 0
 2:7672  c45e0a               les bx, ptr [bp + 0xa]
 2:7675  662bc0               sub eax, eax
@@ -11028,7 +11287,7 @@ loc_765A:
 2:7685  66ff7606             push dword ptr [bp + 6]
 2:7689  90                   nop
 2:768A  0e                   push cs
-2:768B  e85600               call 0x76e4  ; sub_s2:76E4
+2:768B  e85600               call 0x76e4  ; Save_readHandleList@s2:76E4
 2:768E  0bc0                 or ax, ax
 2:7690  744e                 je 0x76e0
 2:7692  66837efc00           cmp dword ptr [bp - 4], 0
@@ -11047,7 +11306,7 @@ loc_76A0:
 2:76B2  740c                 je 0x76c0
 2:76B4  ff76fa               push word ptr [bp - 6]
 2:76B7  50                   push ax
-2:76B8  9af28edb76           lcall 0x76db, 0x8ef2  ; sub_s3:8EF2
+2:76B8  9af28edb76           lcall 0x76db, 0x8ef2  ; Route::Route@s3:8EF2
 2:76BD  eb04                 jmp 0x76c3
 2:76BF  db 90
 loc_76C0:
@@ -11060,14 +11319,15 @@ loc_76C3:
 2:76CD  66ff76fc             push dword ptr [bp - 4]
 2:76D1  c45e0a               les bx, ptr [bp + 0xa]
 2:76D4  6626ff37             push dword ptr es:[bx]
-2:76D8  9a5e907e70           lcall 0x707e, 0x905e  ; sub_s3:905E
+2:76D8  9a5e907e70           lcall 0x707e, 0x905e  ; Route::clear@s3:905E
 2:76DD  ebba                 jmp 0x7699
 2:76DF  db 90
 loc_76E0:
 2:76E0  c9                   leave
 2:76E1  ca0800               retf 8
 
-; ---------------- sub_s2:76E4 FAR size=232 callers=3
+; ---------------- Save_readHandleList@s2:76E4 FAR size=232 callers=3
+;   dword n, n dword handles (0 = empty slot)
 2:76E4  c8220000             enter 0x22, 0
 2:76E8  662bc0               sub eax, eax
 2:76EB  668946fc             mov dword ptr [bp - 4], eax
@@ -11108,7 +11368,7 @@ loc_7718:
 2:773A  666a05               push 5
 2:773D  ff76e8               push word ptr [bp - 0x18]
 2:7740  50                   push ax
-2:7741  9ad81cbc6f           lcall 0x6fbc, 0x1cd8  ; sub_s7:1CD8
+2:7741  9ad81cbc6f           lcall 0x6fbc, 0x1cd8  ; HandleList::HandleList@s7:1CD8
 2:7746  c45e0a               les bx, ptr [bp + 0xa]
 2:7749  268907               mov word ptr es:[bx], ax
 2:774C  26895702             mov word ptr es:[bx + 2], dx
@@ -11156,7 +11416,8 @@ loc_77B8:
 2:77C5  26ff5f1c             lcall es:[bx + 0x1c]
 2:77C9  e945ff               jmp 0x7711
 
-; ---------------- sub_s2:77CC FAR size=204 callers=2
+; ---------------- Save_readSparseTable@s2:77CC FAR size=204 callers=2
+;   word slots, (word key, dword value) each
 2:77CC  c8260000             enter 0x26, 0
 2:77D0  c746fe0000           mov word ptr [bp - 2], 0
 2:77D5  666a02               push 2
@@ -11241,7 +11502,8 @@ loc_7860:
 2:7894  e953ff               jmp 0x77ea
 2:7897  db 00
 
-; ---------------- sub_s2:7898 FAR size=188 callers=1
+; ---------------- Save_writeObjectList@s2:7898 FAR size=188 callers=1
+;   writes n objects
 2:7898  c8240000             enter 0x24, 0
 2:789C  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:78A1  740f                 je 0x78b2
@@ -11292,7 +11554,7 @@ loc_78F0:
 2:7906  16                   push ss
 2:7907  51                   push cx
 2:7908  66ff760a             push dword ptr [bp + 0xa]
-2:790C  9aa8c42978           lcall 0x7829, 0xc4a8  ; sub_s5:C4A8
+2:790C  9aa8c42978           lcall 0x7829, 0xc4a8  ; TileList::writeEntries@s5:C4A8
 2:7911  668b46ea             mov eax, dword ptr [bp - 0x16]
 2:7915  668946de             mov dword ptr [bp - 0x22], eax
 2:7919  666a04               push 4
@@ -11325,7 +11587,8 @@ loc_794C:
 2:7950  ca0800               retf 8
 2:7953  db 00
 
-; ---------------- sub_s2:7954 FAR size=156 callers=3
+; ---------------- Save_writeHandleList@s2:7954 FAR size=156 callers=3
+;   dword n, n dword handles
 2:7954  c81e0000             enter 0x1e, 0
 2:7958  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:795D  740f                 je 0x796e
@@ -11395,7 +11658,8 @@ loc_79E8:
 2:79EC  ca0800               retf 8
 2:79EF  db 00
 
-; ---------------- sub_s2:79F0 FAR size=50 callers=2
+; ---------------- Save_writeHandleListPtr@s2:79F0 FAR size=50 callers=2
+;   writes a handle list through a pointer (0 when none)
 2:79F0  c8080000             enter 8, 0
 2:79F4  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:79F9  7411                 je 0x7a0c
@@ -11414,11 +11678,12 @@ loc_7A11:
 2:7A15  66ff7606             push dword ptr [bp + 6]
 2:7A19  90                   nop
 2:7A1A  0e                   push cs
-2:7A1B  e836ff               call 0x7954  ; sub_s2:7954
+2:7A1B  e836ff               call 0x7954  ; Save_writeHandleList@s2:7954
 2:7A1E  c9                   leave
 2:7A1F  ca0800               retf 8
 
-; ---------------- sub_s2:7A22 FAR size=178 callers=3
+; ---------------- Save_writeSparseTable@s2:7A22 FAR size=178 callers=3
+;   word slots, (word key, dword value) each
 2:7A22  c8220000             enter 0x22, 0
 2:7A26  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:7A2B  740d                 je 0x7a3a
@@ -11465,7 +11730,7 @@ loc_7A71:
 2:7A84  16                   push ss
 2:7A85  51                   push cx
 2:7A86  66ff760a             push dword ptr [bp + 0xa]
-2:7A8A  9a16bb0f79           lcall 0x790f, 0xbb16  ; sub_s5:BB16
+2:7A8A  9a16bb0f79           lcall 0x790f, 0xbb16  ; SparseTable::entryAt@s5:BB16
 2:7A8F  8b46f0               mov ax, word ptr [bp - 0x10]
 2:7A92  8946f8               mov word ptr [bp - 8], ax
 2:7A95  8946e6               mov word ptr [bp - 0x1a], ax
@@ -11498,7 +11763,8 @@ loc_7ACC:
 2:7AD0  ca0800               retf 8
 2:7AD3  db 00
 
-; ---------------- sub_s2:7AD4 FAR size=120 callers=1
+; ---------------- Save_readSparseTableInto@s2:7AD4 FAR size=120 callers=1
+;   reads into an existing table
 2:7AD4  c8220000             enter 0x22, 0
 2:7AD8  666a02               push 2
 2:7ADB  8d46fe               lea ax, [bp - 2]
@@ -11557,7 +11823,8 @@ loc_7B44:
 2:7B48  ca0800               retf 8
 2:7B4B  db 00
 
-; ---------------- sub_s2:7B4C FAR size=124 callers=7
+; ---------------- Save_writePos3@s2:7B4C FAR size=124 callers=7
+;   three words
 2:7B4C  c8140000             enter 0x14, 0
 2:7B50  8d46fe               lea ax, [bp - 2]
 2:7B53  16                   push ss
@@ -11571,7 +11838,7 @@ loc_7B44:
 2:7B5F  66ff760a             push dword ptr [bp + 0xa]
 2:7B63  90                   nop
 2:7B64  0e                   push cs
-2:7B65  e84cc3               call 0x3eb4  ; sub_s2:3EB4
+2:7B65  e84cc3               call 0x3eb4  ; Pos3::get@s2:3EB4
 2:7B68  8b46fe               mov ax, word ptr [bp - 2]
 2:7B6B  8946f0               mov word ptr [bp - 0x10], ax
 2:7B6E  666a02               push 2
@@ -11619,7 +11886,8 @@ loc_7BC0:
 2:7BC4  ca0800               retf 8
 2:7BC7  db 00
 
-; ---------------- sub_s2:7BC8 FAR size=98 callers=7
+; ---------------- Save_readPos3@s2:7BC8 FAR size=98 callers=7
+;   three words
 2:7BC8  c8180000             enter 0x18, 0
 2:7BCC  666a02               push 2
 2:7BCF  8d46fe               lea ax, [bp - 2]
@@ -11662,18 +11930,19 @@ loc_7C12:
 2:7C19  66ff760a             push dword ptr [bp + 0xa]
 2:7C1D  90                   nop
 2:7C1E  0e                   push cs
-2:7C1F  e854c2               call 0x3e76  ; sub_s2:3E76
+2:7C1F  e854c2               call 0x3e76  ; Pos3::set@s2:3E76
 2:7C22  b80100               mov ax, 1
 2:7C25  c9                   leave
 2:7C26  ca0800               retf 8
 2:7C29  db 00
 
-; ---------------- sub_s2:7C2A FAR size=68 callers=6
+; ---------------- Save_writeString@s2:7C2A FAR size=68 callers=6
+;   bytes up to and including the NUL
 2:7C2A  c8020000             enter 2, 0
 2:7C2E  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:7C33  7421                 je 0x7c56
 2:7C35  66ff760a             push dword ptr [bp + 0xa]
-2:7C39  9aa43d0d78           lcall 0x780d, 0x3da4  ; sub_s1:3DA4
+2:7C39  9aa43d0d78           lcall 0x780d, 0x3da4  ; _fstrlen@s1:3DA4
 2:7C3E  83c404               add sp, 4
 2:7C41  40                   inc ax
 2:7C42  99                   cdq
@@ -11699,8 +11968,9 @@ loc_7C56:
 2:7C6A  ca0800               retf 8
 2:7C6D  db 00
 
-; ---------------- sub_s2:7C6E FAR size=62 callers=6
+; ---------------- Save_readString@s2:7C6E FAR size=62 callers=6
 ;   apis: KERNEL._hread
+;   bytes up to the NUL
 2:7C6E  c80e0000             enter 0xe, 0
 2:7C72  eb0c                 jmp 0x7c80
 loc_7C74:
@@ -11727,6 +11997,7 @@ loc_7C80:
 2:7CA9  ca0800               retf 8
 
 ; ---------------- Save_writeChunkTag@s2:7CAC FAR size=82 callers=15
+;   writes "dcbSC%02x"
 2:7CAC  c80a0000             enter 0xa, 0
 2:7CB0  ff760a               push word ptr [bp + 0xa]
 2:7CB3  66ff363c03           push dword ptr [0x33c]
@@ -11740,7 +12011,7 @@ loc_7C80:
 2:7CC9  8d46f6               lea ax, [bp - 0xa]
 2:7CCC  16                   push ss
 2:7CCD  50                   push ax
-2:7CCE  9aa43d3c7c           lcall 0x7c3c, 0x3da4  ; sub_s1:3DA4
+2:7CCE  9aa43d3c7c           lcall 0x7c3c, 0x3da4  ; _fstrlen@s1:3DA4
 2:7CD3  83c404               add sp, 4
 2:7CD6  6a00                 push 0
 2:7CD8  50                   push ax
@@ -11763,8 +12034,9 @@ loc_7CF6:
 2:7CFA  ca0600               retf 6
 2:7CFD  db 00
 
-; ---------------- sub_s2:7CFE FAR size=240 callers=15
+; ---------------- Save_findChunkTag@s2:7CFE FAR size=240 callers=15
 ;   apis: KERNEL._hread, KERNEL._llseek
+;   searches for a tag from the start of the file
 2:7CFE  c80e0400             enter 0x40e, 0
 2:7D02  56                   push si
 2:7D03  662bc0               sub eax, eax
@@ -11797,7 +12069,7 @@ loc_7D4A:
 2:7D5A  ff7606               push word ptr [bp + 6]
 2:7D5D  90                   nop
 2:7D5E  0e                   push cs
-2:7D5F  e8e800               call 0x7e4a  ; sub_s2:7E4A
+2:7D5F  e8e800               call 0x7e4a  ; Save_checkTag@s2:7E4A
 2:7D62  0bc0                 or ax, ax
 2:7D64  7426                 je 0x7d8c
 2:7D66  c45e06               les bx, ptr [bp + 6]
@@ -11847,6 +12119,7 @@ loc_7DE6:
 
 ; ---------------- File_read@s2:7DEE FAR size=46 callers=47
 ;   apis: KERNEL._hread
+;   _hread with a size check
 2:7DEE  c8040000             enter 4, 0
 2:7DF2  c45e06               les bx, ptr [bp + 6]
 2:7DF5  26ff37               push word ptr es:[bx]
@@ -11867,6 +12140,7 @@ loc_7E16:
 
 ; ---------------- File_write@s2:7E1C FAR size=46 callers=47
 ;   apis: KERNEL._hwrite
+;   _hwrite with a size check
 2:7E1C  c8040000             enter 4, 0
 2:7E20  c45e06               les bx, ptr [bp + 6]
 2:7E23  26ff37               push word ptr es:[bx]
@@ -11885,7 +12159,8 @@ loc_7E44:
 2:7E46  c9                   leave
 2:7E47  ca0c00               retf 0xc
 
-; ---------------- sub_s2:7E4A FAR size=78 callers=1
+; ---------------- Save_checkTag@s2:7E4A FAR size=78 callers=1
+;   compares a tag
 2:7E4A  c80a0000             enter 0xa, 0
 2:7E4E  ff760a               push word ptr [bp + 0xa]
 2:7E51  66ff363c03           push dword ptr [0x33c]
@@ -11899,14 +12174,14 @@ loc_7E44:
 2:7E67  8d46f6               lea ax, [bp - 0xa]
 2:7E6A  16                   push ss
 2:7E6B  50                   push ax
-2:7E6C  9aa43d817e           lcall 0x7e81, 0x3da4  ; sub_s1:3DA4
+2:7E6C  9aa43d817e           lcall 0x7e81, 0x3da4  ; _fstrlen@s1:3DA4
 2:7E71  83c404               add sp, 4
 2:7E74  50                   push ax
 2:7E75  8d46f6               lea ax, [bp - 0xa]
 2:7E78  16                   push ss
 2:7E79  50                   push ax
 2:7E7A  66ff760c             push dword ptr [bp + 0xc]
-2:7E7E  9ae83dc47c           lcall 0x7cc4, 0x3de8  ; sub_s1:3DE8
+2:7E7E  9ae83dc47c           lcall 0x7cc4, 0x3de8  ; _fstrncmp?@s1:3DE8
 2:7E83  83c40a               add sp, 0xa
 2:7E86  0bc0                 or ax, ax
 2:7E88  7508                 jne 0x7e92
@@ -11919,7 +12194,8 @@ loc_7E92:
 2:7E94  c9                   leave
 2:7E95  ca0a00               retf 0xa
 
-; ---------------- sub_s2:7E98 size=202 callers=0
+; ---------------- SOLWndSubclass::scalar_dtor@s2:7E98 size=202 callers=0
+;   deleting destructor
 2:7E98  c8100000             enter 0x10, 0
 2:7E9C  c45e06               les bx, ptr [bp + 6]
 2:7E9F  26c7070a38           mov word ptr es:[bx], 0x380a
@@ -11947,14 +12223,15 @@ loc_7EC7:
 2:7F51  db 7f 30 9c 58 7f 86 9c 5c 7f c4 9c 60 7f e0 9c a8
 2:7F61  db 7e
 
-; ---------------- sub_s2:7F62 FAR size=152 callers=1
+; ---------------- SOLChildPar::SOLChildPar@s2:7F62 FAR size=152 callers=1
 ;   apis: GDI.GetStockObject, USER.LoadCursor
+;   child parent window (class SOLChildPar; vtable 8042)
 2:7F62  c8060000             enter 6, 0
 2:7F66  66ff760c             push dword ptr [bp + 0xc]
 2:7F6A  66ff7606             push dword ptr [bp + 6]
 2:7F6E  90                   nop
 2:7F6F  0e                   push cs
-2:7F70  e807e9               call 0x687a  ; sub_s2:687A
+2:7F70  e807e9               call 0x687a  ; SOLChildWnd::SOLChildWnd@s2:687A
 2:7F73  8b460a               mov ax, word ptr [bp + 0xa]
 2:7F76  c45e06               les bx, ptr [bp + 6]
 2:7F79  268987de00           mov word ptr es:[bx + 0xde], ax
@@ -11989,20 +12266,21 @@ loc_7EC7:
 2:7FEA  53                   push bx
 2:7FEB  90                   nop
 2:7FEC  0e                   push cs
-2:7FED  e8e216               call 0x96d2  ; RegisterWindowClass@s2:96D2
+2:7FED  e8e216               call 0x96d2  ; SOLWnd::registerClass@s2:96D2
 2:7FF0  8b4606               mov ax, word ptr [bp + 6]
 2:7FF3  8b5608               mov dx, word ptr [bp + 8]
 2:7FF6  c9                   leave
 2:7FF7  ca0a00               retf 0xa
 
-; ---------------- sub_s2:7FFA size=244 callers=0
+; ---------------- SOLChildPar::scalar_dtor@s2:7FFA size=216 callers=0
+;   deleting destructor
 2:7FFA  c8140000             enter 0x14, 0
 2:7FFE  668b4606             mov eax, dword ptr [bp + 6]
 2:8002  05d200               add ax, 0xd2
 2:8005  6650                 push eax
 2:8007  90                   nop
 2:8008  0e                   push cs
-2:8009  e8b8d7               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:8009  e8b8d7               call 0x57c4  ; List::~List@s2:57C4
 2:800C  c45e06               les bx, ptr [bp + 6]
 2:800F  26c7070a38           mov word ptr es:[bx], 0x380a
 2:8014  26c747022680         mov word ptr es:[bx + 2], 0x8026  ; SEGMENT s2:0000
@@ -12027,11 +12305,23 @@ loc_8037:
 2:80A1  db 80 6a 37 a8 80 4a 6a ac 80 2e 6b b0 80 02 6b b4
 2:80B1  db 80 7a 37 b8 80 52 9c bc 80 56 9c c0 80 16 9c c4
 2:80C1  db 80 30 9c c8 80 86 9c cc 80 c4 9c d0 80 e0 9c 18
-2:80D1  db 80 55 8b ec c4 5e 06 66 26 c7 07 00 00 00 00 26
-2:80E1  db c7 47 04 00 00 8b c3 8c c2 c9 ca 04 00
+2:80D1  db 80
 
-; ---------------- sub_s2:80EE FAR size=122 callers=1
+; ---------------- MicroSpinData::init@s2:80D2 FAR size=28 callers=1
+;   zeroes the spin control's data
+2:80D2  55                   push bp
+2:80D3  8bec                 mov bp, sp
+2:80D5  c45e06               les bx, ptr [bp + 6]
+2:80D8  6626c70700000000     mov dword ptr es:[bx], 0
+2:80E0  26c747040000         mov word ptr es:[bx + 4], 0
+2:80E6  8bc3                 mov ax, bx
+2:80E8  8cc2                 mov dx, es
+2:80EA  c9                   leave
+2:80EB  ca0400               retf 4
+
+; ---------------- MicroSpinControl::MicroSpinControl@s2:80EE FAR size=122 callers=1
 ;   apis: GDI.GetStockObject, USER.LoadCursor
+;   spin control ctor (vtable 87C8)
 2:80EE  c8040000             enter 4, 0
 2:80F2  c45e06               les bx, ptr [bp + 6]
 2:80F5  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -12065,14 +12355,15 @@ loc_8037:
 2:8157  53                   push bx
 2:8158  90                   nop
 2:8159  0e                   push cs
-2:815A  e82f00               call 0x818c  ; RegisterWindowClass@s2:818C
+2:815A  e82f00               call 0x818c  ; MicroSpinControl::registerClass@s2:818C
 2:815D  8b4606               mov ax, word ptr [bp + 6]
 2:8160  8b5608               mov dx, word ptr [bp + 8]
 2:8163  c9                   leave
 2:8164  ca0400               retf 4
 2:8167  db 00
 
-; ---------------- sub_s2:8168 FAR size=36 callers=2
+; ---------------- MicroSpinControl::~MicroSpinControl@s2:8168 FAR size=36 callers=2
+;   dtor
 2:8168  c8040000             enter 4, 0
 2:816C  c45e06               les bx, ptr [bp + 6]
 2:816F  26c707c887           mov word ptr es:[bx], 0x87c8
@@ -12083,8 +12374,9 @@ loc_8037:
 2:8188  c9                   leave
 2:8189  ca0400               retf 4
 
-; ---------------- RegisterWindowClass@s2:818C FAR size=252 callers=1
+; ---------------- MicroSpinControl::registerClass@s2:818C FAR size=136 callers=1
 ;   apis: USER.GetClassInfo, USER.RegisterClass
+;   registers "MicroSpinControl"
 2:818C  c81a0000             enter 0x1a, 0
 2:8190  57                   push di
 2:8191  56                   push si
@@ -12125,24 +12417,69 @@ loc_8037:
 2:8200  0bc0                 or ax, ax
 2:8202  7509                 jne 0x820d
 2:8204  50                   push ax
-2:8205  9acd242881           lcall 0x8128, 0x24cd  ; sub_s1:24CD
+2:8205  9acd242881           lcall 0x8128, 0x24cd  ; exit@s1:24CD
 2:820A  83c402               add sp, 2
 loc_820D:
 2:820D  5e                   pop si
 2:820E  5f                   pop di
 2:820F  c9                   leave
 2:8210  ca0400               retf 4
-2:8213  db 00 c8 08 00 00 81 7e 08 81 00 75 31 ff 76 06 66
-2:8223  db 6a 06 9a 9c 17 08 82 83 c4 02 89 56 fa 0b d0 74
-2:8233  db 0c ff 76 fa 50 90 0e e8 95 fe eb 04 90 33 c0 99
-2:8243  db 89 46 fc 89 56 fe 52 50 9a 72 56 00 00 83 7e 08
-2:8253  db 01 75 2c ff 76 06 6a 00 9a 41 56 00 00 89 46 fc
-2:8263  db 89 56 fe c4 5e 0c 26 8b 47 08 c4 5e fc 26 89 07
-2:8273  db ff 76 06 9a ff ff 00 00 c4 5e fc 26 89 47 02 b8
-2:8283  db 01 00 99 c9 cb
+2:8213  db 00
 
-; ---------------- sub_s2:8288 size=562 callers=0
+; ---------------- MicroSpin_onNcCreate@s2:8214 FAR size=116 callers=1
+;   apis: USER.GetDlgCtrlID, USER.GetWindowLong, USER.SetWindowLong
+;   WM_NCCREATE: allocates its data, records buddy and id
+2:8214  c8080000             enter 8, 0
+2:8218  817e088100           cmp word ptr [bp + 8], 0x81
+2:821D  7531                 jne 0x8250
+2:821F  ff7606               push word ptr [bp + 6]
+2:8222  666a06               push 6
+2:8225  9a9c170882           lcall 0x8208, 0x179c  ; operator_new@s1:179C
+2:822A  83c402               add sp, 2
+2:822D  8956fa               mov word ptr [bp - 6], dx
+2:8230  0bd0                 or dx, ax
+2:8232  740c                 je 0x8240
+2:8234  ff76fa               push word ptr [bp - 6]
+2:8237  50                   push ax
+2:8238  90                   nop
+2:8239  0e                   push cs
+2:823A  e895fe               call 0x80d2  ; MicroSpinData::init@s2:80D2
+2:823D  eb04                 jmp 0x8243
+2:823F  db 90
+loc_8240:
+2:8240  33c0                 xor ax, ax
+2:8242  99                   cdq
+loc_8243:
+2:8243  8946fc               mov word ptr [bp - 4], ax
+2:8246  8956fe               mov word ptr [bp - 2], dx
+2:8249  52                   push dx
+2:824A  50                   push ax
+2:824B  9a72560000           lcall 0, 0x5672  ; USER.SetWindowLong
+loc_8250:
+2:8250  837e0801             cmp word ptr [bp + 8], 1
+2:8254  752c                 jne 0x8282
+2:8256  ff7606               push word ptr [bp + 6]
+2:8259  6a00                 push 0
+2:825B  9a41560000           lcall 0, 0x5641  ; USER.GetWindowLong
+2:8260  8946fc               mov word ptr [bp - 4], ax
+2:8263  8956fe               mov word ptr [bp - 2], dx
+2:8266  c45e0c               les bx, ptr [bp + 0xc]
+2:8269  268b4708             mov ax, word ptr es:[bx + 8]
+2:826D  c45efc               les bx, ptr [bp - 4]
+2:8270  268907               mov word ptr es:[bx], ax
+2:8273  ff7606               push word ptr [bp + 6]
+2:8276  9affff0000           lcall 0, 0xffff  ; USER.GetDlgCtrlID
+2:827B  c45efc               les bx, ptr [bp - 4]
+2:827E  26894702             mov word ptr es:[bx + 2], ax
+loc_8282:
+2:8282  b80100               mov ax, 1
+2:8285  99                   cdq
+2:8286  c9                   leave
+2:8287  cb                   retf
+
+; ---------------- MicroSpin_paint@s2:8288 FAR size=562 callers=1
 ;   apis: GDI.CreatePen, GDI.CreateSolidBrush, GDI.DeleteObject, GDI.GetStockObject, GDI.LineTo, GDI.MoveTo, GDI.Polygon, GDI.Rectangle, GDI.SelectObject, USER.BeginPaint, USER.EndPaint, USER.GetClientRect
+;   draws the spin arrows (pens, polygons)
 2:8288  c85c0000             enter 0x5c, 0
 2:828C  56                   push si
 2:828D  ff7606               push word ptr [bp + 6]
@@ -12335,8 +12672,9 @@ loc_8448:
 2:84B8  c9                   leave
 2:84B9  cb                   retf
 
-; ---------------- sub_s2:84BA size=744 callers=0
+; ---------------- MicroSpin_helper@s2:84BA FAR size=56 callers=1
 ;   apis: USER.SendMessage
+;   spin control helper (SendMessage to the buddy)
 2:84BA  c8020000             enter 2, 0
 2:84BE  c45e08               les bx, ptr [bp + 8]
 2:84C1  26f6470404           test byte ptr es:[bx + 4], 4
@@ -12358,57 +12696,267 @@ loc_84DC:
 loc_84F0:
 2:84F0  c9                   leave
 2:84F1  cb                   retf
-2:84F2  db 8c d0 c8 1c 00 00 1e 8e d8 ff 76 0e 6a 00 9a 5c
-2:8502  db 82 00 00 89 46 ec 89 56 ee 8b 46 0c 3d 1f 00 74
-2:8512  db 25 0f 87 43 02 3d 14 00 0f 84 7c 02 0f 87 4f 02
-2:8522  db fe c8 74 3a fe c8 74 50 2c 0a 0f 84 6a 02 2c 03
-2:8532  db 74 62 e9 3a 02 90 c4 5e ec 26 c7 47 04 00 00 ff
-2:8542  db 76 0e 68 a6 0f 9a 53 85 00 00 ff 76 0e 68 a7 0f
-2:8552  db 9a 29 86 00 00 9a 39 86 00 00 e9 3b 02 90 66 ff
-2:8562  db 76 06 ff 76 0a ff 76 0c ff 76 0e 90 0e e8 a2 fc
-2:8572  db 83 c4 0a 1f c9 ca 0a 00 8b 46 ec 89 46 e8 89 56
-2:8582  db ea 89 46 e4 89 56 e6 52 50 9a ce 17 28 82 83 c4
-2:8592  db 04 e9 04 02 52 ff 76 ec ff 76 0e 90 0e e8 e6 fc
-2:85A2  db 83 c4 06 e9 f2 01 8b 46 08 89 46 f6 c4 5e ec 26
-2:85B2  db 80 4f 04 01 ff 76 0e 8d 46 f8 16 50 9a dd 86 00
-2:85C2  db 00 8b 46 fe d1 f8 89 46 f4 3b 46 f6 76 0a c4 5e
-2:85D2  db ec 26 80 4f 04 04 eb 08 c4 5e ec 26 80 4f 04 08
-2:85E2  db 66 ff 76 ec ff 76 0e 90 0e e8 cc fe 83 c4 06 ff
-2:85F2  db 76 0e 66 68 2c 01 a6 0f 66 6a 00 9a a3 86 00 00
-2:8602  db ff 76 0e 66 6a 00 6a 01 9a 5e 86 00 00 ff 76 0e
-2:8612  db 9a 66 86 00 00 ff 76 0e 9a ff ff 00 00 e9 78 01
-2:8622  db ff 76 0e 68 a6 0f 9a 34 86 00 00 ff 76 0e 68 a7
-2:8632  db 0f 9a 92 86 00 00 9a ff ff 00 00 c4 5e ec 26 8b
-2:8642  db 47 04 8b c8 a8 01 74 20 f7 c1 fd ff 74 1a 26 80
-2:8652  db 67 04 f2 ff 76 0e 66 6a 00 6a 01 9a 4b 87 00 00
-2:8662  db ff 76 0e 9a 53 87 00 00 c4 5e ec 26 ff 37 66 68
-2:8672  db f9 00 11 01 6a 00 26 ff 77 02 9a ec 84 00 00 e9
-2:8682  db 16 01 81 7e 0a a6 0f 75 1c ff 76 0e ff 76 0a 9a
-2:8692  db ff ff 00 00 ff 76 0e 66 68 01 00 a7 0f 66 6a 00
-2:86A2  db 9a ff ff 00 00 c4 5e ec 26 f6 47 04 02 0f 85 e7
-2:86B2  db 00 06 53 ff 76 0e 90 0e e8 fd fd e9 e2 fe c4 5e
-2:86C2  db ec 26 f6 47 04 01 0f 84 ce 00 66 8b 46 06 66 89
-2:86D2  db 46 f0 ff 76 0e 8d 46 f8 16 50 9a d8 82 00 00 8b
-2:86E2  db 46 fe d1 f8 89 46 f4 c4 5e ec 26 8b 47 04 89 46
-2:86F2  db e4 26 80 67 04 f3 8d 46 f8 16 50 66 ff 76 f0 9a
-2:8702  db ff ff 00 00 0b c0 75 0a c4 5e ec 26 80 4f 04 02
-2:8712  db eb 22 8b 46 f4 39 46 f2 7d 0a c4 5e ec 26 80 4f
-2:8722  db 04 04 eb 08 c4 5e ec 26 80 4f 04 08 c4 5e ec 26
-2:8732  db 80 67 04 fd 8b 46 e4 c4 5e ec 26 39 47 04 74 58
-2:8742  db ff 76 0e 66 6a 00 6a 01 9a ff ff 00 00 ff 76 0e
-2:8752  db 9a dd 2f 00 00 eb 41 90 3d 00 02 0f 84 5f ff 77
-2:8762  db 23 2d 81 00 0f 84 f6 fd 2d 92 00 0f 84 13 ff 66
-2:8772  db ff 76 0c 66 ff 76 08 ff 76 06 9a 60 5f 00 00 1f
-2:8782  db c9 ca 0a 00 2d 01 02 0f 84 1b fe 48 0f 84 90 fe
-2:8792  db 48 0f 84 11 fe eb d8 90 33 c0 99 1f c9 ca 0a 00
 
-; ---------------- sub_s2:87A2 FAR size=42 callers=0
+; ---------------- MicroSpin_WndProc@s2:84F2 FAR size=688 callers=0
+;   apis: USER.DefWindowProc, USER.GetClientRect, USER.GetWindowLong, USER.InvalidateRect, USER.KillTimer, USER.PtInRect, USER.ReleaseCapture, USER.SendMessage, USER.SetCapture, USER.SetTimer, USER.UpdateWindow
+;   the MicroSpinControl window procedure (paint, clicks, auto-repeat timer)
+2:84F2  8cd0                 mov ax, ss
+2:84F4  c81c0000             enter 0x1c, 0
+2:84F8  1e                   push ds
+2:84F9  8ed8                 mov ds, ax
+2:84FB  ff760e               push word ptr [bp + 0xe]
+2:84FE  6a00                 push 0
+2:8500  9a5c820000           lcall 0, 0x825c  ; USER.GetWindowLong
+2:8505  8946ec               mov word ptr [bp - 0x14], ax
+2:8508  8956ee               mov word ptr [bp - 0x12], dx
+2:850B  8b460c               mov ax, word ptr [bp + 0xc]
+2:850E  3d1f00               cmp ax, 0x1f
+2:8511  7425                 je 0x8538
+2:8513  0f874302             ja 0x875a
+2:8517  3d1400               cmp ax, 0x14
+2:851A  0f847c02             je 0x879a
+2:851E  0f874f02             ja 0x8771
+2:8522  fec8                 dec al
+2:8524  743a                 je 0x8560
+2:8526  fec8                 dec al
+2:8528  7450                 je 0x857a
+2:852A  2c0a                 sub al, 0xa
+2:852C  0f846a02             je 0x879a
+2:8530  2c03                 sub al, 3
+2:8532  7462                 je 0x8596
+2:8534  e93a02               jmp 0x8771
+2:8537  db 90
+loc_8538:
+2:8538  c45eec               les bx, ptr [bp - 0x14]
+2:853B  26c747040000         mov word ptr es:[bx + 4], 0
+2:8541  ff760e               push word ptr [bp + 0xe]
+2:8544  68a60f               push 0xfa6
+2:8547  9a53850000           lcall 0, 0x8553  ; USER.KillTimer
+2:854C  ff760e               push word ptr [bp + 0xe]
+2:854F  68a70f               push 0xfa7
+2:8552  9a29860000           lcall 0, 0x8629  ; USER.KillTimer
+2:8557  9a39860000           lcall 0, 0x8639  ; USER.ReleaseCapture
+2:855C  e93b02               jmp 0x879a
+2:855F  db 90
+loc_8560:
+2:8560  66ff7606             push dword ptr [bp + 6]
+2:8564  ff760a               push word ptr [bp + 0xa]
+2:8567  ff760c               push word ptr [bp + 0xc]
+2:856A  ff760e               push word ptr [bp + 0xe]
+2:856D  90                   nop
+2:856E  0e                   push cs
+2:856F  e8a2fc               call 0x8214  ; MicroSpin_onNcCreate@s2:8214
+2:8572  83c40a               add sp, 0xa
+2:8575  1f                   pop ds
+2:8576  c9                   leave
+2:8577  ca0a00               retf 0xa
+loc_857A:
+2:857A  8b46ec               mov ax, word ptr [bp - 0x14]
+2:857D  8946e8               mov word ptr [bp - 0x18], ax
+2:8580  8956ea               mov word ptr [bp - 0x16], dx
+2:8583  8946e4               mov word ptr [bp - 0x1c], ax
+2:8586  8956e6               mov word ptr [bp - 0x1a], dx
+2:8589  52                   push dx
+2:858A  50                   push ax
+2:858B  9ace172882           lcall 0x8228, 0x17ce  ; operator_delete@s1:17CE
+2:8590  83c404               add sp, 4
+2:8593  e90402               jmp 0x879a
+loc_8596:
+2:8596  52                   push dx
+2:8597  ff76ec               push word ptr [bp - 0x14]
+2:859A  ff760e               push word ptr [bp + 0xe]
+2:859D  90                   nop
+2:859E  0e                   push cs
+2:859F  e8e6fc               call 0x8288  ; MicroSpin_paint@s2:8288
+loc_85A2:
+2:85A2  83c406               add sp, 6
+2:85A5  e9f201               jmp 0x879a
+loc_85A8:
+2:85A8  8b4608               mov ax, word ptr [bp + 8]
+2:85AB  8946f6               mov word ptr [bp - 0xa], ax
+2:85AE  c45eec               les bx, ptr [bp - 0x14]
+2:85B1  26804f0401           or byte ptr es:[bx + 4], 1
+2:85B6  ff760e               push word ptr [bp + 0xe]
+2:85B9  8d46f8               lea ax, [bp - 8]
+2:85BC  16                   push ss
+2:85BD  50                   push ax
+2:85BE  9add860000           lcall 0, 0x86dd  ; USER.GetClientRect
+2:85C3  8b46fe               mov ax, word ptr [bp - 2]
+2:85C6  d1f8                 sar ax, 1
+2:85C8  8946f4               mov word ptr [bp - 0xc], ax
+2:85CB  3b46f6               cmp ax, word ptr [bp - 0xa]
+2:85CE  760a                 jbe 0x85da
+2:85D0  c45eec               les bx, ptr [bp - 0x14]
+2:85D3  26804f0404           or byte ptr es:[bx + 4], 4
+2:85D8  eb08                 jmp 0x85e2
+loc_85DA:
+2:85DA  c45eec               les bx, ptr [bp - 0x14]
+2:85DD  26804f0408           or byte ptr es:[bx + 4], 8
+loc_85E2:
+2:85E2  66ff76ec             push dword ptr [bp - 0x14]
+2:85E6  ff760e               push word ptr [bp + 0xe]
+2:85E9  90                   nop
+2:85EA  0e                   push cs
+2:85EB  e8ccfe               call 0x84ba  ; MicroSpin_helper@s2:84BA
+2:85EE  83c406               add sp, 6
+2:85F1  ff760e               push word ptr [bp + 0xe]
+2:85F4  66682c01a60f         push 0xfa6012c
+2:85FA  666a00               push 0
+2:85FD  9aa3860000           lcall 0, 0x86a3  ; USER.SetTimer
+2:8602  ff760e               push word ptr [bp + 0xe]
+2:8605  666a00               push 0
+2:8608  6a01                 push 1
+2:860A  9a5e860000           lcall 0, 0x865e  ; USER.InvalidateRect
+2:860F  ff760e               push word ptr [bp + 0xe]
+2:8612  9a66860000           lcall 0, 0x8666  ; USER.UpdateWindow
+2:8617  ff760e               push word ptr [bp + 0xe]
+2:861A  9affff0000           lcall 0, 0xffff  ; USER.SetCapture
+2:861F  e97801               jmp 0x879a
+loc_8622:
+2:8622  ff760e               push word ptr [bp + 0xe]
+2:8625  68a60f               push 0xfa6
+2:8628  9a34860000           lcall 0, 0x8634  ; USER.KillTimer
+2:862D  ff760e               push word ptr [bp + 0xe]
+2:8630  68a70f               push 0xfa7
+2:8633  9a92860000           lcall 0, 0x8692  ; USER.KillTimer
+2:8638  9affff0000           lcall 0, 0xffff  ; USER.ReleaseCapture
+2:863D  c45eec               les bx, ptr [bp - 0x14]
+2:8640  268b4704             mov ax, word ptr es:[bx + 4]
+2:8644  8bc8                 mov cx, ax
+2:8646  a801                 test al, 1
+2:8648  7420                 je 0x866a
+2:864A  f7c1fdff             test cx, 0xfffd
+2:864E  741a                 je 0x866a
+2:8650  26806704f2           and byte ptr es:[bx + 4], 0xf2
+2:8655  ff760e               push word ptr [bp + 0xe]
+2:8658  666a00               push 0
+2:865B  6a01                 push 1
+2:865D  9a4b870000           lcall 0, 0x874b  ; USER.InvalidateRect
+2:8662  ff760e               push word ptr [bp + 0xe]
+2:8665  9a53870000           lcall 0, 0x8753  ; USER.UpdateWindow
+loc_866A:
+2:866A  c45eec               les bx, ptr [bp - 0x14]
+2:866D  26ff37               push word ptr es:[bx]
+2:8670  6668f9001101         push 0x11100f9
+2:8676  6a00                 push 0
+2:8678  26ff7702             push word ptr es:[bx + 2]
+2:867C  9aec840000           lcall 0, 0x84ec  ; USER.SendMessage
+2:8681  e91601               jmp 0x879a
+loc_8684:
+2:8684  817e0aa60f           cmp word ptr [bp + 0xa], 0xfa6
+2:8689  751c                 jne 0x86a7
+2:868B  ff760e               push word ptr [bp + 0xe]
+2:868E  ff760a               push word ptr [bp + 0xa]
+2:8691  9affff0000           lcall 0, 0xffff  ; USER.KillTimer
+2:8696  ff760e               push word ptr [bp + 0xe]
+2:8699  66680100a70f         push 0xfa70001
+2:869F  666a00               push 0
+2:86A2  9affff0000           lcall 0, 0xffff  ; USER.SetTimer
+loc_86A7:
+2:86A7  c45eec               les bx, ptr [bp - 0x14]
+2:86AA  26f6470402           test byte ptr es:[bx + 4], 2
+2:86AF  0f85e700             jne 0x879a
+2:86B3  06                   push es
+2:86B4  53                   push bx
+2:86B5  ff760e               push word ptr [bp + 0xe]
+2:86B8  90                   nop
+2:86B9  0e                   push cs
+2:86BA  e8fdfd               call 0x84ba  ; MicroSpin_helper@s2:84BA
+2:86BD  e9e2fe               jmp 0x85a2
+loc_86C0:
+2:86C0  c45eec               les bx, ptr [bp - 0x14]
+2:86C3  26f6470401           test byte ptr es:[bx + 4], 1
+2:86C8  0f84ce00             je 0x879a
+2:86CC  668b4606             mov eax, dword ptr [bp + 6]
+2:86D0  668946f0             mov dword ptr [bp - 0x10], eax
+2:86D4  ff760e               push word ptr [bp + 0xe]
+2:86D7  8d46f8               lea ax, [bp - 8]
+2:86DA  16                   push ss
+2:86DB  50                   push ax
+2:86DC  9ad8820000           lcall 0, 0x82d8  ; USER.GetClientRect
+2:86E1  8b46fe               mov ax, word ptr [bp - 2]
+2:86E4  d1f8                 sar ax, 1
+2:86E6  8946f4               mov word ptr [bp - 0xc], ax
+2:86E9  c45eec               les bx, ptr [bp - 0x14]
+2:86EC  268b4704             mov ax, word ptr es:[bx + 4]
+2:86F0  8946e4               mov word ptr [bp - 0x1c], ax
+2:86F3  26806704f3           and byte ptr es:[bx + 4], 0xf3
+2:86F8  8d46f8               lea ax, [bp - 8]
+2:86FB  16                   push ss
+2:86FC  50                   push ax
+2:86FD  66ff76f0             push dword ptr [bp - 0x10]
+2:8701  9affff0000           lcall 0, 0xffff  ; USER.PtInRect
+2:8706  0bc0                 or ax, ax
+2:8708  750a                 jne 0x8714
+2:870A  c45eec               les bx, ptr [bp - 0x14]
+2:870D  26804f0402           or byte ptr es:[bx + 4], 2
+2:8712  eb22                 jmp 0x8736
+loc_8714:
+2:8714  8b46f4               mov ax, word ptr [bp - 0xc]
+2:8717  3946f2               cmp word ptr [bp - 0xe], ax
+2:871A  7d0a                 jge 0x8726
+2:871C  c45eec               les bx, ptr [bp - 0x14]
+2:871F  26804f0404           or byte ptr es:[bx + 4], 4
+2:8724  eb08                 jmp 0x872e
+loc_8726:
+2:8726  c45eec               les bx, ptr [bp - 0x14]
+2:8729  26804f0408           or byte ptr es:[bx + 4], 8
+loc_872E:
+2:872E  c45eec               les bx, ptr [bp - 0x14]
+2:8731  26806704fd           and byte ptr es:[bx + 4], 0xfd
+loc_8736:
+2:8736  8b46e4               mov ax, word ptr [bp - 0x1c]
+2:8739  c45eec               les bx, ptr [bp - 0x14]
+2:873C  26394704             cmp word ptr es:[bx + 4], ax
+2:8740  7458                 je 0x879a
+2:8742  ff760e               push word ptr [bp + 0xe]
+2:8745  666a00               push 0
+2:8748  6a01                 push 1
+2:874A  9affff0000           lcall 0, 0xffff  ; USER.InvalidateRect
+2:874F  ff760e               push word ptr [bp + 0xe]
+2:8752  9add2f0000           lcall 0, 0x2fdd  ; USER.UpdateWindow
+2:8757  eb41                 jmp 0x879a
+2:8759  db 90
+loc_875A:
+2:875A  3d0002               cmp ax, 0x200
+2:875D  0f845fff             je 0x86c0
+2:8761  7723                 ja 0x8786
+2:8763  2d8100               sub ax, 0x81
+2:8766  0f84f6fd             je 0x8560
+2:876A  2d9200               sub ax, 0x92
+2:876D  0f8413ff             je 0x8684
+loc_8771:
+2:8771  66ff760c             push dword ptr [bp + 0xc]
+2:8775  66ff7608             push dword ptr [bp + 8]
+2:8779  ff7606               push word ptr [bp + 6]
+2:877C  9a605f0000           lcall 0, 0x5f60  ; USER.DefWindowProc
+2:8781  1f                   pop ds
+2:8782  c9                   leave
+2:8783  ca0a00               retf 0xa
+loc_8786:
+2:8786  2d0102               sub ax, 0x201
+2:8789  0f841bfe             je 0x85a8
+2:878D  48                   dec ax
+2:878E  0f8490fe             je 0x8622
+2:8792  48                   dec ax
+2:8793  0f8411fe             je 0x85a8
+2:8797  ebd8                 jmp 0x8771
+2:8799  db 90
+loc_879A:
+2:879A  33c0                 xor ax, ax
+2:879C  99                   cdq
+2:879D  1f                   pop ds
+2:879E  c9                   leave
+2:879F  ca0a00               retf 0xa
+
+; ---------------- MicroSpinControl::scalar_dtor@s2:87A2 FAR size=42 callers=0
+;   deleting destructor
 2:87A2  55                   push bp
 2:87A3  8bec                 mov bp, sp
 2:87A5  66ff7606             push dword ptr [bp + 6]
 2:87A9  90                   nop
 2:87AA  0e                   push cs
-2:87AB  e8baf9               call 0x8168  ; sub_s2:8168
+2:87AB  e8baf9               call 0x8168  ; MicroSpinControl::~MicroSpinControl@s2:8168
 2:87AE  f6460a01             test byte ptr [bp + 0xa], 1
 2:87B2  7409                 je 0x87bd
 2:87B4  66ff7606             push dword ptr [bp + 6]
@@ -12420,7 +12968,8 @@ loc_87BD:
 2:87C4  ca0600               retf 6
 2:87C7  db 90 a2 87 c5 81
 
-; ---------------- sub_s2:87CC FAR size=726 callers=2
+; ---------------- AnimOverlay::AnimOverlay@s2:87CC FAR size=726 callers=2
+;   animation overlays and map projection (cache registry 0x2E)
 2:87CC  c8320000             enter 0x32, 0
 2:87D0  57                   push di
 2:87D1  56                   push si
@@ -12443,19 +12992,19 @@ loc_87BD:
 2:8811  50                   push ax
 2:8812  90                   nop
 2:8813  0e                   push cs
-2:8814  e821b6               call 0x3e38  ; sub_s2:3E38
+2:8814  e821b6               call 0x3e38  ; Pos3::Pos3@s2:3E38
 2:8817  668b4606             mov eax, dword ptr [bp + 6]
 2:881B  052200               add ax, 0x22
 2:881E  6650                 push eax
 2:8820  90                   nop
 2:8821  0e                   push cs
-2:8822  e813b6               call 0x3e38  ; sub_s2:3E38
+2:8822  e813b6               call 0x3e38  ; Pos3::Pos3@s2:3E38
 2:8825  668b4606             mov eax, dword ptr [bp + 6]
 2:8829  052800               add ax, 0x28
 2:882C  6650                 push eax
 2:882E  90                   nop
 2:882F  0e                   push cs
-2:8830  e805b6               call 0x3e38  ; sub_s2:3E38
+2:8830  e805b6               call 0x3e38  ; Pos3::Pos3@s2:3E38
 2:8833  8b460e               mov ax, word ptr [bp + 0xe]
 2:8836  c45e06               les bx, ptr [bp + 6]
 2:8839  2689472e             mov word ptr es:[bx + 0x2e], ax
@@ -12472,7 +13021,7 @@ loc_87BD:
 2:8871  7513                 jne 0x8886
 2:8873  6a2e                 push 0x2e
 2:8875  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:887A  9aba20bb76           lcall 0x76bb, 0x20ba  ; sub_s3:20BA
+2:887A  9aba20bb76           lcall 0x76bb, 0x20ba  ; Registry_get@s3:20BA
 2:887F  a38203               mov word ptr [0x382], ax
 2:8882  89168403             mov word ptr [0x384], dx
 loc_8886:
@@ -12480,7 +13029,7 @@ loc_8886:
 2:8889  6626ff7704           push dword ptr es:[bx + 4]
 2:888E  90                   nop
 2:888F  0e                   push cs
-2:8890  e8dfbe               call 0x4772  ; sub_s2:4772
+2:8890  e8dfbe               call 0x4772  ; DIB::rect@s2:4772
 2:8893  8946fc               mov word ptr [bp - 4], ax
 2:8896  8956fe               mov word ptr [bp - 2], dx
 2:8899  8ec2                 mov es, dx
@@ -12518,7 +13067,7 @@ loc_8886:
 2:88FA  50                   push ax
 2:88FB  90                   nop
 2:88FC  0e                   push cs
-2:88FD  e876b5               call 0x3e76  ; sub_s2:3E76
+2:88FD  e876b5               call 0x3e76  ; Pos3::set@s2:3E76
 2:8900  c45e06               les bx, ptr [bp + 6]
 2:8903  268b471c             mov ax, word ptr es:[bx + 0x1c]
 2:8907  052000               add ax, 0x20
@@ -12549,7 +13098,7 @@ loc_8886:
 2:895A  50                   push ax
 2:895B  90                   nop
 2:895C  0e                   push cs
-2:895D  e84224               call 0xada2  ; sub_s2:ADA2
+2:895D  e84224               call 0xada2  ; AnimRef::init@s2:ADA2
 2:8960  c45e06               les bx, ptr [bp + 6]
 2:8963  26894708             mov word ptr es:[bx + 8], ax
 2:8967  2689570a             mov word ptr es:[bx + 0xa], dx
@@ -12563,7 +13112,7 @@ loc_897A:
 2:897D  6626ff7708           push dword ptr es:[bx + 8]
 2:8982  90                   nop
 2:8983  0e                   push cs
-2:8984  e85125               call 0xaed8  ; sub_s2:AED8
+2:8984  e85125               call 0xaed8  ; AnimRef::hasAnimation@s2:AED8
 2:8987  0bc0                 or ax, ax
 2:8989  7529                 jne 0x89b4
 2:898B  c45e06               les bx, ptr [bp + 6]
@@ -12582,18 +13131,18 @@ loc_89B4:
 2:89BC  668946ce             mov dword ptr [bp - 0x32], eax
 2:89C0  6650                 push eax
 2:89C2  66ff368203           push dword ptr [0x382]
-2:89C7  9aee20068a           lcall 0x8a06, 0x20ee  ; sub_s4:20EE
+2:89C7  9aee20068a           lcall 0x8a06, 0x20ee  ; AnimRef::frameDib@s4:20EE
 2:89CC  8946f0               mov word ptr [bp - 0x10], ax
 2:89CF  8956f2               mov word ptr [bp - 0xe], dx
 2:89D2  c45e06               les bx, ptr [bp + 6]
 2:89D5  6626ff7708           push dword ptr es:[bx + 8]
 2:89DA  90                   nop
 2:89DB  0e                   push cs
-2:89DC  e8f323               call 0xadd2  ; sub_s2:ADD2
+2:89DC  e8f323               call 0xadd2  ; AnimRef::reset@s2:ADD2
 2:89DF  66ff76f0             push dword ptr [bp - 0x10]
 2:89E3  90                   nop
 2:89E4  0e                   push cs
-2:89E5  e88abd               call 0x4772  ; sub_s2:4772
+2:89E5  e88abd               call 0x4772  ; DIB::rect@s2:4772
 2:89E8  8946e4               mov word ptr [bp - 0x1c], ax
 2:89EB  8956e6               mov word ptr [bp - 0x1a], dx
 2:89EE  c45e06               les bx, ptr [bp + 6]
@@ -12604,7 +13153,7 @@ loc_89B4:
 2:89FA  66ff368203           push dword ptr [0x382]
 2:89FF  8bf0                 mov si, ax
 2:8A01  8cc7                 mov di, es
-2:8A03  9a4e213f28           lcall 0x283f, 0x214e  ; sub_s4:214E
+2:8A03  9a4e213f28           lcall 0x283f, 0x214e  ; AnimRef::frameOffset@s4:214E
 2:8A08  8b4606               mov ax, word ptr [bp + 6]
 2:8A0B  8b5608               mov dx, word ptr [bp + 8]
 2:8A0E  051c00               add ax, 0x1c
@@ -12629,7 +13178,7 @@ loc_89B4:
 2:8A2C  50                   push ax
 2:8A2D  90                   nop
 2:8A2E  0e                   push cs
-2:8A2F  e800b5               call 0x3f32  ; sub_s2:3F32
+2:8A2F  e800b5               call 0x3f32  ; Pos3::add@s2:3F32
 2:8A32  8b4606               mov ax, word ptr [bp + 6]
 2:8A35  8b5608               mov dx, word ptr [bp + 8]
 2:8A38  053200               add ax, 0x32
@@ -12648,7 +13197,7 @@ loc_89B4:
 2:8A52  8bf2                 mov si, dx
 2:8A54  90                   nop
 2:8A55  0e                   push cs
-2:8A56  e83bb4               call 0x3e94  ; sub_s2:3E94
+2:8A56  e83bb4               call 0x3e94  ; Pos3::getXY@s2:3E94
 2:8A59  c45ee4               les bx, ptr [bp - 0x1c]
 2:8A5C  268b4704             mov ax, word ptr es:[bx + 4]
 2:8A60  c45ed2               les bx, ptr [bp - 0x2e]
@@ -12664,7 +13213,7 @@ loc_89B4:
 2:8A80  666802000500         push 0x50002
 2:8A86  90                   nop
 2:8A87  0e                   push cs
-2:8A88  e8a3d6               call 0x612e  ; sub_s2:612E
+2:8A88  e8a3d6               call 0x612e  ; random@s2:612E
 2:8A8B  83c404               add sp, 4
 2:8A8E  c45e06               les bx, ptr [bp + 6]
 2:8A91  2689473e             mov word ptr es:[bx + 0x3e], ax
@@ -12677,7 +13226,8 @@ loc_8A95:
 2:8A9E  ca1200               retf 0x12
 2:8AA1  db 00
 
-; ---------------- sub_s2:8AA2 FAR size=126 callers=1
+; ---------------- AnimOverlay::~AnimOverlay@s2:8AA2 FAR size=126 callers=1
+;   dtor
 2:8AA2  c8140000             enter 0x14, 0
 2:8AA6  c45e06               les bx, ptr [bp + 6]
 2:8AA9  26c7079a8e           mov word ptr es:[bx], 0x8e9a
@@ -12714,7 +13264,7 @@ loc_8AE7:
 2:8AFF  50                   push ax
 2:8B00  90                   nop
 2:8B01  0e                   push cs
-2:8B02  e813c6               call 0x5118  ; sub_s2:5118
+2:8B02  e813c6               call 0x5118  ; DibRegion::free@s2:5118
 2:8B05  66ff76f2             push dword ptr [bp - 0xe]
 2:8B09  9ace174189           lcall 0x8941, 0x17ce  ; operator_delete@s1:17CE
 loc_8B0E:
@@ -12724,7 +13274,8 @@ loc_8B0E:
 2:8B1C  c9                   leave
 2:8B1D  ca0400               retf 4
 
-; ---------------- sub_s2:8B20 FAR size=166 callers=1
+; ---------------- AnimOverlay::drawAt@s2:8B20 FAR size=166 callers=1
+;   draws a frame at a position
 2:8B20  c81a0000             enter 0x1a, 0
 2:8B24  57                   push di
 2:8B25  56                   push si
@@ -12752,7 +13303,7 @@ loc_8B3A:
 2:8B5C  668946e6             mov dword ptr [bp - 0x1a], eax
 2:8B60  6650                 push eax
 2:8B62  66ff368203           push dword ptr [0x382]
-2:8B67  9aee20ca89           lcall 0x89ca, 0x20ee  ; sub_s4:20EE
+2:8B67  9aee20ca89           lcall 0x89ca, 0x20ee  ; AnimRef::frameDib@s4:20EE
 2:8B6C  8946fc               mov word ptr [bp - 4], ax
 2:8B6F  8956fe               mov word ptr [bp - 2], dx
 2:8B72  8d46fa               lea ax, [bp - 6]
@@ -12770,7 +13321,7 @@ loc_8B3A:
 2:8B89  8bfa                 mov di, dx
 2:8B8B  90                   nop
 2:8B8C  0e                   push cs
-2:8B8D  e804b3               call 0x3e94  ; sub_s2:3E94
+2:8B8D  e804b3               call 0x3e94  ; Pos3::getXY@s2:3E94
 2:8B90  c45e06               les bx, ptr [bp + 6]
 2:8B93  6626ff7704           push dword ptr es:[bx + 4]
 2:8B98  66ff76fc             push dword ptr [bp - 4]
@@ -12778,7 +13329,7 @@ loc_8B3A:
 2:8B9D  53                   push bx
 2:8B9E  90                   nop
 2:8B9F  0e                   push cs
-2:8BA0  e8e701               call 0x8d8a  ; sub_s2:8D8A
+2:8BA0  e8e701               call 0x8d8a  ; AnimOverlay::blit@s2:8D8A
 2:8BA3  66ff76fc             push dword ptr [bp - 4]
 2:8BA7  57                   push di
 2:8BA8  56                   push si
@@ -12786,7 +13337,7 @@ loc_8B3A:
 2:8BAC  6626ff7704           push dword ptr es:[bx + 4]
 2:8BB1  90                   nop
 2:8BB2  0e                   push cs
-2:8BB3  e8cab8               call 0x4480  ; sub_s2:4480
+2:8BB3  e8cab8               call 0x4480  ; DIB::blitRect@s2:4480
 2:8BB6  8b4606               mov ax, word ptr [bp + 6]
 2:8BB9  8b5608               mov dx, word ptr [bp + 8]
 2:8BBC  053200               add ax, 0x32
@@ -12796,7 +13347,8 @@ loc_8B3A:
 2:8BC2  ca0400               retf 4
 2:8BC5  db 00
 
-; ---------------- sub_s2:8BC6 FAR size=136 callers=2
+; ---------------- AnimOverlay::drawFrame@s2:8BC6 FAR size=136 callers=2
+;   draws the current frame
 2:8BC6  c8180000             enter 0x18, 0
 2:8BCA  57                   push di
 2:8BCB  56                   push si
@@ -12814,7 +13366,7 @@ loc_8BE0:
 2:8BE5  668946e8             mov dword ptr [bp - 0x18], eax
 2:8BE9  6650                 push eax
 2:8BEB  66ff368203           push dword ptr [0x382]
-2:8BF0  9aee206a8b           lcall 0x8b6a, 0x20ee  ; sub_s4:20EE
+2:8BF0  9aee206a8b           lcall 0x8b6a, 0x20ee  ; AnimRef::frameDib@s4:20EE
 2:8BF5  8946fc               mov word ptr [bp - 4], ax
 2:8BF8  8956fe               mov word ptr [bp - 2], dx
 2:8BFB  8d46fa               lea ax, [bp - 6]
@@ -12832,7 +13384,7 @@ loc_8BE0:
 2:8C12  8bfa                 mov di, dx
 2:8C14  90                   nop
 2:8C15  0e                   push cs
-2:8C16  e87bb2               call 0x3e94  ; sub_s2:3E94
+2:8C16  e87bb2               call 0x3e94  ; Pos3::getXY@s2:3E94
 2:8C19  c45e06               les bx, ptr [bp + 6]
 2:8C1C  6626ff7704           push dword ptr es:[bx + 4]
 2:8C21  66ff76fc             push dword ptr [bp - 4]
@@ -12840,7 +13392,7 @@ loc_8BE0:
 2:8C26  53                   push bx
 2:8C27  90                   nop
 2:8C28  0e                   push cs
-2:8C29  e85e01               call 0x8d8a  ; sub_s2:8D8A
+2:8C29  e85e01               call 0x8d8a  ; AnimOverlay::blit@s2:8D8A
 2:8C2C  66ff76fc             push dword ptr [bp - 4]
 2:8C30  57                   push di
 2:8C31  56                   push si
@@ -12848,7 +13400,7 @@ loc_8BE0:
 2:8C35  6626ff7704           push dword ptr es:[bx + 4]
 2:8C3A  90                   nop
 2:8C3B  0e                   push cs
-2:8C3C  e841b8               call 0x4480  ; sub_s2:4480
+2:8C3C  e841b8               call 0x4480  ; DIB::blitRect@s2:4480
 2:8C3F  8b4606               mov ax, word ptr [bp + 6]
 2:8C42  8b5608               mov dx, word ptr [bp + 8]
 2:8C45  053200               add ax, 0x32
@@ -12857,13 +13409,14 @@ loc_8BE0:
 2:8C4A  c9                   leave
 2:8C4B  ca0400               retf 4
 
-; ---------------- sub_s2:8C4E FAR size=150 callers=1
+; ---------------- AnimOverlay::saveUnder@s2:8C4E FAR size=150 callers=1
+;   saves the pixels under a frame
 2:8C4E  c80c0000             enter 0xc, 0
 2:8C52  c45e06               les bx, ptr [bp + 6]
 2:8C55  6626ff7704           push dword ptr es:[bx + 4]
 2:8C5A  90                   nop
 2:8C5B  0e                   push cs
-2:8C5C  e813bb               call 0x4772  ; sub_s2:4772
+2:8C5C  e813bb               call 0x4772  ; DIB::rect@s2:4772
 2:8C5F  8946fc               mov word ptr [bp - 4], ax
 2:8C62  8956fe               mov word ptr [bp - 2], dx
 2:8C65  662bc0               sub eax, eax
@@ -12891,7 +13444,7 @@ loc_8C7B:
 2:8CA9  66ff76f4             push dword ptr [bp - 0xc]
 2:8CAD  90                   nop
 2:8CAE  0e                   push cs
-2:8CAF  e810c4               call 0x50c2  ; sub_s2:50C2
+2:8CAF  e810c4               call 0x50c2  ; DibRegion::DibRegion@s2:50C2
 2:8CB2  eb03                 jmp 0x8cb7
 loc_8CB4:
 2:8CB4  33c0                 xor ax, ax
@@ -12903,7 +13456,7 @@ loc_8CB7:
 2:8CBE  50                   push ax
 2:8CBF  90                   nop
 2:8CC0  0e                   push cs
-2:8CC1  e870c4               call 0x5134  ; sub_s2:5134
+2:8CC1  e870c4               call 0x5134  ; DibRegion::save@s2:5134
 loc_8CC4:
 2:8CC4  c45e06               les bx, ptr [bp + 6]
 2:8CC7  6626ff7704           push dword ptr es:[bx + 4]
@@ -12913,19 +13466,20 @@ loc_8CC4:
 2:8CD1  66ff760a             push dword ptr [bp + 0xa]
 2:8CD5  90                   nop
 2:8CD6  0e                   push cs
-2:8CD7  e8a6b7               call 0x4480  ; sub_s2:4480
+2:8CD7  e8a6b7               call 0x4480  ; DIB::blitRect@s2:4480
 2:8CDA  8b46f8               mov ax, word ptr [bp - 8]
 2:8CDD  8b56fa               mov dx, word ptr [bp - 6]
 2:8CE0  c9                   leave
 2:8CE1  ca0800               retf 8
 
-; ---------------- sub_s2:8CE4 FAR size=166 callers=1
+; ---------------- AnimOverlay::saveUnderAt@s2:8CE4 FAR size=166 callers=1
+;   saves the pixels under a frame at a position
 2:8CE4  c8120000             enter 0x12, 0
 2:8CE8  c45e06               les bx, ptr [bp + 6]
 2:8CEB  6626ff7704           push dword ptr es:[bx + 4]
 2:8CF0  90                   nop
 2:8CF1  0e                   push cs
-2:8CF2  e87dba               call 0x4772  ; sub_s2:4772
+2:8CF2  e87dba               call 0x4772  ; DIB::rect@s2:4772
 2:8CF5  8946fc               mov word ptr [bp - 4], ax
 2:8CF8  8956fe               mov word ptr [bp - 2], dx
 2:8CFB  662bc0               sub eax, eax
@@ -12939,14 +13493,14 @@ loc_8CC4:
 2:8D12  50                   push ax
 2:8D13  90                   nop
 2:8D14  0e                   push cs
-2:8D15  e83cb1               call 0x3e54  ; sub_s2:3E54
+2:8D15  e83cb1               call 0x3e54  ; Pos3::Pos3(x,y,z)@s2:3E54
 2:8D18  8d46f2               lea ax, [bp - 0xe]
 2:8D1B  16                   push ss
 2:8D1C  50                   push ax
 2:8D1D  66ff760a             push dword ptr [bp + 0xa]
 2:8D21  90                   nop
 2:8D22  0e                   push cs
-2:8D23  e80cb2               call 0x3f32  ; sub_s2:3F32
+2:8D23  e80cb2               call 0x3f32  ; Pos3::add@s2:3F32
 2:8D26  6a14                 push 0x14
 2:8D28  9a9c17808c           lcall 0x8c80, 0x179c  ; operator_new@s1:179C
 2:8D2D  83c402               add sp, 2
@@ -12963,7 +13517,7 @@ loc_8CC4:
 2:8D52  50                   push ax
 2:8D53  90                   nop
 2:8D54  0e                   push cs
-2:8D55  e86ac3               call 0x50c2  ; sub_s2:50C2
+2:8D55  e86ac3               call 0x50c2  ; DibRegion::DibRegion@s2:50C2
 2:8D58  eb03                 jmp 0x8d5d
 loc_8D5A:
 2:8D5A  33c0                 xor ax, ax
@@ -12975,21 +13529,22 @@ loc_8D5D:
 2:8D64  50                   push ax
 2:8D65  90                   nop
 2:8D66  0e                   push cs
-2:8D67  e8cac3               call 0x5134  ; sub_s2:5134
+2:8D67  e8cac3               call 0x5134  ; DibRegion::save@s2:5134
 2:8D6A  c45e06               les bx, ptr [bp + 6]
 2:8D6D  6626ff7704           push dword ptr es:[bx + 4]
 2:8D72  66ff760a             push dword ptr [bp + 0xa]
 2:8D76  66ff760e             push dword ptr [bp + 0xe]
 2:8D7A  90                   nop
 2:8D7B  0e                   push cs
-2:8D7C  e801b7               call 0x4480  ; sub_s2:4480
+2:8D7C  e801b7               call 0x4480  ; DIB::blitRect@s2:4480
 2:8D7F  8b46f8               mov ax, word ptr [bp - 8]
 2:8D82  8b56fa               mov dx, word ptr [bp - 6]
 2:8D85  c9                   leave
 2:8D86  ca0c00               retf 0xc
 2:8D89  db 00
 
-; ---------------- sub_s2:8D8A FAR size=234 callers=2
+; ---------------- AnimOverlay::blit@s2:8D8A FAR size=234 callers=2
+;   blits with transparency
 2:8D8A  c8080000             enter 8, 0
 2:8D8E  c45e06               les bx, ptr [bp + 6]
 2:8D91  268b472e             mov ax, word ptr es:[bx + 0x2e]
@@ -13013,7 +13568,7 @@ loc_8DB6:
 2:8DC1  6626ff773a           push dword ptr es:[bx + 0x3a]
 2:8DC6  90                   nop
 2:8DC7  0e                   push cs
-2:8DC8  e86bc4               call 0x5236  ; sub_s2:5236
+2:8DC8  e86bc4               call 0x5236  ; DibRegion::restore@s2:5236
 2:8DCB  c9                   leave
 2:8DCC  ca0c00               retf 0xc
 2:8DCF  db 90
@@ -13045,7 +13600,7 @@ loc_8E02:
 2:8E02  66ff760a             push dword ptr [bp + 0xa]
 2:8E06  90                   nop
 2:8E07  0e                   push cs
-2:8E08  e867b9               call 0x4772  ; sub_s2:4772
+2:8E08  e867b9               call 0x4772  ; DIB::rect@s2:4772
 2:8E0B  8946fc               mov word ptr [bp - 4], ax
 2:8E0E  8956fe               mov word ptr [bp - 2], dx
 2:8E11  6a14                 push 0x14
@@ -13065,7 +13620,7 @@ loc_8E02:
 2:8E3F  66ff76f8             push dword ptr [bp - 8]
 2:8E43  90                   nop
 2:8E44  0e                   push cs
-2:8E45  e87ac2               call 0x50c2  ; sub_s2:50C2
+2:8E45  e87ac2               call 0x50c2  ; DibRegion::DibRegion@s2:50C2
 2:8E48  c45e06               les bx, ptr [bp + 6]
 2:8E4B  2689473a             mov word ptr es:[bx + 0x3a], ax
 2:8E4F  2689573c             mov word ptr es:[bx + 0x3c], dx
@@ -13079,19 +13634,20 @@ loc_8E62:
 2:8E65  6626ff773a           push dword ptr es:[bx + 0x3a]
 2:8E6A  90                   nop
 2:8E6B  0e                   push cs
-2:8E6C  e8c5c2               call 0x5134  ; sub_s2:5134
+2:8E6C  e8c5c2               call 0x5134  ; DibRegion::save@s2:5134
 loc_8E6F:
 2:8E6F  c9                   leave
 2:8E70  ca0c00               retf 0xc
 2:8E73  db 00
 
-; ---------------- sub_s2:8E74 FAR size=42 callers=0
+; ---------------- AnimOverlay::scalar_dtor@s2:8E74 FAR size=42 callers=0
+;   deleting destructor
 2:8E74  55                   push bp
 2:8E75  8bec                 mov bp, sp
 2:8E77  66ff7606             push dword ptr [bp + 6]
 2:8E7B  90                   nop
 2:8E7C  0e                   push cs
-2:8E7D  e822fc               call 0x8aa2  ; sub_s2:8AA2
+2:8E7D  e822fc               call 0x8aa2  ; AnimOverlay::~AnimOverlay@s2:8AA2
 2:8E80  f6460a01             test byte ptr [bp + 0xa], 1
 2:8E84  7409                 je 0x8e8f
 2:8E86  66ff7606             push dword ptr [bp + 6]
@@ -13103,7 +13659,8 @@ loc_8E8F:
 2:8E96  ca0600               retf 6
 2:8E99  db 90 74 8e b2 8a
 
-; ---------------- sub_s2:8E9E FAR size=134 callers=2
+; ---------------- PtrArray::PtrArray@s2:8E9E FAR size=134 callers=2
+;   growable far-pointer array (vtable 9170)
 2:8E9E  c8040000             enter 4, 0
 2:8EA2  c45e06               les bx, ptr [bp + 6]
 2:8EA5  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -13128,7 +13685,7 @@ loc_8F01:
 2:8F01  66ff7606             push dword ptr [bp + 6]
 2:8F05  90                   nop
 2:8F06  0e                   push cs
-2:8F07  e89201               call 0x909c  ; sub_s2:909C
+2:8F07  e89201               call 0x909c  ; PtrArray::grow@s2:909C
 2:8F0A  c45e06               les bx, ptr [bp + 6]
 2:8F0D  26c45f06             les bx, ptr es:[bx + 6]
 2:8F11  6626c70700000000     mov dword ptr es:[bx], 0
@@ -13138,7 +13695,8 @@ loc_8F01:
 2:8F20  ca0c00               retf 0xc
 2:8F23  db 00
 
-; ---------------- sub_s2:8F24 FAR size=134 callers=1
+; ---------------- PtrArray::~PtrArray@s2:8F24 FAR size=134 callers=1
+;   dtor
 2:8F24  c80c0000             enter 0xc, 0
 2:8F28  56                   push si
 2:8F29  c45e06               les bx, ptr [bp + 6]
@@ -13186,7 +13744,8 @@ loc_8F80:
 2:8FA6  ca0400               retf 4
 2:8FA9  db 00
 
-; ---------------- sub_s2:8FAA FAR size=26 callers=3
+; ---------------- PtrArray::push@s2:8FAA FAR size=26 callers=3
+;   appends a pointer
 2:8FAA  55                   push bp
 2:8FAB  8bec                 mov bp, sp
 2:8FAD  c45e06               les bx, ptr [bp + 6]
@@ -13196,11 +13755,12 @@ loc_8F80:
 2:8FBA  53                   push bx
 2:8FBB  90                   nop
 2:8FBC  0e                   push cs
-2:8FBD  e84400               call 0x9004  ; sub_s2:9004
+2:8FBD  e84400               call 0x9004  ; PtrArray::setAt@s2:9004
 2:8FC0  c9                   leave
 2:8FC1  ca0800               retf 8
 
-; ---------------- sub_s2:8FC4 FAR size=64 callers=8
+; ---------------- PtrArray::get@s2:8FC4 FAR size=64 callers=8
+;   element i, or 0
 2:8FC4  c8040000             enter 4, 0
 2:8FC8  56                   push si
 2:8FC9  66c746fc00000000     mov dword ptr [bp - 4], 0
@@ -13223,7 +13783,8 @@ loc_8FF8:
 2:9000  ca0800               retf 8
 2:9003  db 00
 
-; ---------------- sub_s2:9004 FAR size=152 callers=1
+; ---------------- PtrArray::setAt@s2:9004 FAR size=152 callers=1
+;   stores at index, growing as needed
 2:9004  55                   push bp
 2:9005  8bec                 mov bp, sp
 2:9007  56                   push si
@@ -13246,7 +13807,7 @@ loc_9032:
 2:9033  53                   push bx
 2:9034  90                   nop
 2:9035  0e                   push cs
-2:9036  e86300               call 0x909c  ; sub_s2:909C
+2:9036  e86300               call 0x909c  ; PtrArray::grow@s2:909C
 loc_9039:
 2:9039  668b460e             mov eax, dword ptr [bp + 0xe]
 2:903D  8b5610               mov dx, word ptr [bp + 0x10]
@@ -13288,7 +13849,8 @@ loc_9079:
 2:9098  ca0c00               retf 0xc
 2:909B  db 00
 
-; ---------------- sub_s2:909C FAR size=174 callers=2
+; ---------------- PtrArray::grow@s2:909C FAR size=174 callers=2
+;   reallocates the array
 2:909C  c8160000             enter 0x16, 0
 2:90A0  c45e06               les bx, ptr [bp + 6]
 2:90A3  6626837f1200         cmp dword ptr es:[bx + 0x12], 0
@@ -13317,7 +13879,7 @@ loc_90C6:
 2:90EC  52                   push dx
 2:90ED  50                   push ax
 2:90EE  6a01                 push 1
-2:90F0  9ad40e0d91           lcall 0x910d, 0xed4  ; sub_s1:0ED4
+2:90F0  9ad40e0d91           lcall 0x910d, 0xed4  ; SH_MemReAllocPtr@s1:0ED4
 2:90F5  eb2d                 jmp 0x9124
 2:90F7  db 90
 loc_90F8:
@@ -13354,13 +13916,14 @@ loc_9146:
 2:9146  c9                   leave
 2:9147  ca0400               retf 4
 
-; ---------------- sub_s2:914A FAR size=42 callers=0
+; ---------------- PtrArray::scalar_dtor@s2:914A FAR size=42 callers=0
+;   deleting destructor
 2:914A  55                   push bp
 2:914B  8bec                 mov bp, sp
 2:914D  66ff7606             push dword ptr [bp + 6]
 2:9151  90                   nop
 2:9152  0e                   push cs
-2:9153  e8cefd               call 0x8f24  ; sub_s2:8F24
+2:9153  e8cefd               call 0x8f24  ; PtrArray::~PtrArray@s2:8F24
 2:9156  f6460a01             test byte ptr [bp + 0xa], 1
 2:915A  7409                 je 0x9165
 2:915C  66ff7606             push dword ptr [bp + 6]
@@ -13372,7 +13935,8 @@ loc_9165:
 2:916C  ca0600               retf 6
 2:916F  db 90 4a 91 35 8f
 
-; ---------------- sub_s2:9174 FAR size=70 callers=1
+; ---------------- TimerEntry::TimerEntry@s2:9174 FAR size=70 callers=1
+;   one timer client (callback, period)
 2:9174  c8040000             enter 4, 0
 2:9178  c45e06               les bx, ptr [bp + 6]
 2:917B  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -13392,8 +13956,9 @@ loc_9165:
 2:91B6  ca0c00               retf 0xc
 2:91B9  db 00
 
-; ---------------- sub_s2:91BA FAR size=98 callers=1
+; ---------------- Timer::Timer@s2:91BA FAR size=98 callers=1
 ;   apis: USER.SetTimer
+;   the game timer (SetTimer; DGROUP 0x388)
 2:91BA  c8040000             enter 4, 0
 2:91BE  c45e06               les bx, ptr [bp + 6]
 2:91C1  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -13405,7 +13970,7 @@ loc_9165:
 2:91D9  50                   push ax
 2:91DA  90                   nop
 2:91DB  0e                   push cs
-2:91DC  e86bc5               call 0x574a  ; sub_s2:574A
+2:91DC  e86bc5               call 0x574a  ; List::List@s2:574A
 2:91DF  c45e06               les bx, ptr [bp + 6]
 2:91E2  26c7071694           mov word ptr es:[bx], 0x9416
 2:91E7  26c747028491         mov word ptr es:[bx + 2], 0x9184  ; SEGMENT s2:0000
@@ -13418,15 +13983,16 @@ loc_9165:
 2:9207  0bc0                 or ax, ax
 2:9209  7507                 jne 0x9212
 2:920B  6a01                 push 1
-2:920D  9acd246391           lcall 0x9163, 0x24cd  ; sub_s1:24CD
+2:920D  9acd246391           lcall 0x9163, 0x24cd  ; exit@s1:24CD
 loc_9212:
 2:9212  8b4606               mov ax, word ptr [bp + 6]
 2:9215  8b5608               mov dx, word ptr [bp + 8]
 2:9218  c9                   leave
 2:9219  ca0400               retf 4
 
-; ---------------- sub_s2:921C FAR size=70 callers=1
+; ---------------- Timer::~Timer@s2:921C FAR size=70 callers=1
 ;   apis: USER.KillTimer
+;   KillTimer
 2:921C  c8040000             enter 4, 0
 2:9220  c45e06               les bx, ptr [bp + 6]
 2:9223  26c7071694           mov word ptr es:[bx], 0x9416
@@ -13440,14 +14006,15 @@ loc_9212:
 2:9249  6650                 push eax
 2:924B  90                   nop
 2:924C  0e                   push cs
-2:924D  e874c5               call 0x57c4  ; ListIter::~ListIter@s2:57C4
+2:924D  e874c5               call 0x57c4  ; List::~List@s2:57C4
 2:9250  c45e06               les bx, ptr [bp + 6]
 2:9253  26c7079a38           mov word ptr es:[bx], 0x389a
 2:9258  26c74702ca91         mov word ptr es:[bx + 2], 0x91ca  ; SEGMENT s2:0000
 2:925E  c9                   leave
 2:925F  ca0400               retf 4
 
-; ---------------- sub_s2:9262 FAR size=80 callers=4
+; ---------------- Timer::add@s2:9262 FAR size=80 callers=4
+;   registers a timer client
 2:9262  c8080000             enter 8, 0
 2:9266  6a12                 push 0x12  ; 'version %d %d'
 2:9268  9a9c171092           lcall 0x9210, 0x179c  ; operator_new@s1:179C
@@ -13461,7 +14028,7 @@ loc_9212:
 2:9282  50                   push ax
 2:9283  90                   nop
 2:9284  0e                   push cs
-2:9285  e8ecfe               call 0x9174  ; sub_s2:9174
+2:9285  e8ecfe               call 0x9174  ; TimerEntry::TimerEntry@s2:9174
 2:9288  eb03                 jmp 0x928d
 loc_928A:
 2:928A  33c0                 xor ax, ax
@@ -13485,7 +14052,8 @@ loc_92AE:
 2:92AE  c9                   leave
 2:92AF  ca0c00               retf 0xc
 
-; ---------------- sub_s2:92B2 FAR size=120 callers=4
+; ---------------- Timer::remove@s2:92B2 FAR size=120 callers=4
+;   unregisters a timer client
 2:92B2  c8120000             enter 0x12, 0
 2:92B6  c746fe0000           mov word ptr [bp - 2], 0
 2:92BB  668b4606             mov eax, dword ptr [bp + 6]
@@ -13496,7 +14064,7 @@ loc_92AE:
 2:92C8  50                   push ax
 2:92C9  90                   nop
 2:92CA  0e                   push cs
-2:92CB  e8d6c4               call 0x57a4  ; sub_s2:57A4
+2:92CB  e8d6c4               call 0x57a4  ; ListIter::ListIter_b@s2:57A4
 loc_92CE:
 2:92CE  8d46f6               lea ax, [bp - 0xa]
 2:92D1  16                   push ss
@@ -13535,7 +14103,8 @@ loc_9322:
 2:9326  ca0c00               retf 0xc
 2:9329  db 00
 
-; ---------------- sub_s2:932A FAR size=150 callers=1
+; ---------------- Timer::tick@s2:932A FAR size=150 callers=1
+;   calls the clients whose period has passed
 2:932A  c80c0000             enter 0xc, 0
 2:932E  c45e06               les bx, ptr [bp + 6]
 2:9331  26837f0400           cmp word ptr es:[bx + 4], 0
@@ -13549,7 +14118,7 @@ loc_9322:
 2:9349  50                   push ax
 2:934A  90                   nop
 2:934B  0e                   push cs
-2:934C  e855c4               call 0x57a4  ; sub_s2:57A4
+2:934C  e855c4               call 0x57a4  ; ListIter::ListIter_b@s2:57A4
 loc_934F:
 2:934F  8d46f8               lea ax, [bp - 8]
 2:9352  16                   push ss
@@ -13593,7 +14162,8 @@ loc_93BB:
 2:93BC  ca0400               retf 4
 2:93BF  db 00
 
-; ---------------- sub_s2:93C0 FAR size=44 callers=0
+; ---------------- TimerEntry::scalar_dtor@s2:93C0 FAR size=44 callers=0
+;   deleting destructor
 2:93C0  c8080000             enter 8, 0
 2:93C4  c45e06               les bx, ptr [bp + 6]
 2:93C7  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -13609,13 +14179,14 @@ loc_93E1:
 2:93E8  ca0600               retf 6
 2:93EB  db 00
 
-; ---------------- sub_s2:93EC FAR size=46 callers=0
+; ---------------- Timer::scalar_dtor@s2:93EC FAR size=46 callers=0
+;   deleting destructor
 2:93EC  55                   push bp
 2:93ED  8bec                 mov bp, sp
 2:93EF  66ff7606             push dword ptr [bp + 6]
 2:93F3  90                   nop
 2:93F4  0e                   push cs
-2:93F5  e824fe               call 0x921c  ; sub_s2:921C
+2:93F5  e824fe               call 0x921c  ; Timer::~Timer@s2:921C
 2:93F8  f6460a01             test byte ptr [bp + 0xa], 1
 2:93FC  7409                 je 0x9407
 2:93FE  66ff7606             push dword ptr [bp + 6]
@@ -13627,7 +14198,8 @@ loc_9407:
 2:940E  ca0600               retf 6
 2:9411  db 90 c0 93 d0 93 ec 93 14 94
 
-; ---------------- sub_s2:941A FAR size=28 callers=27
+; ---------------- Pair::Pair(a,b)@s2:941A FAR size=28 callers=27
+;   two words
 2:941A  55                   push bp
 2:941B  8bec                 mov bp, sp
 2:941D  8b460a               mov ax, word ptr [bp + 0xa]
@@ -13641,7 +14213,8 @@ loc_9407:
 2:9432  ca0800               retf 8
 2:9435  db 00
 
-; ---------------- sub_s2:9436 FAR size=24 callers=1
+; ---------------- Pair::Pair@s2:9436 FAR size=24 callers=1
+;   two words = 0
 2:9436  55                   push bp
 2:9437  8bec                 mov bp, sp
 2:9439  33c0                 xor ax, ax
@@ -13654,7 +14227,8 @@ loc_9407:
 2:944A  ca0400               retf 4
 2:944D  db 00
 
-; ---------------- sub_s2:944E FAR size=24 callers=1
+; ---------------- Pair::set@s2:944E FAR size=24 callers=1
+;   sets two words
 2:944E  55                   push bp
 2:944F  8bec                 mov bp, sp
 2:9451  8b460c               mov ax, word ptr [bp + 0xc]
@@ -13666,7 +14240,8 @@ loc_9407:
 2:9462  ca0800               retf 8
 2:9465  db 90
 
-; ---------------- sub_s2:9466 FAR size=42 callers=2
+; ---------------- AppBase::~AppBase@s2:9466 FAR size=42 callers=2
+;   app base dtor
 2:9466  c8080000             enter 8, 0
 2:946A  c45e06               les bx, ptr [bp + 6]
 2:946D  26c7072a05           mov word ptr es:[bx], 0x52a
@@ -13678,16 +14253,19 @@ loc_9407:
 2:948C  c9                   leave
 2:948D  ca0400               retf 4
 
-; ---------------- sub_s2:9490 FAR size=4 callers=0
+; ---------------- AppBase::nop_4@s2:9490 FAR size=4 callers=0
+;   empty virtual
 2:9490  ca0400               retf 4
 2:9493  db 00
 
-; ---------------- sub_s2:9494 FAR size=4 callers=0
+; ---------------- AppBase::nop_8@s2:9494 FAR size=4 callers=0
+;   empty virtual
 2:9494  ca0800               retf 8
 2:9497  db 00
 
 ; ---------------- MessageLoop@s2:9498 FAR size=120 callers=1
 ;   apis: USER.DispatchMessage, USER.GetMessage, USER.IsDialogMessage, USER.TranslateAccelerator, USER.TranslateMessage
+;   main GetMessage/TranslateAccelerator/DispatchMessage loop
 2:9498  c81c0000             enter 0x1c, 0
 loc_949C:
 2:949C  8d46ec               lea ax, [bp - 0x14]
@@ -13743,8 +14321,9 @@ loc_94F9:
 2:950D  eb8d                 jmp 0x949c
 2:950F  db 00
 
-; ---------------- MessageLoop@s2:9510 FAR size=116 callers=7
+; ---------------- MessageLoop_modal@s2:9510 FAR size=116 callers=7
 ;   apis: USER.DispatchMessage, USER.GetMessage, USER.IsDialogMessage, USER.TranslateAccelerator, USER.TranslateMessage
+;   modal message loop (dialogs)
 2:9510  c81a0000             enter 0x1a, 0
 2:9514  eb62                 jmp 0x9578
 loc_9516:
@@ -13797,7 +14376,8 @@ loc_9581:
 2:9582  cb                   retf
 2:9583  db 00
 
-; ---------------- sub_s2:9584 FAR size=188 callers=1
+; ---------------- SOLWndBase::SOLWndBase@s2:9584 FAR size=164 callers=1
+;   window base ctor (vtable 9D2E)
 2:9584  c8100000             enter 0x10, 0
 2:9588  c45e06               les bx, ptr [bp + 6]
 2:958B  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -13832,11 +14412,24 @@ loc_9581:
 2:9621  8cc2                 mov dx, es
 2:9623  c9                   leave
 2:9624  ca0800               retf 8
-2:9627  db 00 55 8b ec c4 5e 06 26 83 7f 08 00 75 07 8b 46
-2:9637  db 0a 26 89 47 08 c9 ca 06 00
+2:9627  db 00
 
-; ---------------- sub_s2:9640 FAR size=36 callers=0
+; ---------------- SOLWnd::setHwnd@s2:9628 FAR size=24 callers=1
+;   +8 when not yet set
+2:9628  55                   push bp
+2:9629  8bec                 mov bp, sp
+2:962B  c45e06               les bx, ptr [bp + 6]
+2:962E  26837f0800           cmp word ptr es:[bx + 8], 0
+2:9633  7507                 jne 0x963c
+2:9635  8b460a               mov ax, word ptr [bp + 0xa]
+2:9638  26894708             mov word ptr es:[bx + 8], ax
+loc_963C:
+2:963C  c9                   leave
+2:963D  ca0600               retf 6
+
+; ---------------- SOLWnd::ncActivate@s2:9640 FAR size=36 callers=0
 ;   apis: USER.SendMessage
+;   SendMessage WM_NCACTIVATE
 2:9640  55                   push bp
 2:9641  8bec                 mov bp, sp
 2:9643  c45e06               les bx, ptr [bp + 6]
@@ -13852,8 +14445,9 @@ loc_965F:
 2:9660  ca0600               retf 6
 2:9663  db 00
 
-; ---------------- sub_s2:9664 FAR size=52 callers=0
+; ---------------- SOLWnd::setText@s2:9664 FAR size=52 callers=0
 ;   apis: USER.SetWindowText
+;   copies the title, SetWindowText
 2:9664  55                   push bp
 2:9665  8bec                 mov bp, sp
 2:9667  57                   push di
@@ -13878,8 +14472,9 @@ loc_965F:
 2:9694  c9                   leave
 2:9695  ca0a00               retf 0xa
 
-; ---------------- sub_s2:9698 FAR size=22 callers=0
+; ---------------- SOLWnd::destroy@s2:9698 FAR size=22 callers=0
 ;   apis: USER.DestroyWindow
+;   DestroyWindow
 2:9698  55                   push bp
 2:9699  8bec                 mov bp, sp
 2:969B  c45e06               les bx, ptr [bp + 6]
@@ -13890,8 +14485,9 @@ loc_965F:
 2:96AA  c9                   leave
 2:96AB  ca0400               retf 4
 
-; ---------------- sub_s2:96AE FAR size=36 callers=1
+; ---------------- SOLWnd::show@s2:96AE FAR size=36 callers=1
 ;   apis: USER.ShowWindow
+;   ShowWindow
 2:96AE  55                   push bp
 2:96AF  8bec                 mov bp, sp
 2:96B1  c45e06               les bx, ptr [bp + 6]
@@ -13908,8 +14504,9 @@ loc_96CC:
 2:96CE  c9                   leave
 2:96CF  ca0600               retf 6
 
-; ---------------- RegisterWindowClass@s2:96D2 FAR size=142 callers=5
+; ---------------- SOLWnd::registerClass@s2:96D2 FAR size=142 callers=5
 ;   apis: USER.GetClassInfo, USER.RegisterClass
+;   RegisterClass when not yet registered
 2:96D2  c81a0000             enter 0x1a, 0
 2:96D6  57                   push di
 2:96D7  56                   push si
@@ -13951,7 +14548,7 @@ loc_96CC:
 2:974C  0bc0                 or ax, ax
 2:974E  7509                 jne 0x9759
 2:9750  50                   push ax
-2:9751  9acd247f96           lcall 0x967f, 0x24cd  ; sub_s1:24CD
+2:9751  9acd247f96           lcall 0x967f, 0x24cd  ; exit@s1:24CD
 2:9756  83c402               add sp, 2
 loc_9759:
 2:9759  5e                   pop si
@@ -13960,8 +14557,9 @@ loc_9759:
 2:975C  ca0400               retf 4
 2:975F  db 00
 
-; ---------------- sub_s2:9760 FAR size=104 callers=16
+; ---------------- SOLWnd::create@s2:9760 FAR size=104 callers=16
 ;   apis: USER.CreateWindowEx
+;   CreateWindowEx
 2:9760  55                   push bp
 2:9761  8bec                 mov bp, sp
 2:9763  c45e06               les bx, ptr [bp + 6]
@@ -13991,14 +14589,15 @@ loc_97B2:
 2:97B5  26837f0800           cmp word ptr es:[bx + 8], 0
 2:97BA  7507                 jne 0x97c3
 2:97BC  6a00                 push 0
-2:97BE  9acd245497           lcall 0x9754, 0x24cd  ; sub_s1:24CD
+2:97BE  9acd245497           lcall 0x9754, 0x24cd  ; exit@s1:24CD
 loc_97C3:
 2:97C3  c9                   leave
 2:97C4  ca0400               retf 4
 2:97C7  db 00
 
-; ---------------- sub_s2:97C8 FAR size=42 callers=0
+; ---------------- SOLWnd::onPaint@s2:97C8 FAR size=42 callers=0
 ;   apis: USER.BeginPaint, USER.EndPaint
+;   empty BeginPaint/EndPaint
 2:97C8  c8200000             enter 0x20, 0
 2:97CC  c45e06               les bx, ptr [bp + 6]
 2:97CF  26ff7708             push word ptr es:[bx + 8]
@@ -14015,8 +14614,9 @@ loc_97C3:
 2:97EE  c9                   leave
 2:97EF  ca0400               retf 4
 
-; ---------------- sub_s2:97F2 FAR size=1060 callers=0
+; ---------------- SOLWnd::wndProc@s2:97F2 FAR size=1060 callers=0
 ;   apis: USER.IsWindow, USER.PostMessage, USER.SetWindowLong
+;   dispatches window messages to the virtual methods
 2:97F2  c80c0000             enter 0xc, 0
 2:97F6  8b4610               mov ax, word ptr [bp + 0x10]
 2:97F9  e92203               jmp 0x9b1e
@@ -14094,7 +14694,7 @@ loc_9880:
 2:98A6  66ff7606             push dword ptr [bp + 6]
 2:98AA  90                   nop
 2:98AB  0e                   push cs
-2:98AC  e83704               call 0x9ce6  ; sub_s2:9CE6
+2:98AC  e83704               call 0x9ce6  ; SOLWnd::defProc@s2:9CE6
 2:98AF  e94202               jmp 0x9af4
 loc_98B2:
 2:98B2  66833e880300         cmp dword ptr [0x388], 0
@@ -14102,7 +14702,7 @@ loc_98B2:
 2:98BC  66ff368803           push dword ptr [0x388]
 2:98C1  90                   nop
 2:98C2  0e                   push cs
-2:98C3  e864fa               call 0x932a  ; sub_s2:932A
+2:98C3  e864fa               call 0x932a  ; Timer::tick@s2:932A
 2:98C6  e92b02               jmp 0x9af4
 2:98C9  db 90
 loc_98CA:
@@ -14286,7 +14886,7 @@ loc_9A7A:
 2:9A86  7514                 jne 0x9a9c
 2:9A88  51                   push cx
 2:9A89  53                   push bx
-2:9A8A  9a6695023d           lcall 0x3d02, 0x9566  ; sub_s9:9566
+2:9A8A  9a6695023d           lcall 0x3d02, 0x9566  ; objectFromHwnd@s9:9566
 2:9A8F  83c404               add sp, 4
 loc_9A92:
 2:9A92  b80100               mov ax, 1
@@ -14355,7 +14955,7 @@ loc_9B08:
 2:9B10  66ff7606             push dword ptr [bp + 6]
 2:9B14  90                   nop
 2:9B15  0e                   push cs
-2:9B16  e8cd01               call 0x9ce6  ; sub_s2:9CE6
+2:9B16  e8cd01               call 0x9ce6  ; SOLWnd::defProc@s2:9CE6
 2:9B19  c9                   leave
 2:9B1A  ca0c00               retf 0xc
 2:9B1D  db 90
@@ -14462,7 +15062,8 @@ loc_9C12:
 2:9C12  c9                   leave
 2:9C13  ca0c00               retf 0xc
 
-; ---------------- sub_s2:9C16 FAR size=26 callers=0
+; ---------------- SOLWnd::onNcPaint@s2:9C16 FAR size=26 callers=0
+;   DefWindowProc for WM_NCPAINT
 2:9C16  55                   push bp
 2:9C17  8bec                 mov bp, sp
 2:9C19  688500               push 0x85
@@ -14471,11 +15072,12 @@ loc_9C12:
 2:9C24  ff7606               push word ptr [bp + 6]
 2:9C27  90                   nop
 2:9C28  0e                   push cs
-2:9C29  e8ba00               call 0x9ce6  ; sub_s2:9CE6
+2:9C29  e8ba00               call 0x9ce6  ; SOLWnd::defProc@s2:9CE6
 2:9C2C  c9                   leave
 2:9C2D  ca0a00               retf 0xa
 
-; ---------------- sub_s2:9C30 FAR size=26 callers=0
+; ---------------- SOLWnd::onNcActivate@s2:9C30 FAR size=26 callers=0
+;   DefWindowProc for WM_NCACTIVATE
 2:9C30  55                   push bp
 2:9C31  8bec                 mov bp, sp
 2:9C33  688600               push 0x86
@@ -14484,29 +15086,34 @@ loc_9C12:
 2:9C3E  ff7606               push word ptr [bp + 6]
 2:9C41  90                   nop
 2:9C42  0e                   push cs
-2:9C43  e8a000               call 0x9ce6  ; sub_s2:9CE6
+2:9C43  e8a000               call 0x9ce6  ; SOLWnd::defProc@s2:9CE6
 2:9C46  c9                   leave
 2:9C47  ca0a00               retf 0xa
 
-; ---------------- sub_s2:9C4A FAR size=4 callers=0
+; ---------------- SOLWnd::nop_Ac@s2:9C4A FAR size=4 callers=0
+;   empty virtual
 2:9C4A  ca0a00               retf 0xa
 2:9C4D  db 00
 
-; ---------------- sub_s2:9C4E FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6f@s2:9C4E FAR size=4 callers=0
+;   empty virtual
 2:9C4E  ca0600               retf 6
 2:9C51  db 00
 
-; ---------------- sub_s2:9C52 FAR size=4 callers=0
+; ---------------- SOLWnd::nop_6g@s2:9C52 FAR size=4 callers=0
+;   empty virtual
 2:9C52  ca0600               retf 6
 2:9C55  db 00
 
-; ---------------- sub_s2:9C56 FAR size=10 callers=0
+; ---------------- SOLWnd::onCtlColor@s2:9C56 FAR size=10 callers=0
 ;   apis: GDI.GetStockObject
+;   default: stock brush 5
 2:9C56  6a05                 push 5
 2:9C58  9a02830000           lcall 0, 0x8302  ; GDI.GetStockObject
 2:9C5D  ca0a00               retf 0xa
 
-; ---------------- sub_s2:9C60 FAR size=38 callers=0
+; ---------------- SOLWnd::onChildMsg@s2:9C60 FAR size=38 callers=0
+;   message 0xC7: deletes the object passed
 2:9C60  c8080000             enter 8, 0
 2:9C64  817e0ec700           cmp word ptr [bp + 0xe], 0xc7
 2:9C69  7516                 jne 0x9c81
@@ -14524,12 +15131,13 @@ loc_9C81:
 2:9C82  ca0a00               retf 0xa
 2:9C85  db 00
 
-; ---------------- sub_s2:9C86 FAR size=62 callers=0
+; ---------------- SOLWnd::getText@s2:9C86 FAR size=62 callers=0
+;   copies the title out
 2:9C86  c8020000             enter 2, 0
 2:9C8A  668b4606             mov eax, dword ptr [bp + 6]
 2:9C8E  050a00               add ax, 0xa
 2:9C91  6650                 push eax
-2:9C93  9aa43dbb9c           lcall 0x9cbb, 0x3da4  ; sub_s1:3DA4
+2:9C93  9aa43dbb9c           lcall 0x9cbb, 0x3da4  ; _fstrlen@s1:3DA4
 2:9C98  83c404               add sp, 4
 2:9C9B  8946fe               mov word ptr [bp - 2], ax
 2:9C9E  3b460e               cmp ax, word ptr [bp + 0xe]
@@ -14543,12 +15151,13 @@ loc_9CAA:
 2:9CAF  050a00               add ax, 0xa
 2:9CB2  6650                 push eax
 2:9CB4  66ff760a             push dword ptr [bp + 0xa]
-2:9CB8  9abe3dc197           lcall 0x97c1, 0x3dbe  ; sub_s1:3DBE
+2:9CB8  9abe3dc197           lcall 0x97c1, 0x3dbe  ; _fstrncpy@s1:3DBE
 2:9CBD  8b46fe               mov ax, word ptr [bp - 2]
 2:9CC0  c9                   leave
 2:9CC1  ca0a00               retf 0xa
 
-; ---------------- sub_s2:9CC4 FAR size=28 callers=1
+; ---------------- SOLWnd::isOtherWindow@s2:9CC4 FAR size=28 callers=1
+;   1 when the hwnd is not this window
 2:9CC4  55                   push bp
 2:9CC5  8bec                 mov bp, sp
 2:9CC7  8b460a               mov ax, word ptr [bp + 0xa]
@@ -14563,13 +15172,15 @@ loc_9CDA:
 2:9CDC  c9                   leave
 2:9CDD  ca0600               retf 6
 
-; ---------------- sub_s2:9CE0 FAR size=6 callers=1
+; ---------------- SOLWnd::zero@s2:9CE0 FAR size=6 callers=1
+;   virtual returning 0
 2:9CE0  33c0                 xor ax, ax
 2:9CE2  ca0400               retf 4
 2:9CE5  db 00
 
-; ---------------- sub_s2:9CE6 FAR size=28 callers=3
+; ---------------- SOLWnd::defProc@s2:9CE6 FAR size=28 callers=3
 ;   apis: USER.DefWindowProc
+;   DefWindowProc
 2:9CE6  55                   push bp
 2:9CE7  8bec                 mov bp, sp
 2:9CE9  c45e06               les bx, ptr [bp + 6]
@@ -14581,7 +15192,8 @@ loc_9CDA:
 2:9CFE  ca0c00               retf 0xc
 2:9D01  db 00
 
-; ---------------- sub_s2:9D02 FAR size=52 callers=0
+; ---------------- SOLWndBase::scalar_dtor@s2:9D02 FAR size=52 callers=0
+;   deleting destructor
 2:9D02  c8080000             enter 8, 0
 2:9D06  c45e06               les bx, ptr [bp + 6]
 2:9D09  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -14597,12 +15209,13 @@ loc_9D23:
 2:9D2A  ca0600               retf 6
 2:9D2D  db 00 02 9d 34 9d 14 37 12 9d
 
-; ---------------- sub_s2:9D36 FAR size=292 callers=1
+; ---------------- AnimTicker::AnimTicker@s2:9D36 FAR size=292 callers=1
+;   registry 0x27: 12-step animation clock on the timer
 2:9D36  c8120000             enter 0x12, 0
 2:9D3A  56                   push si
 2:9D3B  66ff7608             push dword ptr [bp + 8]
 2:9D3F  ff7606               push word ptr [bp + 6]
-2:9D42  9ada4cb79d           lcall 0x9db7, 0x4cda  ; sub_s4:4CDA
+2:9D42  9ada4cb79d           lcall 0x9db7, 0x4cda  ; CmdTarget::CmdTarget@s4:4CDA
 2:9D47  c45e06               les bx, ptr [bp + 6]
 2:9D4A  26c7471c9a38         mov word ptr es:[bx + 0x1c], 0x389a
 2:9D50  26c7471e639d         mov word ptr es:[bx + 0x1e], 0x9d63  ; SEGMENT s2:0000
@@ -14616,7 +15229,7 @@ loc_9D23:
 2:9D72  50                   push ax
 2:9D73  90                   nop
 2:9D74  0e                   push cs
-2:9D75  e8c0a0               call 0x3e38  ; sub_s2:3E38
+2:9D75  e8c0a0               call 0x3e38  ; Pos3::Pos3@s2:3E38
 2:9D78  c45e06               les bx, ptr [bp + 6]
 2:9D7B  26c707b29f           mov word ptr es:[bx], 0x9fb2
 2:9D80  26c74702909d         mov word ptr es:[bx + 2], 0x9d90  ; SEGMENT s2:0000
@@ -14628,18 +15241,18 @@ loc_9D23:
 2:9DA0  8d4722               lea ax, [bx + 0x22]
 2:9DA3  06                   push es
 2:9DA4  50                   push ax
-2:9DA5  9a0649219d           lcall 0x9d21, 0x4906  ; sub_s1:4906
+2:9DA5  9a0649219d           lcall 0x9d21, 0x4906  ; _fmemset@s1:4906
 2:9DAA  83c408               add sp, 8
 2:9DAD  68c001               push 0x1c0
 2:9DB0  66ff7606             push dword ptr [bp + 6]
-2:9DB4  9ace4df38b           lcall 0x8bf3, 0x4dce  ; sub_s4:4DCE
+2:9DB4  9ace4df38b           lcall 0x8bf3, 0x4dce  ; CmdTarget::setCommand@s4:4DCE
 2:9DB9  c746fe0000           mov word ptr [bp - 2], 0
 loc_9DBE:
 2:9DBE  8b46fe               mov ax, word ptr [bp - 2]
 2:9DC1  05c001               add ax, 0x1c0
 2:9DC4  50                   push ax
 2:9DC5  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:9DCA  9a0a837d88           lcall 0x887d, 0x830a  ; sub_s3:830A
+2:9DCA  9a0a837d88           lcall 0x887d, 0x830a  ; ResLibr::picture@s3:830A
 2:9DCF  8b76fe               mov si, word ptr [bp - 2]
 2:9DD2  c1e602               shl si, 2
 2:9DD5  c45e06               les bx, ptr [bp + 6]
@@ -14652,7 +15265,7 @@ loc_9DBE:
 2:9DEC  6626ff7722           push dword ptr es:[bx + 0x22]
 2:9DF1  90                   nop
 2:9DF2  0e                   push cs
-2:9DF3  e87ca9               call 0x4772  ; sub_s2:4772
+2:9DF3  e87ca9               call 0x4772  ; DIB::rect@s2:4772
 2:9DF6  8ec2                 mov es, dx
 2:9DF8  8bd8                 mov bx, ax
 2:9DFA  b88002               mov ax, 0x280
@@ -14675,7 +15288,7 @@ loc_9DBE:
 2:9E22  6650                 push eax
 2:9E24  90                   nop
 2:9E25  0e                   push cs
-2:9E26  e84da0               call 0x3e76  ; sub_s2:3E76
+2:9E26  e84da0               call 0x3e76  ; Pos3::set@s2:3E76
 2:9E29  66837e0600           cmp dword ptr [bp + 6], 0
 2:9E2E  740c                 je 0x9e3c
 2:9E30  8b4606               mov ax, word ptr [bp + 6]
@@ -14693,7 +15306,7 @@ loc_9E3F:
 2:9E44  66ff368803           push dword ptr [0x388]
 2:9E49  90                   nop
 2:9E4A  0e                   push cs
-2:9E4B  e814f4               call 0x9262  ; sub_s2:9262
+2:9E4B  e814f4               call 0x9262  ; Timer::add@s2:9262
 2:9E4E  8b4606               mov ax, word ptr [bp + 6]
 2:9E51  8b5608               mov dx, word ptr [bp + 8]
 2:9E54  5e                   pop si
@@ -14701,7 +15314,8 @@ loc_9E3F:
 2:9E56  ca0600               retf 6
 2:9E59  db 00
 
-; ---------------- sub_s2:9E5A FAR size=190 callers=1
+; ---------------- AnimTicker::~AnimTicker@s2:9E5A FAR size=190 callers=1
+;   dtor
 2:9E5A  c8160000             enter 0x16, 0
 2:9E5E  56                   push si
 2:9E5F  c45e06               les bx, ptr [bp + 6]
@@ -14730,7 +15344,7 @@ loc_9E95:
 2:9EA0  66ff368803           push dword ptr [0x388]
 2:9EA5  90                   nop
 2:9EA6  0e                   push cs
-2:9EA7  e808f4               call 0x92b2  ; sub_s2:92B2
+2:9EA7  e808f4               call 0x92b2  ; Timer::remove@s2:92B2
 loc_9EAA:
 2:9EAA  c746fe0000           mov word ptr [bp - 2], 0
 loc_9EAF:
@@ -14771,13 +15385,14 @@ loc_9EF5:
 2:9EFE  26c7079a38           mov word ptr es:[bx], 0x389a
 2:9F03  26c74702549d         mov word ptr es:[bx + 2], 0x9d54  ; SEGMENT s2:0000
 2:9F09  66ff7606             push dword ptr [bp + 6]
-2:9F0D  9a224d459d           lcall 0x9d45, 0x4d22  ; sub_s4:4D22
+2:9F0D  9a224d459d           lcall 0x9d45, 0x4d22  ; CmdTarget::~CmdTarget@s4:4D22
 2:9F12  5e                   pop si
 2:9F13  c9                   leave
 2:9F14  ca0400               retf 4
 2:9F17  db 00
 
-; ---------------- sub_s2:9F18 FAR size=48 callers=0
+; ---------------- AnimTicker::onTimer@s2:9F18 FAR size=48 callers=0
+;   advances the step
 2:9F18  55                   push bp
 2:9F19  8bec                 mov bp, sp
 2:9F1B  57                   push di
@@ -14793,11 +15408,11 @@ loc_9EF5:
 2:9F30  8bfa                 mov di, dx
 2:9F32  90                   nop
 2:9F33  0e                   push cs
-2:9F34  e82d00               call 0x9f64  ; sub_s2:9F64
+2:9F34  e82d00               call 0x9f64  ; AnimTicker::step@s2:9F64
 2:9F37  ff760a               push word ptr [bp + 0xa]
 2:9F3A  57                   push di
 2:9F3B  56                   push si
-2:9F3C  9a621fcd9d           lcall 0x9dcd, 0x1f62  ; sub_s3:1F62
+2:9F3C  9a621fcd9d           lcall 0x9dcd, 0x1f62  ; RegObj::notify@s3:1F62
 loc_9F41:
 2:9F41  5e                   pop si
 2:9F42  5f                   pop di
@@ -14805,7 +15420,8 @@ loc_9F41:
 2:9F44  ca0600               retf 6
 2:9F47  db 00
 
-; ---------------- sub_s2:9F48 FAR size=28 callers=2
+; ---------------- AnimTicker::current@s2:9F48 FAR size=28 callers=2
+;   current step's entry
 2:9F48  55                   push bp
 2:9F49  8bec                 mov bp, sp
 2:9F4B  56                   push si
@@ -14819,7 +15435,8 @@ loc_9F41:
 2:9F60  ca0400               retf 4
 2:9F63  db 00
 
-; ---------------- sub_s2:9F64 FAR size=28 callers=1
+; ---------------- AnimTicker::step@s2:9F64 FAR size=28 callers=1
+;   step = (step + 1) mod 12
 2:9F64  55                   push bp
 2:9F65  8bec                 mov bp, sp
 2:9F67  c45e06               les bx, ptr [bp + 6]
@@ -14832,19 +15449,21 @@ loc_9F7B:
 2:9F7C  ca0400               retf 4
 2:9F7F  db 00
 
-; ---------------- sub_s2:9F80 FAR size=12 callers=0
+; ---------------- AnimTicker::thunk_dtor@s2:9F80 FAR size=12 callers=0
+;   this-adjusting thunk (multiple inheritance)
 2:9F80  8bdc                 mov bx, sp
 2:9F82  36836f041c           sub word ptr ss:[bx + 4], 0x1c
 2:9F87  e90200               jmp 0x9f8c
 2:9F8A  db 90 90
 
-; ---------------- sub_s2:9F8C FAR size=70 callers=0
+; ---------------- AnimTicker::scalar_dtor@s2:9F8C FAR size=70 callers=0
+;   deleting destructor
 2:9F8C  55                   push bp
 2:9F8D  8bec                 mov bp, sp
 2:9F8F  66ff7606             push dword ptr [bp + 6]
 2:9F93  90                   nop
 2:9F94  0e                   push cs
-2:9F95  e8c2fe               call 0x9e5a  ; sub_s2:9E5A
+2:9F95  e8c2fe               call 0x9e5a  ; AnimTicker::~AnimTicker@s2:9E5A
 2:9F98  f6460a01             test byte ptr [bp + 0xa], 1
 2:9F9C  7409                 je 0x9fa7
 2:9F9E  66ff7606             push dword ptr [bp + 6]
@@ -14858,11 +15477,12 @@ loc_9FA7:
 2:9FC1  db 9f 04 4e c8 9f 18 4f 10 9f 80 9f d0 9f 18 9f b4
 2:9FD1  db 9f
 
-; ---------------- sub_s2:9FD2 FAR size=180 callers=1
+; ---------------- MessageLog::MessageLog@s2:9FD2 FAR size=180 callers=1
+;   registry 0x37: the message log (0x420 bytes)
 2:9FD2  c8040000             enter 4, 0
 2:9FD6  66ff7608             push dword ptr [bp + 8]
 2:9FDA  ff7606               push word ptr [bp + 6]
-2:9FDD  9a481db89f           lcall 0x9fb8, 0x1d48  ; sub_s3:1D48
+2:9FDD  9a481db89f           lcall 0x9fb8, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:9FE2  c45e06               les bx, ptr [bp + 6]
 2:9FE5  662bc0               sub eax, eax
 2:9FE8  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -14885,7 +15505,7 @@ loc_9FA7:
 2:A030  50                   push ax
 2:A031  90                   nop
 2:A032  0e                   push cs
-2:A033  e814b7               call 0x574a  ; sub_s2:574A
+2:A033  e814b7               call 0x574a  ; List::List@s2:574A
 2:A036  c45e06               les bx, ptr [bp + 6]
 2:A039  2689470a             mov word ptr es:[bx + 0xa], ax
 2:A03D  2689570c             mov word ptr es:[bx + 0xc], dx
@@ -14905,7 +15525,7 @@ loc_A050:
 2:A064  50                   push ax
 2:A065  90                   nop
 2:A066  0e                   push cs
-2:A067  e8e0b6               call 0x574a  ; sub_s2:574A
+2:A067  e8e0b6               call 0x574a  ; List::List@s2:574A
 2:A06A  eb03                 jmp 0xa06f
 loc_A06C:
 2:A06C  33c0                 xor ax, ax
@@ -14919,7 +15539,8 @@ loc_A06F:
 2:A082  c9                   leave
 2:A083  ca0600               retf 6
 
-; ---------------- sub_s2:A086 FAR size=94 callers=1
+; ---------------- MessageLog::~MessageLog@s2:A086 FAR size=94 callers=1
+;   dtor
 2:A086  c8080000             enter 8, 0
 2:A08A  56                   push si
 2:A08B  c45e06               les bx, ptr [bp + 6]
@@ -14953,13 +15574,14 @@ loc_A0B5:
 2:A0D3  26ff1f               lcall es:[bx]
 loc_A0D6:
 2:A0D6  66ff7606             push dword ptr [bp + 6]
-2:A0DA  9a801de09f           lcall 0x9fe0, 0x1d80  ; sub_s3:1D80
+2:A0DA  9a801de09f           lcall 0x9fe0, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:A0DF  5e                   pop si
 2:A0E0  c9                   leave
 2:A0E1  ca0400               retf 4
 
-; ---------------- sub_s2:A0E4 FAR size=268 callers=16
+; ---------------- MessageLog::post@s2:A0E4 FAR size=268 callers=16
 ;   apis: USER.PostMessage
+;   adds a log entry (code, colony, values) and notifies the window
 2:A0E4  c8420000             enter 0x42, 0
 2:A0E8  c45e06               les bx, ptr [bp + 6]
 2:A0EB  6626ff770a           push dword ptr es:[bx + 0xa]
@@ -15001,7 +15623,7 @@ loc_A146:
 2:A14E  66a1a003             mov eax, dword ptr [0x3a0]
 2:A152  668946e2             mov dword ptr [bp - 0x1e], eax
 2:A156  6650                 push eax
-2:A158  9afc0721a0           lcall 0xa021, 0x7fc  ; sub_s1:07FC
+2:A158  9afc0721a0           lcall 0xa021, 0x7fc  ; SH_MemAllocFS@s1:07FC
 2:A15D  8946ee               mov word ptr [bp - 0x12], ax
 2:A160  8956f0               mov word ptr [bp - 0x10], dx
 2:A163  0bd0                 or dx, ax
@@ -15046,7 +15668,8 @@ loc_A1EB:
 2:A1EC  ca1200               retf 0x12
 2:A1EF  db 00
 
-; ---------------- sub_s2:A1F0 FAR size=1796 callers=1
+; ---------------- MessageLog::format@s2:A1F0 FAR size=1796 callers=1
+;   the text of a log entry (switch at 2:A82A), its movie
 2:A1F0  c8100100             enter 0x110, 0
 2:A1F4  57                   push di
 2:A1F5  56                   push si
@@ -15089,7 +15712,7 @@ loc_A23A:
 2:A25A  66ff7606             push dword ptr [bp + 6]
 2:A25E  90                   nop
 2:A25F  0e                   push cs
-2:A260  e81d09               call 0xab80  ; sub_s2:AB80
+2:A260  e81d09               call 0xab80  ; logCodeToMovie@s2:AB80
 2:A263  c45e0a               les bx, ptr [bp + 0xa]
 2:A266  268907               mov word ptr es:[bx], ax
 2:A269  c45efc               les bx, ptr [bp - 4]
@@ -15104,7 +15727,7 @@ loc_A277:
 2:A27E  6650                 push eax
 2:A280  68ff03               push 0x3ff
 2:A283  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A288  9ae084a7a2           lcall 0xa2a7, 0x84e0  ; sub_s3:84E0
+2:A288  9ae084a7a2           lcall 0xa2a7, 0x84e0  ; LoadStringTo@s3:84E0
 2:A28D  e93406               jmp 0xa8c4
 loc_A290:
 2:A290  689a05               push 0x59a
@@ -15113,7 +15736,7 @@ loc_A290:
 2:A29A  6650                 push eax
 2:A29C  68ff03               push 0x3ff
 2:A29F  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A2A4  9ae084eaa2           lcall 0xa2ea, 0x84e0  ; sub_s3:84E0
+2:A2A4  9ae084eaa2           lcall 0xa2ea, 0x84e0  ; LoadStringTo@s3:84E0
 2:A2A9  c45e12               les bx, ptr [bp + 0x12]
 2:A2AC  26c707d100           mov word ptr es:[bx], 0xd1
 loc_A2B1:
@@ -15133,11 +15756,11 @@ loc_A2BC:
 2:A2DE  50                   push ax
 2:A2DF  680001               push 0x100
 2:A2E2  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A2E7  9ae08437a3           lcall 0xa337, 0x84e0  ; sub_s3:84E0
+2:A2E7  9ae08437a3           lcall 0xa337, 0x84e0  ; LoadStringTo@s3:84E0
 2:A2EC  c45efc               les bx, ptr [bp - 4]
 2:A2EF  26ff770c             push word ptr es:[bx + 0xc]
 2:A2F3  66ffb6f8fe           push dword ptr [bp - 0x108]
-2:A2F8  9a284de06f           lcall 0x6fe0, 0x4d28  ; sub_s8:4D28
+2:A2F8  9a284de06f           lcall 0x6fe0, 0x4d28  ; Colony::name@s8:4D28
 2:A2FD  52                   push dx
 2:A2FE  50                   push ax
 2:A2FF  8d86fcfe             lea ax, [bp - 0x104]
@@ -15160,7 +15783,7 @@ loc_A320:
 2:A32A  6650                 push eax
 2:A32C  68ff03               push 0x3ff
 2:A32F  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A334  9ae084bba3           lcall 0xa3bb, 0x84e0  ; sub_s3:84E0
+2:A334  9ae084bba3           lcall 0xa3bb, 0x84e0  ; LoadStringTo@s3:84E0
 2:A339  c45e12               les bx, ptr [bp + 0x12]
 2:A33C  26c707d400           mov word ptr es:[bx], 0xd4
 2:A341  e96dff               jmp 0xa2b1
@@ -15203,7 +15826,7 @@ loc_A392:
 2:A3AF  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
 2:A3B4  8bf0                 mov si, ax
 2:A3B6  8cc7                 mov di, es
-2:A3B8  9ae084c8a3           lcall 0xa3c8, 0x84e0  ; sub_s3:84E0
+2:A3B8  9ae084c8a3           lcall 0xa3c8, 0x84e0  ; LoadStringTo@s3:84E0
 2:A3BD  682b07               push 0x72b
 2:A3C0  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
 2:A3C5  9a7e84eea3           lcall 0xa3ee, 0x847e  ; LoadStringRes@s3:847E
@@ -15211,19 +15834,19 @@ loc_A392:
 2:A3CB  50                   push ax
 2:A3CC  57                   push di
 2:A3CD  56                   push si
-2:A3CE  9aea3c5ba1           lcall 0xa15b, 0x3cea  ; sub_s1:3CEA
+2:A3CE  9aea3c5ba1           lcall 0xa15b, 0x3cea  ; _fstrcat@s1:3CEA
 2:A3D3  83c408               add sp, 8
 2:A3D6  c45e12               les bx, ptr [bp + 0x12]
 2:A3D9  26c7074c00           mov word ptr es:[bx], 0x4c
 2:A3DE  666801000a00         push 0xa0001
 2:A3E4  6a2b                 push 0x2b
 2:A3E6  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:A3EB  9aba20fda3           lcall 0xa3fd, 0x20ba  ; sub_s3:20BA
+2:A3EB  9aba20fda3           lcall 0xa3fd, 0x20ba  ; Registry_get@s3:20BA
 2:A3F0  8986f8fe             mov word ptr [bp - 0x108], ax
 2:A3F4  8996fafe             mov word ptr [bp - 0x106], dx
 2:A3F8  52                   push dx
 2:A3F9  50                   push ax
-2:A3FA  9a9e0819a4           lcall 0xa419, 0x89e  ; sub_s3:089E
+2:A3FA  9a9e0819a4           lcall 0xa419, 0x89e  ; Alerts::setOn@s3:089E
 2:A3FF  e9c204               jmp 0xa8c4
 loc_A402:
 2:A402  681307               push 0x713
@@ -15232,7 +15855,7 @@ loc_A402:
 2:A40C  6650                 push eax
 2:A40E  68ff03               push 0x3ff
 2:A411  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A416  9ae0843da4           lcall 0xa43d, 0x84e0  ; sub_s3:84E0
+2:A416  9ae0843da4           lcall 0xa43d, 0x84e0  ; LoadStringTo@s3:84E0
 2:A41B  c45e12               les bx, ptr [bp + 0x12]
 2:A41E  26c7072800           mov word ptr es:[bx], 0x28
 2:A423  e99e04               jmp 0xa8c4
@@ -15243,7 +15866,7 @@ loc_A426:
 2:A430  6650                 push eax
 2:A432  68ff03               push 0x3ff
 2:A435  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A43A  9ae08461a4           lcall 0xa461, 0x84e0  ; sub_s3:84E0
+2:A43A  9ae08461a4           lcall 0xa461, 0x84e0  ; LoadStringTo@s3:84E0
 2:A43F  c45e12               les bx, ptr [bp + 0x12]
 2:A442  26c7072c00           mov word ptr es:[bx], 0x2c
 2:A447  e97a04               jmp 0xa8c4
@@ -15254,7 +15877,7 @@ loc_A44A:
 2:A454  6650                 push eax
 2:A456  68ff03               push 0x3ff
 2:A459  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A45E  9ae08485a4           lcall 0xa485, 0x84e0  ; sub_s3:84E0
+2:A45E  9ae08485a4           lcall 0xa485, 0x84e0  ; LoadStringTo@s3:84E0
 2:A463  c45e12               les bx, ptr [bp + 0x12]
 2:A466  26c7072e00           mov word ptr es:[bx], 0x2e
 2:A46B  e95604               jmp 0xa8c4
@@ -15265,7 +15888,7 @@ loc_A46E:
 2:A478  6650                 push eax
 2:A47A  68ff03               push 0x3ff
 2:A47D  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A482  9ae084a9a4           lcall 0xa4a9, 0x84e0  ; sub_s3:84E0
+2:A482  9ae084a9a4           lcall 0xa4a9, 0x84e0  ; LoadStringTo@s3:84E0
 2:A487  c45e12               les bx, ptr [bp + 0x12]
 2:A48A  26c7073000           mov word ptr es:[bx], 0x30
 2:A48F  e93204               jmp 0xa8c4
@@ -15276,7 +15899,7 @@ loc_A492:
 2:A49C  6650                 push eax
 2:A49E  68ff03               push 0x3ff
 2:A4A1  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A4A6  9ae084cda4           lcall 0xa4cd, 0x84e0  ; sub_s3:84E0
+2:A4A6  9ae084cda4           lcall 0xa4cd, 0x84e0  ; LoadStringTo@s3:84E0
 2:A4AB  c45e12               les bx, ptr [bp + 0x12]
 2:A4AE  26c7073200           mov word ptr es:[bx], 0x32
 2:A4B3  e90e04               jmp 0xa8c4
@@ -15287,7 +15910,7 @@ loc_A4B6:
 2:A4C0  6650                 push eax
 2:A4C2  68ff03               push 0x3ff
 2:A4C5  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A4CA  9ae08409a5           lcall 0xa509, 0x84e0  ; sub_s3:84E0
+2:A4CA  9ae08409a5           lcall 0xa509, 0x84e0  ; LoadStringTo@s3:84E0
 2:A4CF  c45e12               les bx, ptr [bp + 0x12]
 2:A4D2  26c7073400           mov word ptr es:[bx], 0x34
 2:A4D7  e9ea03               jmp 0xa8c4
@@ -15305,7 +15928,7 @@ loc_A4F2:
 2:A4FC  6650                 push eax
 2:A4FE  68ff03               push 0x3ff
 2:A501  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A506  9ae0842da5           lcall 0xa52d, 0x84e0  ; sub_s3:84E0
+2:A506  9ae0842da5           lcall 0xa52d, 0x84e0  ; LoadStringTo@s3:84E0
 2:A50B  c45e12               les bx, ptr [bp + 0x12]
 2:A50E  26c7072a00           mov word ptr es:[bx], 0x2a
 2:A513  e9ae03               jmp 0xa8c4
@@ -15316,7 +15939,7 @@ loc_A516:
 2:A520  6650                 push eax
 2:A522  68ff03               push 0x3ff
 2:A525  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A52A  9ae08451a5           lcall 0xa551, 0x84e0  ; sub_s3:84E0
+2:A52A  9ae08451a5           lcall 0xa551, 0x84e0  ; LoadStringTo@s3:84E0
 2:A52F  c45e12               les bx, ptr [bp + 0x12]
 2:A532  26c7072700           mov word ptr es:[bx], 0x27
 2:A537  e98a03               jmp 0xa8c4
@@ -15327,7 +15950,7 @@ loc_A53A:
 2:A544  6650                 push eax
 2:A546  68ff03               push 0x3ff
 2:A549  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A54E  9ae08475a5           lcall 0xa575, 0x84e0  ; sub_s3:84E0
+2:A54E  9ae08475a5           lcall 0xa575, 0x84e0  ; LoadStringTo@s3:84E0
 2:A553  c45e12               les bx, ptr [bp + 0x12]
 2:A556  26c7072900           mov word ptr es:[bx], 0x29
 2:A55B  e96603               jmp 0xa8c4
@@ -15338,7 +15961,7 @@ loc_A55E:
 2:A568  6650                 push eax
 2:A56A  68ff03               push 0x3ff
 2:A56D  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A572  9ae08499a5           lcall 0xa599, 0x84e0  ; sub_s3:84E0
+2:A572  9ae08499a5           lcall 0xa599, 0x84e0  ; LoadStringTo@s3:84E0
 2:A577  c45e12               les bx, ptr [bp + 0x12]
 2:A57A  26c7072b00           mov word ptr es:[bx], 0x2b
 2:A57F  e94203               jmp 0xa8c4
@@ -15349,7 +15972,7 @@ loc_A582:
 2:A58C  6650                 push eax
 2:A58E  68ff03               push 0x3ff
 2:A591  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A596  9ae084dda0           lcall 0xa0dd, 0x84e0  ; sub_s3:84E0
+2:A596  9ae084dda0           lcall 0xa0dd, 0x84e0  ; LoadStringTo@s3:84E0
 2:A59B  c45e12               les bx, ptr [bp + 0x12]
 2:A59E  26c7072d00           mov word ptr es:[bx], 0x2d
 2:A5A3  e91e03               jmp 0xa8c4
@@ -15360,7 +15983,7 @@ loc_A5A6:
 2:A5B0  6650                 push eax
 2:A5B2  68ff03               push 0x3ff
 2:A5B5  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A5BA  9ae084e1a5           lcall 0xa5e1, 0x84e0  ; sub_s3:84E0
+2:A5BA  9ae084e1a5           lcall 0xa5e1, 0x84e0  ; LoadStringTo@s3:84E0
 2:A5BF  c45e12               les bx, ptr [bp + 0x12]
 2:A5C2  26c7072f00           mov word ptr es:[bx], 0x2f
 2:A5C7  e9fa02               jmp 0xa8c4
@@ -15371,7 +15994,7 @@ loc_A5CA:
 2:A5D4  6650                 push eax
 2:A5D6  68ff03               push 0x3ff
 2:A5D9  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A5DE  9ae0840ba6           lcall 0xa60b, 0x84e0  ; sub_s3:84E0
+2:A5DE  9ae0840ba6           lcall 0xa60b, 0x84e0  ; LoadStringTo@s3:84E0
 2:A5E3  c45e12               les bx, ptr [bp + 0x12]
 2:A5E6  26c7073100           mov word ptr es:[bx], 0x31
 2:A5EB  e9d602               jmp 0xa8c4
@@ -15386,7 +16009,7 @@ loc_A5EE:
 2:A5FF  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
 2:A604  8bf0                 mov si, ax
 2:A606  8bfa                 mov di, dx
-2:A608  9ae08418a6           lcall 0xa618, 0x84e0  ; sub_s3:84E0
+2:A608  9ae08418a6           lcall 0xa618, 0x84e0  ; LoadStringTo@s3:84E0
 2:A60D  681f07               push 0x71f
 2:A610  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
 2:A615  9a7e8449a6           lcall 0xa649, 0x847e  ; LoadStringRes@s3:847E
@@ -15394,7 +16017,7 @@ loc_A5EE:
 2:A61B  50                   push ax
 2:A61C  57                   push di
 2:A61D  56                   push si
-2:A61E  9aea3c11a3           lcall 0xa311, 0x3cea  ; sub_s1:3CEA
+2:A61E  9aea3c11a3           lcall 0xa311, 0x3cea  ; _fstrcat@s1:3CEA
 2:A623  83c408               add sp, 8
 2:A626  c45e12               les bx, ptr [bp + 0x12]
 2:A629  26c7073300           mov word ptr es:[bx], 0x33
@@ -15407,7 +16030,7 @@ loc_A632:
 2:A63C  6650                 push eax
 2:A63E  68ff03               push 0x3ff
 2:A641  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A646  9ae0846da6           lcall 0xa66d, 0x84e0  ; sub_s3:84E0
+2:A646  9ae0846da6           lcall 0xa66d, 0x84e0  ; LoadStringTo@s3:84E0
 2:A64B  c45e12               les bx, ptr [bp + 0x12]
 2:A64E  26c7073500           mov word ptr es:[bx], 0x35  ; 'New failed in Op::Op->ResLibr'
 2:A653  e96e02               jmp 0xa8c4
@@ -15418,7 +16041,7 @@ loc_A656:
 2:A660  6650                 push eax
 2:A662  68ff03               push 0x3ff
 2:A665  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A66A  9ae08491a6           lcall 0xa691, 0x84e0  ; sub_s3:84E0
+2:A66A  9ae08491a6           lcall 0xa691, 0x84e0  ; LoadStringTo@s3:84E0
 2:A66F  c45e12               les bx, ptr [bp + 0x12]
 2:A672  26c7073600           mov word ptr es:[bx], 0x36
 2:A677  e94a02               jmp 0xa8c4
@@ -15429,7 +16052,7 @@ loc_A67A:
 2:A684  6650                 push eax
 2:A686  68ff03               push 0x3ff
 2:A689  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A68E  9ae084b5a6           lcall 0xa6b5, 0x84e0  ; sub_s3:84E0
+2:A68E  9ae084b5a6           lcall 0xa6b5, 0x84e0  ; LoadStringTo@s3:84E0
 2:A693  c45e12               les bx, ptr [bp + 0x12]
 2:A696  26c7073700           mov word ptr es:[bx], 0x37
 2:A69B  e92602               jmp 0xa8c4
@@ -15440,7 +16063,7 @@ loc_A69E:
 2:A6A8  6650                 push eax
 2:A6AA  68ff03               push 0x3ff
 2:A6AD  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A6B2  9ae084d9a6           lcall 0xa6d9, 0x84e0  ; sub_s3:84E0
+2:A6B2  9ae084d9a6           lcall 0xa6d9, 0x84e0  ; LoadStringTo@s3:84E0
 2:A6B7  c45e12               les bx, ptr [bp + 0x12]
 2:A6BA  26c7073800           mov word ptr es:[bx], 0x38
 2:A6BF  e90202               jmp 0xa8c4
@@ -15451,7 +16074,7 @@ loc_A6C2:
 2:A6CC  6650                 push eax
 2:A6CE  68ff03               push 0x3ff
 2:A6D1  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A6D6  9ae084fda6           lcall 0xa6fd, 0x84e0  ; sub_s3:84E0
+2:A6D6  9ae084fda6           lcall 0xa6fd, 0x84e0  ; LoadStringTo@s3:84E0
 2:A6DB  c45e12               les bx, ptr [bp + 0x12]
 2:A6DE  26c7073900           mov word ptr es:[bx], 0x39
 2:A6E3  e9de01               jmp 0xa8c4
@@ -15462,7 +16085,7 @@ loc_A6E6:
 2:A6F0  6650                 push eax
 2:A6F2  68ff03               push 0x3ff
 2:A6F5  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A6FA  9ae08421a7           lcall 0xa721, 0x84e0  ; sub_s3:84E0
+2:A6FA  9ae08421a7           lcall 0xa721, 0x84e0  ; LoadStringTo@s3:84E0
 2:A6FF  c45e12               les bx, ptr [bp + 0x12]
 2:A702  26c707ce00           mov word ptr es:[bx], 0xce
 2:A707  e9ba01               jmp 0xa8c4
@@ -15473,7 +16096,7 @@ loc_A70A:
 2:A714  6650                 push eax
 2:A716  68ff03               push 0x3ff
 2:A719  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A71E  9ae08445a7           lcall 0xa745, 0x84e0  ; sub_s3:84E0
+2:A71E  9ae08445a7           lcall 0xa745, 0x84e0  ; LoadStringTo@s3:84E0
 2:A723  c45e12               les bx, ptr [bp + 0x12]
 2:A726  26c707cf00           mov word ptr es:[bx], 0xcf
 2:A72B  e99601               jmp 0xa8c4
@@ -15484,7 +16107,7 @@ loc_A72E:
 2:A738  6650                 push eax
 2:A73A  68ff03               push 0x3ff
 2:A73D  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A742  9ae08469a7           lcall 0xa769, 0x84e0  ; sub_s3:84E0
+2:A742  9ae08469a7           lcall 0xa769, 0x84e0  ; LoadStringTo@s3:84E0
 2:A747  c45e12               les bx, ptr [bp + 0x12]
 2:A74A  26c707d000           mov word ptr es:[bx], 0xd0
 2:A74F  e97201               jmp 0xa8c4
@@ -15495,7 +16118,7 @@ loc_A752:
 2:A75C  6650                 push eax
 2:A75E  68ff03               push 0x3ff
 2:A761  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A766  9ae0848da7           lcall 0xa78d, 0x84e0  ; sub_s3:84E0
+2:A766  9ae0848da7           lcall 0xa78d, 0x84e0  ; LoadStringTo@s3:84E0
 2:A76B  c45e12               les bx, ptr [bp + 0x12]
 2:A76E  26c707d100           mov word ptr es:[bx], 0xd1
 2:A773  e94e01               jmp 0xa8c4
@@ -15506,7 +16129,7 @@ loc_A776:
 2:A780  6650                 push eax
 2:A782  68ff03               push 0x3ff
 2:A785  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A78A  9ae084b1a7           lcall 0xa7b1, 0x84e0  ; sub_s3:84E0
+2:A78A  9ae084b1a7           lcall 0xa7b1, 0x84e0  ; LoadStringTo@s3:84E0
 2:A78F  c45e12               les bx, ptr [bp + 0x12]
 2:A792  26c707d200           mov word ptr es:[bx], 0xd2
 2:A797  e92a01               jmp 0xa8c4
@@ -15517,7 +16140,7 @@ loc_A79A:
 2:A7A4  6650                 push eax
 2:A7A6  68ff03               push 0x3ff
 2:A7A9  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A7AE  9ae084d5a7           lcall 0xa7d5, 0x84e0  ; sub_s3:84E0
+2:A7AE  9ae084d5a7           lcall 0xa7d5, 0x84e0  ; LoadStringTo@s3:84E0
 2:A7B3  c45e12               les bx, ptr [bp + 0x12]
 2:A7B6  26c707d300           mov word ptr es:[bx], 0xd3
 2:A7BB  e90601               jmp 0xa8c4
@@ -15528,7 +16151,7 @@ loc_A7BE:
 2:A7C8  6650                 push eax
 2:A7CA  68ff03               push 0x3ff
 2:A7CD  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A7D2  9ae084f9a7           lcall 0xa7f9, 0x84e0  ; sub_s3:84E0
+2:A7D2  9ae084f9a7           lcall 0xa7f9, 0x84e0  ; LoadStringTo@s3:84E0
 2:A7D7  c45e12               les bx, ptr [bp + 0x12]
 2:A7DA  26c707d500           mov word ptr es:[bx], 0xd5
 2:A7DF  e9e200               jmp 0xa8c4
@@ -15539,7 +16162,7 @@ loc_A7E2:
 2:A7EC  6650                 push eax
 2:A7EE  68ff03               push 0x3ff
 2:A7F1  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A7F6  9ae0841da8           lcall 0xa81d, 0x84e0  ; sub_s3:84E0
+2:A7F6  9ae0841da8           lcall 0xa81d, 0x84e0  ; LoadStringTo@s3:84E0
 2:A7FB  c45e12               les bx, ptr [bp + 0x12]
 2:A7FE  26c707d600           mov word ptr es:[bx], 0xd6
 2:A803  e9be00               jmp 0xa8c4
@@ -15550,7 +16173,7 @@ loc_A806:
 2:A810  6650                 push eax
 2:A812  68ff03               push 0x3ff
 2:A815  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:A81A  9ae0848ba2           lcall 0xa28b, 0x84e0  ; sub_s3:84E0
+2:A81A  9ae0848ba2           lcall 0xa28b, 0x84e0  ; LoadStringTo@s3:84E0
 2:A81F  c45e12               les bx, ptr [bp + 0x12]
 2:A822  26c707d700           mov word ptr es:[bx], 0xd7  ; 'Outpost'
 2:A827  e99a00               jmp 0xa8c4
@@ -15653,7 +16276,8 @@ loc_A8E4:
 2:A8F0  ca1400               retf 0x14
 2:A8F3  db 00
 
-; ---------------- sub_s2:A8F4 FAR size=60 callers=1
+; ---------------- MessageLog::formatEntry@s2:A8F4 FAR size=60 callers=1
+;   wrapper used by the log window
 2:A8F4  c8080000             enter 8, 0
 2:A8F8  66ff7612             push dword ptr [bp + 0x12]
 2:A8FC  8d46fe               lea ax, [bp - 2]
@@ -15666,20 +16290,21 @@ loc_A8E4:
 2:A90A  66ff7606             push dword ptr [bp + 6]
 2:A90E  90                   nop
 2:A90F  0e                   push cs
-2:A910  e8ddf8               call 0xa1f0  ; sub_s2:A1F0
+2:A910  e8ddf8               call 0xa1f0  ; MessageLog::format@s2:A1F0
 2:A913  8946f8               mov word ptr [bp - 8], ax
 2:A916  8956fa               mov word ptr [bp - 6], dx
 2:A919  66ff76fc             push dword ptr [bp - 4]
 2:A91D  66ff760e             push dword ptr [bp + 0xe]
 2:A921  90                   nop
 2:A922  0e                   push cs
-2:A923  e828eb               call 0x944e  ; sub_s2:944E
+2:A923  e828eb               call 0x944e  ; Pair::set@s2:944E
 2:A926  8b46f8               mov ax, word ptr [bp - 8]
 2:A929  8b56fa               mov dx, word ptr [bp - 6]
 2:A92C  c9                   leave
 2:A92D  ca1000               retf 0x10
 
-; ---------------- sub_s2:A930 FAR size=188 callers=1
+; ---------------- SoundQueue::add@s2:A930 FAR size=188 callers=1
+;   queues a sound (+0x410)
 2:A930  c8220000             enter 0x22, 0
 2:A934  837e0a00             cmp word ptr [bp + 0xa], 0
 2:A938  7506                 jne 0xa940
@@ -15747,7 +16372,8 @@ loc_A9CC:
 2:A9E8  c9                   leave
 2:A9E9  ca0600               retf 6
 
-; ---------------- sub_s2:A9EC FAR size=60 callers=3
+; ---------------- SoundQueue::playNext@s2:A9EC FAR size=60 callers=3
+;   plays the next queued sound
 2:A9EC  c8080000             enter 8, 0
 2:A9F0  c746fe0000           mov word ptr [bp - 2], 0
 2:A9F5  c45e06               les bx, ptr [bp + 6]
@@ -15762,7 +16388,7 @@ loc_A9CC:
 2:AA17  53                   push bx
 2:AA18  90                   nop
 2:AA19  0e                   push cs
-2:AA1A  e80b00               call 0xaa28  ; sub_s2:AA28
+2:AA1A  e80b00               call 0xaa28  ; SoundQueue::play@s2:AA28
 2:AA1D  8946fe               mov word ptr [bp - 2], ax
 loc_AA20:
 2:AA20  8b46fe               mov ax, word ptr [bp - 2]
@@ -15770,7 +16396,8 @@ loc_AA20:
 2:AA24  ca0400               retf 4
 2:AA27  db 00
 
-; ---------------- sub_s2:AA28 FAR size=128 callers=2
+; ---------------- SoundQueue::play@s2:AA28 FAR size=128 callers=2
+;   plays one queued sound
 2:AA28  c8140000             enter 0x14, 0
 2:AA2C  c45e06               les bx, ptr [bp + 6]
 2:AA2F  2683bf140400         cmp word ptr es:[bx + 0x414], 0
@@ -15804,7 +16431,7 @@ loc_AA58:
 2:AA7E  66ff36a002           push dword ptr [0x2a0]
 2:AA83  90                   nop
 2:AA84  0e                   push cs
-2:AA85  e8d4b1               call 0x5c5c  ; sub_s2:5C5C
+2:AA85  e8d4b1               call 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 2:AA88  8946fa               mov word ptr [bp - 6], ax
 2:AA8B  668b46fc             mov eax, dword ptr [bp - 4]
 2:AA8F  660bc0               or eax, eax
@@ -15820,7 +16447,8 @@ loc_AAA1:
 2:AAA4  c9                   leave
 2:AAA5  ca0400               retf 4
 
-; ---------------- sub_s2:AAA8 FAR size=106 callers=1
+; ---------------- MessageLog::forgetColony@s2:AAA8 FAR size=106 callers=1
+;   drops the entries of a killed colony
 2:AAA8  c8020000             enter 2, 0
 2:AAAC  c746fe0000           mov word ptr [bp - 2], 0
 2:AAB1  8b460a               mov ax, word ptr [bp + 0xa]
@@ -15874,7 +16502,8 @@ loc_AB0A:
 2:AB0E  ca0600               retf 6
 2:AB11  db 00
 
-; ---------------- sub_s2:AB12 FAR size=66 callers=1
+; ---------------- MessageLog::codeCategory@s2:AB12 FAR size=66 callers=1
+;   log code -> category
 2:AB12  c8020000             enter 2, 0
 2:AB16  c746fe0000           mov word ptr [bp - 2], 0
 2:AB1B  8b460a               mov ax, word ptr [bp + 0xa]
@@ -15906,7 +16535,8 @@ loc_AB4D:
 2:AB50  c9                   leave
 2:AB51  ca0600               retf 6
 
-; ---------------- sub_s2:AB54 FAR size=44 callers=1
+; ---------------- MessageLog::hasEntries@s2:AB54 FAR size=44 callers=1
+;   1 when the log has entries
 2:AB54  c8080000             enter 8, 0
 2:AB58  c746fe0000           mov word ptr [bp - 2], 0
 2:AB5D  c45e06               les bx, ptr [bp + 6]
@@ -15922,7 +16552,8 @@ loc_AB78:
 2:AB7C  ca0400               retf 4
 2:AB7F  db 00
 
-; ---------------- sub_s2:AB80 FAR size=396 callers=1
+; ---------------- logCodeToMovie@s2:AB80 FAR size=396 callers=1
+;   log codes 8..45 -> movie command
 2:AB80  c8020000             enter 2, 0
 2:AB84  c746fe0000           mov word ptr [bp - 2], 0
 2:AB89  8b460a               mov ax, word ptr [bp + 0xa]
@@ -16090,7 +16721,8 @@ loc_AD04:
 2:AD08  ca0600               retf 6
 2:AD0B  db 00
 
-; ---------------- sub_s2:AD0C FAR size=44 callers=0
+; ---------------- LogEntry::scalar_dtor@s2:AD0C FAR size=44 callers=0
+;   deleting destructor (MemFreeFS)
 2:AD0C  c8080000             enter 8, 0
 2:AD10  c45e06               les bx, ptr [bp + 6]
 2:AD13  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -16098,7 +16730,7 @@ loc_AD04:
 2:AD1E  f6460a01             test byte ptr [bp + 0xa], 1
 2:AD22  7409                 je 0xad2d
 2:AD24  66ff7606             push dword ptr [bp + 6]
-2:AD28  9a3a0987a9           lcall 0xa987, 0x93a  ; sub_s1:093A
+2:AD28  9a3a0987a9           lcall 0xa987, 0x93a  ; SH_MemFreeFS@s1:093A
 loc_AD2D:
 2:AD2D  8b4606               mov ax, word ptr [bp + 6]
 2:AD30  8b5608               mov dx, word ptr [bp + 8]
@@ -16106,7 +16738,8 @@ loc_AD2D:
 2:AD34  ca0600               retf 6
 2:AD37  db 00
 
-; ---------------- sub_s2:AD38 FAR size=44 callers=0
+; ---------------- LogEntryBase::scalar_dtor@s2:AD38 FAR size=44 callers=0
+;   deleting destructor
 2:AD38  c8080000             enter 8, 0
 2:AD3C  c45e06               les bx, ptr [bp + 6]
 2:AD3F  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -16122,13 +16755,14 @@ loc_AD59:
 2:AD60  ca0600               retf 6
 2:AD63  db 00
 
-; ---------------- sub_s2:AD64 FAR size=62 callers=0
+; ---------------- MessageLog::scalar_dtor@s2:AD64 FAR size=62 callers=0
+;   deleting destructor
 2:AD64  55                   push bp
 2:AD65  8bec                 mov bp, sp
 2:AD67  66ff7606             push dword ptr [bp + 6]
 2:AD6B  90                   nop
 2:AD6C  0e                   push cs
-2:AD6D  e816f3               call 0xa086  ; sub_s2:A086
+2:AD6D  e816f3               call 0xa086  ; MessageLog::~MessageLog@s2:A086
 2:AD70  f6460a01             test byte ptr [bp + 0xa], 1
 2:AD74  7409                 je 0xad7f
 2:AD76  66ff7606             push dword ptr [bp + 6]
@@ -16141,7 +16775,8 @@ loc_AD7F:
 2:AD89  db 90 38 ad 48 ad 0c ad 8c ad 64 ad 90 ad f2 1d 9c
 2:AD99  db ad ce 1d a0 ad d4 1d bd a5
 
-; ---------------- sub_s2:ADA2 FAR size=48 callers=1
+; ---------------- AnimRef::init@s2:ADA2 FAR size=48 callers=1
+;   a building type's animation (table DGROUP 0x3A4)
 2:ADA2  55                   push bp
 2:ADA3  8bec                 mov bp, sp
 2:ADA5  56                   push si
@@ -16164,7 +16799,8 @@ loc_AD7F:
 2:ADCE  ca0600               retf 6
 2:ADD1  db 00
 
-; ---------------- sub_s2:ADD2 FAR size=32 callers=1
+; ---------------- AnimRef::reset@s2:ADD2 FAR size=32 callers=1
+;   back to the first frame
 2:ADD2  55                   push bp
 2:ADD3  8bec                 mov bp, sp
 2:ADD5  56                   push si
@@ -16181,7 +16817,8 @@ loc_AD7F:
 2:ADEE  ca0400               retf 4
 2:ADF1  db 00
 
-; ---------------- sub_s2:ADF2 FAR size=26 callers=1
+; ---------------- AnimRef::firstFrame@s2:ADF2 FAR size=26 callers=1
+;   the animation's first frame
 2:ADF2  55                   push bp
 2:ADF3  8bec                 mov bp, sp
 2:ADF5  c45e06               les bx, ptr [bp + 6]
@@ -16194,7 +16831,8 @@ loc_AD7F:
 2:AE08  c9                   leave
 2:AE09  ca0400               retf 4
 
-; ---------------- sub_s2:AE0C FAR size=26 callers=1
+; ---------------- AnimRef::mode@s2:AE0C FAR size=26 callers=1
+;   the animation's mode
 2:AE0C  55                   push bp
 2:AE0D  8bec                 mov bp, sp
 2:AE0F  c45e06               les bx, ptr [bp + 6]
@@ -16207,7 +16845,8 @@ loc_AD7F:
 2:AE22  c9                   leave
 2:AE23  ca0400               retf 4
 
-; ---------------- sub_s2:AE26 FAR size=178 callers=1
+; ---------------- AnimRef::advance@s2:AE26 FAR size=178 callers=1
+;   next frame (loop or ping-pong)
 2:AE26  55                   push bp
 2:AE27  8bec                 mov bp, sp
 2:AE29  56                   push si
@@ -16285,7 +16924,8 @@ loc_AED2:
 2:AED4  ca0400               retf 4
 2:AED7  db 00
 
-; ---------------- sub_s2:AED8 FAR size=38 callers=2
+; ---------------- AnimRef::hasAnimation@s2:AED8 FAR size=38 callers=2
+;   1 when the type has an animation
 2:AED8  55                   push bp
 2:AED9  8bec                 mov bp, sp
 2:AEDB  c45e06               les bx, ptr [bp + 6]
@@ -16304,12 +16944,13 @@ loc_AEF8:
 2:AEFA  c9                   leave
 2:AEFB  ca0400               retf 4
 
-; ---------------- sub_s2:AEFE FAR size=58 callers=1
+; ---------------- RegObj0B::RegObj0B@s2:AEFE FAR size=58 callers=1
+;   registry 0x0B: command target 0x1B3 (DGROUP 0x4230)
 2:AEFE  55                   push bp
 2:AEFF  8bec                 mov bp, sp
 2:AF01  66ff7608             push dword ptr [bp + 8]
 2:AF05  ff7606               push word ptr [bp + 6]
-2:AF08  9ada4c2baf           lcall 0xaf2b, 0x4cda  ; sub_s4:4CDA
+2:AF08  9ada4c2baf           lcall 0xaf2b, 0x4cda  ; CmdTarget::CmdTarget@s4:4CDA
 2:AF0D  c45e06               les bx, ptr [bp + 6]
 2:AF10  26c7077caf           mov word ptr es:[bx], 0xaf7c
 2:AF15  26c7470294ad         mov word ptr es:[bx + 2], 0xad94  ; SEGMENT s2:0000
@@ -16318,31 +16959,33 @@ loc_AEF8:
 2:AF23  68b301               push 0x1b3
 2:AF26  06                   push es
 2:AF27  53                   push bx
-2:AF28  9ace4dc49f           lcall 0x9fc4, 0x4dce  ; sub_s4:4DCE
+2:AF28  9ace4dc49f           lcall 0x9fc4, 0x4dce  ; CmdTarget::setCommand@s4:4DCE
 2:AF2D  8b4606               mov ax, word ptr [bp + 6]
 2:AF30  8b5608               mov dx, word ptr [bp + 8]
 2:AF33  c9                   leave
 2:AF34  ca0600               retf 6
 2:AF37  db 00
 
-; ---------------- sub_s2:AF38 FAR size=30 callers=1
+; ---------------- RegObj0B::~RegObj0B@s2:AF38 FAR size=30 callers=1
+;   dtor
 2:AF38  55                   push bp
 2:AF39  8bec                 mov bp, sp
 2:AF3B  c45e06               les bx, ptr [bp + 6]
 2:AF3E  26c7077caf           mov word ptr es:[bx], 0xaf7c
 2:AF43  26c7470219af         mov word ptr es:[bx + 2], 0xaf19  ; SEGMENT s2:0000
 2:AF49  66ff7606             push dword ptr [bp + 6]
-2:AF4D  9a224d0baf           lcall 0xaf0b, 0x4d22  ; sub_s4:4D22
+2:AF4D  9a224d0baf           lcall 0xaf0b, 0x4d22  ; CmdTarget::~CmdTarget@s4:4D22
 2:AF52  c9                   leave
 2:AF53  ca0400               retf 4
 
-; ---------------- sub_s2:AF56 FAR size=62 callers=0
+; ---------------- RegObj0B::scalar_dtor@s2:AF56 FAR size=62 callers=0
+;   deleting destructor
 2:AF56  55                   push bp
 2:AF57  8bec                 mov bp, sp
 2:AF59  66ff7606             push dword ptr [bp + 6]
 2:AF5D  90                   nop
 2:AF5E  0e                   push cs
-2:AF5F  e8d6ff               call 0xaf38  ; sub_s2:AF38
+2:AF5F  e8d6ff               call 0xaf38  ; RegObj0B::~RegObj0B@s2:AF38
 2:AF62  f6460a01             test byte ptr [bp + 0xa], 1
 2:AF66  7409                 je 0xaf71
 2:AF68  66ff7606             push dword ptr [bp + 6]
@@ -16355,12 +16998,13 @@ loc_AF71:
 2:AF7B  db 90 56 af 47 af f2 1d 86 af ce 1d 8a af d4 1d 98
 2:AF8B  db ad 04 4e 92 af 18 4f 50 af
 
-; ---------------- sub_s2:AF94 FAR size=74 callers=1
+; ---------------- AiManagers::AiManagers@s2:AF94 FAR size=74 callers=1
+;   registry 0x40: the AI managers
 2:AF94  55                   push bp
 2:AF95  8bec                 mov bp, sp
 2:AF97  66ff7608             push dword ptr [bp + 8]
 2:AF9B  ff7606               push word ptr [bp + 6]
-2:AF9E  9a481d82af           lcall 0xaf82, 0x1d48  ; sub_s3:1D48
+2:AF9E  9a481d82af           lcall 0xaf82, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:AFA3  c45e06               les bx, ptr [bp + 6]
 2:AFA6  662bc0               sub eax, eax
 2:AFA9  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -16377,7 +17021,8 @@ loc_AF71:
 2:AFDA  c9                   leave
 2:AFDB  ca0600               retf 6
 
-; ---------------- sub_s2:AFDE FAR size=124 callers=1
+; ---------------- AiManagers::~AiManagers@s2:AFDE FAR size=124 callers=1
+;   dtor
 2:AFDE  c8080000             enter 8, 0
 2:AFE2  56                   push si
 2:AFE3  c45e06               les bx, ptr [bp + 6]
@@ -16425,13 +17070,14 @@ loc_B02C:
 2:B048  26ff1f               lcall es:[bx]
 loc_B04B:
 2:B04B  66ff7606             push dword ptr [bp + 6]
-2:B04F  9a801da1af           lcall 0xafa1, 0x1d80  ; sub_s3:1D80
+2:B04F  9a801da1af           lcall 0xafa1, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:B054  5e                   pop si
 2:B055  c9                   leave
 2:B056  ca0400               retf 4
 2:B059  db 00
 
-; ---------------- sub_s2:B05A FAR size=50 callers=3
+; ---------------- AiNamed::AiNamed@s2:B05A FAR size=50 callers=3
+;   named item base (vtable BDC8)
 2:B05A  c8040000             enter 4, 0
 2:B05E  c45e06               les bx, ptr [bp + 6]
 2:B061  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -16446,7 +17092,8 @@ loc_B04B:
 2:B088  ca0400               retf 4
 2:B08B  db 00
 
-; ---------------- sub_s2:B08C FAR size=48 callers=4
+; ---------------- AiNamed::~AiNamed@s2:B08C FAR size=48 callers=4
+;   dtor
 2:B08C  c8080000             enter 8, 0
 2:B090  c45e06               les bx, ptr [bp + 6]
 2:B093  26c707c8bd           mov word ptr es:[bx], 0xbdc8
@@ -16460,13 +17107,14 @@ loc_B04B:
 2:B0B8  c9                   leave
 2:B0B9  ca0400               retf 4
 
-; ---------------- sub_s2:B0BC FAR size=54 callers=3
+; ---------------- AiManager::AiManager@s2:B0BC FAR size=54 callers=3
+;   one AI manager (vtable BDC4)
 2:B0BC  55                   push bp
 2:B0BD  8bec                 mov bp, sp
 2:B0BF  66ff7606             push dword ptr [bp + 6]
 2:B0C3  90                   nop
 2:B0C4  0e                   push cs
-2:B0C5  e892ff               call 0xb05a  ; sub_s2:B05A
+2:B0C5  e892ff               call 0xb05a  ; AiNamed::AiNamed@s2:B05A
 2:B0C8  c45e06               les bx, ptr [bp + 6]
 2:B0CB  662bc0               sub eax, eax
 2:B0CE  26894708             mov word ptr es:[bx + 8], ax
@@ -16480,13 +17128,14 @@ loc_B04B:
 2:B0EE  c9                   leave
 2:B0EF  ca0400               retf 4
 
-; ---------------- sub_s2:B0F2 FAR size=44 callers=1
+; ---------------- AiColonyRef::AiColonyRef@s2:B0F2 FAR size=44 callers=1
+;   a colony entry (vtable BDC0)
 2:B0F2  55                   push bp
 2:B0F3  8bec                 mov bp, sp
 2:B0F5  66ff7606             push dword ptr [bp + 6]
 2:B0F9  90                   nop
 2:B0FA  0e                   push cs
-2:B0FB  e85cff               call 0xb05a  ; sub_s2:B05A
+2:B0FB  e85cff               call 0xb05a  ; AiNamed::AiNamed@s2:B05A
 2:B0FE  c45e06               les bx, ptr [bp + 6]
 2:B101  6626c7470800000000   mov dword ptr es:[bx + 8], 0
 2:B10A  26c707c0bd           mov word ptr es:[bx], 0xbdc0
@@ -16497,13 +17146,14 @@ loc_B04B:
 2:B11A  ca0400               retf 4
 2:B11D  db 00
 
-; ---------------- sub_s2:B11E FAR size=40 callers=1
+; ---------------- AiBuildingRef::AiBuildingRef@s2:B11E FAR size=40 callers=1
+;   a building entry (vtable BDDC)
 2:B11E  55                   push bp
 2:B11F  8bec                 mov bp, sp
 2:B121  66ff7606             push dword ptr [bp + 6]
 2:B125  90                   nop
 2:B126  0e                   push cs
-2:B127  e830ff               call 0xb05a  ; sub_s2:B05A
+2:B127  e830ff               call 0xb05a  ; AiNamed::AiNamed@s2:B05A
 2:B12A  c45e06               les bx, ptr [bp + 6]
 2:B12D  26c747080000         mov word ptr es:[bx + 8], 0
 2:B133  26c707dcbd           mov word ptr es:[bx], 0xbddc
@@ -16513,7 +17163,8 @@ loc_B04B:
 2:B142  c9                   leave
 2:B143  ca0400               retf 4
 
-; ---------------- sub_s2:B146 FAR size=96 callers=1
+; ---------------- AiManager::release@s2:B146 FAR size=96 callers=1
+;   clears the manager's assignment
 2:B146  c8040000             enter 4, 0
 2:B14A  c45e06               les bx, ptr [bp + 6]
 2:B14D  6626837f1600         cmp dword ptr es:[bx + 0x16], 0
@@ -16521,10 +17172,10 @@ loc_B04B:
 2:B155  26c45f16             les bx, ptr es:[bx + 0x16]
 2:B159  6626ff770a           push dword ptr es:[bx + 0xa]
 2:B15E  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:B163  9a44834477           lcall 0x7744, 0x8344  ; sub_s7:8344
+2:B163  9a44834477           lcall 0x7744, 0x8344  ; Sim::resolve@s7:8344
 2:B168  52                   push dx
 2:B169  50                   push ax
-2:B16A  9a0836fba2           lcall 0xa2fb, 0x3608  ; sub_s8:3608
+2:B16A  9a0836fba2           lcall 0xa2fb, 0x3608  ; aiClearTask@s8:3608
 2:B16F  c45e06               les bx, ptr [bp + 6]
 2:B172  26c45f16             les bx, ptr es:[bx + 0x16]
 2:B176  26c747080000         mov word ptr es:[bx + 8], 0
@@ -16543,7 +17194,8 @@ loc_B1A1:
 2:B1A2  ca0400               retf 4
 2:B1A5  db 00
 
-; ---------------- sub_s2:B1A6 FAR size=74 callers=1
+; ---------------- AiManager::rename@s2:B1A6 FAR size=74 callers=1
+;   sets the manager's name
 2:B1A6  c8080000             enter 8, 0
 2:B1AA  c45e06               les bx, ptr [bp + 6]
 2:B1AD  6626837f1600         cmp dword ptr es:[bx + 0x16], 0
@@ -16556,7 +17208,7 @@ loc_B1A1:
 2:B1C8  66ff760a             push dword ptr [bp + 0xa]
 2:B1CC  90                   nop
 2:B1CD  0e                   push cs
-2:B1CE  e817af               call 0x60e8  ; sub_s2:60E8
+2:B1CE  e817af               call 0x60e8  ; _strdup@s2:60E8
 2:B1D1  c45e06               les bx, ptr [bp + 6]
 2:B1D4  26c45f16             les bx, ptr es:[bx + 0x16]
 2:B1D8  26894704             mov word ptr es:[bx + 4], ax
@@ -16567,13 +17219,15 @@ loc_B1EC:
 2:B1EC  c9                   leave
 2:B1ED  ca0800               retf 8
 
-; ---------------- sub_s2:B1F0 FAR size=16 callers=1
+; ---------------- AiManager::defaultName@s2:B1F0 FAR size=16 callers=1
+;   string 0x531
 2:B1F0  683105               push 0x531
 2:B1F3  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
 2:B1F8  9a7e8452b0           lcall 0xb052, 0x847e  ; LoadStringRes@s3:847E
 2:B1FD  ca0400               retf 4
 
-; ---------------- sub_s2:B200 FAR size=320 callers=2
+; ---------------- AiManagers::listColonies@s2:B200 FAR size=320 callers=2
+;   the colonies a manager can take
 2:B200  c82a0000             enter 0x2a, 0
 2:B204  c45e06               les bx, ptr [bp + 6]
 2:B207  6626837f0e00         cmp dword ptr es:[bx + 0xe], 0
@@ -16612,7 +17266,7 @@ loc_B244:
 2:B25B  50                   push ax
 2:B25C  90                   nop
 2:B25D  0e                   push cs
-2:B25E  e8e9a4               call 0x574a  ; sub_s2:574A
+2:B25E  e8e9a4               call 0x574a  ; List::List@s2:574A
 2:B261  eb04                 jmp 0xb267
 2:B263  db 90
 loc_B264:
@@ -16655,7 +17309,7 @@ loc_B284:
 2:B2D1  50                   push ax
 2:B2D2  90                   nop
 2:B2D3  0e                   push cs
-2:B2D4  e81bfe               call 0xb0f2  ; sub_s2:B0F2
+2:B2D4  e81bfe               call 0xb0f2  ; AiColonyRef::AiColonyRef@s2:B0F2
 2:B2D7  eb04                 jmp 0xb2dd
 2:B2D9  db 90
 loc_B2DA:
@@ -16665,12 +17319,12 @@ loc_B2DD:
 2:B2DD  8946d6               mov word ptr [bp - 0x2a], ax
 2:B2E0  8956d8               mov word ptr [bp - 0x28], dx
 2:B2E3  66ff76ea             push dword ptr [bp - 0x16]
-2:B2E7  9a284d6db1           lcall 0xb16d, 0x4d28  ; sub_s8:4D28
+2:B2E7  9a284d6db1           lcall 0xb16d, 0x4d28  ; Colony::name@s8:4D28
 2:B2EC  52                   push dx
 2:B2ED  50                   push ax
 2:B2EE  90                   nop
 2:B2EF  0e                   push cs
-2:B2F0  e8f5ad               call 0x60e8  ; sub_s2:60E8
+2:B2F0  e8f5ad               call 0x60e8  ; _strdup@s2:60E8
 2:B2F3  83c404               add sp, 4
 2:B2F6  c45ed6               les bx, ptr [bp - 0x2a]
 2:B2F9  26894704             mov word ptr es:[bx + 4], ax
@@ -16695,7 +17349,8 @@ loc_B322:
 2:B33C  c9                   leave
 2:B33D  ca0400               retf 4
 
-; ---------------- sub_s2:B340 FAR size=38 callers=2
+; ---------------- AiManager::colony@s2:B340 FAR size=38 callers=2
+;   the assigned colony
 2:B340  55                   push bp
 2:B341  8bec                 mov bp, sp
 2:B343  c45e06               les bx, ptr [bp + 6]
@@ -16713,7 +17368,8 @@ loc_B35E:
 2:B362  ca0400               retf 4
 2:B365  db 00
 
-; ---------------- sub_s2:B366 FAR size=38 callers=2
+; ---------------- AiManager::target@s2:B366 FAR size=38 callers=2
+;   the assigned target
 2:B366  55                   push bp
 2:B367  8bec                 mov bp, sp
 2:B369  c45e06               les bx, ptr [bp + 6]
@@ -16731,7 +17387,8 @@ loc_B384:
 2:B388  ca0400               retf 4
 2:B38B  db 00
 
-; ---------------- sub_s2:B38C FAR size=238 callers=2
+; ---------------- AiManagers::listBuildings@s2:B38C FAR size=238 callers=2
+;   the buildings a manager can take
 2:B38C  c8180000             enter 0x18, 0
 2:B390  c45e06               les bx, ptr [bp + 6]
 2:B393  6626837f1200         cmp dword ptr es:[bx + 0x12], 0
@@ -16746,7 +17403,7 @@ loc_B384:
 2:B3B1  50                   push ax
 2:B3B2  90                   nop
 2:B3B3  0e                   push cs
-2:B3B4  e893a3               call 0x574a  ; sub_s2:574A
+2:B3B4  e893a3               call 0x574a  ; List::List@s2:574A
 2:B3B7  c45e06               les bx, ptr [bp + 6]
 2:B3BA  26894712             mov word ptr es:[bx + 0x12], ax
 2:B3BE  26895714             mov word ptr es:[bx + 0x14], dx
@@ -16766,7 +17423,7 @@ loc_B3DB:
 2:B3DE  8956f8               mov word ptr [bp - 8], dx
 2:B3E1  ff76fe               push word ptr [bp - 2]
 2:B3E4  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:B3E9  9aac84fbb1           lcall 0xb1fb, 0x84ac  ; sub_s3:84AC
+2:B3E9  9aac84fbb1           lcall 0xb1fb, 0x84ac  ; LoadStringDup@s3:84AC
 2:B3EE  c45ef6               les bx, ptr [bp - 0xa]
 2:B3F1  26894704             mov word ptr es:[bx + 4], ax
 2:B3F5  26895706             mov word ptr es:[bx + 6], dx
@@ -16789,7 +17446,7 @@ loc_B41B:
 2:B427  7521                 jne 0xb44a
 2:B429  666801000008         push 0x8000001
 2:B42F  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:B434  9a448366b1           lcall 0xb166, 0x8344  ; sub_s7:8344
+2:B434  9a448366b1           lcall 0xb166, 0x8344  ; Sim::resolve@s7:8344
 2:B439  8946f2               mov word ptr [bp - 0xe], ax
 2:B43C  8956f4               mov word ptr [bp - 0xc], dx
 2:B43F  c45ef2               les bx, ptr [bp - 0xe]
@@ -16806,7 +17463,7 @@ loc_B44A:
 2:B460  50                   push ax
 2:B461  90                   nop
 2:B462  0e                   push cs
-2:B463  e8b8fc               call 0xb11e  ; sub_s2:B11E
+2:B463  e8b8fc               call 0xb11e  ; AiBuildingRef::AiBuildingRef@s2:B11E
 2:B466  e972ff               jmp 0xb3db
 2:B469  db 90
 loc_B46A:
@@ -16817,7 +17474,8 @@ loc_B46A:
 2:B476  ca0400               retf 4
 2:B479  db 00
 
-; ---------------- sub_s2:B47A FAR size=38 callers=2
+; ---------------- AiManager::building@s2:B47A FAR size=38 callers=2
+;   the assigned building
 2:B47A  55                   push bp
 2:B47B  8bec                 mov bp, sp
 2:B47D  c45e06               les bx, ptr [bp + 6]
@@ -16835,7 +17493,8 @@ loc_B498:
 2:B49C  ca0400               retf 4
 2:B49F  db 00
 
-; ---------------- sub_s2:B4A0 FAR size=164 callers=1
+; ---------------- AiManagers::refresh@s2:B4A0 FAR size=164 callers=1
+;   rebuilds the colony and building lists
 2:B4A0  55                   push bp
 2:B4A1  8bec                 mov bp, sp
 2:B4A3  66837e0a00           cmp dword ptr [bp + 0xa], 0
@@ -16844,7 +17503,7 @@ loc_B498:
 2:B4AE  66ff7606             push dword ptr [bp + 6]
 2:B4B2  90                   nop
 2:B4B3  0e                   push cs
-2:B4B4  e81705               call 0xb9ce  ; sub_s2:B9CE
+2:B4B4  e81705               call 0xb9ce  ; AiManagers::findManager@s2:B9CE
 2:B4B7  c45e06               les bx, ptr [bp + 6]
 2:B4BA  26894716             mov word ptr es:[bx + 0x16], ax
 2:B4BE  26895718             mov word ptr es:[bx + 0x18], dx
@@ -16860,18 +17519,18 @@ loc_B4D0:
 2:B4DE  66ff7606             push dword ptr [bp + 6]
 2:B4E2  90                   nop
 2:B4E3  0e                   push cs
-2:B4E4  e819fd               call 0xb200  ; sub_s2:B200
+2:B4E4  e819fd               call 0xb200  ; AiManagers::listColonies@s2:B200
 2:B4E7  66ff7606             push dword ptr [bp + 6]
 2:B4EB  90                   nop
 2:B4EC  0e                   push cs
-2:B4ED  e89cfe               call 0xb38c  ; sub_s2:B38C
+2:B4ED  e89cfe               call 0xb38c  ; AiManagers::listBuildings@s2:B38C
 2:B4F0  c45e06               les bx, ptr [bp + 6]
 2:B4F3  26c45f16             les bx, ptr es:[bx + 0x16]
 2:B4F7  6626ff770a           push dword ptr es:[bx + 0xa]
 2:B4FC  66ff7606             push dword ptr [bp + 6]
 2:B500  90                   nop
 2:B501  0e                   push cs
-2:B502  e85703               call 0xb85c  ; sub_s2:B85C
+2:B502  e85703               call 0xb85c  ; AiManagers::countColonies@s2:B85C
 2:B505  c45e06               les bx, ptr [bp + 6]
 2:B508  2689471a             mov word ptr es:[bx + 0x1a], ax
 2:B50C  2689571c             mov word ptr es:[bx + 0x1c], dx
@@ -16880,7 +17539,7 @@ loc_B4D0:
 2:B518  66ff7606             push dword ptr [bp + 6]
 2:B51C  90                   nop
 2:B51D  0e                   push cs
-2:B51E  e88b03               call 0xb8ac  ; sub_s2:B8AC
+2:B51E  e88b03               call 0xb8ac  ; AiManagers::countBuildings@s2:B8AC
 2:B521  c45e06               les bx, ptr [bp + 6]
 2:B524  2689471e             mov word ptr es:[bx + 0x1e], ax
 2:B528  26895720             mov word ptr es:[bx + 0x20], dx
@@ -16894,7 +17553,8 @@ loc_B530:
 2:B540  c9                   leave
 2:B541  ca0800               retf 8
 
-; ---------------- sub_s2:B544 FAR size=214 callers=1
+; ---------------- AiManager::apply@s2:B544 FAR size=214 callers=1
+;   applies an assignment
 2:B544  c80c0000             enter 0xc, 0
 2:B548  56                   push si
 2:B549  837e0a00             cmp word ptr [bp + 0xa], 0
@@ -16920,10 +17580,10 @@ loc_B530:
 2:B595  26c45f16             les bx, ptr es:[bx + 0x16]
 2:B599  6626ff770a           push dword ptr es:[bx + 0xa]
 2:B59E  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:B5A3  9a448337b4           lcall 0xb437, 0x8344  ; sub_s7:8344
+2:B5A3  9a448337b4           lcall 0xb437, 0x8344  ; Sim::resolve@s7:8344
 2:B5A8  52                   push dx
 2:B5A9  50                   push ax
-2:B5AA  9a0836eab2           lcall 0xb2ea, 0x3608  ; sub_s8:3608
+2:B5AA  9a0836eab2           lcall 0xb2ea, 0x3608  ; aiClearTask@s8:3608
 loc_B5AF:
 2:B5AF  c45e06               les bx, ptr [bp + 6]
 2:B5B2  662bc0               sub eax, eax
@@ -16965,14 +17625,15 @@ loc_B608:
 2:B616  ca0600               retf 6
 2:B619  db 00
 
-; ---------------- sub_s2:B61A FAR size=32 callers=2
+; ---------------- AiManager::setColonyByName@s2:B61A FAR size=32 callers=2
+;   finds and sets the colony
 2:B61A  55                   push bp
 2:B61B  8bec                 mov bp, sp
 2:B61D  66ff760a             push dword ptr [bp + 0xa]
 2:B621  66ff7606             push dword ptr [bp + 6]
 2:B625  90                   nop
 2:B626  0e                   push cs
-2:B627  e8d002               call 0xb8fa  ; sub_s2:B8FA
+2:B627  e8d002               call 0xb8fa  ; AiManagers::findColony@s2:B8FA
 2:B62A  c45e06               les bx, ptr [bp + 6]
 2:B62D  2689471a             mov word ptr es:[bx + 0x1a], ax
 2:B631  2689571c             mov word ptr es:[bx + 0x1c], dx
@@ -16980,14 +17641,15 @@ loc_B608:
 2:B636  ca0800               retf 8
 2:B639  db 00
 
-; ---------------- sub_s2:B63A FAR size=32 callers=2
+; ---------------- AiManager::setBuildingByName@s2:B63A FAR size=32 callers=2
+;   finds and sets the building
 2:B63A  55                   push bp
 2:B63B  8bec                 mov bp, sp
 2:B63D  66ff760a             push dword ptr [bp + 0xa]
 2:B641  66ff7606             push dword ptr [bp + 6]
 2:B645  90                   nop
 2:B646  0e                   push cs
-2:B647  e81a03               call 0xb964  ; sub_s2:B964
+2:B647  e81a03               call 0xb964  ; AiManagers::findBuilding@s2:B964
 2:B64A  c45e06               les bx, ptr [bp + 6]
 2:B64D  2689471e             mov word ptr es:[bx + 0x1e], ax
 2:B651  26895720             mov word ptr es:[bx + 0x20], dx
@@ -16995,13 +17657,14 @@ loc_B608:
 2:B656  ca0800               retf 8
 2:B659  db 00
 
-; ---------------- sub_s2:B65A FAR size=66 callers=1
+; ---------------- AiManagers::isAssigned@s2:B65A FAR size=66 callers=1
+;   whether a name is taken
 2:B65A  c8040000             enter 4, 0
 2:B65E  66ff760e             push dword ptr [bp + 0xe]
 2:B662  66ff7606             push dword ptr [bp + 6]
 2:B666  90                   nop
 2:B667  0e                   push cs
-2:B668  e86303               call 0xb9ce  ; sub_s2:B9CE
+2:B668  e86303               call 0xb9ce  ; AiManagers::findManager@s2:B9CE
 2:B66B  8946fc               mov word ptr [bp - 4], ax
 2:B66E  8956fe               mov word ptr [bp - 2], dx
 2:B671  0bd0                 or dx, ax
@@ -17018,12 +17681,13 @@ loc_B687:
 2:B687  66ff760a             push dword ptr [bp + 0xa]
 2:B68B  68ff03               push 0x3ff
 2:B68E  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:B693  9ae084ecb3           lcall 0xb3ec, 0x84e0  ; sub_s3:84E0
+2:B693  9ae084ecb3           lcall 0xb3ec, 0x84e0  ; LoadStringTo@s3:84E0
 2:B698  c9                   leave
 2:B699  ca0c00               retf 0xc
 
-; ---------------- sub_s2:B69C FAR size=238 callers=1
+; ---------------- AiManagers::create@s2:B69C FAR size=238 callers=1
 ;   apis: USER._wsprintf
+;   makes the five managers ("AI Name #1"..) (discovery 30)
 2:B69C  c80a0200             enter 0x20a, 0
 2:B6A0  68e706               push 0x6e7
 2:B6A3  8d8600fe             lea ax, [bp - 0x200]
@@ -17031,7 +17695,7 @@ loc_B687:
 2:B6A8  50                   push ax
 2:B6A9  680001               push 0x100
 2:B6AC  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:B6B1  9ae08496b6           lcall 0xb696, 0x84e0  ; sub_s3:84E0
+2:B6B1  9ae08496b6           lcall 0xb696, 0x84e0  ; LoadStringTo@s3:84E0
 2:B6B6  c45e06               les bx, ptr [bp + 6]
 2:B6B9  6626837f0a00         cmp dword ptr es:[bx + 0xa], 0
 2:B6BF  0f85c200             jne 0xb785
@@ -17046,7 +17710,7 @@ loc_B687:
 2:B6DD  50                   push ax
 2:B6DE  90                   nop
 2:B6DF  0e                   push cs
-2:B6E0  e867a0               call 0x574a  ; sub_s2:574A
+2:B6E0  e867a0               call 0x574a  ; List::List@s2:574A
 2:B6E3  eb04                 jmp 0xb6e9
 2:B6E5  db 90
 loc_B6E6:
@@ -17078,7 +17742,7 @@ loc_B6FF:
 2:B724  50                   push ax
 2:B725  90                   nop
 2:B726  0e                   push cs
-2:B727  e8bea9               call 0x60e8  ; sub_s2:60E8
+2:B727  e8bea9               call 0x60e8  ; _strdup@s2:60E8
 2:B72A  83c404               add sp, 4
 2:B72D  c49ef6fd             les bx, ptr [bp - 0x20a]
 2:B731  26894704             mov word ptr es:[bx + 4], ax
@@ -17105,7 +17769,7 @@ loc_B752:
 2:B773  50                   push ax
 2:B774  90                   nop
 2:B775  0e                   push cs
-2:B776  e843f9               call 0xb0bc  ; sub_s2:B0BC
+2:B776  e843f9               call 0xb0bc  ; AiManager::AiManager@s2:B0BC
 2:B779  eb84                 jmp 0xb6ff
 2:B77B  db 90
 loc_B77C:
@@ -17116,8 +17780,9 @@ loc_B785:
 2:B786  ca0400               retf 4
 2:B789  db 00
 
-; ---------------- sub_s2:B78A FAR size=150 callers=1
+; ---------------- AiManagers::createForEvent@s2:B78A FAR size=150 callers=1
 ;   apis: USER._wsprintf
+;   makes managers from an event
 2:B78A  c8080200             enter 0x208, 0
 2:B78E  6a12                 push 0x12  ; 'version %d %d'
 2:B790  9a9c17c8b6           lcall 0xb6c8, 0x179c  ; operator_new@s1:179C
@@ -17130,7 +17795,7 @@ loc_B785:
 2:B7A8  50                   push ax
 2:B7A9  90                   nop
 2:B7AA  0e                   push cs
-2:B7AB  e80ef9               call 0xb0bc  ; sub_s2:B0BC
+2:B7AB  e80ef9               call 0xb0bc  ; AiManager::AiManager@s2:B0BC
 2:B7AE  eb03                 jmp 0xb7b3
 loc_B7B0:
 2:B7B0  33c0                 xor ax, ax
@@ -17144,7 +17809,7 @@ loc_B7B3:
 2:B7C1  50                   push ax
 2:B7C2  680001               push 0x100
 2:B7C5  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:B7CA  9ae084b4b6           lcall 0xb6b4, 0x84e0  ; sub_s3:84E0
+2:B7CA  9ae084b4b6           lcall 0xb6b4, 0x84e0  ; LoadStringTo@s3:84E0
 2:B7CF  c45e06               les bx, ptr [bp + 6]
 2:B7D2  26ff4722             inc word ptr es:[bx + 0x22]
 2:B7D6  26ff7722             push word ptr es:[bx + 0x22]
@@ -17161,7 +17826,7 @@ loc_B7B3:
 2:B7F3  50                   push ax
 2:B7F4  90                   nop
 2:B7F5  0e                   push cs
-2:B7F6  e8efa8               call 0x60e8  ; sub_s2:60E8
+2:B7F6  e8efa8               call 0x60e8  ; _strdup@s2:60E8
 2:B7F9  83c404               add sp, 4
 2:B7FC  c45efc               les bx, ptr [bp - 4]
 2:B7FF  26894704             mov word ptr es:[bx + 4], ax
@@ -17176,11 +17841,12 @@ loc_B7B3:
 2:B81C  c9                   leave
 2:B81D  ca0400               retf 4
 
-; ---------------- sub_s2:B820 FAR size=60 callers=5
+; ---------------- AiManagers::active@s2:B820 FAR size=60 callers=5
+;   managers work once player 1 has "Multiple AI(5)"
 2:B820  c80e0000             enter 0xe, 0
 2:B824  666801000008         push 0x8000001
 2:B82A  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:B82F  9a4483a6b5           lcall 0xb5a6, 0x8344  ; sub_s7:8344
+2:B82F  9a4483a6b5           lcall 0xb5a6, 0x8344  ; Sim::resolve@s7:8344
 2:B834  8946fc               mov word ptr [bp - 4], ax
 2:B837  8956fe               mov word ptr [bp - 2], dx
 2:B83A  c45efc               les bx, ptr [bp - 4]
@@ -17198,7 +17864,8 @@ loc_B84C:
 2:B858  ca0400               retf 4
 2:B85B  db 00
 
-; ---------------- sub_s2:B85C FAR size=80 callers=1
+; ---------------- AiManagers::countColonies@s2:B85C FAR size=80 callers=1
+;   count of the colony list
 2:B85C  c8100000             enter 0x10, 0
 2:B860  c45e06               les bx, ptr [bp + 6]
 2:B863  6626ff770e           push dword ptr es:[bx + 0xe]
@@ -17232,7 +17899,8 @@ loc_B8A2:
 2:B8A8  c9                   leave
 2:B8A9  ca0800               retf 8
 
-; ---------------- sub_s2:B8AC FAR size=78 callers=1
+; ---------------- AiManagers::countBuildings@s2:B8AC FAR size=78 callers=1
+;   count of the building list
 2:B8AC  c8100000             enter 0x10, 0
 2:B8B0  c45e06               les bx, ptr [bp + 6]
 2:B8B3  6626ff7712           push dword ptr es:[bx + 0x12]
@@ -17266,7 +17934,8 @@ loc_B8F0:
 2:B8F6  c9                   leave
 2:B8F7  ca0600               retf 6
 
-; ---------------- sub_s2:B8FA FAR size=106 callers=1
+; ---------------- AiManagers::findColony@s2:B8FA FAR size=106 callers=1
+;   by name
 2:B8FA  c8100000             enter 0x10, 0
 2:B8FE  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:B903  7507                 jne 0xb90c
@@ -17298,7 +17967,7 @@ loc_B926:
 2:B93A  66ff760a             push dword ptr [bp + 0xa]
 2:B93E  c45ef4               les bx, ptr [bp - 0xc]
 2:B941  6626ff7704           push dword ptr es:[bx + 4]
-2:B946  9a7a3d93b7           lcall 0xb793, 0x3d7a  ; sub_s1:3D7A
+2:B946  9a7a3d93b7           lcall 0xb793, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:B94B  83c408               add sp, 8
 2:B94E  0bc0                 or ax, ax
 2:B950  75d4                 jne 0xb926
@@ -17310,7 +17979,8 @@ loc_B95A:
 2:B960  c9                   leave
 2:B961  ca0800               retf 8
 
-; ---------------- sub_s2:B964 FAR size=106 callers=1
+; ---------------- AiManagers::findBuilding@s2:B964 FAR size=106 callers=1
+;   by name
 2:B964  c8100000             enter 0x10, 0
 2:B968  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:B96D  7507                 jne 0xb976
@@ -17342,7 +18012,7 @@ loc_B990:
 2:B9A4  66ff760a             push dword ptr [bp + 0xa]
 2:B9A8  c45ef4               les bx, ptr [bp - 0xc]
 2:B9AB  6626ff7704           push dword ptr es:[bx + 4]
-2:B9B0  9a7a3d49b9           lcall 0xb949, 0x3d7a  ; sub_s1:3D7A
+2:B9B0  9a7a3d49b9           lcall 0xb949, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:B9B5  83c408               add sp, 8
 2:B9B8  0bc0                 or ax, ax
 2:B9BA  75d4                 jne 0xb990
@@ -17354,7 +18024,8 @@ loc_B9C4:
 2:B9CA  c9                   leave
 2:B9CB  ca0800               retf 8
 
-; ---------------- sub_s2:B9CE FAR size=106 callers=2
+; ---------------- AiManagers::findManager@s2:B9CE FAR size=106 callers=2
+;   by name
 2:B9CE  c8100000             enter 0x10, 0
 2:B9D2  66837e0a00           cmp dword ptr [bp + 0xa], 0
 2:B9D7  7507                 jne 0xb9e0
@@ -17386,7 +18057,7 @@ loc_B9FA:
 2:BA0E  66ff760a             push dword ptr [bp + 0xa]
 2:BA12  c45ef4               les bx, ptr [bp - 0xc]
 2:BA15  6626ff7704           push dword ptr es:[bx + 4]
-2:BA1A  9a7a3db3b9           lcall 0xb9b3, 0x3d7a  ; sub_s1:3D7A
+2:BA1A  9a7a3db3b9           lcall 0xb9b3, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:BA1F  83c408               add sp, 8
 2:BA22  0bc0                 or ax, ax
 2:BA24  75d4                 jne 0xb9fa
@@ -17398,7 +18069,8 @@ loc_BA2E:
 2:BA34  c9                   leave
 2:BA35  ca0800               retf 8
 
-; ---------------- sub_s2:BA38 size=294 callers=0
+; ---------------- AiManagers::save@s2:BA38 size=294 callers=0
+;   chunk 0x16
 2:BA38  c8280000             enter 0x28, 0
 2:BA3C  6a16                 push 0x16
 2:BA3E  66ff760a             push dword ptr [bp + 0xa]
@@ -17477,7 +18149,7 @@ loc_BAC4:
 2:BAE0  66ff760a             push dword ptr [bp + 0xa]
 2:BAE4  90                   nop
 2:BAE5  0e                   push cs
-2:BAE6  e841c1               call 0x7c2a  ; sub_s2:7C2A
+2:BAE6  e841c1               call 0x7c2a  ; Save_writeString@s2:7C2A
 2:BAE9  0bc0                 or ax, ax
 2:BAEB  7484                 je 0xba71
 2:BAED  c45ef8               les bx, ptr [bp - 8]
@@ -17527,7 +18199,8 @@ loc_BB56:
 2:BB5A  ca0800               retf 8
 2:BB5D  db 00
 
-; ---------------- sub_s2:BB5E FAR size=420 callers=0
+; ---------------- AiManagers::load@s2:BB5E FAR size=420 callers=0
+;   chunk 0x16
 2:BB5E  c83a0100             enter 0x13a, 0
 2:BB62  833e120302           cmp word ptr [0x312], 2
 2:BB67  7d07                 jge 0xbb70
@@ -17540,7 +18213,7 @@ loc_BB70:
 2:BB72  66ff760a             push dword ptr [bp + 0xa]
 2:BB76  90                   nop
 2:BB77  0e                   push cs
-2:BB78  e883c1               call 0x7cfe  ; sub_s2:7CFE
+2:BB78  e883c1               call 0x7cfe  ; Save_findChunkTag@s2:7CFE
 2:BB7B  0bc0                 or ax, ax
 2:BB7D  750d                 jne 0xbb8c
 2:BB7F  c7061003d406         mov word ptr [0x310], 0x6d4
@@ -17588,7 +18261,7 @@ loc_BBAE:
 2:BBE3  50                   push ax
 2:BBE4  90                   nop
 2:BBE5  0e                   push cs
-2:BBE6  e8619b               call 0x574a  ; sub_s2:574A
+2:BBE6  e8619b               call 0x574a  ; List::List@s2:574A
 2:BBE9  eb04                 jmp 0xbbef
 2:BBEB  db 90
 loc_BBEC:
@@ -17613,7 +18286,7 @@ loc_BC07:
 2:BC15  66ff760a             push dword ptr [bp + 0xa]
 2:BC19  90                   nop
 2:BC1A  0e                   push cs
-2:BC1B  e850c0               call 0x7c6e  ; sub_s2:7C6E
+2:BC1B  e850c0               call 0x7c6e  ; Save_readString@s2:7C6E
 2:BC1E  0bc0                 or ax, ax
 2:BC20  743f                 je 0xbc61
 2:BC22  666a02               push 2
@@ -17665,7 +18338,7 @@ loc_BC88:
 2:BC8D  50                   push ax
 2:BC8E  90                   nop
 2:BC8F  0e                   push cs
-2:BC90  e855a4               call 0x60e8  ; sub_s2:60E8
+2:BC90  e855a4               call 0x60e8  ; _strdup@s2:60E8
 2:BC93  83c404               add sp, 4
 2:BC96  c49ee6fe             les bx, ptr [bp - 0x11a]
 2:BC9A  26894704             mov word ptr es:[bx + 4], ax
@@ -17699,16 +18372,17 @@ loc_BCD2:
 2:BCF9  50                   push ax
 2:BCFA  90                   nop
 2:BCFB  0e                   push cs
-2:BCFC  e8bdf3               call 0xb0bc  ; sub_s2:B0BC
+2:BCFC  e8bdf3               call 0xb0bc  ; AiManager::AiManager@s2:B0BC
 2:BCFF  e905ff               jmp 0xbc07
 
-; ---------------- sub_s2:BD02 FAR size=38 callers=0
+; ---------------- AiManagers::scalar_dtor@s2:BD02 FAR size=38 callers=0
+;   deleting destructor
 2:BD02  55                   push bp
 2:BD03  8bec                 mov bp, sp
 2:BD05  66ff7606             push dword ptr [bp + 6]
 2:BD09  90                   nop
 2:BD0A  0e                   push cs
-2:BD0B  e8d0f2               call 0xafde  ; sub_s2:AFDE
+2:BD0B  e8d0f2               call 0xafde  ; AiManagers::~AiManagers@s2:AFDE
 2:BD0E  f6460a01             test byte ptr [bp + 0xa], 1
 2:BD12  7409                 je 0xbd1d
 2:BD14  66ff7606             push dword ptr [bp + 6]
@@ -17720,13 +18394,14 @@ loc_BD1D:
 2:BD24  ca0600               retf 6
 2:BD27  db 00
 
-; ---------------- sub_s2:BD28 FAR size=38 callers=0
+; ---------------- AiNamed::scalar_dtor@s2:BD28 FAR size=38 callers=0
+;   deleting destructor
 2:BD28  55                   push bp
 2:BD29  8bec                 mov bp, sp
 2:BD2B  66ff7606             push dword ptr [bp + 6]
 2:BD2F  90                   nop
 2:BD30  0e                   push cs
-2:BD31  e858f3               call 0xb08c  ; sub_s2:B08C
+2:BD31  e858f3               call 0xb08c  ; AiNamed::~AiNamed@s2:B08C
 2:BD34  f6460a01             test byte ptr [bp + 0xa], 1
 2:BD38  7409                 je 0xbd43
 2:BD3A  66ff7606             push dword ptr [bp + 6]
@@ -17738,12 +18413,13 @@ loc_BD43:
 2:BD4A  ca0600               retf 6
 2:BD4D  db 00
 
-; ---------------- sub_s2:BD4E FAR size=38 callers=0
+; ---------------- AiManager::scalar_dtor@s2:BD4E FAR size=38 callers=0
+;   deleting destructor
 2:BD4E  c8040000             enter 4, 0
 2:BD52  66ff7606             push dword ptr [bp + 6]
 2:BD56  90                   nop
 2:BD57  0e                   push cs
-2:BD58  e831f3               call 0xb08c  ; sub_s2:B08C
+2:BD58  e831f3               call 0xb08c  ; AiNamed::~AiNamed@s2:B08C
 2:BD5B  f6460a01             test byte ptr [bp + 0xa], 1
 2:BD5F  7409                 je 0xbd6a
 2:BD61  66ff7606             push dword ptr [bp + 6]
@@ -17754,12 +18430,13 @@ loc_BD6A:
 2:BD70  c9                   leave
 2:BD71  ca0600               retf 6
 
-; ---------------- sub_s2:BD74 size=38 callers=0
+; ---------------- AiColonyRef::scalar_dtor@s2:BD74 size=38 callers=0
+;   deleting destructor
 2:BD74  c8040000             enter 4, 0
 2:BD78  66ff7606             push dword ptr [bp + 6]
 2:BD7C  90                   nop
 2:BD7D  0e                   push cs
-2:BD7E  e80bf3               call 0xb08c  ; sub_s2:B08C
+2:BD7E  e80bf3               call 0xb08c  ; AiNamed::~AiNamed@s2:B08C
 2:BD81  f6460a01             test byte ptr [bp + 0xa], 1
 2:BD85  7409                 je 0xbd90
 2:BD87  66ff7606             push dword ptr [bp + 6]
@@ -17770,12 +18447,13 @@ loc_BD90:
 2:BD96  c9                   leave
 2:BD97  ca0600               retf 6
 
-; ---------------- sub_s2:BD9A size=70 callers=0
+; ---------------- AiBuildingRef::scalar_dtor@s2:BD9A size=70 callers=0
+;   deleting destructor
 2:BD9A  c8040000             enter 4, 0
 2:BD9E  66ff7606             push dword ptr [bp + 6]
 2:BDA2  90                   nop
 2:BDA3  0e                   push cs
-2:BDA4  e8e5f2               call 0xb08c  ; sub_s2:B08C
+2:BDA4  e8e5f2               call 0xb08c  ; AiNamed::~AiNamed@s2:B08C
 2:BDA7  f6460a01             test byte ptr [bp + 0xa], 1
 2:BDAB  7409                 je 0xbdb6
 2:BDAD  66ff7606             push dword ptr [bp + 6]
@@ -17788,7 +18466,8 @@ loc_BDB6:
 2:BDC0  db 74 bd 3a b3 4e bd c2 bd 28 bd c6 bd 02 bd d6 bd
 2:BDD0  db f2 1d cd b7 38 ba da bd 5e bb ca bd 9a bd ce bd
 
-; ---------------- sub_s2:BDE0 FAR size=2118 callers=1
+; ---------------- buildBldgGroups@s2:BDE0 FAR size=2118 callers=1
+;   builds the 70 building-type groups (g_bldgGroups)
 2:BDE0  c8100000             enter 0x10, 0
 2:BDE4  668b4606             mov eax, dword ptr [bp + 6]
 2:BDE8  66a3e006             mov dword ptr [0x6e0], eax  ; g_bldgGroups
@@ -18290,7 +18969,8 @@ loc_BE03:
 2:C622  c9                   leave
 2:C623  ca0400               retf 4
 
-; ---------------- sub_s2:C626 FAR size=32 callers=1
+; ---------------- freeBldgGroups@s2:C626 FAR size=32 callers=1
+;   frees the groups
 2:C626  c8080000             enter 8, 0
 2:C62A  66c706e00600000000   mov dword ptr [0x6e0], 0  ; g_bldgGroups
 2:C633  c45e06               les bx, ptr [bp + 6]
@@ -18301,19 +18981,20 @@ loc_BE03:
 2:C642  ca0400               retf 4
 2:C645  db 00
 
-; ---------------- sub_s2:C646 FAR size=104 callers=2
+; ---------------- BldgGroups::firstOffered@s2:C646 FAR size=104 callers=2
+;   the first type of a group the build menu offers
 2:C646  c8180000             enter 0x18, 0
 2:C64A  56                   push si
 2:C64B  66ff7608             push dword ptr [bp + 8]
 2:C64F  ff7606               push word ptr [bp + 6]
 2:C652  90                   nop
 2:C653  0e                   push cs
-2:C654  e8a300               call 0xc6fa  ; sub_s2:C6FA
+2:C654  e8a300               call 0xc6fa  ; BldgGroups::get@s2:C6FA
 2:C657  8946fc               mov word ptr [bp - 4], ax
 2:C65A  8956fe               mov word ptr [bp - 2], dx
 2:C65D  6a35                 push 0x35  ; 'New failed in Op::Op->ResLibr'
 2:C65F  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:C664  9aba20d2bd           lcall 0xbdd2, 0x20ba  ; sub_s3:20BA
+2:C664  9aba20d2bd           lcall 0xbdd2, 0x20ba  ; Registry_get@s3:20BA
 2:C669  050a00               add ax, 0xa
 2:C66C  8946f4               mov word ptr [bp - 0xc], ax
 2:C66F  8956f6               mov word ptr [bp - 0xa], dx
@@ -18344,13 +19025,14 @@ loc_C6A5:
 2:C6AD  db 00
 
 ; ---------------- BldgGroups::contains@s2:C6AE FAR size=76 callers=62
+;   is a type in a group
 2:C6AE  c8060000             enter 6, 0
 2:C6B2  56                   push si
 2:C6B3  ff760c               push word ptr [bp + 0xc]
 2:C6B6  66ff7606             push dword ptr [bp + 6]
 2:C6BA  90                   nop
 2:C6BB  0e                   push cs
-2:C6BC  e83b00               call 0xc6fa  ; sub_s2:C6FA
+2:C6BC  e83b00               call 0xc6fa  ; BldgGroups::get@s2:C6FA
 2:C6BF  8946fc               mov word ptr [bp - 4], ax
 2:C6C2  8956fe               mov word ptr [bp - 2], dx
 2:C6C5  c746fa0000           mov word ptr [bp - 6], 0
@@ -18379,7 +19061,8 @@ loc_C6F2:
 2:C6F6  ca0800               retf 8
 2:C6F9  db 00
 
-; ---------------- sub_s2:C6FA FAR size=48 callers=43
+; ---------------- BldgGroups::get@s2:C6FA FAR size=48 callers=43
+;   group record (1..70)
 2:C6FA  55                   push bp
 2:C6FB  8bec                 mov bp, sp
 2:C6FD  837e0a00             cmp word ptr [bp + 0xa], 0
@@ -18404,12 +19087,13 @@ loc_C710:
 2:C726  ca0600               retf 6
 2:C729  db 90
 
-; ---------------- sub_s2:C72A FAR size=50 callers=1
+; ---------------- RebelBuildOrder::RebelBuildOrder@s2:C72A FAR size=50 callers=1
+;   registry 0x3F: "Build in Rebel Colony"
 2:C72A  55                   push bp
 2:C72B  8bec                 mov bp, sp
 2:C72D  66ff7608             push dword ptr [bp + 8]
 2:C731  ff7606               push word ptr [bp + 6]
-2:C734  9a481d67c6           lcall 0xc667, 0x1d48  ; sub_s3:1D48
+2:C734  9a481d67c6           lcall 0xc667, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:C739  c45e06               les bx, ptr [bp + 6]
 2:C73C  662bc0               sub eax, eax
 2:C73F  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -18421,7 +19105,8 @@ loc_C710:
 2:C758  c9                   leave
 2:C759  ca0600               retf 6
 
-; ---------------- sub_s2:C75C FAR size=62 callers=1
+; ---------------- RebelBuildOrder::~RebelBuildOrder@s2:C75C FAR size=62 callers=1
+;   dtor
 2:C75C  c8080000             enter 8, 0
 2:C760  56                   push si
 2:C761  c45e06               les bx, ptr [bp + 6]
@@ -18441,13 +19126,14 @@ loc_C710:
 2:C788  26ff1f               lcall es:[bx]
 loc_C78B:
 2:C78B  66ff7606             push dword ptr [bp + 6]
-2:C78F  9a801d37c7           lcall 0xc737, 0x1d80  ; sub_s3:1D80
+2:C78F  9a801d37c7           lcall 0xc737, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:C794  5e                   pop si
 2:C795  c9                   leave
 2:C796  ca0400               retf 4
 2:C799  db 00
 
-; ---------------- sub_s2:C79A FAR size=160 callers=1
+; ---------------- RebelBuildOrder::place@s2:C79A FAR size=160 callers=1
+;   orders a building in the rebel colony (+0x0E = turn + build time)
 2:C79A  c8240000             enter 0x24, 0
 2:C79E  c45e06               les bx, ptr [bp + 6]
 2:C7A1  6626ff770a           push dword ptr es:[bx + 0xa]
@@ -18471,27 +19157,27 @@ loc_C7B0:
 2:C7C4  66ff760a             push dword ptr [bp + 0xa]
 2:C7C8  c45ef4               les bx, ptr [bp - 0xc]
 2:C7CB  6626ff7704           push dword ptr es:[bx + 4]
-2:C7D0  9a7a3d3fc6           lcall 0xc63f, 0x3d7a  ; sub_s1:3D7A
+2:C7D0  9a7a3d3fc6           lcall 0xc63f, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:C7D5  83c408               add sp, 8
 2:C7D8  0bc0                 or ax, ax
 2:C7DA  75d4                 jne 0xc7b0
 2:C7DC  8d46f0               lea ax, [bp - 0x10]
 2:C7DF  16                   push ss
 2:C7E0  50                   push ax
-2:C7E1  9a3ea4f5c7           lcall 0xc7f5, 0xa43e  ; sub_s5:A43E
+2:C7E1  9a3ea4f5c7           lcall 0xc7f5, 0xa43e  ; RebelAI::RebelAI@s5:A43E
 2:C7E6  c45ef4               les bx, ptr [bp - 0xc]
 2:C7E9  26ff7712             push word ptr es:[bx + 0x12]
 2:C7ED  8d46f0               lea ax, [bp - 0x10]
 2:C7F0  16                   push ss
 2:C7F1  50                   push ax
-2:C7F2  9aeea60a7b           lcall 0x7b0a, 0xa6ee  ; sub_s5:A6EE
+2:C7F2  9aeea60a7b           lcall 0x7b0a, 0xa6ee  ; rebelPlaceOrder@s5:A6EE
 2:C7F7  c41ee265             les bx, ptr [0x65e2]  ; g_objectDb
 2:C7FB  66268b4752           mov eax, dword ptr es:[bx + 0x52]
 2:C800  668946ec             mov dword ptr [bp - 0x14], eax
 2:C804  c45ef4               les bx, ptr [bp - 0xc]
 2:C807  26ff7712             push word ptr es:[bx + 0x12]
 2:C80B  6650                 push eax
-2:C80D  9abe4b32b8           lcall 0xb832, 0x4bbe  ; sub_s7:4BBE
+2:C80D  9abe4b32b8           lcall 0xb832, 0x4bbe  ; Sim::bldgBldRecord@s7:4BBE
 2:C812  8946e8               mov word ptr [bp - 0x18], ax
 2:C815  8956ea               mov word ptr [bp - 0x16], dx
 2:C818  c45ee8               les bx, ptr [bp - 0x18]
@@ -18506,7 +19192,8 @@ loc_C836:
 2:C836  c9                   leave
 2:C837  ca0800               retf 8
 
-; ---------------- sub_s2:C83A FAR size=36 callers=1
+; ---------------- RebelBuildOrder::busy@s2:C83A FAR size=36 callers=1
+;   1 while the last order's turn has not passed
 2:C83A  c8080000             enter 8, 0
 2:C83E  c41ee265             les bx, ptr [0x65e2]  ; g_objectDb
 2:C842  66268b07             mov eax, dword ptr es:[bx]
@@ -18522,7 +19209,8 @@ loc_C858:
 2:C85A  c9                   leave
 2:C85B  ca0400               retf 4
 
-; ---------------- sub_s2:C85E FAR size=36 callers=1
+; ---------------- RebelBuildOrder::choices@s2:C85E FAR size=36 callers=1
+;   the building list (made on first use)
 2:C85E  55                   push bp
 2:C85F  8bec                 mov bp, sp
 2:C861  c45e06               les bx, ptr [bp + 6]
@@ -18532,7 +19220,7 @@ loc_C858:
 2:C86D  53                   push bx
 2:C86E  90                   nop
 2:C86F  0e                   push cs
-2:C870  e80f00               call 0xc882  ; sub_s2:C882
+2:C870  e80f00               call 0xc882  ; RebelBuildOrder::buildChoices@s2:C882
 loc_C873:
 2:C873  c45e06               les bx, ptr [bp + 6]
 2:C876  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -18540,7 +19228,8 @@ loc_C873:
 2:C87E  c9                   leave
 2:C87F  ca0400               retf 4
 
-; ---------------- sub_s2:C882 FAR size=268 callers=1
+; ---------------- RebelBuildOrder::buildChoices@s2:C882 FAR size=268 callers=1
+;   lists the buildings that can be ordered
 2:C882  c8260000             enter 0x26, 0
 2:C886  56                   push si
 2:C887  c45e06               les bx, ptr [bp + 6]
@@ -18569,7 +19258,7 @@ loc_C8AC:
 2:C8C0  50                   push ax
 2:C8C1  90                   nop
 2:C8C2  0e                   push cs
-2:C8C3  e8848e               call 0x574a  ; sub_s2:574A
+2:C8C3  e8848e               call 0x574a  ; List::List@s2:574A
 2:C8C6  eb03                 jmp 0xc8cb
 loc_C8C8:
 2:C8C8  33c0                 xor ax, ax
@@ -18580,7 +19269,7 @@ loc_C8CB:
 2:C8D2  2689570c             mov word ptr es:[bx + 0xc], dx
 2:C8D6  6a35                 push 0x35  ; 'New failed in Op::Op->ResLibr'
 2:C8D8  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:C8DD  9aba2092c7           lcall 0xc792, 0x20ba  ; sub_s3:20BA
+2:C8DD  9aba2092c7           lcall 0xc792, 0x20ba  ; Registry_get@s3:20BA
 2:C8E2  050a00               add ax, 0xa
 2:C8E5  8946f8               mov word ptr [bp - 8], ax
 2:C8E8  8956fa               mov word ptr [bp - 6], dx
@@ -18588,7 +19277,7 @@ loc_C8CB:
 2:C8ED  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
 2:C8F2  90                   nop
 2:C8F3  0e                   push cs
-2:C8F4  e803fe               call 0xc6fa  ; sub_s2:C6FA
+2:C8F4  e803fe               call 0xc6fa  ; BldgGroups::get@s2:C6FA
 2:C8F7  8946f4               mov word ptr [bp - 0xc], ax
 2:C8FA  8956f6               mov word ptr [bp - 0xa], dx
 2:C8FD  c746f20000           mov word ptr [bp - 0xe], 0
@@ -18622,13 +19311,13 @@ loc_C91F:
 2:C93F  26833800             cmp word ptr es:[bx + si], 0
 2:C943  74d7                 je 0xc91c
 2:C945  50                   push ax
-2:C946  9a80bde4c7           lcall 0xc7e4, 0xbd80  ; sub_s5:BD80
+2:C946  9a80bde4c7           lcall 0xc7e4, 0xbd80  ; buildingName@s5:BD80
 2:C94B  83c402               add sp, 2
 2:C94E  52                   push dx
 2:C94F  50                   push ax
 2:C950  90                   nop
 2:C951  0e                   push cs
-2:C952  e89397               call 0x60e8  ; sub_s2:60E8
+2:C952  e89397               call 0x60e8  ; _strdup@s2:60E8
 2:C955  83c404               add sp, 4
 2:C958  8946de               mov word ptr [bp - 0x22], ax
 2:C95B  8956e0               mov word ptr [bp - 0x20], dx
@@ -18644,7 +19333,7 @@ loc_C91F:
 2:C979  666a01               push 1
 2:C97C  ff76f0               push word ptr [bp - 0x10]
 2:C97F  50                   push ax
-2:C980  9ac8478eaf           lcall 0xaf8e, 0x47c8  ; sub_s4:47C8
+2:C980  9ac8478eaf           lcall 0xaf8e, 0x47c8  ; MarketGroup::MarketGroup@s4:47C8
 2:C985  e97fff               jmp 0xc907
 loc_C988:
 2:C988  5e                   pop si
@@ -18652,7 +19341,8 @@ loc_C988:
 2:C98A  ca0400               retf 4
 2:C98D  db 00
 
-; ---------------- sub_s2:C98E FAR size=70 callers=0
+; ---------------- RebelBuildOrder::save@s2:C98E FAR size=70 callers=0
+;   chunk 0x15
 2:C98E  c80e0000             enter 0xe, 0
 2:C992  6a15                 push 0x15
 2:C994  66ff760a             push dword ptr [bp + 0xa]
@@ -18684,7 +19374,8 @@ loc_C9CF:
 2:C9D0  ca0800               retf 8
 2:C9D3  db 00
 
-; ---------------- sub_s2:C9D4 FAR size=80 callers=0
+; ---------------- RebelBuildOrder::load@s2:C9D4 FAR size=80 callers=0
+;   chunk 0x15
 2:C9D4  c80e0000             enter 0xe, 0
 2:C9D8  833e120302           cmp word ptr [0x312], 2
 2:C9DD  7d07                 jge 0xc9e6
@@ -18697,7 +19388,7 @@ loc_C9E6:
 2:C9E8  66ff760a             push dword ptr [bp + 0xa]
 2:C9EC  90                   nop
 2:C9ED  0e                   push cs
-2:C9EE  e80db3               call 0x7cfe  ; sub_s2:7CFE
+2:C9EE  e80db3               call 0x7cfe  ; Save_findChunkTag@s2:7CFE
 2:C9F1  0bc0                 or ax, ax
 2:C9F3  750b                 jne 0xca00
 2:C9F5  c7061003d406         mov word ptr [0x310], 0x6d4
@@ -18720,13 +19411,14 @@ loc_CA00:
 2:CA20  ca0800               retf 8
 2:CA23  db 00
 
-; ---------------- sub_s2:CA24 FAR size=54 callers=0
+; ---------------- RebelBuildOrder::scalar_dtor@s2:CA24 FAR size=54 callers=0
+;   deleting destructor
 2:CA24  55                   push bp
 2:CA25  8bec                 mov bp, sp
 2:CA27  66ff7606             push dword ptr [bp + 6]
 2:CA2B  90                   nop
 2:CA2C  0e                   push cs
-2:CA2D  e82cfd               call 0xc75c  ; sub_s2:C75C
+2:CA2D  e82cfd               call 0xc75c  ; RebelBuildOrder::~RebelBuildOrder@s2:C75C
 2:CA30  f6460a01             test byte ptr [bp + 0xa], 1
 2:CA34  7409                 je 0xca3f
 2:CA36  66ff7606             push dword ptr [bp + 6]
@@ -18739,12 +19431,13 @@ loc_CA3F:
 2:CA49  db 90 24 ca 54 ca f2 1d e0 c8 8e c9 58 ca d4 c9 6d
 2:CA59  db c7
 
-; ---------------- sub_s2:CA5A FAR size=70 callers=1
+; ---------------- TradeLists::TradeLists@s2:CA5A FAR size=70 callers=1
+;   the trade window's lists (vtable D71A)
 2:CA5A  55                   push bp
 2:CA5B  8bec                 mov bp, sp
 2:CA5D  66ff7608             push dword ptr [bp + 8]
 2:CA61  ff7606               push word ptr [bp + 6]
-2:CA64  9a481d50ca           lcall 0xca50, 0x1d48  ; sub_s3:1D48
+2:CA64  9a481d50ca           lcall 0xca50, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:CA69  c45e06               les bx, ptr [bp + 6]
 2:CA6C  662bc0               sub eax, eax
 2:CA6F  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -18760,7 +19453,8 @@ loc_CA3F:
 2:CA9C  c9                   leave
 2:CA9D  ca0600               retf 6
 
-; ---------------- sub_s2:CAA0 FAR size=38 callers=2
+; ---------------- TradeLists::~TradeLists@s2:CAA0 FAR size=38 callers=2
+;   dtor
 2:CAA0  55                   push bp
 2:CAA1  8bec                 mov bp, sp
 2:CAA3  c45e06               les bx, ptr [bp + 6]
@@ -18770,14 +19464,15 @@ loc_CA3F:
 2:CAB2  53                   push bx
 2:CAB3  90                   nop
 2:CAB4  0e                   push cs
-2:CAB5  e80e00               call 0xcac6  ; sub_s2:CAC6
+2:CAB5  e80e00               call 0xcac6  ; TradeLists::clear@s2:CAC6
 2:CAB8  66ff7606             push dword ptr [bp + 6]
-2:CABC  9a801d67ca           lcall 0xca67, 0x1d80  ; sub_s3:1D80
+2:CABC  9a801d67ca           lcall 0xca67, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:CAC1  c9                   leave
 2:CAC2  ca0400               retf 4
 2:CAC5  db 00
 
-; ---------------- sub_s2:CAC6 FAR size=254 callers=2
+; ---------------- TradeLists::clear@s2:CAC6 FAR size=254 callers=2
+;   (vslot 4) frees the lists
 2:CAC6  c8080000             enter 8, 0
 2:CACA  56                   push si
 2:CACB  c45e06               les bx, ptr [bp + 6]
@@ -18876,7 +19571,8 @@ loc_CBB2:
 2:CBC0  ca0400               retf 4
 2:CBC3  db 00
 
-; ---------------- sub_s2:CBC4 FAR size=478 callers=1
+; ---------------- TradeLists::listColonies@s2:CBC4 FAR size=478 callers=1
+;   colonies to trade with
 2:CBC4  c83e0000             enter 0x3e, 0
 2:CBC8  c45e06               les bx, ptr [bp + 6]
 2:CBCB  268b471e             mov ax, word ptr es:[bx + 0x1e]
@@ -18907,7 +19603,7 @@ loc_CBF3:
 2:CC0A  50                   push ax
 2:CC0B  90                   nop
 2:CC0C  0e                   push cs
-2:CC0D  e83a8b               call 0x574a  ; sub_s2:574A
+2:CC0D  e83a8b               call 0x574a  ; List::List@s2:574A
 2:CC10  eb03                 jmp 0xcc15
 loc_CC12:
 2:CC12  33c0                 xor ax, ax
@@ -18974,12 +19670,12 @@ loc_CC92:
 2:CCC0  74d0                 je 0xcc92
 2:CCC2  06                   push es
 2:CCC3  53                   push bx
-2:CCC4  9a284dadb5           lcall 0xb5ad, 0x4d28  ; sub_s8:4D28
+2:CCC4  9a284dadb5           lcall 0xb5ad, 0x4d28  ; Colony::name@s8:4D28
 2:CCC9  52                   push dx
 2:CCCA  50                   push ax
 2:CCCB  90                   nop
 2:CCCC  0e                   push cs
-2:CCCD  e81894               call 0x60e8  ; sub_s2:60E8
+2:CCCD  e81894               call 0x60e8  ; _strdup@s2:60E8
 2:CCD0  83c404               add sp, 4
 2:CCD3  8946ce               mov word ptr [bp - 0x32], ax
 2:CCD6  8956d0               mov word ptr [bp - 0x30], dx
@@ -18996,7 +19692,7 @@ loc_CC92:
 2:CCF9  666a01               push 1
 2:CCFC  ff76e0               push word ptr [bp - 0x20]
 2:CCFF  50                   push ax
-2:CD00  9a204972cd           lcall 0xcd72, 0x4920  ; sub_s4:4920
+2:CD00  9a204972cd           lcall 0xcd72, 0x4920  ; MarketColony::MarketColony@s4:4920
 2:CD05  8946ca               mov word ptr [bp - 0x36], ax
 2:CD08  8956cc               mov word ptr [bp - 0x34], dx
 2:CD0B  eb08                 jmp 0xcd15
@@ -19019,7 +19715,7 @@ loc_CD34:
 2:CD38  755a                 jne 0xcd94
 2:CD3A  683d04               push 0x43d
 2:CD3D  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:CD42  9aac84bfca           lcall 0xcabf, 0x84ac  ; sub_s3:84AC
+2:CD42  9aac84bfca           lcall 0xcabf, 0x84ac  ; LoadStringDup@s3:84AC
 2:CD47  8946c2               mov word ptr [bp - 0x3e], ax
 2:CD4A  8956c4               mov word ptr [bp - 0x3c], dx
 2:CD4D  6a12                 push 0x12  ; 'version %d %d'
@@ -19034,7 +19730,7 @@ loc_CD34:
 2:CD68  666a00               push 0
 2:CD6B  ff76dc               push word ptr [bp - 0x24]
 2:CD6E  50                   push ax
-2:CD6F  9a204983c9           lcall 0xc983, 0x4920  ; sub_s4:4920
+2:CD6F  9a204983c9           lcall 0xc983, 0x4920  ; MarketColony::MarketColony@s4:4920
 2:CD74  eb03                 jmp 0xcd79
 loc_CD76:
 2:CD76  33c0                 xor ax, ax
@@ -19055,7 +19751,8 @@ loc_CD94:
 2:CD9E  c9                   leave
 2:CD9F  ca0800               retf 8
 
-; ---------------- sub_s2:CDA2 FAR size=510 callers=1
+; ---------------- TradeLists::listCargo@s2:CDA2 FAR size=510 callers=1
+;   what can be traded
 2:CDA2  c8340000             enter 0x34, 0
 2:CDA6  c45e06               les bx, ptr [bp + 6]
 2:CDA9  268b471a             mov ax, word ptr es:[bx + 0x1a]
@@ -19086,7 +19783,7 @@ loc_CDD1:
 2:CDE8  50                   push ax
 2:CDE9  90                   nop
 2:CDEA  0e                   push cs
-2:CDEB  e85c89               call 0x574a  ; sub_s2:574A
+2:CDEB  e85c89               call 0x574a  ; List::List@s2:574A
 2:CDEE  eb03                 jmp 0xcdf3
 loc_CDF0:
 2:CDF0  33c0                 xor ax, ax
@@ -19111,13 +19808,13 @@ loc_CDF3:
 2:CE35  db 90
 loc_CE36:
 2:CE36  ff76de               push word ptr [bp - 0x22]
-2:CE39  9a22c249c9           lcall 0xc949, 0xc222  ; sub_s5:C222
+2:CE39  9a22c249c9           lcall 0xc949, 0xc222  ; productAName@s5:C222
 2:CE3E  83c402               add sp, 2
 2:CE41  52                   push dx
 2:CE42  50                   push ax
 2:CE43  90                   nop
 2:CE44  0e                   push cs
-2:CE45  e8a092               call 0x60e8  ; sub_s2:60E8
+2:CE45  e8a092               call 0x60e8  ; _strdup@s2:60E8
 2:CE48  83c404               add sp, 4
 2:CE4B  8946cc               mov word ptr [bp - 0x34], ax
 2:CE4E  8956ce               mov word ptr [bp - 0x32], dx
@@ -19133,7 +19830,7 @@ loc_CE36:
 2:CE6C  660fbf46dc           movsx eax, word ptr [bp - 0x24]
 2:CE71  6650                 push eax
 2:CE73  66ff76f4             push dword ptr [bp - 0xc]
-2:CE77  9ab0487acf           lcall 0xcf7a, 0x48b0  ; sub_s4:48B0
+2:CE77  9ab0487acf           lcall 0xcf7a, 0x48b0  ; MarketCargo::MarketCargo@s4:48B0
 2:CE7C  eb03                 jmp 0xce81
 loc_CE7E:
 2:CE7E  33c0                 xor ax, ax
@@ -19157,7 +19854,7 @@ loc_CEA4:
 2:CEA8  7d5e                 jge 0xcf08
 2:CEAA  ff76de               push word ptr [bp - 0x22]
 2:CEAD  66ff76e0             push dword ptr [bp - 0x20]
-2:CEB1  9a2ece24cf           lcall 0xcf24, 0xce2e  ; sub_s7:CE2E
+2:CEB1  9a2ece24cf           lcall 0xcf24, 0xce2e  ; RoboCmd::countKind@s7:CE2E
 2:CEB6  8946dc               mov word ptr [bp - 0x24], ax
 2:CEB9  0bc0                 or ax, ax
 2:CEBB  74e4                 je 0xcea1
@@ -19201,7 +19898,7 @@ loc_CF0C:
 2:CF17  731f                 jae 0xcf38
 2:CF19  66ff76e4             push dword ptr [bp - 0x1c]
 2:CF1D  66ff76fa             push dword ptr [bp - 6]
-2:CF21  9a121310c8           lcall 0xc810, 0x1312  ; sub_s7:1312
+2:CF21  9a121310c8           lcall 0xc810, 0x1312  ; DbTable::at@s7:1312
 2:CF26  8946e0               mov word ptr [bp - 0x20], ax
 2:CF29  8956e2               mov word ptr [bp - 0x1e], dx
 2:CF2C  0bd0                 or dx, ax
@@ -19214,7 +19911,7 @@ loc_CF38:
 2:CF41  7559                 jne 0xcf9c
 2:CF43  683f04               push 0x43f
 2:CF46  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:CF4B  9aac8445cd           lcall 0xcd45, 0x84ac  ; sub_s3:84AC
+2:CF4B  9aac8445cd           lcall 0xcd45, 0x84ac  ; LoadStringDup@s3:84AC
 2:CF50  8946cc               mov word ptr [bp - 0x34], ax
 2:CF53  8956ce               mov word ptr [bp - 0x32], dx
 2:CF56  6a10                 push 0x10
@@ -19229,7 +19926,7 @@ loc_CF38:
 2:CF70  666a00               push 0
 2:CF73  ff76f2               push word ptr [bp - 0xe]
 2:CF76  50                   push ax
-2:CF77  9ab04803cd           lcall 0xcd03, 0x48b0  ; sub_s4:48B0
+2:CF77  9ab04803cd           lcall 0xcd03, 0x48b0  ; MarketCargo::MarketCargo@s4:48B0
 2:CF7C  eb03                 jmp 0xcf81
 loc_CF7E:
 2:CF7E  33c0                 xor ax, ax
@@ -19248,7 +19945,8 @@ loc_CF9C:
 2:CF9C  c9                   leave
 2:CF9D  ca0800               retf 8
 
-; ---------------- sub_s2:CFA0 FAR size=550 callers=1
+; ---------------- TradeLists::listResources@s2:CFA0 FAR size=550 callers=1
+;   resources on offer
 2:CFA0  c8220000             enter 0x22, 0
 2:CFA4  c45e06               les bx, ptr [bp + 6]
 2:CFA7  268b4716             mov ax, word ptr es:[bx + 0x16]
@@ -19276,7 +19974,7 @@ loc_CFC9:
 2:CFDD  50                   push ax
 2:CFDE  90                   nop
 2:CFDF  0e                   push cs
-2:CFE0  e86787               call 0x574a  ; sub_s2:574A
+2:CFE0  e86787               call 0x574a  ; List::List@s2:574A
 2:CFE3  eb04                 jmp 0xcfe9
 2:CFE5  db 90
 loc_CFE6:
@@ -19292,7 +19990,7 @@ loc_CFE9:
 2:D002  668946fa             mov dword ptr [bp - 6], eax
 2:D006  6a02                 push 2
 2:D008  6650                 push eax
-2:D00A  9af23884d0           lcall 0xd084, 0x38f2  ; sub_s7:38F2
+2:D00A  9af23884d0           lcall 0xd084, 0x38f2  ; Population::group@s7:38F2
 2:D00F  8946f2               mov word ptr [bp - 0xe], ax
 2:D012  8956f4               mov word ptr [bp - 0xc], dx
 2:D015  0bd2                 or dx, dx
@@ -19303,7 +20001,7 @@ loc_CFE9:
 loc_D01F:
 2:D01F  683004               push 0x430
 2:D022  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D027  9aac84a1d0           lcall 0xd0a1, 0x84ac  ; sub_s3:84AC
+2:D027  9aac84a1d0           lcall 0xd0a1, 0x84ac  ; LoadStringDup@s3:84AC
 2:D02C  8946f6               mov word ptr [bp - 0xa], ax
 2:D02F  8956f8               mov word ptr [bp - 8], dx
 2:D032  6a14                 push 0x14
@@ -19317,7 +20015,7 @@ loc_D01F:
 2:D049  66ff76f2             push dword ptr [bp - 0xe]
 2:D04D  ff76f0               push word ptr [bp - 0x10]
 2:D050  50                   push ax
-2:D051  9a4248cbd0           lcall 0xd0cb, 0x4842  ; sub_s4:4842
+2:D051  9a4248cbd0           lcall 0xd0cb, 0x4842  ; MarketResource::MarketResource@s4:4842
 2:D056  eb03                 jmp 0xd05b
 loc_D058:
 2:D058  33c0                 xor ax, ax
@@ -19336,7 +20034,7 @@ loc_D05B:
 loc_D07B:
 2:D07B  6a03                 push 3
 2:D07D  66ff76fa             push dword ptr [bp - 6]
-2:D081  9af238fcd0           lcall 0xd0fc, 0x38f2  ; sub_s7:38F2
+2:D081  9af238fcd0           lcall 0xd0fc, 0x38f2  ; Population::group@s7:38F2
 2:D086  8946f2               mov word ptr [bp - 0xe], ax
 2:D089  8956f4               mov word ptr [bp - 0xc], dx
 2:D08C  0bd2                 or dx, dx
@@ -19347,7 +20045,7 @@ loc_D07B:
 loc_D096:
 2:D096  683104               push 0x431
 2:D099  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D09E  9aac8419d1           lcall 0xd119, 0x84ac  ; sub_s3:84AC
+2:D09E  9aac8419d1           lcall 0xd119, 0x84ac  ; LoadStringDup@s3:84AC
 2:D0A3  8946f6               mov word ptr [bp - 0xa], ax
 2:D0A6  8956f8               mov word ptr [bp - 8], dx
 2:D0A9  6a14                 push 0x14
@@ -19361,7 +20059,7 @@ loc_D096:
 2:D0C0  66ff76f2             push dword ptr [bp - 0xe]
 2:D0C4  ff76ec               push word ptr [bp - 0x14]
 2:D0C7  50                   push ax
-2:D0C8  9a424843d1           lcall 0xd143, 0x4842  ; sub_s4:4842
+2:D0C8  9a424843d1           lcall 0xd143, 0x4842  ; MarketResource::MarketResource@s4:4842
 2:D0CD  eb04                 jmp 0xd0d3
 2:D0CF  db 90
 loc_D0D0:
@@ -19381,7 +20079,7 @@ loc_D0D3:
 loc_D0F3:
 2:D0F3  6a04                 push 4
 2:D0F5  66ff76fa             push dword ptr [bp - 6]
-2:D0F9  9af238b4ce           lcall 0xceb4, 0x38f2  ; sub_s7:38F2
+2:D0F9  9af238b4ce           lcall 0xceb4, 0x38f2  ; Population::group@s7:38F2
 2:D0FE  8946f2               mov word ptr [bp - 0xe], ax
 2:D101  8956f4               mov word ptr [bp - 0xc], dx
 2:D104  0bd2                 or dx, dx
@@ -19392,7 +20090,7 @@ loc_D0F3:
 loc_D10E:
 2:D10E  683204               push 0x432
 2:D111  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D116  9aac847cd1           lcall 0xd17c, 0x84ac  ; sub_s3:84AC
+2:D116  9aac847cd1           lcall 0xd17c, 0x84ac  ; LoadStringDup@s3:84AC
 2:D11B  8946f6               mov word ptr [bp - 0xa], ax
 2:D11E  8956f8               mov word ptr [bp - 8], dx
 2:D121  6a14                 push 0x14
@@ -19406,7 +20104,7 @@ loc_D10E:
 2:D138  66ff76f2             push dword ptr [bp - 0xe]
 2:D13C  ff76f0               push word ptr [bp - 0x10]
 2:D13F  50                   push ax
-2:D140  9a4248a5d1           lcall 0xd1a5, 0x4842  ; sub_s4:4842
+2:D140  9a4248a5d1           lcall 0xd1a5, 0x4842  ; MarketResource::MarketResource@s4:4842
 2:D145  eb04                 jmp 0xd14b
 2:D147  db 90
 loc_D148:
@@ -19428,7 +20126,7 @@ loc_D16B:
 2:D16F  7551                 jne 0xd1c2
 2:D171  684004               push 0x440
 2:D174  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D179  9aac844ecf           lcall 0xcf4e, 0x84ac  ; sub_s3:84AC
+2:D179  9aac844ecf           lcall 0xcf4e, 0x84ac  ; LoadStringDup@s3:84AC
 2:D17E  8946e2               mov word ptr [bp - 0x1e], ax
 2:D181  8956e4               mov word ptr [bp - 0x1c], dx
 2:D184  6a14                 push 0x14
@@ -19442,7 +20140,7 @@ loc_D16B:
 2:D19B  666a00               push 0
 2:D19E  ff76ec               push word ptr [bp - 0x14]
 2:D1A1  50                   push ax
-2:D1A2  9a42487ace           lcall 0xce7a, 0x4842  ; sub_s4:4842
+2:D1A2  9a42487ace           lcall 0xce7a, 0x4842  ; MarketResource::MarketResource@s4:4842
 2:D1A7  eb04                 jmp 0xd1ad
 2:D1A9  db 90
 loc_D1AA:
@@ -19460,8 +20158,9 @@ loc_D1C2:
 2:D1C2  c9                   leave
 2:D1C3  ca0800               retf 8
 
-; ---------------- sub_s2:D1C6 FAR size=488 callers=1
+; ---------------- TradeLists::listBuildings@s2:D1C6 FAR size=488 callers=1
 ;   apis: USER._wsprintf
+;   buildings ("%s #%02ld")
 2:D1C6  c8400000             enter 0x40, 0
 2:D1CA  c45e06               les bx, ptr [bp + 6]
 2:D1CD  268b4712             mov ax, word ptr es:[bx + 0x12]
@@ -19489,7 +20188,7 @@ loc_D1EF:
 2:D203  50                   push ax
 2:D204  90                   nop
 2:D205  0e                   push cs
-2:D206  e84185               call 0x574a  ; sub_s2:574A
+2:D206  e84185               call 0x574a  ; List::List@s2:574A
 2:D209  eb04                 jmp 0xd20f
 2:D20B  db 90
 loc_D20C:
@@ -19503,11 +20202,11 @@ loc_D20F:
 2:D21C  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
 2:D221  90                   nop
 2:D222  0e                   push cs
-2:D223  e8d4f4               call 0xc6fa  ; sub_s2:C6FA
+2:D223  e8d4f4               call 0xc6fa  ; BldgGroups::get@s2:C6FA
 2:D226  52                   push dx
 2:D227  50                   push ax
 2:D228  66ff760a             push dword ptr [bp + 0xa]
-2:D22C  9a784ec7cc           lcall 0xccc7, 0x4e78  ; sub_s8:4E78
+2:D22C  9a784ec7cc           lcall 0xccc7, 0x4e78  ; colonyTilesInGroupAll@s8:4E78
 2:D231  8946f8               mov word ptr [bp - 8], ax
 2:D234  8956fa               mov word ptr [bp - 6], dx
 2:D237  52                   push dx
@@ -19533,7 +20232,7 @@ loc_D26C:
 2:D274  0f83c000             jae 0xd338
 2:D278  66ff76ee             push dword ptr [bp - 0x12]
 2:D27C  66ff76f8             push dword ptr [bp - 8]
-2:D280  9a7c1d0dd0           lcall 0xd00d, 0x1d7c  ; sub_s7:1D7C
+2:D280  9a7c1d0dd0           lcall 0xd00d, 0x1d7c  ; HandleList::buildingAt@s7:1D7C
 2:D285  8946e2               mov word ptr [bp - 0x1e], ax
 2:D288  8956e4               mov word ptr [bp - 0x1c], dx
 2:D28B  0bd0                 or dx, ax
@@ -19553,7 +20252,7 @@ loc_D2A0:
 2:D2AA  52                   push dx
 2:D2AB  50                   push ax
 2:D2AC  26ff770c             push word ptr es:[bx + 0xc]
-2:D2B0  9a80bd3cce           lcall 0xce3c, 0xbd80  ; sub_s5:BD80
+2:D2B0  9a80bd3cce           lcall 0xce3c, 0xbd80  ; buildingName@s5:BD80
 2:D2B5  83c402               add sp, 2
 2:D2B8  52                   push dx
 2:D2B9  50                   push ax
@@ -19569,7 +20268,7 @@ loc_D2A0:
 2:D2D6  6650                 push eax
 2:D2D8  90                   nop
 2:D2D9  0e                   push cs
-2:D2DA  e80b8e               call 0x60e8  ; sub_s2:60E8
+2:D2DA  e80b8e               call 0x60e8  ; _strdup@s2:60E8
 2:D2DD  83c404               add sp, 4
 2:D2E0  8946d0               mov word ptr [bp - 0x30], ax
 2:D2E3  8956d2               mov word ptr [bp - 0x2e], dx
@@ -19585,7 +20284,7 @@ loc_D2A0:
 2:D303  666a01               push 1
 2:D306  ff76ec               push word ptr [bp - 0x14]
 2:D309  50                   push ax
-2:D30A  9a084873d3           lcall 0xd373, 0x4808  ; sub_s4:4808
+2:D30A  9a084873d3           lcall 0xd373, 0x4808  ; MarketBuilding::MarketBuilding@s4:4808
 2:D30F  8956ce               mov word ptr [bp - 0x32], dx
 2:D312  eb05                 jmp 0xd319
 loc_D314:
@@ -19606,7 +20305,7 @@ loc_D338:
 2:D33C  7552                 jne 0xd390
 2:D33E  684104               push 0x441
 2:D341  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D346  9aac842ad0           lcall 0xd02a, 0x84ac  ; sub_s3:84AC
+2:D346  9aac842ad0           lcall 0xd02a, 0x84ac  ; LoadStringDup@s3:84AC
 2:D34B  8946c0               mov word ptr [bp - 0x40], ax
 2:D34E  8956c2               mov word ptr [bp - 0x3e], dx
 2:D351  6a12                 push 0x12  ; 'version %d %d'
@@ -19620,7 +20319,7 @@ loc_D338:
 2:D369  666a00               push 0
 2:D36C  ff76e8               push word ptr [bp - 0x18]
 2:D36F  50                   push ax
-2:D370  9a084854d0           lcall 0xd054, 0x4808  ; sub_s4:4808
+2:D370  9a084854d0           lcall 0xd054, 0x4808  ; MarketBuilding::MarketBuilding@s4:4808
 2:D375  eb04                 jmp 0xd37b
 2:D377  db 90
 loc_D378:
@@ -19650,7 +20349,8 @@ loc_D3AA:
 2:D3AA  c9                   leave
 2:D3AB  ca0800               retf 8
 
-; ---------------- sub_s2:D3AE FAR size=328 callers=1
+; ---------------- TradeLists::listRobots@s2:D3AE FAR size=328 callers=1
+;   robots/vehicles
 2:D3AE  c81c0000             enter 0x1c, 0
 2:D3B2  c45e06               les bx, ptr [bp + 6]
 2:D3B5  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -19678,7 +20378,7 @@ loc_D3D7:
 2:D3EB  50                   push ax
 2:D3EC  90                   nop
 2:D3ED  0e                   push cs
-2:D3EE  e85983               call 0x574a  ; sub_s2:574A
+2:D3EE  e85983               call 0x574a  ; List::List@s2:574A
 2:D3F1  eb04                 jmp 0xd3f7
 2:D3F3  db 90
 loc_D3F4:
@@ -19711,7 +20411,7 @@ loc_D42F:
 2:D433  7c61                 jl 0xd496
 2:D435  ff76fc               push word ptr [bp - 4]
 2:D438  66ff760a             push dword ptr [bp + 0xa]
-2:D43C  9a0a542fd2           lcall 0xd22f, 0x540a  ; sub_s8:540A
+2:D43C  9a0a542fd2           lcall 0xd22f, 0x540a  ; Colony::available@s8:540A
 2:D441  8946f0               mov word ptr [bp - 0x10], ax
 2:D444  8956f2               mov word ptr [bp - 0xe], dx
 2:D447  8bc2                 mov ax, dx
@@ -19719,13 +20419,13 @@ loc_D42F:
 2:D44C  74de                 je 0xd42c
 2:D44E  c746fe0100           mov word ptr [bp - 2], 1
 2:D453  ff76fc               push word ptr [bp - 4]
-2:D456  9acac0b3d2           lcall 0xd2b3, 0xc0ca  ; sub_s5:C0CA
+2:D456  9acac0b3d2           lcall 0xd2b3, 0xc0ca  ; resourceName@s5:C0CA
 2:D45B  83c402               add sp, 2
 2:D45E  52                   push dx
 2:D45F  50                   push ax
 2:D460  90                   nop
 2:D461  0e                   push cs
-2:D462  e8838c               call 0x60e8  ; sub_s2:60E8
+2:D462  e8838c               call 0x60e8  ; _strdup@s2:60E8
 2:D465  83c404               add sp, 4
 2:D468  8946ea               mov word ptr [bp - 0x16], ax
 2:D46B  8956ec               mov word ptr [bp - 0x14], dx
@@ -19740,14 +20440,14 @@ loc_D42F:
 2:D486  66ff76f0             push dword ptr [bp - 0x10]
 2:D48A  ff76fa               push word ptr [bp - 6]
 2:D48D  50                   push ax
-2:D48E  9a9047d0d4           lcall 0xd4d0, 0x4790  ; sub_s4:4790
+2:D48E  9a9047d0d4           lcall 0xd4d0, 0x4790  ; MarketRobot::MarketRobot@s4:4790
 2:D493  e97bff               jmp 0xd411
 loc_D496:
 2:D496  837efe00             cmp word ptr [bp - 2], 0
 2:D49A  7556                 jne 0xd4f2
 2:D49C  683e04               push 0x43e
 2:D49F  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D4A4  9aac8449d3           lcall 0xd349, 0x84ac  ; sub_s3:84AC
+2:D4A4  9aac8449d3           lcall 0xd349, 0x84ac  ; LoadStringDup@s3:84AC
 2:D4A9  8946e4               mov word ptr [bp - 0x1c], ax
 2:D4AC  8956e6               mov word ptr [bp - 0x1a], dx
 2:D4AF  6a10                 push 0x10
@@ -19761,7 +20461,7 @@ loc_D496:
 2:D4C6  666a00               push 0
 2:D4C9  ff76f6               push word ptr [bp - 0xa]
 2:D4CC  50                   push ax
-2:D4CD  9a90470dd3           lcall 0xd30d, 0x4790  ; sub_s4:4790
+2:D4CD  9a90470dd3           lcall 0xd30d, 0x4790  ; MarketRobot::MarketRobot@s4:4790
 2:D4D2  eb03                 jmp 0xd4d7
 loc_D4D4:
 2:D4D4  33c0                 xor ax, ax
@@ -19780,8 +20480,9 @@ loc_D4F2:
 2:D4F2  c9                   leave
 2:D4F3  ca0800               retf 8
 
-; ---------------- sub_s2:D4F6 FAR size=510 callers=1
+; ---------------- TradeLists::listGroupBuildings@s2:D4F6 FAR size=510 callers=1
 ;   apis: USER._wsprintf
+;   buildings of a group ("%s #%02ld")
 2:D4F6  c84c0000             enter 0x4c, 0
 2:D4FA  57                   push di
 2:D4FB  56                   push si
@@ -19814,7 +20515,7 @@ loc_D52E:
 2:D542  50                   push ax
 2:D543  90                   nop
 2:D544  0e                   push cs
-2:D545  e80282               call 0x574a  ; sub_s2:574A
+2:D545  e80282               call 0x574a  ; List::List@s2:574A
 2:D548  eb03                 jmp 0xd54d
 loc_D54A:
 2:D54A  33c0                 xor ax, ax
@@ -19852,7 +20553,7 @@ loc_D59E:
 2:D5A9  0f83e700             jae 0xd694
 2:D5AD  66ff76ee             push dword ptr [bp - 0x12]
 2:D5B1  66ff76f8             push dword ptr [bp - 8]
-2:D5B5  9a7c1d83d2           lcall 0xd283, 0x1d7c  ; sub_s7:1D7C
+2:D5B5  9a7c1d83d2           lcall 0xd283, 0x1d7c  ; HandleList::buildingAt@s7:1D7C
 2:D5BA  8946ea               mov word ptr [bp - 0x16], ax
 2:D5BD  8956ec               mov word ptr [bp - 0x14], dx
 2:D5C0  0bd0                 or dx, ax
@@ -19885,7 +20586,7 @@ loc_D5D4:
 2:D604  52                   push dx
 2:D605  50                   push ax
 2:D606  ff76d6               push word ptr [bp - 0x2a]
-2:D609  9a80bd59d4           lcall 0xd459, 0xbd80  ; sub_s5:BD80
+2:D609  9a80bd59d4           lcall 0xd459, 0xbd80  ; buildingName@s5:BD80
 2:D60E  83c402               add sp, 2
 2:D611  52                   push dx
 2:D612  50                   push ax
@@ -19904,7 +20605,7 @@ loc_D5D4:
 2:D62F  56                   push si
 2:D630  90                   nop
 2:D631  0e                   push cs
-2:D632  e8b38a               call 0x60e8  ; sub_s2:60E8
+2:D632  e8b38a               call 0x60e8  ; _strdup@s2:60E8
 2:D635  83c404               add sp, 4
 2:D638  8946ca               mov word ptr [bp - 0x36], ax
 2:D63B  8956cc               mov word ptr [bp - 0x34], dx
@@ -19921,7 +20622,7 @@ loc_D5D4:
 2:D65F  666a01               push 1
 2:D662  ff76e8               push word ptr [bp - 0x18]
 2:D665  50                   push ax
-2:D666  9ac847d1d6           lcall 0xd6d1, 0x47c8  ; sub_s4:47C8
+2:D666  9ac847d1d6           lcall 0xd6d1, 0x47c8  ; MarketGroup::MarketGroup@s4:47C8
 2:D66B  8956c8               mov word ptr [bp - 0x38], dx
 2:D66E  eb05                 jmp 0xd675
 loc_D670:
@@ -19942,7 +20643,7 @@ loc_D694:
 2:D698  7554                 jne 0xd6ee
 2:D69A  684204               push 0x442
 2:D69D  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D6A2  9aac84a7d4           lcall 0xd4a7, 0x84ac  ; sub_s3:84AC
+2:D6A2  9aac84a7d4           lcall 0xd4a7, 0x84ac  ; LoadStringDup@s3:84AC
 2:D6A7  8946b4               mov word ptr [bp - 0x4c], ax
 2:D6AA  8956b6               mov word ptr [bp - 0x4a], dx
 2:D6AD  6a14                 push 0x14
@@ -19957,7 +20658,7 @@ loc_D694:
 2:D6C7  666a00               push 0
 2:D6CA  ff76e4               push word ptr [bp - 0x1c]
 2:D6CD  50                   push ax
-2:D6CE  9ac84791d4           lcall 0xd491, 0x47c8  ; sub_s4:47C8
+2:D6CE  9ac84791d4           lcall 0xd491, 0x47c8  ; MarketGroup::MarketGroup@s4:47C8
 2:D6D3  eb04                 jmp 0xd6d9
 2:D6D5  db 90
 loc_D6D6:
@@ -19977,13 +20678,14 @@ loc_D6EE:
 2:D6F0  c9                   leave
 2:D6F1  ca0800               retf 8
 
-; ---------------- sub_s2:D6F4 FAR size=58 callers=0
+; ---------------- TradeLists::scalar_dtor@s2:D6F4 FAR size=58 callers=0
+;   deleting destructor
 2:D6F4  55                   push bp
 2:D6F5  8bec                 mov bp, sp
 2:D6F7  66ff7606             push dword ptr [bp + 6]
 2:D6FB  90                   nop
 2:D6FC  0e                   push cs
-2:D6FD  e8a0f3               call 0xcaa0  ; sub_s2:CAA0
+2:D6FD  e8a0f3               call 0xcaa0  ; TradeLists::~TradeLists@s2:CAA0
 2:D700  f6460a01             test byte ptr [bp + 0xa], 1
 2:D704  7409                 je 0xd70f
 2:D706  66ff7606             push dword ptr [bp + 6]
@@ -19996,12 +20698,13 @@ loc_D70F:
 2:D719  db 90 f4 d6 2c d7 f2 1d 24 d7 ce 1d 28 d7 d4 1d a5
 2:D729  db d6 c6 ca 9c cd
 
-; ---------------- sub_s2:D72E FAR size=44 callers=1
+; ---------------- AiAttitude::AiAttitude@s2:D72E FAR size=44 callers=1
+;   registry 0x3A: the A.I.'s attitude (+0x0A: 2 benevolent ...)
 2:D72E  55                   push bp
 2:D72F  8bec                 mov bp, sp
 2:D731  66ff7608             push dword ptr [bp + 8]
 2:D735  ff7606               push word ptr [bp + 6]
-2:D738  9a481d20d7           lcall 0xd720, 0x1d48  ; sub_s3:1D48
+2:D738  9a481d20d7           lcall 0xd720, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:D73D  c45e06               les bx, ptr [bp + 6]
 2:D740  26c7470a0000         mov word ptr es:[bx + 0xa], 0
 2:D746  26c70780d7           mov word ptr es:[bx], 0xd780
@@ -20012,10 +20715,11 @@ loc_D70F:
 2:D756  ca0600               retf 6
 2:D759  db 00
 
-; ---------------- sub_s2:D75A FAR size=54 callers=0
+; ---------------- AiAttitude::scalar_dtor@s2:D75A FAR size=54 callers=0
+;   deleting destructor
 2:D75A  c8040000             enter 4, 0
 2:D75E  66ff7606             push dword ptr [bp + 6]
-2:D762  9a801d3bd7           lcall 0xd73b, 0x1d80  ; sub_s3:1D80
+2:D762  9a801d3bd7           lcall 0xd73b, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:D767  f6460a01             test byte ptr [bp + 0xa], 1
 2:D76B  7409                 je 0xd776
 2:D76D  66ff7606             push dword ptr [bp + 6]
@@ -20027,12 +20731,13 @@ loc_D776:
 2:D77D  ca0600               retf 6
 2:D780  db 5a d7 4f d7 f2 1d 8a d7 ce 1d 8e d7 d4 1d 65 d7
 
-; ---------------- sub_s2:D790 FAR size=74 callers=1
+; ---------------- StarChoice::StarChoice@s2:D790 FAR size=74 callers=1
+;   registry 0x36: the chosen destination star (+0x0E)
 2:D790  55                   push bp
 2:D791  8bec                 mov bp, sp
 2:D793  66ff7608             push dword ptr [bp + 8]
 2:D797  ff7606               push word ptr [bp + 6]
-2:D79A  9a481dc4d7           lcall 0xd7c4, 0x1d48  ; sub_s3:1D48
+2:D79A  9a481dc4d7           lcall 0xd7c4, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:D79F  c45e06               les bx, ptr [bp + 6]
 2:D7A2  662bc0               sub eax, eax
 2:D7A5  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -20041,7 +20746,7 @@ loc_D776:
 2:D7B3  26c7470282d7         mov word ptr es:[bx + 2], 0xd782  ; SEGMENT s2:0000
 2:D7B9  689b00               push 0x9b
 2:D7BC  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:D7C1  9a0a8386d7           lcall 0xd786, 0x830a  ; sub_s3:830A
+2:D7C1  9a0a8386d7           lcall 0xd786, 0x830a  ; ResLibr::picture@s3:830A
 2:D7C6  c45e06               les bx, ptr [bp + 6]
 2:D7C9  2689470a             mov word ptr es:[bx + 0xa], ax
 2:D7CD  2689570c             mov word ptr es:[bx + 0xc], dx
@@ -20051,7 +20756,8 @@ loc_D776:
 2:D7D6  ca0600               retf 6
 2:D7D9  db 00
 
-; ---------------- sub_s2:D7DA FAR size=62 callers=1
+; ---------------- StarChoice::~StarChoice@s2:D7DA FAR size=62 callers=1
+;   dtor
 2:D7DA  c8080000             enter 8, 0
 2:D7DE  56                   push si
 2:D7DF  c45e06               les bx, ptr [bp + 6]
@@ -20071,13 +20777,14 @@ loc_D776:
 2:D806  26ff1f               lcall es:[bx]
 loc_D809:
 2:D809  66ff7606             push dword ptr [bp + 6]
-2:D80D  9a801d9dd7           lcall 0xd79d, 0x1d80  ; sub_s3:1D80
+2:D80D  9a801d9dd7           lcall 0xd79d, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:D812  5e                   pop si
 2:D813  c9                   leave
 2:D814  ca0400               retf 4
 2:D817  db 00
 
-; ---------------- sub_s2:D818 FAR size=336 callers=1
+; ---------------- StarChoice::fromButton@s2:D818 FAR size=336 callers=1
+;   button 416..436 -> star 1..21
 2:D818  55                   push bp
 2:D819  8bec                 mov bp, sp
 2:D81B  8b460a               mov ax, word ptr [bp + 0xa]
@@ -20211,13 +20918,14 @@ loc_D964:
 2:D964  c9                   leave
 2:D965  ca0600               retf 6
 
-; ---------------- sub_s2:D968 FAR size=54 callers=0
+; ---------------- StarChoice::scalar_dtor@s2:D968 FAR size=54 callers=0
+;   deleting destructor
 2:D968  55                   push bp
 2:D969  8bec                 mov bp, sp
 2:D96B  66ff7606             push dword ptr [bp + 6]
 2:D96F  90                   nop
 2:D970  0e                   push cs
-2:D971  e866fe               call 0xd7da  ; sub_s2:D7DA
+2:D971  e866fe               call 0xd7da  ; StarChoice::~StarChoice@s2:D7DA
 2:D974  f6460a01             test byte ptr [bp + 0xa], 1
 2:D978  7409                 je 0xd983
 2:D97A  66ff7606             push dword ptr [bp + 6]
@@ -20230,29 +20938,31 @@ loc_D983:
 2:D98D  db 90 68 d9 eb d7 f2 1d 98 d9 ce 1d 9c d9 d4 1d 10
 2:D99D  db d8
 
-; ---------------- sub_s2:D99E FAR size=54 callers=1
+; ---------------- RegObj26::RegObj26@s2:D99E FAR size=54 callers=1
+;   registry 0x26: command target 0x9A
 2:D99E  55                   push bp
 2:D99F  8bec                 mov bp, sp
 2:D9A1  66ff7608             push dword ptr [bp + 8]
 2:D9A5  ff7606               push word ptr [bp + 6]
-2:D9A8  9ada4cc3d9           lcall 0xd9c3, 0x4cda  ; sub_s4:4CDA
+2:D9A8  9ada4cc3d9           lcall 0xd9c3, 0x4cda  ; CmdTarget::CmdTarget@s4:4CDA
 2:D9AD  c45e06               les bx, ptr [bp + 6]
 2:D9B0  26c707fad9           mov word ptr es:[bx], 0xd9fa
 2:D9B5  26c7470290d9         mov word ptr es:[bx + 2], 0xd990  ; SEGMENT s2:0000
 2:D9BB  689a00               push 0x9a
 2:D9BE  06                   push es
 2:D9BF  53                   push bx
-2:D9C0  9ace4d69d6           lcall 0xd669, 0x4dce  ; sub_s4:4DCE
+2:D9C0  9ace4d69d6           lcall 0xd669, 0x4dce  ; CmdTarget::setCommand@s4:4DCE
 2:D9C5  668b4606             mov eax, dword ptr [bp + 6]
 2:D9C9  8b5608               mov dx, word ptr [bp + 8]
 2:D9CC  66a33042             mov dword ptr [0x4230], eax
 2:D9D0  c9                   leave
 2:D9D1  ca0600               retf 6
 
-; ---------------- sub_s2:D9D4 size=62 callers=0
+; ---------------- RegObj26::scalar_dtor@s2:D9D4 size=62 callers=0
+;   deleting destructor
 2:D9D4  c8040000             enter 4, 0
 2:D9D8  66ff7606             push dword ptr [bp + 6]
-2:D9DC  9a224dabd9           lcall 0xd9ab, 0x4d22  ; sub_s4:4D22
+2:D9DC  9a224dabd9           lcall 0xd9ab, 0x4d22  ; CmdTarget::~CmdTarget@s4:4D22
 2:D9E1  f6460a01             test byte ptr [bp + 0xa], 1
 2:D9E5  7409                 je 0xd9f0
 2:D9E7  66ff7606             push dword ptr [bp + 6]
@@ -20265,14 +20975,15 @@ loc_D9F0:
 2:D9FA  db d4 d9 b9 d9 f2 1d 04 da ce 1d 08 da d4 1d 94 d9
 2:DA0A  db 04 4e 10 da 18 4f df d9
 
-; ---------------- sub_s2:DA12 FAR size=538 callers=1
+; ---------------- SysPalette::SysPalette@s2:DA12 FAR size=538 callers=1
 ;   apis: GDI.GetDeviceCaps, GDI.GetSystemPaletteEntries, USER.GetDC, USER.ReleaseDC
+;   registry 0x48: system palette entries and device caps
 2:DA12  c8220000             enter 0x22, 0
 2:DA16  57                   push di
 2:DA17  56                   push si
 2:DA18  66ff7608             push dword ptr [bp + 8]
 2:DA1C  ff7606               push word ptr [bp + 6]
-2:DA1F  9a481d00da           lcall 0xda00, 0x1d48  ; sub_s3:1D48
+2:DA1F  9a481d00da           lcall 0xda00, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:DA24  33c0                 xor ax, ax
 2:DA26  c45e06               les bx, ptr [bp + 6]
 2:DA29  2689470a             mov word ptr es:[bx + 0xa], ax
@@ -20284,7 +20995,7 @@ loc_D9F0:
 2:DA38  8cc7                 mov di, es
 2:DA3A  90                   nop
 2:DA3B  0e                   push cs
-2:DA3C  e8f963               call 0x13e38  ; sub_s2:3E38
+2:DA3C  e8f963               call 0x13e38  ; Pos3::Pos3@s2:3E38
 2:DA3F  33c0                 xor ax, ax
 2:DA41  c45e06               les bx, ptr [bp + 6]
 2:DA44  26894714             mov word ptr es:[bx + 0x14], ax
@@ -20322,7 +21033,7 @@ loc_D9F0:
 2:DAA6  56                   push si
 2:DAA7  90                   nop
 2:DAA8  0e                   push cs
-2:DAA9  e8ca63               call 0x13e76  ; sub_s2:3E76
+2:DAA9  e8ca63               call 0x13e76  ; Pos3::set@s2:3E76
 2:DAAC  ff76fe               push word ptr [bp - 2]
 2:DAAF  6a26                 push 0x26
 2:DAB1  9ac3da0000           lcall 0, 0xdac3  ; GDI.GetDeviceCaps
@@ -20457,7 +21168,8 @@ loc_DC16:
 2:DC28  c9                   leave
 2:DC29  ca0600               retf 6
 
-; ---------------- sub_s2:DC2C FAR size=46 callers=1
+; ---------------- SysPalette::~SysPalette@s2:DC2C FAR size=46 callers=1
+;   dtor
 2:DC2C  c8080000             enter 8, 0
 2:DC30  c45e06               les bx, ptr [bp + 6]
 2:DC33  26c70780dc           mov word ptr es:[bx], 0xdc80
@@ -20467,17 +21179,18 @@ loc_DC16:
 2:DC45  9ace17fbda           lcall 0xdafb, 0x17ce  ; operator_delete@s1:17CE
 2:DC4A  83c404               add sp, 4
 2:DC4D  66ff7606             push dword ptr [bp + 6]
-2:DC51  9a801d22da           lcall 0xda22, 0x1d80  ; sub_s3:1D80
+2:DC51  9a801d22da           lcall 0xda22, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:DC56  c9                   leave
 2:DC57  ca0400               retf 4
 
-; ---------------- sub_s2:DC5A FAR size=54 callers=0
+; ---------------- SysPalette::scalar_dtor@s2:DC5A FAR size=54 callers=0
+;   deleting destructor
 2:DC5A  55                   push bp
 2:DC5B  8bec                 mov bp, sp
 2:DC5D  66ff7606             push dword ptr [bp + 6]
 2:DC61  90                   nop
 2:DC62  0e                   push cs
-2:DC63  e8c6ff               call 0xdc2c  ; sub_s2:DC2C
+2:DC63  e8c6ff               call 0xdc2c  ; SysPalette::~SysPalette@s2:DC2C
 2:DC66  f6460a01             test byte ptr [bp + 0xa], 1
 2:DC6A  7409                 je 0xdc75
 2:DC6C  66ff7606             push dword ptr [bp + 6]
@@ -20490,7 +21203,8 @@ loc_DC75:
 2:DC7F  db 90 5a dc 3c dc f2 1d 8a dc ce 1d 8e dc d4 1d 54
 2:DC8F  db dc
 
-; ---------------- sub_s2:DC90 FAR size=76 callers=2
+; ---------------- TradeAgreement::TradeAgreement@s2:DC90 FAR size=76 callers=2
+;   an agreement between two colonies (0x14 bytes)
 2:DC90  c8040000             enter 4, 0
 2:DC94  c45e06               les bx, ptr [bp + 6]
 2:DC97  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -20511,7 +21225,8 @@ loc_DC75:
 2:DCD8  c9                   leave
 2:DCD9  ca0c00               retf 0xc
 
-; ---------------- sub_s2:DCDC FAR size=66 callers=1
+; ---------------- TradeAgreement::TradeAgreement()@s2:DCDC FAR size=66 callers=1
+;   empty agreement (loader)
 2:DCDC  c8040000             enter 4, 0
 2:DCE0  c45e06               les bx, ptr [bp + 6]
 2:DCE3  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -20530,7 +21245,8 @@ loc_DC75:
 2:DD1A  c9                   leave
 2:DD1B  ca0400               retf 4
 
-; ---------------- sub_s2:DD1E size=48 callers=0
+; ---------------- TradeAgreement::scalar_dtor@s2:DD1E size=48 callers=0
+;   deleting destructor
 2:DD1E  c8080000             enter 8, 0
 2:DD22  c45e06               les bx, ptr [bp + 6]
 2:DD25  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -20546,11 +21262,12 @@ loc_DD3F:
 2:DD46  ca0600               retf 6
 2:DD49  db 90 1e dd 2e dd
 
-; ---------------- sub_s2:DD4E FAR size=124 callers=1
+; ---------------- TradeAgreements::TradeAgreements@s2:DD4E FAR size=124 callers=1
+;   registry 0x3B: trade agreements (list at +0x0A)
 2:DD4E  c8040000             enter 4, 0
 2:DD52  66ff7608             push dword ptr [bp + 8]
 2:DD56  ff7606               push word ptr [bp + 6]
-2:DD59  9a481d86dc           lcall 0xdc86, 0x1d48  ; sub_s3:1D48
+2:DD59  9a481d86dc           lcall 0xdc86, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:DD5E  c45e06               les bx, ptr [bp + 6]
 2:DD61  662bc0               sub eax, eax
 2:DD64  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -20571,7 +21288,7 @@ loc_DD3F:
 2:DDA1  50                   push ax
 2:DDA2  90                   nop
 2:DDA3  0e                   push cs
-2:DDA4  e8a379               call 0x1574a  ; sub_s2:574A
+2:DDA4  e8a379               call 0x1574a  ; List::List@s2:574A
 2:DDA7  c45e06               les bx, ptr [bp + 6]
 2:DDAA  2689470a             mov word ptr es:[bx + 0xa], ax
 2:DDAE  2689570c             mov word ptr es:[bx + 0xc], dx
@@ -20585,7 +21302,8 @@ loc_DDC0:
 2:DDC6  c9                   leave
 2:DDC7  ca0600               retf 6
 
-; ---------------- sub_s2:DDCA FAR size=142 callers=1
+; ---------------- TradeAgreements::~TradeAgreements@s2:DDCA FAR size=142 callers=1
+;   dtor
 2:DDCA  c80c0000             enter 0xc, 0
 2:DDCE  56                   push si
 2:DDCF  c45e06               les bx, ptr [bp + 6]
@@ -20638,13 +21356,14 @@ loc_DE37:
 2:DE41  9ace1792dd           lcall 0xdd92, 0x17ce  ; operator_delete@s1:17CE
 2:DE46  83c404               add sp, 4
 2:DE49  66ff7606             push dword ptr [bp + 6]
-2:DE4D  9a801d5cdd           lcall 0xdd5c, 0x1d80  ; sub_s3:1D80
+2:DE4D  9a801d5cdd           lcall 0xdd5c, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:DE52  5e                   pop si
 2:DE53  c9                   leave
 2:DE54  ca0400               retf 4
 2:DE57  db 00
 
-; ---------------- sub_s2:DE58 FAR size=242 callers=1
+; ---------------- TradeAgreements::propose@s2:DE58 FAR size=242 callers=1
+;   adds a proposed agreement
 2:DE58  c8120000             enter 0x12, 0
 2:DE5C  c45e06               les bx, ptr [bp + 6]
 2:DE5F  6626ff770a           push dword ptr es:[bx + 0xa]
@@ -20706,7 +21425,7 @@ loc_DEDB:
 2:DF00  50                   push ax
 2:DF01  90                   nop
 2:DF02  0e                   push cs
-2:DF03  e88afd               call 0xdc90  ; sub_s2:DC90
+2:DF03  e88afd               call 0xdc90  ; TradeAgreement::TradeAgreement@s2:DC90
 2:DF06  8ec2                 mov es, dx
 2:DF08  8bd8                 mov bx, ax
 2:DF0A  eb04                 jmp 0xdf10
@@ -20733,7 +21452,8 @@ loc_DF46:
 2:DF46  c9                   leave
 2:DF47  ca0c00               retf 0xc
 
-; ---------------- sub_s2:DF4A FAR size=92 callers=1
+; ---------------- TradeAgreements::checkLapses@s2:DF4A FAR size=92 callers=1
+;   SCEndSim: every agreement in state 2 or 3 is tested (result unused)
 2:DF4A  c80c0000             enter 0xc, 0
 2:DF4E  c45e06               les bx, ptr [bp + 6]
 2:DF51  6626ff770a           push dword ptr es:[bx + 0xa]
@@ -20766,7 +21486,7 @@ loc_DF8D:
 2:DF8F  66ff7606             push dword ptr [bp + 6]
 2:DF93  90                   nop
 2:DF94  0e                   push cs
-2:DF95  e80c0a               call 0xe9a4  ; sub_s2:E9A4
+2:DF95  e80c0a               call 0xe9a4  ; TradeAgreement::hasLapsed@s2:E9A4
 2:DF98  0bc0                 or ax, ax
 2:DF9A  74cc                 je 0xdf68
 2:DF9C  c45ef4               les bx, ptr [bp - 0xc]
@@ -20776,7 +21496,8 @@ loc_DFA2:
 2:DFA2  c9                   leave
 2:DFA3  ca0400               retf 4
 
-; ---------------- sub_s2:DFA6 FAR size=118 callers=2
+; ---------------- TradeAgreements::countFor@s2:DFA6 FAR size=118 callers=2
+;   agreements of a colony
 2:DFA6  c80c0000             enter 0xc, 0
 2:DFAA  c45e06               les bx, ptr [bp + 6]
 2:DFAD  6626ff770a           push dword ptr es:[bx + 0xa]
@@ -20824,7 +21545,8 @@ loc_E016:
 2:E018  c9                   leave
 2:E019  ca0c00               retf 0xc
 
-; ---------------- sub_s2:E01C FAR size=28 callers=1
+; ---------------- TradeOffer::set@s2:E01C FAR size=28 callers=1
+;   stores two dwords
 2:E01C  55                   push bp
 2:E01D  8bec                 mov bp, sp
 2:E01F  668b460e             mov eax, dword ptr [bp + 0xe]
@@ -20835,7 +21557,8 @@ loc_E016:
 2:E034  c9                   leave
 2:E035  ca0c00               retf 0xc
 
-; ---------------- sub_s2:E038 FAR size=38 callers=1
+; ---------------- TradeOffer::get@s2:E038 FAR size=38 callers=1
+;   returns two dwords
 2:E038  55                   push bp
 2:E039  8bec                 mov bp, sp
 2:E03B  c45e06               les bx, ptr [bp + 6]
@@ -20850,14 +21573,15 @@ loc_E016:
 2:E05A  ca0c00               retf 0xc
 2:E05D  db 00
 
-; ---------------- sub_s2:E05E FAR size=174 callers=1
+; ---------------- TradeAgreements::schedule@s2:E05E FAR size=174 callers=1
+;   queues the trade step
 2:E05E  c82c0100             enter 0x12c, 0
 2:E062  66ff7610             push dword ptr [bp + 0x10]
 2:E066  66ff760c             push dword ptr [bp + 0xc]
 2:E06A  66ff7606             push dword ptr [bp + 6]
 2:E06E  90                   nop
 2:E06F  0e                   push cs
-2:E070  e85908               call 0xe8cc  ; sub_s2:E8CC
+2:E070  e85908               call 0xe8cc  ; TradeAgreements::between@s2:E8CC
 2:E073  8946fc               mov word ptr [bp - 4], ax
 2:E076  8956fe               mov word ptr [bp - 2], dx
 2:E079  0bd0                 or dx, ax
@@ -20903,7 +21627,7 @@ loc_E0D3:
 2:E0E1  8d86e0fe             lea ax, [bp - 0x120]
 2:E0E5  16                   push ss
 2:E0E6  50                   push ax
-2:E0E7  9abee2fae0           lcall 0xe0fa, 0xe2be  ; sub_s7:E2BE
+2:E0E7  9abee2fae0           lcall 0xe0fa, 0xe2be  ; SCTradeSetup::SCTradeSetup@s7:E2BE
 2:E0EC  8d86e0fe             lea ax, [bp - 0x120]
 2:E0F0  16                   push ss
 2:E0F1  50                   push ax
@@ -20915,14 +21639,15 @@ loc_E108:
 2:E108  c9                   leave
 2:E109  ca0e00               retf 0xe
 
-; ---------------- sub_s2:E10C FAR size=88 callers=1
+; ---------------- TradeAgreements::accept@s2:E10C FAR size=88 callers=1
+;   accepts or refuses an agreement
 2:E10C  c8040000             enter 4, 0
 2:E110  66ff760e             push dword ptr [bp + 0xe]
 2:E114  66ff760a             push dword ptr [bp + 0xa]
 2:E118  66ff7606             push dword ptr [bp + 6]
 2:E11C  90                   nop
 2:E11D  0e                   push cs
-2:E11E  e8ab07               call 0xe8cc  ; sub_s2:E8CC
+2:E11E  e8ab07               call 0xe8cc  ; TradeAgreements::between@s2:E8CC
 2:E121  8946fc               mov word ptr [bp - 4], ax
 2:E124  8956fe               mov word ptr [bp - 2], dx
 2:E127  0bd0                 or dx, ax
@@ -20941,7 +21666,7 @@ loc_E13C:
 2:E140  66ff7606             push dword ptr [bp + 6]
 2:E144  90                   nop
 2:E145  0e                   push cs
-2:E146  e85b08               call 0xe9a4  ; sub_s2:E9A4
+2:E146  e85b08               call 0xe9a4  ; TradeAgreement::hasLapsed@s2:E9A4
 2:E149  c9                   leave
 2:E14A  ca0c00               retf 0xc
 2:E14D  db 90
@@ -20961,7 +21686,8 @@ loc_E15D:
 2:E160  ca0c00               retf 0xc
 2:E163  db 00
 
-; ---------------- sub_s2:E164 FAR size=320 callers=1
+; ---------------- TradeAgreements::make@s2:E164 FAR size=320 callers=1
+;   creates an agreement and schedules the trade step
 2:E164  c82a0100             enter 0x12a, 0
 2:E168  c45e06               les bx, ptr [bp + 6]
 2:E16B  6626ff7716           push dword ptr es:[bx + 0x16]
@@ -20970,7 +21696,7 @@ loc_E15D:
 2:E176  53                   push bx
 2:E177  90                   nop
 2:E178  0e                   push cs
-2:E179  e85007               call 0xe8cc  ; sub_s2:E8CC
+2:E179  e85007               call 0xe8cc  ; TradeAgreements::between@s2:E8CC
 2:E17C  8946fc               mov word ptr [bp - 4], ax
 2:E17F  8956fe               mov word ptr [bp - 2], dx
 2:E182  0bd0                 or dx, ax
@@ -20981,7 +21707,7 @@ loc_E15D:
 2:E191  53                   push bx
 2:E192  90                   nop
 2:E193  0e                   push cs
-2:E194  e8bb06               call 0xe852  ; sub_s2:E852
+2:E194  e8bb06               call 0xe852  ; colonyByName@s2:E852
 2:E197  8986e2fe             mov word ptr [bp - 0x11e], ax
 2:E19B  8996e4fe             mov word ptr [bp - 0x11c], dx
 2:E19F  c45e06               les bx, ptr [bp + 6]
@@ -20990,7 +21716,7 @@ loc_E15D:
 2:E1A8  53                   push bx
 2:E1A9  90                   nop
 2:E1AA  0e                   push cs
-2:E1AB  e8a406               call 0xe852  ; sub_s2:E852
+2:E1AB  e8a406               call 0xe852  ; colonyByName@s2:E852
 2:E1AE  8986defe             mov word ptr [bp - 0x122], ax
 2:E1B2  8996e0fe             mov word ptr [bp - 0x120], dx
 2:E1B6  6a14                 push 0x14
@@ -21006,7 +21732,7 @@ loc_E15D:
 2:E1DA  50                   push ax
 2:E1DB  90                   nop
 2:E1DC  0e                   push cs
-2:E1DD  e8b0fa               call 0xdc90  ; sub_s2:DC90
+2:E1DD  e8b0fa               call 0xdc90  ; TradeAgreement::TradeAgreement@s2:DC90
 2:E1E0  8ec2                 mov es, dx
 2:E1E2  8bd8                 mov bx, ax
 2:E1E4  eb04                 jmp 0xe1ea
@@ -21059,7 +21785,7 @@ loc_E24C:
 2:E25B  8d86eafe             lea ax, [bp - 0x116]
 2:E25F  16                   push ss
 2:E260  50                   push ax
-2:E261  9abee26ee2           lcall 0xe26e, 0xe2be  ; sub_s7:E2BE
+2:E261  9abee26ee2           lcall 0xe26e, 0xe2be  ; SCTradeSetup::SCTradeSetup@s7:E2BE
 2:E266  66ff364857           push dword ptr [0x5748]  ; g_sim
 2:E26B  9a268391e2           lcall 0xe291, 0x8326  ; Sim::getTurnNumber@s7:8326
 2:E270  050100               add ax, 1
@@ -21071,7 +21797,7 @@ loc_E24C:
 2:E283  50                   push ax
 2:E284  66ffb6e6fe           push dword ptr [bp - 0x11a]
 2:E289  66ff364857           push dword ptr [0x5748]  ; g_sim
-2:E28E  9a728385e0           lcall 0xe085, 0x8372  ; sub_s7:8372
+2:E28E  9a728385e0           lcall 0xe085, 0x8372  ; Sim::schedule@s7:8372
 2:E293  c786eafe9a38         mov word ptr [bp - 0x116], 0x389a
 2:E299  c786ecfe06e1         mov word ptr [bp - 0x114], 0xe106  ; SEGMENT s2:0000
 loc_E29F:
@@ -21079,7 +21805,8 @@ loc_E29F:
 2:E2A0  ca0400               retf 4
 2:E2A3  db 00
 
-; ---------------- sub_s2:E2A4 FAR size=124 callers=1
+; ---------------- TradeAgreements::statusText@s2:E2A4 FAR size=124 callers=1
+;   agreement status string
 2:E2A4  c8080000             enter 8, 0
 2:E2A8  66ff760a             push dword ptr [bp + 0xa]
 2:E2AC  683105               push 0x531
@@ -21087,13 +21814,13 @@ loc_E29F:
 2:E2B4  9a7e8450de           lcall 0xde50, 0x847e  ; LoadStringRes@s3:847E
 2:E2B9  52                   push dx
 2:E2BA  50                   push ax
-2:E2BB  9a7a3dd2e2           lcall 0xe2d2, 0x3d7a  ; sub_s1:3D7A
+2:E2BB  9a7a3dd2e2           lcall 0xe2d2, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E2C0  83c408               add sp, 8
 2:E2C3  0bc0                 or ax, ax
 2:E2C5  7414                 je 0xe2db
 2:E2C7  66ff760a             push dword ptr [bp + 0xa]
 2:E2CB  66ff760e             push dword ptr [bp + 0xe]
-2:E2CF  9a7a3dbbe1           lcall 0xe1bb, 0x3d7a  ; sub_s1:3D7A
+2:E2CF  9a7a3dbbe1           lcall 0xe1bb, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E2D4  83c408               add sp, 8
 2:E2D7  0bc0                 or ax, ax
 2:E2D9  7507                 jne 0xe2e2
@@ -21108,7 +21835,7 @@ loc_E2E2:
 2:E2EA  66ff7606             push dword ptr [bp + 6]
 2:E2EE  90                   nop
 2:E2EF  0e                   push cs
-2:E2F0  e8d905               call 0xe8cc  ; sub_s2:E8CC
+2:E2F0  e8d905               call 0xe8cc  ; TradeAgreements::between@s2:E8CC
 2:E2F3  8946f8               mov word ptr [bp - 8], ax
 2:E2F6  8956fa               mov word ptr [bp - 6], dx
 2:E2F9  0bd0                 or dx, ax
@@ -21134,7 +21861,8 @@ loc_E318:
 2:E31C  ca0c00               retf 0xc
 2:E31F  db 00
 
-; ---------------- sub_s2:E320 FAR size=204 callers=2
+; ---------------- TradeAgreements::diplomacyText@s2:E320 FAR size=204 callers=2
+;   strings 1091..1094: "No diplomatic contact" ...
 2:E320  c8120000             enter 0x12, 0
 2:E324  c45e06               les bx, ptr [bp + 6]
 2:E327  66268b471e           mov eax, dword ptr es:[bx + 0x1e]
@@ -21149,13 +21877,13 @@ loc_E318:
 2:E34E  9a7e8480e3           lcall 0xe380, 0x847e  ; LoadStringRes@s3:847E
 2:E353  52                   push dx
 2:E354  50                   push ax
-2:E355  9a7a3d6ce3           lcall 0xe36c, 0x3d7a  ; sub_s1:3D7A
+2:E355  9a7a3d6ce3           lcall 0xe36c, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E35A  83c408               add sp, 8
 2:E35D  0bc0                 or ax, ax
 2:E35F  7414                 je 0xe375
 2:E361  66ff760a             push dword ptr [bp + 0xa]
 2:E365  66ff760e             push dword ptr [bp + 0xe]
-2:E369  9a7a3dbee2           lcall 0xe2be, 0x3d7a  ; sub_s1:3D7A
+2:E369  9a7a3dbee2           lcall 0xe2be, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E36E  83c408               add sp, 8
 2:E371  0bc0                 or ax, ax
 2:E373  7521                 jne 0xe396
@@ -21163,7 +21891,7 @@ loc_E375:
 2:E375  684304               push 0x443
 loc_E378:
 2:E378  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-2:E37D  9aac84b7e2           lcall 0xe2b7, 0x84ac  ; sub_s3:84AC
+2:E37D  9aac84b7e2           lcall 0xe2b7, 0x84ac  ; LoadStringDup@s3:84AC
 2:E382  c45e06               les bx, ptr [bp + 6]
 2:E385  2689471e             mov word ptr es:[bx + 0x1e], ax
 2:E389  26895720             mov word ptr es:[bx + 0x20], dx
@@ -21177,7 +21905,7 @@ loc_E396:
 2:E39E  66ff7606             push dword ptr [bp + 6]
 2:E3A2  90                   nop
 2:E3A3  0e                   push cs
-2:E3A4  e82505               call 0xe8cc  ; sub_s2:E8CC
+2:E3A4  e82505               call 0xe8cc  ; TradeAgreements::between@s2:E8CC
 2:E3A7  8946f8               mov word ptr [bp - 8], ax
 2:E3AA  8956fa               mov word ptr [bp - 6], dx
 2:E3AD  0bd0                 or dx, ax
@@ -21212,7 +21940,8 @@ loc_E3E4:
 2:E3E9  ebec                 jmp 0xe3d7
 2:E3EB  db 00
 
-; ---------------- sub_s2:E3EC FAR size=410 callers=2
+; ---------------- TradeAgreements::colonyLists@s2:E3EC FAR size=410 callers=2
+;   the colonies not of player 2, and the others
 2:E3EC  c82a0000             enter 0x2a, 0
 2:E3F0  56                   push si
 2:E3F1  c45e06               les bx, ptr [bp + 6]
@@ -21244,7 +21973,7 @@ loc_E41C:
 2:E433  666a05               push 5
 2:E436  ff76e4               push word ptr [bp - 0x1c]
 2:E439  50                   push ax
-2:E43A  9ad81c00e5           lcall 0xe500, 0x1cd8  ; sub_s7:1CD8
+2:E43A  9ad81c00e5           lcall 0xe500, 0x1cd8  ; HandleList::HandleList@s7:1CD8
 2:E43F  eb04                 jmp 0xe445
 2:E441  db 90
 loc_E442:
@@ -21313,7 +22042,7 @@ loc_E4DF:
 2:E4F6  666a05               push 5
 2:E4F9  ff76e4               push word ptr [bp - 0x1c]
 2:E4FC  50                   push ax
-2:E4FD  9ad81cfee1           lcall 0xe1fe, 0x1cd8  ; sub_s7:1CD8
+2:E4FD  9ad81cfee1           lcall 0xe1fe, 0x1cd8  ; HandleList::HandleList@s7:1CD8
 2:E502  eb03                 jmp 0xe507
 loc_E504:
 2:E504  33c0                 xor ax, ax
@@ -21364,7 +22093,8 @@ loc_E564:
 2:E582  c9                   leave
 2:E583  ca0c00               retf 0xc
 
-; ---------------- sub_s2:E586 FAR size=84 callers=3
+; ---------------- colonyNameCopy@s2:E586 FAR size=84 callers=3
+;   a colony's name in new memory
 2:E586  c8080000             enter 8, 0
 2:E58A  66ff760a             push dword ptr [bp + 0xa]
 2:E58E  66ff36e265           push dword ptr [0x65e2]  ; g_objectDb
@@ -21385,7 +22115,7 @@ loc_E5AA:
 2:E5B5  8946f8               mov word ptr [bp - 8], ax
 2:E5B8  8956fa               mov word ptr [bp - 6], dx
 2:E5BB  66ff76fc             push dword ptr [bp - 4]
-2:E5BF  9a284d3fd4           lcall 0xd43f, 0x4d28  ; sub_s8:4D28
+2:E5BF  9a284d3fd4           lcall 0xd43f, 0x4d28  ; Colony::name@s8:4D28
 2:E5C4  52                   push dx
 2:E5C5  50                   push ax
 2:E5C6  66ff76f8             push dword ptr [bp - 8]
@@ -21396,7 +22126,8 @@ loc_E5AA:
 2:E5D6  ca0800               retf 8
 2:E5D9  db 00
 
-; ---------------- sub_s2:E5DA FAR size=308 callers=0
+; ---------------- TradeAgreements::save@s2:E5DA FAR size=308 callers=0
+;   chunk 0x14
 2:E5DA  c82e0000             enter 0x2e, 0
 2:E5DE  6a14                 push 0x14
 2:E5E0  66ff760a             push dword ptr [bp + 0xa]
@@ -21528,7 +22259,8 @@ loc_E706:
 2:E70A  ca0800               retf 8
 2:E70D  db 00
 
-; ---------------- sub_s2:E70E FAR size=324 callers=0
+; ---------------- TradeAgreements::load@s2:E70E FAR size=324 callers=0
+;   chunk 0x14
 2:E70E  c8360000             enter 0x36, 0
 2:E712  833e120302           cmp word ptr [0x312], 2
 2:E717  7d07                 jge 0xe720
@@ -21541,7 +22273,7 @@ loc_E720:
 2:E722  66ff760a             push dword ptr [bp + 0xa]
 2:E726  90                   nop
 2:E727  0e                   push cs
-2:E728  e8d395               call 0x7cfe  ; sub_s2:7CFE
+2:E728  e8d395               call 0x7cfe  ; Save_findChunkTag@s2:7CFE
 2:E72B  0bc0                 or ax, ax
 2:E72D  7507                 jne 0xe736
 loc_E72F:
@@ -21666,10 +22398,11 @@ loc_E826:
 2:E849  50                   push ax
 2:E84A  90                   nop
 2:E84B  0e                   push cs
-2:E84C  e88df4               call 0xdcdc  ; sub_s2:DCDC
+2:E84C  e88df4               call 0xdcdc  ; TradeAgreement::TradeAgreement()@s2:DCDC
 2:E84F  e913ff               jmp 0xe765
 
-; ---------------- sub_s2:E852 FAR size=122 callers=6
+; ---------------- colonyByName@s2:E852 FAR size=122 callers=6
+;   name -> colony
 2:E852  c8260000             enter 0x26, 0
 2:E856  666800000004         push 0x4000000
 2:E85C  6a01                 push 1
@@ -21689,11 +22422,11 @@ loc_E870:
 2:E882  741b                 je 0xe89f
 2:E884  ff76ec               push word ptr [bp - 0x14]
 2:E887  50                   push ax
-2:E888  9a284dc2e5           lcall 0xe5c2, 0x4d28  ; sub_s8:4D28
+2:E888  9a284dc2e5           lcall 0xe5c2, 0x4d28  ; Colony::name@s8:4D28
 2:E88D  52                   push dx
 2:E88E  50                   push ax
 2:E88F  66ff760a             push dword ptr [bp + 0xa]
-2:E893  9a7a3d35e8           lcall 0xe835, 0x3d7a  ; sub_s1:3D7A
+2:E893  9a7a3d35e8           lcall 0xe835, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E898  83c408               add sp, 8
 2:E89B  0bc0                 or ax, ax
 2:E89D  75d1                 jne 0xe870
@@ -21714,7 +22447,8 @@ loc_E8BB:
 2:E8C8  c9                   leave
 2:E8C9  ca0800               retf 8
 
-; ---------------- sub_s2:E8CC FAR size=216 callers=5
+; ---------------- TradeAgreements::between@s2:E8CC FAR size=216 callers=5
+;   the agreement of two colony names
 2:E8CC  c81c0000             enter 0x1c, 0
 2:E8D0  c45e06               les bx, ptr [bp + 6]
 2:E8D3  6626ff770a           push dword ptr es:[bx + 0xa]
@@ -21748,35 +22482,35 @@ loc_E8E2:
 2:E922  8946ec               mov word ptr [bp - 0x14], ax
 2:E925  8956ee               mov word ptr [bp - 0x12], dx
 2:E928  66ff76f0             push dword ptr [bp - 0x10]
-2:E92C  9a284d3ee9           lcall 0xe93e, 0x4d28  ; sub_s8:4D28
+2:E92C  9a284d3ee9           lcall 0xe93e, 0x4d28  ; Colony::name@s8:4D28
 2:E931  8946e8               mov word ptr [bp - 0x18], ax
 2:E934  8956ea               mov word ptr [bp - 0x16], dx
 2:E937  66ff76ec             push dword ptr [bp - 0x14]
-2:E93B  9a284d8be8           lcall 0xe88b, 0x4d28  ; sub_s8:4D28
+2:E93B  9a284d8be8           lcall 0xe88b, 0x4d28  ; Colony::name@s8:4D28
 2:E940  8946e4               mov word ptr [bp - 0x1c], ax
 2:E943  8956e6               mov word ptr [bp - 0x1a], dx
 2:E946  66ff76e8             push dword ptr [bp - 0x18]
 2:E94A  66ff760e             push dword ptr [bp + 0xe]
-2:E94E  9a7a3d65e9           lcall 0xe965, 0x3d7a  ; sub_s1:3D7A
+2:E94E  9a7a3d65e9           lcall 0xe965, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E953  83c408               add sp, 8
 2:E956  0bc0                 or ax, ax
 2:E958  7514                 jne 0xe96e
 2:E95A  66ff76e4             push dword ptr [bp - 0x1c]
 2:E95E  66ff760a             push dword ptr [bp + 0xa]
-2:E962  9a7a3d79e9           lcall 0xe979, 0x3d7a  ; sub_s1:3D7A
+2:E962  9a7a3d79e9           lcall 0xe979, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E967  83c408               add sp, 8
 2:E96A  0bc0                 or ax, ax
 2:E96C  742c                 je 0xe99a
 loc_E96E:
 2:E96E  66ff76e8             push dword ptr [bp - 0x18]
 2:E972  66ff760a             push dword ptr [bp + 0xa]
-2:E976  9a7a3d8fe9           lcall 0xe98f, 0x3d7a  ; sub_s1:3D7A
+2:E976  9a7a3d8fe9           lcall 0xe98f, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E97B  83c408               add sp, 8
 2:E97E  0bc0                 or ax, ax
 2:E980  0f855eff             jne 0xe8e2
 2:E984  66ff76e4             push dword ptr [bp - 0x1c]
 2:E988  66ff760e             push dword ptr [bp + 0xe]
-2:E98C  9a7a3d96e8           lcall 0xe896, 0x3d7a  ; sub_s1:3D7A
+2:E98C  9a7a3d96e8           lcall 0xe896, 0x3d7a  ; _fstrcmp@s1:3D7A
 2:E991  83c408               add sp, 8
 2:E994  0bc0                 or ax, ax
 2:E996  0f8548ff             jne 0xe8e2
@@ -21786,7 +22520,8 @@ loc_E99A:
 2:E9A0  c9                   leave
 2:E9A1  ca0c00               retf 0xc
 
-; ---------------- sub_s2:E9A4 FAR size=226 callers=2
+; ---------------- TradeAgreement::hasLapsed@s2:E9A4 FAR size=226 callers=2
+;   has an agreement in state 2 or 3 run out
 2:E9A4  c8160000             enter 0x16, 0
 2:E9A8  66ff364857           push dword ptr [0x5748]  ; g_sim
 2:E9AD  9a26833de4           lcall 0xe43d, 0x8326  ; Sim::getTurnNumber@s7:8326
@@ -21797,7 +22532,7 @@ loc_E99A:
 2:E9C0  8956fe               mov word ptr [bp - 2], dx
 2:E9C3  6a02                 push 2
 2:E9C5  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:E9CA  9aba2051e3           lcall 0xe351, 0x20ba  ; sub_s3:20BA
+2:E9CA  9aba2051e3           lcall 0xe351, 0x20ba  ; Registry_get@s3:20BA
 2:E9CF  a1ae13               mov ax, word ptr [0x13ae]
 2:E9D2  8946f6               mov word ptr [bp - 0xa], ax
 2:E9D5  66c746f200000000     mov dword ptr [bp - 0xe], 0
@@ -21854,7 +22589,7 @@ loc_EA3E:
 2:EA3E  666801006400         push 0x640001
 2:EA44  90                   nop
 2:EA45  0e                   push cs
-2:EA46  e8e576               call 0x1612e  ; sub_s2:612E
+2:EA46  e8e576               call 0x1612e  ; random@s2:612E
 2:EA49  83c404               add sp, 4
 2:EA4C  8946f0               mov word ptr [bp - 0x10], ax
 2:EA4F  c746ee0000           mov word ptr [bp - 0x12], 0
@@ -21884,13 +22619,14 @@ loc_EA80:
 2:EA82  c9                   leave
 2:EA83  ca0800               retf 8
 
-; ---------------- sub_s2:EA86 FAR size=54 callers=0
+; ---------------- TradeAgreements::scalar_dtor@s2:EA86 FAR size=54 callers=0
+;   deleting destructor
 2:EA86  55                   push bp
 2:EA87  8bec                 mov bp, sp
 2:EA89  66ff7606             push dword ptr [bp + 6]
 2:EA8D  90                   nop
 2:EA8E  0e                   push cs
-2:EA8F  e838f3               call 0xddca  ; sub_s2:DDCA
+2:EA8F  e838f3               call 0xddca  ; TradeAgreements::~TradeAgreements@s2:DDCA
 2:EA92  f6460a01             test byte ptr [bp + 0xa], 1
 2:EA96  7409                 je 0xeaa1
 2:EA98  66ff7606             push dword ptr [bp + 6]
@@ -21903,12 +22639,13 @@ loc_EAA1:
 2:EAAB  db 90 86 ea b6 ea f2 1d cd e9 da e5 ba ea 0e e7 c3
 2:EABB  db e8
 
-; ---------------- sub_s2:EABC FAR size=56 callers=1
+; ---------------- RegObj05::RegObj05@s2:EABC FAR size=56 callers=1
+;   registry 0x05: a word and a position
 2:EABC  55                   push bp
 2:EABD  8bec                 mov bp, sp
 2:EABF  66ff7608             push dword ptr [bp + 8]
 2:EAC3  ff7606               push word ptr [bp + 6]
-2:EAC6  9a481db2ea           lcall 0xeab2, 0x1d48  ; sub_s3:1D48
+2:EAC6  9a481db2ea           lcall 0xeab2, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:EACB  c45e06               les bx, ptr [bp + 6]
 2:EACE  26c7470a0000         mov word ptr es:[bx + 0xa], 0
 2:EAD4  8d470c               lea ax, [bx + 0xc]
@@ -21916,7 +22653,7 @@ loc_EAA1:
 2:EAD8  50                   push ax
 2:EAD9  90                   nop
 2:EADA  0e                   push cs
-2:EADB  e85a53               call 0x13e38  ; sub_s2:3E38
+2:EADB  e85a53               call 0x13e38  ; Pos3::Pos3@s2:3E38
 2:EADE  c45e06               les bx, ptr [bp + 6]
 2:EAE1  26c7071aeb           mov word ptr es:[bx], 0xeb1a
 2:EAE6  26c74702aeea         mov word ptr es:[bx + 2], 0xeaae  ; SEGMENT s2:0000
@@ -21925,10 +22662,11 @@ loc_EAA1:
 2:EAF0  c9                   leave
 2:EAF1  ca0600               retf 6
 
-; ---------------- sub_s2:EAF4 size=54 callers=0
+; ---------------- RegObj05::scalar_dtor@s2:EAF4 size=54 callers=0
+;   deleting destructor
 2:EAF4  c8040000             enter 4, 0
 2:EAF8  66ff7606             push dword ptr [bp + 6]
-2:EAFC  9a801dc9ea           lcall 0xeac9, 0x1d80  ; sub_s3:1D80
+2:EAFC  9a801dc9ea           lcall 0xeac9, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:EB01  f6460a01             test byte ptr [bp + 0xa], 1
 2:EB05  7409                 je 0xeb10
 2:EB07  66ff7606             push dword ptr [bp + 6]
@@ -21940,12 +22678,13 @@ loc_EB10:
 2:EB17  ca0600               retf 6
 2:EB1A  db f4 ea ea ea f2 1d 24 eb ce 1d 28 eb d4 1d ff ea
 
-; ---------------- sub_s2:EB2A FAR size=50 callers=1
+; ---------------- MoraleCrisis::MoraleCrisis@s2:EB2A FAR size=50 callers=1
+;   registry 0x2C: the morale crisis (Editor Interview)
 2:EB2A  55                   push bp
 2:EB2B  8bec                 mov bp, sp
 2:EB2D  66ff7608             push dword ptr [bp + 8]
 2:EB31  ff7606               push word ptr [bp + 6]
-2:EB34  9a481d20eb           lcall 0xeb20, 0x1d48  ; sub_s3:1D48
+2:EB34  9a481d20eb           lcall 0xeb20, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:EB39  c45e06               les bx, ptr [bp + 6]
 2:EB3C  662bc0               sub eax, eax
 2:EB3F  2689470a             mov word ptr es:[bx + 0xa], ax
@@ -21958,7 +22697,8 @@ loc_EB10:
 2:EB58  ca0600               retf 6
 2:EB5B  db 00
 
-; ---------------- sub_s2:EB5C FAR size=18 callers=1
+; ---------------- MoraleCrisis::answerVoices@s2:EB5C FAR size=18 callers=1
+;   voice list of answer n (DGROUP 0xD0E + 16n)
 2:EB5C  55                   push bp
 2:EB5D  8bec                 mov bp, sp
 2:EB5F  8b460a               mov ax, word ptr [bp + 0xa]
@@ -21968,11 +22708,13 @@ loc_EB10:
 2:EB6A  c9                   leave
 2:EB6B  ca0600               retf 6
 
-; ---------------- sub_s2:EB6E FAR size=6 callers=1
+; ---------------- MoraleCrisis::answerCount@s2:EB6E FAR size=6 callers=1
+;   5
 2:EB6E  b80500               mov ax, 5
 2:EB71  ca0400               retf 4
 
-; ---------------- sub_s2:EB74 FAR size=102 callers=2
+; ---------------- MoraleCrisis::setResponse@s2:EB74 FAR size=102 callers=2
+;   stores the player's answer 1..5
 2:EB74  c80c0000             enter 0xc, 0
 2:EB78  56                   push si
 2:EB79  8b460a               mov ax, word ptr [bp + 0xa]
@@ -21982,10 +22724,10 @@ loc_EB10:
 2:EB85  744e                 je 0xebd5
 2:EB87  6a03                 push 3
 2:EB89  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:EB8E  9aba2098eb           lcall 0xeb98, 0x20ba  ; sub_s3:20BA
+2:EB8E  9aba2098eb           lcall 0xeb98, 0x20ba  ; Registry_get@s3:20BA
 2:EB93  52                   push dx
 2:EB94  50                   push ax
-2:EB95  9a12c337eb           lcall 0xeb37, 0xc312  ; sub_s3:C312
+2:EB95  9a12c337eb           lcall 0xeb37, 0xc312  ; currentTurn@s3:C312
 2:EB9A  8946f8               mov word ptr [bp - 8], ax
 2:EB9D  8956fa               mov word ptr [bp - 6], dx
 2:EBA0  c45e06               les bx, ptr [bp + 6]
@@ -22011,10 +22753,11 @@ loc_EBD5:
 2:EBD6  c9                   leave
 2:EBD7  ca0600               retf 6
 
-; ---------------- sub_s2:EBDA size=54 callers=0
+; ---------------- MoraleCrisis::scalar_dtor@s2:EBDA size=54 callers=0
+;   deleting destructor
 2:EBDA  c8040000             enter 4, 0
 2:EBDE  66ff7606             push dword ptr [bp + 6]
-2:EBE2  9a801d91eb           lcall 0xeb91, 0x1d80  ; sub_s3:1D80
+2:EBE2  9a801d91eb           lcall 0xeb91, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:EBE7  f6460a01             test byte ptr [bp + 0xa], 1
 2:EBEB  7409                 je 0xebf6
 2:EBED  66ff7606             push dword ptr [bp + 6]
@@ -22026,12 +22769,13 @@ loc_EBF6:
 2:EBFD  ca0600               retf 6
 2:EC00  db da eb 51 eb f2 1d 0a ec ce 1d 0e ec d4 1d e5 eb
 
-; ---------------- sub_s2:EC10 FAR size=44 callers=1
+; ---------------- RegObj42::RegObj42@s2:EC10 FAR size=44 callers=1
+;   registry 0x42: one word
 2:EC10  55                   push bp
 2:EC11  8bec                 mov bp, sp
 2:EC13  66ff7608             push dword ptr [bp + 8]
 2:EC17  ff7606               push word ptr [bp + 6]
-2:EC1A  9a481d06ec           lcall 0xec06, 0x1d48  ; sub_s3:1D48
+2:EC1A  9a481d06ec           lcall 0xec06, 0x1d48  ; RegObj::RegObj@s3:1D48
 2:EC1F  c45e06               les bx, ptr [bp + 6]
 2:EC22  26c7470a0000         mov word ptr es:[bx + 0xa], 0
 2:EC28  26c70762ec           mov word ptr es:[bx], 0xec62
@@ -22042,10 +22786,11 @@ loc_EBF6:
 2:EC38  ca0600               retf 6
 2:EC3B  db 00
 
-; ---------------- sub_s2:EC3C FAR size=54 callers=0
+; ---------------- RegObj42::scalar_dtor@s2:EC3C FAR size=54 callers=0
+;   deleting destructor
 2:EC3C  c8040000             enter 4, 0
 2:EC40  66ff7606             push dword ptr [bp + 6]
-2:EC44  9a801d1dec           lcall 0xec1d, 0x1d80  ; sub_s3:1D80
+2:EC44  9a801d1dec           lcall 0xec1d, 0x1d80  ; RegObj::~RegObj@s3:1D80
 2:EC49  f6460a01             test byte ptr [bp + 0xa], 1
 2:EC4D  7409                 je 0xec58
 2:EC4F  66ff7606             push dword ptr [bp + 6]
@@ -22057,11 +22802,12 @@ loc_EC58:
 2:EC5F  ca0600               retf 6
 2:EC62  db 3c ec 31 ec f2 1d 6c ec ce 1d 70 ec d4 1d 47 ec
 
-; ---------------- sub_s2:EC72 FAR size=34 callers=2
+; ---------------- ResearchNode::ResearchNode@s2:EC72 FAR size=34 callers=2
+;   research tree node (vtable EFC4)
 2:EC72  55                   push bp
 2:EC73  8bec                 mov bp, sp
 2:EC75  66ff7606             push dword ptr [bp + 6]
-2:EC79  9a3a3868ec           lcall 0xec68, 0x383a  ; sub_s3:383A
+2:EC79  9a3a3868ec           lcall 0xec68, 0x383a  ; TreeNodeBase::TreeNodeBase@s3:383A
 2:EC7E  c45e06               les bx, ptr [bp + 6]
 2:EC81  26c707c4ef           mov word ptr es:[bx], 0xefc4
 2:EC86  26c7470264ec         mov word ptr es:[bx + 2], 0xec64  ; SEGMENT s2:0000
@@ -22070,23 +22816,25 @@ loc_EC58:
 2:EC90  c9                   leave
 2:EC91  ca0400               retf 4
 
-; ---------------- sub_s2:EC94 FAR size=30 callers=2
+; ---------------- ResearchNode::~ResearchNode@s2:EC94 FAR size=30 callers=2
+;   dtor
 2:EC94  55                   push bp
 2:EC95  8bec                 mov bp, sp
 2:EC97  c45e06               les bx, ptr [bp + 6]
 2:EC9A  26c707c4ef           mov word ptr es:[bx], 0xefc4
 2:EC9F  26c747028aec         mov word ptr es:[bx + 2], 0xec8a  ; SEGMENT s2:0000
 2:ECA5  66ff7606             push dword ptr [bp + 6]
-2:ECA9  9a80387cec           lcall 0xec7c, 0x3880  ; sub_s3:3880
+2:ECA9  9a80387cec           lcall 0xec7c, 0x3880  ; TreeNodeBase::~TreeNodeBase@s3:3880
 2:ECAE  c9                   leave
 2:ECAF  ca0400               retf 4
 
-; ---------------- sub_s2:ECB2 FAR size=78 callers=1
+; ---------------- ResearchTree41::ResearchTree41@s2:ECB2 FAR size=78 callers=1
+;   registry 0x41: a research tree (topics at DGROUP 0xD5E)
 2:ECB2  55                   push bp
 2:ECB3  8bec                 mov bp, sp
 2:ECB5  66ff7608             push dword ptr [bp + 8]
 2:ECB9  ff7606               push word ptr [bp + 6]
-2:ECBC  9ad22cacec           lcall 0xecac, 0x2cd2  ; sub_s3:2CD2
+2:ECBC  9ad22cacec           lcall 0xecac, 0x2cd2  ; ResearchTreeBase::ResearchTreeBase@s3:2CD2
 2:ECC1  c45e06               les bx, ptr [bp + 6]
 2:ECC4  26c7079cef           mov word ptr es:[bx], 0xef9c
 2:ECC9  26c74702a3ec         mov word ptr es:[bx + 2], 0xeca3  ; SEGMENT s2:0000
@@ -22099,25 +22847,27 @@ loc_EC58:
 2:ECE5  666800000c02         push 0x20c0000
 2:ECEB  52                   push dx
 2:ECEC  26ff775c             push word ptr es:[bx + 0x5c]
-2:ECF0  9a064956ec           lcall 0xec56, 0x4906  ; sub_s1:4906
+2:ECF0  9a064956ec           lcall 0xec56, 0x4906  ; _fmemset@s1:4906
 2:ECF5  8b4606               mov ax, word ptr [bp + 6]
 2:ECF8  8b5608               mov dx, word ptr [bp + 8]
 2:ECFB  c9                   leave
 2:ECFC  ca0600               retf 6
 2:ECFF  db 00
 
-; ---------------- sub_s2:ED00 FAR size=30 callers=1
+; ---------------- ResearchTree41::~ResearchTree41@s2:ED00 FAR size=30 callers=1
+;   dtor
 2:ED00  55                   push bp
 2:ED01  8bec                 mov bp, sp
 2:ED03  c45e06               les bx, ptr [bp + 6]
 2:ED06  26c7079cef           mov word ptr es:[bx], 0xef9c
 2:ED0B  26c74702cdec         mov word ptr es:[bx + 2], 0xeccd  ; SEGMENT s2:0000
 2:ED11  66ff7606             push dword ptr [bp + 6]
-2:ED15  9ab22dbfec           lcall 0xecbf, 0x2db2  ; sub_s3:2DB2
+2:ED15  9ab22dbfec           lcall 0xecbf, 0x2db2  ; ResearchTreeBase::~ResearchTreeBase@s3:2DB2
 2:ED1A  c9                   leave
 2:ED1B  ca0400               retf 4
 
-; ---------------- sub_s2:ED1E size=68 callers=0
+; ---------------- ResearchTree41::makeNode@s2:ED1E size=68 callers=0
+;   new node
 2:ED1E  c8040000             enter 4, 0
 2:ED22  837e0a00             cmp word ptr [bp + 0xa], 0
 2:ED26  7526                 jne 0xed4e
@@ -22131,7 +22881,7 @@ loc_EC58:
 2:ED3C  50                   push ax
 2:ED3D  90                   nop
 2:ED3E  0e                   push cs
-2:ED3F  e830ff               call 0xec72  ; sub_s2:EC72
+2:ED3F  e830ff               call 0xec72  ; ResearchNode::ResearchNode@s2:EC72
 2:ED42  c9                   leave
 2:ED43  ca0600               retf 6
 loc_ED46:
@@ -22150,7 +22900,8 @@ loc_ED4E:
 2:ED5E  ca0600               retf 6
 2:ED61  db 00
 
-; ---------------- sub_s2:ED62 FAR size=40 callers=0
+; ---------------- ResearchTree41::setTopic@s2:ED62 FAR size=40 callers=0
+;   topic n from the 8-byte table at DGROUP 0xD5E
 2:ED62  c8080000             enter 8, 0
 2:ED66  56                   push si
 2:ED67  8b460a               mov ax, word ptr [bp + 0xa]
@@ -22166,7 +22917,8 @@ loc_ED4E:
 2:ED86  c9                   leave
 2:ED87  ca0600               retf 6
 
-; ---------------- sub_s2:ED8A size=138 callers=0
+; ---------------- ResearchTree41::topicState@s2:ED8A size=138 callers=0
+;   a topic's state
 2:ED8A  c80a0000             enter 0xa, 0
 2:ED8E  56                   push si
 2:ED8F  837e0e00             cmp word ptr [bp + 0xe], 0
@@ -22180,7 +22932,7 @@ loc_ED4E:
 2:EDA5  26ff5f18             lcall es:[bx + 0x18]
 2:EDA9  50                   push ax
 2:EDAA  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:EDAF  9aba20ceed           lcall 0xedce, 0x20ba  ; sub_s3:20BA
+2:EDAF  9aba20ceed           lcall 0xedce, 0x20ba  ; Registry_get@s3:20BA
 2:EDB4  a3f60d               mov word ptr [0xdf6], ax
 2:EDB7  8916f80d             mov word ptr [0xdf8], dx
 loc_EDBB:
@@ -22188,7 +22940,7 @@ loc_EDBB:
 2:EDBE  26c45f0c             les bx, ptr es:[bx + 0xc]
 2:EDC2  26ff7712             push word ptr es:[bx + 0x12]
 2:EDC6  66ff36f60d           push dword ptr [0xdf6]
-2:EDCB  9a022e0dee           lcall 0xee0d, 0x2e02  ; sub_s3:2E02
+2:EDCB  9a022e0dee           lcall 0xee0d, 0x2e02  ; ResearchTreeBase::stateOf@s3:2E02
 2:EDD0  8b5e0a               mov bx, word ptr [bp + 0xa]
 2:EDD3  8b760c               mov si, word ptr [bp + 0xc]
 2:EDD6  83c301               add bx, 1
@@ -22213,13 +22965,14 @@ loc_EDF0:
 2:EE01  56                   push si
 2:EE02  ff76fc               push word ptr [bp - 4]
 2:EE05  66ff36f60d           push dword ptr [0xdf6]
-2:EE0A  9a302e18ed           lcall 0xed18, 0x2e30  ; sub_s3:2E30
+2:EE0A  9a302e18ed           lcall 0xed18, 0x2e30  ; ResearchTreeBase::setState@s3:2E30
 loc_EE0F:
 2:EE0F  5e                   pop si
 2:EE10  c9                   leave
 2:EE11  ca0c00               retf 0xc
 
-; ---------------- sub_s2:EE14 size=66 callers=0
+; ---------------- ResearchTree41::root@s2:EE14 size=66 callers=0
+;   the root node
 2:EE14  c81a0000             enter 0x1a, 0
 2:EE18  c45e06               les bx, ptr [bp + 6]
 2:EE1B  6626837f5600         cmp dword ptr es:[bx + 0x56], 0
@@ -22229,13 +22982,13 @@ loc_EE0F:
 2:EE27  50                   push ax
 2:EE28  90                   nop
 2:EE29  0e                   push cs
-2:EE2A  e845fe               call 0xec72  ; sub_s2:EC72
+2:EE2A  e845fe               call 0xec72  ; ResearchNode::ResearchNode@s2:EC72
 2:EE2D  666a00               push 0
 2:EE30  666a00               push 0
 2:EE33  8d46e6               lea ax, [bp - 0x1a]
 2:EE36  16                   push ss
 2:EE37  50                   push ax
-2:EE38  9a8e39b2ed           lcall 0xedb2, 0x398e  ; sub_s3:398E
+2:EE38  9a8e39b2ed           lcall 0xedb2, 0x398e  ; TreeNode::find@s3:398E
 2:EE3D  c45e06               les bx, ptr [bp + 6]
 2:EE40  26894756             mov word ptr es:[bx + 0x56], ax
 2:EE44  26895758             mov word ptr es:[bx + 0x58], dx
@@ -22244,12 +22997,13 @@ loc_EE0F:
 2:EE4C  50                   push ax
 2:EE4D  90                   nop
 2:EE4E  0e                   push cs
-2:EE4F  e842fe               call 0xec94  ; sub_s2:EC94
+2:EE4F  e842fe               call 0xec94  ; ResearchNode::~ResearchNode@s2:EC94
 loc_EE52:
 2:EE52  c9                   leave
 2:EE53  ca0400               retf 4
 
-; ---------------- sub_s2:EE56 FAR size=28 callers=0
+; ---------------- ResearchTree41::topicName@s2:EE56 FAR size=28 callers=0
+;   the topic's string
 2:EE56  55                   push bp
 2:EE57  8bec                 mov bp, sp
 2:EE59  c45e06               les bx, ptr [bp + 6]
@@ -22261,7 +23015,8 @@ loc_EE52:
 2:EE6E  ca0400               retf 4
 2:EE71  db 00
 
-; ---------------- sub_s2:EE72 FAR size=52 callers=0
+; ---------------- ResearchTree41::children@s2:EE72 FAR size=52 callers=0
+;   a topic's children
 2:EE72  c8040000             enter 4, 0
 2:EE76  c45e06               les bx, ptr [bp + 6]
 2:EE79  6626837f5600         cmp dword ptr es:[bx + 0x56], 0
@@ -22273,21 +23028,23 @@ loc_EE52:
 loc_EE8A:
 2:EE8A  66ff7608             push dword ptr [bp + 8]
 2:EE8E  ff7606               push word ptr [bp + 6]
-2:EE91  9a022e9fee           lcall 0xee9f, 0x2e02  ; sub_s3:2E02
+2:EE91  9a022e9fee           lcall 0xee9f, 0x2e02  ; ResearchTreeBase::stateOf@s3:2E02
 2:EE96  52                   push dx
 2:EE97  50                   push ax
 2:EE98  66ff7606             push dword ptr [bp + 6]
-2:EE9C  9a5c2e6bee           lcall 0xee6b, 0x2e5c  ; sub_s3:2E5C
+2:EE9C  9a5c2e6bee           lcall 0xee6b, 0x2e5c  ; ResearchTreeBase::children@s3:2E5C
 2:EEA1  c9                   leave
 2:EEA2  ca0800               retf 8
 2:EEA5  db 00
 
-; ---------------- sub_s2:EEA6 FAR size=6 callers=0
+; ---------------- ResearchTree41::zero@s2:EEA6 FAR size=6 callers=0
+;   virtual returning 0
 2:EEA6  33c0                 xor ax, ax
 2:EEA8  ca0800               retf 8
 2:EEAB  db 00
 
-; ---------------- sub_s2:EEAC FAR size=140 callers=0
+; ---------------- ResearchTree41::isOpen@s2:EEAC FAR size=140 callers=0
+;   whether a topic is listed (roots wait)
 2:EEAC  c80e0000             enter 0xe, 0
 2:EEB0  c746fe0000           mov word ptr [bp - 2], 0
 2:EEB5  c45e0a               les bx, ptr [bp + 0xa]
@@ -22295,7 +23052,7 @@ loc_EE8A:
 2:EEBC  8946fc               mov word ptr [bp - 4], ax
 2:EEBF  6a03                 push 3
 2:EEC1  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-2:EEC6  9aba20ffee           lcall 0xeeff, 0x20ba  ; sub_s3:20BA
+2:EEC6  9aba20ffee           lcall 0xeeff, 0x20ba  ; Registry_get@s3:20BA
 2:EECB  8946f8               mov word ptr [bp - 8], ax
 2:EECE  8956fa               mov word ptr [bp - 6], dx
 2:EED1  8b46fc               mov ax, word ptr [bp - 4]
@@ -22323,12 +23080,12 @@ loc_EEF6:
 2:EEF6  6a7c                 push 0x7c
 2:EEF8  52                   push dx
 2:EEF9  ff76f8               push word ptr [bp - 8]
-2:EEFC  9acaa50eef           lcall 0xef0e, 0xa5ca  ; sub_s3:A5CA
+2:EEFC  9acaa50eef           lcall 0xef0e, 0xa5ca  ; Player1::progress@s3:A5CA
 2:EF01  0bc0                 or ax, ax
 2:EF03  752c                 jne 0xef31
 2:EF05  6a7d                 push 0x7d
 2:EF07  66ff76f8             push dword ptr [bp - 8]
-2:EF0B  9acaa526ef           lcall 0xef26, 0xa5ca  ; sub_s3:A5CA
+2:EF0B  9acaa526ef           lcall 0xef26, 0xa5ca  ; Player1::progress@s3:A5CA
 2:EF10  0bc0                 or ax, ax
 2:EF12  751d                 jne 0xef31
 2:EF14  6a78                 push 0x78
@@ -22341,7 +23098,7 @@ loc_EF1F:
 2:EF1F  52                   push dx
 loc_EF20:
 2:EF20  ff76f8               push word ptr [bp - 8]
-2:EF23  9acaa594ee           lcall 0xee94, 0xa5ca  ; sub_s3:A5CA
+2:EF23  9acaa594ee           lcall 0xee94, 0xa5ca  ; Player1::progress@s3:A5CA
 2:EF28  0bc0                 or ax, ax
 2:EF2A  7505                 jne 0xef31
 2:EF2C  c746fe0100           mov word ptr [bp - 2], 1
@@ -22350,7 +23107,8 @@ loc_EF31:
 2:EF34  c9                   leave
 2:EF35  ca0800               retf 8
 
-; ---------------- sub_s2:EF38 FAR size=18 callers=0
+; ---------------- ResearchTree41::topicWord@s2:EF38 FAR size=18 callers=0
+;   +2 of the topic record
 2:EF38  55                   push bp
 2:EF39  8bec                 mov bp, sp
 2:EF3B  c45e06               les bx, ptr [bp + 6]
@@ -22359,17 +23117,19 @@ loc_EF31:
 2:EF46  c9                   leave
 2:EF47  ca0400               retf 4
 
-; ---------------- sub_s2:EF4A FAR size=6 callers=0
+; ---------------- ResearchTree41::id@s2:EF4A FAR size=6 callers=0
+;   returns 0x41
 2:EF4A  b84100               mov ax, 0x41
 2:EF4D  ca0400               retf 4
 
-; ---------------- sub_s2:EF50 FAR size=38 callers=0
+; ---------------- ResearchNode::scalar_dtor@s2:EF50 FAR size=38 callers=0
+;   deleting destructor
 2:EF50  55                   push bp
 2:EF51  8bec                 mov bp, sp
 2:EF53  66ff7606             push dword ptr [bp + 6]
 2:EF57  90                   nop
 2:EF58  0e                   push cs
-2:EF59  e838fd               call 0xec94  ; sub_s2:EC94
+2:EF59  e838fd               call 0xec94  ; ResearchNode::~ResearchNode@s2:EC94
 2:EF5C  f6460a01             test byte ptr [bp + 0xa], 1
 2:EF60  7409                 je 0xef6b
 2:EF62  66ff7606             push dword ptr [bp + 6]
@@ -22381,13 +23141,14 @@ loc_EF6B:
 2:EF72  ca0600               retf 6
 2:EF75  db 00
 
-; ---------------- sub_s2:EF76 FAR size=106 callers=0
+; ---------------- ResearchTree41::scalar_dtor@s2:EF76 FAR size=106 callers=0
+;   deleting destructor
 2:EF76  55                   push bp
 2:EF77  8bec                 mov bp, sp
 2:EF79  66ff7606             push dword ptr [bp + 6]
 2:EF7D  90                   nop
 2:EF7E  0e                   push cs
-2:EF7F  e87efd               call 0xed00  ; sub_s2:ED00
+2:EF7F  e87efd               call 0xed00  ; ResearchTree41::~ResearchTree41@s2:ED00
 2:EF82  f6460a01             test byte ptr [bp + 0xa], 1
 2:EF86  7409                 je 0xef91
 2:EF88  66ff7606             push dword ptr [bp + 6]

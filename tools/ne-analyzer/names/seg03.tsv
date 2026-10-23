@@ -1,0 +1,394 @@
+# Segment 3: registry objects (RegObj base s3:1D48, vtable 2014; Registry_get s3:20BA), INI options,
+# alerts, research trees, orbital objects, build menu, mothership, picture/sound catalogue,
+# building-window texts (s3:B038), the planet window and the current view.
+# Registry ids met here: 0x01 s3:3B7A, 0x02 options s3:5404, 0x03 s3:A1D8, 0x07 s3:3D82, 0x08 mothership,
+# 0x09 orbitals, 0x0A s3:0EAC, 0x28 s3:28E6, 0x2B alerts s3:02E0, 0x2D planet window s3:3E3C,
+# 0x2F view s3:E9E4, 0x30 s3:3702, 0x31 UG research tree s3:9298, 0x32 research results s3:6ABC,
+# 0x33 s3:195E, 0x34 s3:1B6E, 0x35 build menu s3:6700, 0x39 planet picker s3:4A8A, 0x3D s3:8C32,
+# 0x43 s3:2BFC, 0x45 window placement s3:0000, 0x46 s3:50B2.
+s3:0000	WindowPlaces::WindowPlaces	registry 0x45: remembered window positions
+s3:0052	WindowPlaces::~WindowPlaces	dtor
+s3:0070	WindowPlaces::restore	(vslot 4) SetWindowPlacement of a window from the saved place
+s3:010E	WindowPlaces::remember	(vslot 5) GetWindowPlacement into the table
+s3:01BE	enumChildWindows	EnumChildWindows with a callback thunk
+s3:01F8	WindowPlaces::find	the saved place of a window
+s3:02A2	WindowPlaces::scalar_dtor	deleting destructor
+s3:02E0	Alerts::Alerts	registry 0x2B: the alerts sink (posted alerts list)
+s3:0350	Alerts::~Alerts	dtor
+s3:038E	Alerts::isOn	whether an alert kind is on (icon bar)
+s3:041A	Alerts::pastTurn100	1 once the turn is 100 or more
+s3:043A	Alerts::post	posts an alert {kind, colony} and tells the views
+s3:0538	Alerts::describe	the text of an alert (joined strings)
+s3:0886	Alerts::count10	returns 10
+s3:088C	Alerts::count3	returns 3
+s3:0892	Alerts::count3b	returns 3
+s3:0898	Alerts::count3c	returns 3
+s3:089E	Alerts::setOn	switches alert 1..10 on or off (table DGROUP 0xE28)
+s3:08C0	Alerts::setOn2	switches an entry of the second alert table (DGROUP 0xEA8)
+s3:08E2	Alerts::row	alert row n (clears the table first when DGROUP 0x4FE8 is set)
+s3:091E	Alerts::table2Row	row of the table at DGROUP 0xE72
+s3:0932	Alerts::table3Row	row of the table at DGROUP 0xE8A
+s3:0946	Alerts::tradeAlerts	counts trade agreements for the alert icon
+s3:09B4	Alerts::colonyText	alert text with the colony's name
+s3:0AD2	Alerts::save	chunk 0x06
+s3:0C7C	Alerts::load	chunk 0x06 (v1 rows translated by s2:738C)
+s3:0E46	Alerts::scalar_dtor	deleting destructor
+s3:0E6C	AlertEntry::scalar_dtor	deleting destructor
+s3:0EAC	RegObj0A::RegObj0A	registry 0x0A: command target 0xFF (DGROUP 0x4230)
+s3:0EE6	RegObj0A::scalar_dtor	deleting destructor
+s3:0F24	ObjTree::ObjTree	tree of simulation objects for the report windows (vtable 191A; base ResearchTreeBase)
+s3:0F76	ObjTree::~ObjTree	dtor
+s3:0F9C	ObjTree::collect	(vslot 10) collects the objects of a type mask from the DB
+s3:1146	ObjTree::sort	qsort of the entries
+s3:116C	ObjTree::rebuild	(vslot 4) refills and sorts the tree
+s3:11C6	ObjTree::buildNodes	builds the nodes (names compared case-insensitively)
+s3:1656	ObjTree::open	(vslot 6) opens an entry's window
+s3:16EE	ObjTree::makeButton	(vslot 7) a tree button (s9:C54A)
+s3:1722	ObjTree::entryName	(vslot 11) the entry's name
+s3:1788	ObjTree::entryText	(vslot 12) the entry's description (s3:B038)
+s3:17C0	ObjTree::clear	(vslot 13) frees the nodes
+s3:18E8	ObjTree::zero	virtual returning 0
+s3:18EE	ObjTree::one	virtual returning 1
+s3:18F4	ObjTree::scalar_dtor	deleting destructor
+s3:195E	BuildingTree::BuildingTree	registry 0x33: the buildings tree (vtable 1B2A)
+s3:19A4	BuildingTree::collect	(vslot 14) the colony's buildings
+s3:1A06	BuildingTree::entryText	(vslot 15) a building's text
+s3:1A66	BuildingTree::accepts	(vslot 16) is an object in the tree's groups
+s3:1B04	BuildingTree::scalar_dtor	deleting destructor
+s3:1B6E	VehicleTree::VehicleTree	registry 0x34: the vehicles/robots tree (vtable 1D04)
+s3:1BB4	VehicleTree::collect	(vslot 14)
+s3:1C16	VehicleTree::entryText	(vslot 15)
+s3:1C40	VehicleTree::accepts	(vslot 16)
+s3:1CDE	VehicleTree::scalar_dtor	deleting destructor
+s3:1D48	RegObj::RegObj	registry object base (vtable 2014): +4 listener list, +8 id
+s3:1D80	RegObj::~RegObj	tells the listeners (notice 1), frees the list
+s3:1DCE	RegObj::save_default	(vslot 2) nothing to save
+s3:1DD4	RegObj::load_default	(vslot 3) nothing to load
+s3:1DDA	RegObj::makeCurrent	tells the registry this object is current
+s3:1DF2	RegObj::addListener	(vslot 1) adds a view to the listener list
+s3:1EA6	RegObj::removeListener	removes a view
+s3:1F62	RegObj::notify	sends notice `code` to every listener (the views)
+s3:1FBE	Listener::scalar_dtor	deleting destructor
+s3:1FEA	RegObj::scalar_dtor	deleting destructor
+s3:2024	Registry::Registry	the registry (g_registry, DGROUP 0xED0): 0x48 slots
+s3:2050	Registry::~Registry	deletes every object
+s3:209E	Registry::setCurrent	the current object id (+0x124)
+s3:20BA	Registry_get	singleton per id 1..0x48, created on first use (switch at s3:276A)
+s3:2816	Registry::flush	deletes objects marked for deletion
+s3:28E6	PictureCache::PictureCache	registry 0x28: a picture table (resource 0x??) (vtable 2BE4)
+s3:29C6	PictureCache::~PictureCache	dtor
+s3:2A32	PictureCache::select	picks an entry, tells the views
+s3:2B50	PictureCache::origin	copies a fixed position
+s3:2B66	PictureCache::current	returns +0x1C
+s3:2B78	starRecord	copies star record n (0x7C bytes at DGROUP 0xED4)
+s3:2B98	PictureCache::entry	entry n of the table
+s3:2BBE	PictureCache::scalar_dtor	deleting destructor
+s3:2BFC	RegObj43::RegObj43	registry 0x43: four words (vtable 2CC2)
+s3:2C34	RegObj43::title	a window title with the colony name
+s3:2C9C	RegObj43::scalar_dtor	deleting destructor
+s3:2CD2	ResearchTreeBase::ResearchTreeBase	tree model base (vtable 36DA): nodes at +0x56, state table at +0x5C
+s3:2DB2	ResearchTreeBase::~ResearchTreeBase	dtor
+s3:2E02	ResearchTreeBase::stateOf	entry n of the state table
+s3:2E30	ResearchTreeBase::setState	sets entry n
+s3:2E5C	ResearchTreeBase::children	(vslot 5) a node's children
+s3:2EE2	ResearchTreeBase::toggle	opens/closes a node and tells the views
+s3:2FA0	ResearchTreeBase::destroyButtons	destroys a node's buttons
+s3:305A	ResearchTreeBase::select	(vslot 6) selects a node
+s3:3202	ResearchTreeBase::close	closes a node
+s3:32C0	ResearchTreeBase::setWindow	stores the window, resets +0x28
+s3:32DA	ResearchTreeBase::layoutFrom	lays out from a node
+s3:32F4	ResearchTreeBase::layout	lays out the visible nodes ("overflow on node %d")
+s3:35A4	ResearchTreeBase::makeButtons	makes the buttons of a node's children
+s3:3680	ResearchTreeBase::makeButton	(vslot 7) a tree button
+s3:36B4	ResearchTreeBase::scalar_dtor	deleting destructor
+s3:3702	RegObj30::RegObj30	registry 0x30: one string (+0x0A)
+s3:3730	RegObj30::~RegObj30	dtor
+s3:375E	RegObj30::text	returns the string
+s3:3770	RegObj30::setText	replaces the string
+s3:379E	RegObj30::scalar_dtor	deleting destructor
+s3:37D4	TreeNode::TreeNode	node with a child array (vtable 3B3E)
+s3:3800	TreeNode::~TreeNode	dtor
+s3:383A	TreeNodeBase::TreeNodeBase	tree node base (vtable 3B5E)
+s3:3880	TreeNodeBase::~TreeNodeBase	dtor
+s3:38F8	TreeNode::allocChildren	allocates the child array
+s3:394A	TreeNode::newChild	(vslot 2) new child node
+s3:398E	TreeNode::find	recursive search
+s3:3A86	TreeNode::id	returns +0x10
+s3:3A94	TreeNode::setFlag	sets +0x12
+s3:3AA6	TreeNode::nop	empty virtual
+s3:3AAA	TreeNode::parent	returns +4
+s3:3ABC	TreeNode::zero	virtual returning 0
+s3:3AC2	TreeNode::setData	sets +0x16 and +0x12
+s3:3ADC	TreeNode::data	the data at +0x16
+s3:3AF2	TreeNode::scalar_dtor	deleting destructor
+s3:3B18	TreeNodeBase::scalar_dtor	deleting destructor
+s3:3B7A	Blinker::Blinker	registry 0x01: a timer client (vtables 3D6A/3D7A)
+s3:3BDE	Blinker::~Blinker	dtor
+s3:3C52	Blinker::setPicture	sets the picture (+0x14) and reloads it
+s3:3C9E	Blinker::start	registers with the timer
+s3:3CD0	Blinker::stop	unregisters
+s3:3D0A	Blinker::onNotify	notice 2: stops
+s3:3D38	Blinker::scalar_dtor	deleting destructor (this-adjusting)
+s3:3D82	RegObj07::RegObj07	registry 0x07: loads catalog picture 0x99
+s3:3DC8	RegObj07::~RegObj07	dtor
+s3:3E06	RegObj07::scalar_dtor	deleting destructor
+s3:3E3C	PlanetWindow::PlanetWindow	registry 0x2D: the planet window (icon PLNTICON)
+s3:3F00	PlanetWindow::~PlanetWindow	dtor
+s3:3FC2	PlanetWindow::save	chunk 0x05
+s3:404A	PlanetWindow::load	chunk 0x05
+s3:40CC	PlanetWindow::planetField	the planet's +0x0C
+s3:40F8	PlanetWindow::onClick	a click on the globe (PtInRect): picks a site
+s3:41D6	PlanetWindow::layout	places the site markers on the globe
+s3:451A	PlanetWindow::siteOf	the planet's site list
+s3:454A	PlanetWindow::frameDib	the globe frame shown
+s3:4566	PlanetWindow::onNotify	timer notice: next frame
+s3:459E	PlanetWindow::startSpin	500 ms timer
+s3:45D6	PlanetWindow::stopSpin	stops the timer
+s3:4674	PlanetWindow::setSpin	starts or stops the rotation (+0x7E)
+s3:46F6	PlanetWindow::rect	(vslot 8) the window rectangle
+s3:4788	PlanetWindow::setPlanet	shows a planet
+s3:47AE	PlanetWindow::drawAll	draws the 16 frames
+s3:47D0	PlanetWindow::drawFrame	draws one globe frame into a DIB (site markers)
+s3:4956	PlanetWindow::step	next rotation frame (16)
+s3:4994	PlanetWindow::thunk_dtor	this-adjusting thunk
+s3:49A0	ViewModel::name	(vslot 4) returns this+0x0A
+s3:49B0	ViewModel::rectPtr	(vslot 7) returns this+0x18
+s3:49C0	ViewModel::field14	(vslot 9) returns +0x14
+s3:49CE	ViewModel::setField14	(vslot 10)
+s3:49E0	ViewModel::field16	(vslot 11) returns +0x16
+s3:49EE	ViewModel::setField16	(vslot 12)
+s3:4A00	ViewModel::setField12	(vslot 13)
+s3:4A12	ViewModel::field12	(vslot 14) returns +0x12
+s3:4A20	PlanetWindow::scalar_dtor	deleting destructor
+s3:4A8A	PlanetPicker::PlanetPicker	registry 0x39: the planets of the star in orbit (vtable 502A)
+s3:4B3E	PlanetPicker::~PlanetPicker	dtor (frees the RCDATA)
+s3:4C2C	PlanetPicker::list	returns +0x16
+s3:4C3E	PlanetPicker::build	(vslot 4) the star's planets as pictures in a row
+s3:4D5C	PlanetPicker::entries	the entries
+s3:4DC8	PlanetPicker::selected	the selected entry
+s3:4DF0	PlanetPicker::siteAllowed	can the colony land on the selected site
+s3:4E08	PlanetPicker::hit	the entry under a point (PtInRect)
+s3:4E8C	PlanetPicker::notifyChanged	notice 0x0D
+s3:4E9E	planetFacts	the RCDATA fact sheet of the planet's Sol body
+s3:4F20	planetFactsId	resource id by template (DGROUP 0x139A)
+s3:4F30	PlanetPicker::gridSize	10 x 0x73
+s3:4F48	PlanetPicker::setStar	loads a star's planets
+s3:5004	PlanetPicker::scalar_dtor	deleting destructor
+s3:503E	RegObj2A::RegObj2A	registry 0x2A: command target 0x1B3
+s3:5074	RegObj2A::scalar_dtor	deleting destructor
+s3:50B2	ColonyPair::ColonyPair	registry 0x46: two colonies chosen for a transfer (vtable 53F4)
+s3:50F2	ColonyPair::~ColonyPair	dtor
+s3:5120	ColonyPair::population	population of a chosen colony
+s3:519A	ColonyPair::listColonies	the colonies to choose from
+s3:5286	ColonyPair::colonyName	a colony's name
+s3:52FC	ColonyPair::setFrom	sets the first colony by name
+s3:531C	ColonyPair::setTo	sets the second colony by name
+s3:533C	ColonyPair::find	colony by name
+s3:53CE	ColonyPair::scalar_dtor	deleting destructor
+s3:5404	Options::Options	registry 0x02: game options read from OUTPOST.INI (general, rez, music, sound, anims, movies, turns, savePath, aiName, playerName)
+s3:5B10	Options::~Options	writes OUTPOST.INI
+s3:5D9C	Options::setAnims	animated sequences on/off
+s3:5DC6	Options::save	chunk 0x04: AI name, player name, difficulty
+s3:5E56	Options::load	chunk 0x04
+s3:5F1E	Options::setLoadPath	the last loaded file
+s3:5F4C	Options::setSavePath	the last saved file
+s3:5F7A	Options::hasWindowPlace	whether a window has a saved place
+s3:5FB0	Options::setWindowPlace	stores a window place
+s3:5FD8	Options::setAiName	replaces the AI name (+0x68)
+s3:6006	Options::setPlayerName	replaces the player name (+0x6C)
+s3:6034	Options::defaults	default values
+s3:60A0	Options::defaultTurns	turns per run = 5 (+0x76)
+s3:60B4	Options::canChange1	returns 1
+s3:60BA	Options::canChange2	returns 1
+s3:60C0	Options::canChange3	returns 1
+s3:60C6	Options::canChange4	returns 1
+s3:60CC	Options::setDialogDir	the file dialog directory
+s3:60FA	Options::suspendMovies	saves and forces +0x20 (movies) for a while
+s3:6118	Options::resumeMovies	restores +0x20
+s3:6132	Options::readWindowPlaces	[windows] section
+s3:622A	Options::writeWindowPlaces	[windows] "%d,%d,%d,%d"
+s3:62A4	OptionsBase::scalar_dtor	deleting destructor
+s3:62EC	Options::scalar_dtor	deleting destructor
+s3:6326	Orbitals::Orbitals	registry 0x09: orbital objects (7 slots, kinds 0x83..0x89)
+s3:6372	Orbitals::save	chunk 0x07
+s3:648A	Orbitals::load	chunk 0x07
+s3:6566	Orbitals::set	sets launched/carried of a kind
+s3:659A	Orbitals::aboard	carried - launched
+s3:65D0	Orbitals::launched	launched count of a kind
+s3:6604	Orbitals::launchOne	one more launched (tells the views)
+s3:6646	Orbitals::slot	kind -> slot
+s3:66CA	Orbitals::scalar_dtor	deleting destructor
+s3:6700	BuildMenu::BuildMenu	registry 0x35: which buildings and products are offered
+s3:6814	BuildMenu::offerProduct	product on/off (+0x11E)
+s3:682E	BuildMenu::offer	building type on/off (+0x0A)
+s3:6846	BuildMenu::save	chunk 0x03
+s3:68C6	BuildMenu::load	chunk 0x03 (v1 types translated)
+s3:6A86	BuildMenu::scalar_dtor	deleting destructor
+s3:6ABC	ResearchResults::ResearchResults	registry 0x32: research results (a lab finished its topic)
+s3:6BB2	ResearchResults::~ResearchResults	dtor
+s3:6CA2	ResearchResults::allDone	are all these topics done
+s3:6CF8	ResearchResults::grant	topic -> discoveries switch (some need other topics)
+s3:715C	ResearchResults::discover	records a discovery (s3:A69C)
+s3:7174	ResearchResults::onNotify	(vslot 6) closes/refreshes its windows
+s3:71D6	BuildingWindows::openFor	opens the window of a building (by its class)
+s3:7300	BuildingWindows::open	the window opener (switch at s3:7344 by window id)
+s3:7818	BuildingWindows::kindOf	window kind of a building type
+s3:79AA	BuildingWindows::raise	brings an open window to the front
+s3:7A76	BuildingWindows::hideAll	hides the windows while an overlay plays
+s3:7ACE	BuildingWindows::showAll	shows them again
+s3:7B26	BuildingWindows::closeAll	destroys every window
+s3:7B8C	BuildingWindows::closeFor	closes the windows of an object
+s3:7C42	BuildingWindows::refreshAll	sends a refresh to every window
+s3:7C9E	BuildingWindows::refreshGroup	refreshes the windows of a building group
+s3:7D38	BuildingWindows::positionOf	a window's map position
+s3:7D7E	BuildingWindows::hasWindow	does a type have a window
+s3:7DC6	ResearchResults::thunk_dtor	this-adjusting thunk
+s3:7DD2	ResearchResultsBase::scalar_dtor	deleting destructor
+s3:7DFE	ResearchResults::scalar_dtor	deleting destructor
+s3:7E40	ResLibr::ResLibr	the resource library (picture catalogue, sheets)
+s3:7EFC	ResLibr::~ResLibr	frees every cached picture
+s3:7FD6	ResLibr::release	frees the picture cache
+s3:8018	ResLibr::frame	a frame of the frame table (catalog +0x1FA0)
+s3:8096	ResLibr::planetSheets	the files behind sheets 1 and 2 for a planet template
+s3:8170	ResLibr::cutOut	a cut-out of a sheet (+6 sheet, +8 x, +0A y, +0C w, +0E h)
+s3:81F6	ResLibr::buildingPicture	caches one picture per building type
+s3:82F8	ResLibr::setTerrainSet	the planet's terrain set (+0xE82)
+s3:830A	ResLibr::picture	catalog entry id (0..503): kind 1 bitmap file, 2 cut-out ...
+s3:847E	LoadStringRes	LoadString into the library's buffer
+s3:84AC	LoadStringDup	LoadString into new memory
+s3:84E0	LoadStringTo	LoadString into a caller buffer
+s3:84F8	ResLibr::soundFile	catalog sound -> file name (.wav, .mid)
+s3:85BE	ResLibr::voiceFile	voice table entry -> file name ("male" for type 2)
+s3:866C	ResLibr::animatedPicture	animated types get a copy to draw frames on
+s3:86DE	ResLibr::maskPixels	marks the transparent pixels of a picture
+s3:878C	ResLibr::sheet	the sheet's DIB ("tile1.bmp" ...), loaded on first use
+s3:887A	ResLibr::composeBuilding	building picture on its ground canvas
+s3:89F0	ResLibr::terrainSheet	the terrain sheet of a planet's terrain set
+s3:8B14	ResLibr::findFile	looks a file up on the CD folders (SetErrorMode)
+s3:8BB4	ResLibr::missingFile	"cannot find file" message
+s3:8C32	RegObj3D::RegObj3D	registry 0x3D: one pointer, listens to 0x03
+s3:8C78	RegObj3D::~RegObj3D	dtor
+s3:8C96	RegObj3D::describe	a vehicle/route description (wsprintf)
+s3:8EBC	RegObj3D::scalar_dtor	deleting destructor
+s3:8EF2	Route::Route	truck route (list of stops; vtable 9254)
+s3:8F78	Route::~Route	dtor
+s3:8FBA	Route::nextStop	takes the next stop (none left: empty)
+s3:9044	Route::count	number of stops
+s3:905E	Route::clear	deletes the stops
+s3:9092	Route::copy	copies a route
+s3:9130	Route::stopName	a stop's name
+s3:9172	Route::add	appends a stop
+s3:91CC	Route::removeLast	removes the last stop
+s3:9210	Route::stop	stop n
+s3:922E	Route::scalar_dtor	deleting destructor
+s3:9258	UgTreeNode::UgTreeNode	UG research tree node (vtable 958E)
+s3:927A	UgTreeNode::~UgTreeNode	dtor
+s3:9298	UgResearchTree::UgResearchTree	registry 0x31: the UG labs' main research tree (vtable 9566)
+s3:92E6	UgResearchTree::~UgResearchTree	dtor
+s3:9304	UgResearchTree::makeNode	new node
+s3:9348	UgResearchTree::setTopic	topic n (table DGROUP 0x3198)
+s3:9372	UgResearchTree::topicState	a topic's state
+s3:93F0	UgResearchTree::root	the root node
+s3:9432	UgResearchTree::topicName	the topic's string
+s3:944E	UgResearchTree::children	a topic's children
+s3:9482	UgResearchTree::zero	virtual returning 0
+s3:9488	UgResearchTree::isOpen	whether a topic is listed (subtopics once it opens)
+s3:9502	UgResearchTree::topicWord	+2 of the topic record
+s3:9514	UgResearchTree::id	returns 0x31
+s3:951A	UgTreeNode::scalar_dtor	deleting destructor
+s3:9540	UgResearchTree::scalar_dtor	deleting destructor
+s3:95AA	Mothership::Mothership	registry 0x08: the mothership in orbit
+s3:95F8	Mothership::~Mothership	dtor
+s3:9674	Mothership::clearDamaged	clears the damage report
+s3:96A8	Mothership::useCryo	takes cryo colonists (+0x1E)
+s3:96C2	Mothership::cryo	cryo colonists left
+s3:96D0	Mothership::loseCryoColonists	after the countdown 1 dies per turn (5 later)
+s3:9766	Mothership::arrive	the Seed lands: arrived, cargo damage, cryo colonists
+s3:9794	Mothership::moveLanders	landers to the deployable list
+s3:988C	Mothership::takeDeployable	takes one off when it is placed
+s3:9900	Mothership::save	chunk 0x01
+s3:9B72	Mothership::load	chunk 0x01: hold, deployable, cargo lists
+s3:9F72	Mothership::deployableCount	count of a kind ready to put down
+s3:9F8C	Mothership::holdCount	count of a kind in the hold
+s3:9FA6	Mothership::countOf	count of the first entry of a kind
+s3:9FEE	Mothership::addDamaged	appends {kind, lost}
+s3:A0A0	Mothership::damageCargo	cargo damaged on arrival
+s3:A172	Mothership::scalar_dtor	deleting destructor
+s3:A198	CargoEntry::scalar_dtor	deleting destructor
+s3:A1D8	Reports::Reports	registry 0x03: report window state (0x53C bytes)
+s3:A478	Reports::~Reports	dtor
+s3:A50C	Reports::resourceRow	a resource row of a report
+s3:A568	Player1::topicPoints	player 1's points in a topic
+s3:A58A	Player1::isPriority	is a topic a priority
+s3:A5AC	Lab::topicOf	a lab's topic (+0x20)
+s3:A5CA	Player1::progress	player 1's progress in a topic
+s3:A5EC	setLabTopic	the player gives a lab a topic
+s3:A69C	discover	what a discovery does: build menu, alerts, AI managers, log
+s3:ABD2	BuildMenu::applyDiscovery	what the build menu offers after a discovery
+s3:AC62	Player1::flag	player 1's word +0x116[n]
+s3:AC92	researchTopicName	topic id 1..66 -> string
+s3:ACC0	isNotState4	1 when the object's +0x12 is not 4
+s3:ACEC	Reports::onNotify	(vslot 5)
+s3:AD22	Reports::colonyOf	colony of the report
+s3:AD64	Reports::openFor	opens a report for an object
+s3:ADA6	productName	a product's name
+s3:AE12	productByName	name -> product
+s3:AE92	setFactoryProduct	OK sets a factory's chosen product (a log entry)
+s3:AF66	BldgText::storage	storage text of a building
+s3:AFA2	BldgText::capacity	capacity text
+s3:AFDE	BldgText::group	group text
+s3:B028	objType	returns +0x0C (type) of an object
+s3:B038	BldgText::field	the text of one field of a building window (switch over field ids)
+s3:BF08	Db::lookup	object DB lookup
+s3:BF1E	SiteList::SiteList	sites of a planet
+s3:BFFA	PlanetPictures::PlanetPictures	the planet pictures of a star (catalog 437..446 by template)
+s3:C1BA	SiteCheck::SiteCheck	is a site free to land on
+s3:C234	viewColonyName	the current colony's name
+s3:C25E	viewColonyRename	renames the current colony
+s3:C28A	viewColony	the current colony object
+s3:C2D8	ownerColony	an object's colony
+s3:C312	currentTurn	the turn number (g_objectDb +0)
+s3:C320	resourceAmountText	an amount and its resource name
+s3:C3C2	objectLabel	"%s #%lu" label of an object
+s3:C446	listText	a list of names
+s3:C58A	ReportPage::build	builds a report page
+s3:C864	ReportPage::colony	colony report text ("Null Ptr" when none)
+s3:CF36	ReportPage::storage	storage report
+s3:D24A	ReportPage::production	production report
+s3:D448	ReportPage::factory	factory report
+s3:D5AE	ReportPage::mine	mine report
+s3:D710	ReportPage::resources	resource report
+s3:D984	ReportPage::resourceList	the resources of an object
+s3:DB2E	ReportPage::numberCell	a number cell
+s3:DC36	ReportPage::textCell	a text cell
+s3:DCAC	ReportPage::header	a header cell
+s3:DD5E	ReportPage::nameCell	an object's name cell
+s3:DDF6	ReportPage::ownerCell	owner name
+s3:DE78	ReportPage::statusCell	status string (0x5F4 / 0x531)
+s3:DEBE	factoryProducts	the products a factory can make (kind 7 consumer goods first)
+s3:E128	countNonZero	count of non-zero words in a range
+s3:E15E	BldgText::produces	what a building produces
+s3:E1F4	BldgText::needs	what a building needs
+s3:E58A	BldgText::groupName	a building group's name
+s3:E682	BldgText::status	a building's status text
+s3:E8D0	BldgText::workers	workers and capacity
+s3:E8F6	BldgText::connected	is the building connected
+s3:E964	viewColonyNameCopy	the current colony's name in new memory
+s3:E99A	Reports::thunk_dtor	this-adjusting thunk
+s3:E9A6	Reports::scalar_dtor	deleting destructor
+s3:E9E4	View::View	registry 0x2F: the current view (planet, star, site, colony) and the disaster calendar
+s3:EB66	View::~View	dtor
+s3:EBF8	View::setCalendar	disaster calendar entry n (+0x34)
+s3:EC18	View::planetField	a planet's +0x10
+s3:EC40	View::planetSites	a planet's +0x10 (sites)
+s3:EC68	View::setField28	+0x28, notice 0x13
+s3:EC84	View::landed	the Seed landed: SCSelect the site
+s3:ECC6	View::goToBuilding	turns to a building's colony
+s3:ED22	View::setColony	the current colony (notice 0x12)
+s3:ED3E	View::planet	the current planet object
+s3:ED58	View::save	chunk 0x02
+# Found by the improved disassembler (2026-10-22).
+s3:0240	enumChildProc	EnumChildWindows callback: the game's own, not-iconic windows
+s3:184A	ObjTree::compareNames	qsort comparator: case-insensitive by the sort column (DGROUP 0xECC)
+s3:C7E2	ReportPage::fillRows	the rows of a report from building fields
+s3:CC56	ReportPage::unitsAndResources	the units and resources columns of a report

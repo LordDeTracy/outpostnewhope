@@ -1,10 +1,11 @@
 ; OUTPOST.EXE segment 4 (CODE), 61034 bytes
 
-; ---------------- sub_s4:0000 size=380 callers=0
+; ---------------- View::load@s4:0000 size=380 callers=0
+;   chunk 0x02: current planet, star, site, colony, positions
 4:0000  c8280000             enter 0x28, 0
 4:0004  6a02                 push 2
 4:0006  66ff760a             push dword ptr [bp + 0xa]
-4:000A  9afe7c3300           lcall 0x33, 0x7cfe  ; sub_s2:7CFE
+4:000A  9afe7c3300           lcall 0x33, 0x7cfe  ; Save_findChunkTag@s2:7CFE
 4:000F  0bc0                 or ax, ax
 4:0011  750d                 jne 0x20
 4:0013  c7061003d406         mov word ptr [0x310], 0x6d4
@@ -99,7 +100,7 @@ loc_00F3:
 4:0117  8d46e2               lea ax, [bp - 0x1e]
 4:011A  16                   push ss
 4:011B  50                   push ax
-4:011C  9a383e4701           lcall 0x147, 0x3e38  ; sub_s2:3E38
+4:011C  9a383e4701           lcall 0x147, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:0121  c746f20000           mov word ptr [bp - 0xe], 0
 4:0126  eb24                 jmp 0x14c
 loc_0128:
@@ -115,7 +116,7 @@ loc_0128:
 4:013E  03c9                 add cx, cx
 4:0140  03c1                 add ax, cx
 4:0142  6650                 push eax
-4:0144  9a623f6401           lcall 0x164, 0x3f62  ; sub_s2:3F62
+4:0144  9a623f6401           lcall 0x164, 0x3f62  ; Pos3::assign@s2:3F62
 4:0149  ff46f2               inc word ptr [bp - 0xe]
 loc_014C:
 4:014C  8b46f2               mov ax, word ptr [bp - 0xe]
@@ -126,7 +127,7 @@ loc_014C:
 4:015B  16                   push ss
 4:015C  50                   push ax
 4:015D  66ff760a             push dword ptr [bp + 0xa]
-4:0161  9ac87bffff           lcall 0xffff, 0x7bc8  ; sub_s2:7BC8
+4:0161  9ac87bffff           lcall 0xffff, 0x7bc8  ; Save_readPos3@s2:7BC8
 4:0166  0bc0                 or ax, ax
 4:0168  75be                 jne 0x128
 4:016A  c7061003d006         mov word ptr [0x310], 0x6d0
@@ -138,7 +139,8 @@ loc_0174:
 4:0178  ca0800               retf 8
 4:017B  db 00
 
-; ---------------- sub_s4:017C FAR size=26 callers=1
+; ---------------- View::setField1E@s4:017C FAR size=26 callers=1
+;   +0x1E, notice 4
 4:017C  55                   push bp
 4:017D  8bec                 mov bp, sp
 4:017F  8b460a               mov ax, word ptr [bp + 0xa]
@@ -147,15 +149,16 @@ loc_0174:
 4:0189  6a04                 push 4
 4:018B  06                   push es
 4:018C  53                   push bx
-4:018D  9a621fffff           lcall 0xffff, 0x1f62  ; sub_s3:1F62
+4:018D  9a621fffff           lcall 0xffff, 0x1f62  ; RegObj::notify@s3:1F62
 4:0192  c9                   leave
 4:0193  ca0600               retf 6
 
-; ---------------- sub_s4:0196 FAR size=246 callers=2
+; ---------------- MapViews::registerView@s4:0196 FAR size=246 callers=2
+;   records a map view (positions list) for a colony
 4:0196  c8300000             enter 0x30, 0
 4:019A  66ff760e             push dword ptr [bp + 0xe]
 4:019E  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:01A3  9a44833602           lcall 0x236, 0x8344  ; sub_s7:8344
+4:01A3  9a44833602           lcall 0x236, 0x8344  ; Sim::resolve@s7:8344
 4:01A8  c45e06               les bx, ptr [bp + 6]
 4:01AB  6626837f2c00         cmp dword ptr es:[bx + 0x2c], 0
 4:01B1  753b                 jne 0x1ee
@@ -195,7 +198,7 @@ loc_01EE:
 4:0214  ff76d6               push word ptr [bp - 0x2a]
 4:0217  50                   push ax
 4:0218  6a01                 push 1
-4:021A  9ad40ef100           lcall 0xf1, 0xed4  ; sub_s1:0ED4
+4:021A  9ad40ef100           lcall 0xf1, 0xed4  ; SH_MemReAllocPtr@s1:0ED4
 loc_021F:
 4:021F  c45e06               les bx, ptr [bp + 6]
 4:0222  2689472c             mov word ptr es:[bx + 0x2c], ax
@@ -203,14 +206,14 @@ loc_021F:
 loc_022A:
 4:022A  66ff760a             push dword ptr [bp + 0xa]
 4:022E  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:0233  9a44835002           lcall 0x250, 0x8344  ; sub_s7:8344
+4:0233  9a44835002           lcall 0x250, 0x8344  ; Sim::resolve@s7:8344
 4:0238  8946f4               mov word ptr [bp - 0xc], ax
 4:023B  8956f6               mov word ptr [bp - 0xa], dx
 4:023E  c45ef4               les bx, ptr [bp - 0xc]
 4:0241  66268b4710           mov eax, dword ptr es:[bx + 0x10]
 4:0246  6650                 push eax
 4:0248  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:024D  9a4483ffff           lcall 0xffff, 0x8344  ; sub_s7:8344
+4:024D  9a4483ffff           lcall 0xffff, 0x8344  ; Sim::resolve@s7:8344
 4:0252  8946ec               mov word ptr [bp - 0x14], ax
 4:0255  8956ee               mov word ptr [bp - 0x12], dx
 4:0258  c45e06               les bx, ptr [bp + 6]
@@ -228,37 +231,38 @@ loc_022A:
 4:027D  03c9                 add cx, cx
 4:027F  03c1                 add ax, cx
 4:0281  6650                 push eax
-4:0283  9a623f0d00           lcall 0xd, 0x3f62  ; sub_s2:3F62
+4:0283  9a623f0d00           lcall 0xd, 0x3f62  ; Pos3::assign@s2:3F62
 4:0288  c9                   leave
 4:0289  ca0c00               retf 0xc
 
-; ---------------- sub_s4:028C FAR size=350 callers=2
+; ---------------- MapViewModel::build@s4:028C FAR size=350 callers=2
+;   builds the site's object list for drawing
 4:028C  c8300000             enter 0x30, 0
 4:0290  66ff760a             push dword ptr [bp + 0xa]
 4:0294  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:0299  9a4483a902           lcall 0x2a9, 0x8344  ; sub_s7:8344
+4:0299  9a4483a902           lcall 0x2a9, 0x8344  ; Sim::resolve@s7:8344
 4:029E  8946fc               mov word ptr [bp - 4], ax
 4:02A1  8956fe               mov word ptr [bp - 2], dx
 4:02A4  52                   push dx
 4:02A5  50                   push ax
-4:02A6  9a005bf902           lcall 0x2f9, 0x5b00  ; sub_s7:5B00
+4:02A6  9a005bf902           lcall 0x2f9, 0x5b00  ; Site::listIndex@s7:5B00
 4:02AB  8946fa               mov word ptr [bp - 6], ax
 4:02AE  50                   push ax
 4:02AF  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:02B4  9aba209001           lcall 0x190, 0x20ba  ; sub_s3:20BA
+4:02B4  9aba209001           lcall 0x190, 0x20ba  ; Registry_get@s3:20BA
 4:02B9  8946f6               mov word ptr [bp - 0xa], ax
 4:02BC  8956f8               mov word ptr [bp - 8], dx
 4:02BF  8d46ea               lea ax, [bp - 0x16]
 4:02C2  16                   push ss
 4:02C3  50                   push ax
-4:02C4  9a906c5003           lcall 0x350, 0x6c90  ; sub_s2:6C90
+4:02C4  9a906c5003           lcall 0x350, 0x6c90  ; Box::Box@s2:6C90
 4:02C9  8d46ea               lea ax, [bp - 0x16]
 4:02CC  16                   push ss
 4:02CD  50                   push ax
 4:02CE  66ff76f6             push dword ptr [bp - 0xa]
 4:02D2  90                   nop
 4:02D3  0e                   push cs
-4:02D4  e84708               call 0xb1e  ; sub_s4:0B1E
+4:02D4  e84708               call 0xb1e  ; MapViewModel::scrollTo@s4:0B1E
 4:02D7  8b46ee               mov ax, word ptr [bp - 0x12]
 4:02DA  99                   cdq
 4:02DB  8946e2               mov word ptr [bp - 0x1e], ax
@@ -271,7 +275,7 @@ loc_022A:
 4:02EF  16                   push ss
 4:02F0  50                   push ax
 4:02F1  66ff364057           push dword ptr [0x5740]
-4:02F6  9ae4620f03           lcall 0x30f, 0x62e4  ; sub_s7:62E4
+4:02F6  9ae4620f03           lcall 0x30f, 0x62e4  ; SiteGrids::tilesInBox@s7:62E4
 4:02FB  eb14                 jmp 0x311
 4:02FD  db 90
 loc_02FE:
@@ -280,7 +284,7 @@ loc_02FE:
 4:0305  16                   push ss
 4:0306  50                   push ax
 4:0307  66ff364057           push dword ptr [0x5740]
-4:030C  9a2265a601           lcall 0x1a6, 0x6522  ; sub_s7:6522
+4:030C  9a2265a601           lcall 0x1a6, 0x6522  ; SiteGrids::tilesInBox2@s7:6522
 loc_0311:
 4:0311  8946e6               mov word ptr [bp - 0x1a], ax
 4:0314  8956e8               mov word ptr [bp - 0x18], dx
@@ -296,7 +300,7 @@ loc_0326:
 4:0326  66ff7606             push dword ptr [bp + 6]
 4:032A  90                   nop
 4:032B  0e                   push cs
-4:032C  e8c301               call 0x4f2  ; sub_s4:04F2
+4:032C  e8c301               call 0x4f2  ; View::deleteCalendar@s4:04F2
 4:032F  6a1c                 push 0x1c
 4:0331  9a9c17d301           lcall 0x1d3, 0x179c  ; operator_new@s1:179C
 4:0336  83c402               add sp, 2
@@ -308,7 +312,7 @@ loc_0326:
 4:0346  666a06               push 6
 4:0349  ff76d2               push word ptr [bp - 0x2e]
 4:034C  50                   push ax
-4:034D  9a9e8ece03           lcall 0x3ce, 0x8e9e  ; sub_s2:8E9E
+4:034D  9a9e8ece03           lcall 0x3ce, 0x8e9e  ; PtrArray::PtrArray@s2:8E9E
 4:0352  c45e06               les bx, ptr [bp + 6]
 4:0355  26894712             mov word ptr es:[bx + 0x12], ax
 4:0359  26895714             mov word ptr es:[bx + 0x14], dx
@@ -353,12 +357,12 @@ loc_0382:
 4:03B7  6626ff770e           push dword ptr es:[bx + 0xe]
 4:03BC  90                   nop
 4:03BD  0e                   push cs
-4:03BE  e8bbd9               call 0xffffdd7c  ; sub_s4:DD7C
+4:03BE  e8bbd9               call 0xffffdd7c  ; BuildingSprite::forObject@s4:DD7C
 4:03C1  52                   push dx
 4:03C2  50                   push ax
 4:03C3  c45e06               les bx, ptr [bp + 6]
 4:03C6  6626ff7712           push dword ptr es:[bx + 0x12]
-4:03CB  9aaa8f8602           lcall 0x286, 0x8faa  ; sub_s2:8FAA
+4:03CB  9aaa8f8602           lcall 0x286, 0x8faa  ; PtrArray::push@s2:8FAA
 loc_03D0:
 4:03D0  ff46de               inc word ptr [bp - 0x22]
 loc_03D3:
@@ -371,7 +375,8 @@ loc_03D3:
 4:03E6  c9                   leave
 4:03E7  ca0800               retf 8
 
-; ---------------- sub_s4:03EA FAR size=40 callers=0
+; ---------------- MapViewModel::onNotify@s4:03EA FAR size=40 callers=0
+;   (vslot 5) forwards notices
 4:03EA  55                   push bp
 4:03EB  8bec                 mov bp, sp
 4:03ED  8b460a               mov ax, word ptr [bp + 0xa]
@@ -381,7 +386,7 @@ loc_03F2:
 4:03F5  668b4606             mov eax, dword ptr [bp + 6]
 4:03F9  2d0a00               sub ax, 0xa
 4:03FC  6650                 push eax
-4:03FE  9a621fb702           lcall 0x2b7, 0x1f62  ; sub_s3:1F62
+4:03FE  9a621fb702           lcall 0x2b7, 0x1f62  ; RegObj::notify@s3:1F62
 4:0403  c9                   leave
 4:0404  ca0600               retf 6
 4:0407  db 90
@@ -392,7 +397,8 @@ loc_0408:
 4:040E  ca0600               retf 6
 4:0411  db 00
 
-; ---------------- sub_s4:0412 FAR size=146 callers=1
+; ---------------- MapViewModel::putBuilding@s4:0412 FAR size=146 callers=1
+;   queues SCPutBldg for a tile placement
 4:0412  c8380100             enter 0x138, 0
 4:0416  c746fe0000           mov word ptr [bp - 2], 0
 4:041B  8b4610               mov ax, word ptr [bp + 0x10]
@@ -432,7 +438,7 @@ loc_0435:
 4:0475  740d                 je 0x484
 4:0477  6a06                 push 6
 4:0479  66ff7606             push dword ptr [bp + 6]
-4:047D  9a621f0104           lcall 0x401, 0x1f62  ; sub_s3:1F62
+4:047D  9a621f0104           lcall 0x401, 0x1f62  ; RegObj::notify@s3:1F62
 4:0482  eb07                 jmp 0x48b
 loc_0484:
 4:0484  a1ca50               mov ax, word ptr [0x50ca]
@@ -446,7 +452,8 @@ loc_048B:
 4:04A0  ca1000               retf 0x10
 4:04A3  db 00
 
-; ---------------- sub_s4:04A4 FAR size=20 callers=2
+; ---------------- View::setPlanet@s4:04A4 FAR size=20 callers=2
+;   current planet (+0x16)
 4:04A4  55                   push bp
 4:04A5  8bec                 mov bp, sp
 4:04A7  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -456,7 +463,8 @@ loc_048B:
 4:04B4  ca0800               retf 8
 4:04B7  db 00
 
-; ---------------- sub_s4:04B8 FAR size=18 callers=4
+; ---------------- View::planetHandle@s4:04B8 FAR size=18 callers=4
+;   current planet (+0x16)
 4:04B8  55                   push bp
 4:04B9  8bec                 mov bp, sp
 4:04BB  c45e06               les bx, ptr [bp + 6]
@@ -465,7 +473,8 @@ loc_048B:
 4:04C6  c9                   leave
 4:04C7  ca0400               retf 4
 
-; ---------------- sub_s4:04CA FAR size=20 callers=2
+; ---------------- View::setStar@s4:04CA FAR size=20 callers=2
+;   current star (+0x1A)
 4:04CA  55                   push bp
 4:04CB  8bec                 mov bp, sp
 4:04CD  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -475,7 +484,8 @@ loc_048B:
 4:04DA  ca0800               retf 8
 4:04DD  db 00
 
-; ---------------- sub_s4:04DE FAR size=20 callers=1
+; ---------------- View::setSite@s4:04DE FAR size=20 callers=1
+;   current site (+0x20)
 4:04DE  55                   push bp
 4:04DF  8bec                 mov bp, sp
 4:04E1  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -485,7 +495,8 @@ loc_048B:
 4:04EE  ca0800               retf 8
 4:04F1  db 00
 
-; ---------------- sub_s4:04F2 FAR size=52 callers=2
+; ---------------- View::deleteCalendar@s4:04F2 FAR size=52 callers=2
+;   deletes the object at +0x12
 4:04F2  c8080000             enter 8, 0
 4:04F6  c45e06               les bx, ptr [bp + 6]
 4:04F9  268b4712             mov ax, word ptr es:[bx + 0x12]
@@ -507,17 +518,19 @@ loc_0515:
 4:0522  ca0400               retf 4
 4:0525  db 00
 
-; ---------------- sub_s4:0526 FAR size=12 callers=0
+; ---------------- View::thunk_dtor@s4:0526 FAR size=12 callers=0
+;   this-adjusting thunk
 4:0526  8bdc                 mov bx, sp
 4:0528  36836f040a           sub word ptr ss:[bx + 4], 0xa
 4:052D  e90200               jmp 0x532
 4:0530  db 90 90
 
-; ---------------- sub_s4:0532 FAR size=62 callers=0
+; ---------------- View::scalar_dtor@s4:0532 FAR size=62 callers=0
+;   deleting destructor
 4:0532  55                   push bp
 4:0533  8bec                 mov bp, sp
 4:0535  66ff7606             push dword ptr [bp + 6]
-4:0539  9a66eb8004           lcall 0x480, 0xeb66  ; sub_s3:EB66
+4:0539  9a66eb8004           lcall 0x480, 0xeb66  ; View::~View@s3:EB66
 4:053E  f6460a01             test byte ptr [bp + 0xa], 1
 4:0542  7409                 je 0x54d
 4:0544  66ff7606             push dword ptr [bp + 6]
@@ -530,14 +543,15 @@ loc_054D:
 4:0557  db 90 32 05 66 05 f2 1d 62 05 58 ed 3c 05 00 00 ff
 4:0567  db ff 26 05 6e 05 ea 03 5a 05
 
-; ---------------- sub_s4:0570 FAR size=542 callers=1
+; ---------------- MapViewModel::MapViewModel@s4:0570 FAR size=542 callers=1
+;   registry 0x0C..0x24: a colony map window's model (vtable 1874)
 4:0570  c80e0000             enter 0xe, 0
 4:0574  ff760a               push word ptr [bp + 0xa]
 4:0577  6a00                 push 0
 4:0579  66ff7606             push dword ptr [bp + 6]
 4:057D  90                   nop
 4:057E  0e                   push cs
-4:057F  e89c45               call 0x4b1e  ; sub_s4:4B1E
+4:057F  e89c45               call 0x4b1e  ; WindowModel::WindowModel@s4:4B1E
 4:0582  c45e06               les bx, ptr [bp + 6]
 4:0585  26c747209a38         mov word ptr es:[bx + 0x20], 0x389a
 4:058B  26c747229e05         mov word ptr es:[bx + 0x22], 0x59e  ; SEGMENT s2:0000
@@ -551,17 +565,17 @@ loc_054D:
 4:05B0  8d4730               lea ax, [bx + 0x30]
 4:05B3  06                   push es
 4:05B4  50                   push ax
-4:05B5  9a383ec605           lcall 0x5c6, 0x3e38  ; sub_s2:3E38
+4:05B5  9a383ec605           lcall 0x5c6, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:05BA  668b4606             mov eax, dword ptr [bp + 6]
 4:05BE  053600               add ax, 0x36
 4:05C1  6650                 push eax
-4:05C3  9a383edc05           lcall 0x5dc, 0x3e38  ; sub_s2:3E38
+4:05C3  9a383edc05           lcall 0x5dc, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:05C8  c45e06               les bx, ptr [bp + 6]
 4:05CB  6626c7473c00000000   mov dword ptr es:[bx + 0x3c], 0
 4:05D4  8d4740               lea ax, [bx + 0x40]
 4:05D7  06                   push es
 4:05D8  50                   push ax
-4:05D9  9a906c9d04           lcall 0x49d, 0x6c90  ; sub_s2:6C90
+4:05D9  9a906c9d04           lcall 0x49d, 0x6c90  ; Box::Box@s2:6C90
 4:05DE  c45e06               les bx, ptr [bp + 6]
 4:05E1  662bc0               sub eax, eax
 4:05E4  662689474c           mov dword ptr es:[bx + 0x4c], eax
@@ -607,13 +621,13 @@ loc_054D:
 4:06BA  666800000800         push 0x80000
 4:06C0  52                   push dx
 4:06C1  50                   push ax
-4:06C2  9a06494b05           lcall 0x54b, 0x4906  ; sub_s1:4906
+4:06C2  9a06494b05           lcall 0x54b, 0x4906  ; _fmemset@s1:4906
 4:06C7  83c408               add sp, 8
 loc_06CA:
 4:06CA  ff066039             inc word ptr [0x3960]
 4:06CE  6a2f                 push 0x2f
 4:06D0  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:06D5  9aba201a07           lcall 0x71a, 0x20ba  ; sub_s3:20BA
+4:06D5  9aba201a07           lcall 0x71a, 0x20ba  ; Registry_get@s3:20BA
 4:06DA  c45e06               les bx, ptr [bp + 6]
 4:06DD  2689472c             mov word ptr es:[bx + 0x2c], ax
 4:06E1  2689572e             mov word ptr es:[bx + 0x2e], dx
@@ -638,7 +652,7 @@ loc_06F9:
 4:070C  26ff5f04             lcall es:[bx + 4]
 4:0710  6a02                 push 2
 4:0712  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:0717  9aba204107           lcall 0x741, 0x20ba  ; sub_s3:20BA
+4:0717  9aba204107           lcall 0x741, 0x20ba  ; Registry_get@s3:20BA
 4:071C  8946fc               mov word ptr [bp - 4], ax
 4:071F  8956fe               mov word ptr [bp - 2], dx
 4:0722  c45efc               les bx, ptr [bp - 4]
@@ -649,14 +663,14 @@ loc_06F9:
 loc_0737:
 4:0737  6a09                 push 9
 4:0739  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:073E  9aba205c07           lcall 0x75c, 0x20ba  ; sub_s3:20BA
+4:073E  9aba205c07           lcall 0x75c, 0x20ba  ; Registry_get@s3:20BA
 4:0743  c45e06               les bx, ptr [bp + 6]
 4:0746  2689879e00           mov word ptr es:[bx + 0x9e], ax
 4:074B  268997a000           mov word ptr es:[bx + 0xa0], dx
 4:0750  688800               push 0x88
 4:0753  52                   push dx
 4:0754  26ffb79e00           push word ptr es:[bx + 0x9e]
-4:0759  9ad0657607           lcall 0x776, 0x65d0  ; sub_s3:65D0
+4:0759  9ad0657607           lcall 0x776, 0x65d0  ; Orbitals::launched@s3:65D0
 4:075E  0bc0                 or ax, ax
 4:0760  740a                 je 0x76c
 4:0762  c45e06               les bx, ptr [bp + 6]
@@ -664,7 +678,7 @@ loc_0737:
 loc_076C:
 4:076C  6a3b                 push 0x3b
 4:076E  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:0773  9aba205e05           lcall 0x55e, 0x20ba  ; sub_s3:20BA
+4:0773  9aba205e05           lcall 0x55e, 0x20ba  ; Registry_get@s3:20BA
 4:0778  c45e06               les bx, ptr [bp + 6]
 4:077B  268987a200           mov word ptr es:[bx + 0xa2], ax
 4:0780  268997a400           mov word ptr es:[bx + 0xa4], dx
@@ -674,7 +688,8 @@ loc_076C:
 4:078A  ca0600               retf 6
 4:078D  db 00
 
-; ---------------- sub_s4:078E FAR size=372 callers=1
+; ---------------- MapViewModel::~MapViewModel@s4:078E FAR size=372 callers=1
+;   dtor
 4:078E  c81c0000             enter 0x1c, 0
 4:0792  56                   push si
 4:0793  c45e06               les bx, ptr [bp + 6]
@@ -737,7 +752,7 @@ loc_0851:
 4:0857  52                   push dx
 4:0858  50                   push ax
 4:0859  6626ff772c           push dword ptr es:[bx + 0x2c]
-4:085E  9aa61e9208           lcall 0x892, 0x1ea6  ; sub_s3:1EA6
+4:085E  9aa61e9208           lcall 0x892, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 loc_0863:
 4:0863  c45e06               les bx, ptr [bp + 6]
 4:0866  662683bf9e0000       cmp dword ptr es:[bx + 0x9e], 0
@@ -758,7 +773,7 @@ loc_0881:
 4:0887  52                   push dx
 4:0888  50                   push ax
 4:0889  6626ffb79e00         push dword ptr es:[bx + 0x9e]
-4:088F  9aa61efa08           lcall 0x8fa, 0x1ea6  ; sub_s3:1EA6
+4:088F  9aa61efa08           lcall 0x8fa, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 loc_0894:
 4:0894  c45e06               les bx, ptr [bp + 6]
 4:0897  268b4760             mov ax, word ptr es:[bx + 0x60]
@@ -770,7 +785,7 @@ loc_0894:
 4:08A9  7413                 je 0x8be
 4:08AB  52                   push dx
 4:08AC  50                   push ax
-4:08AD  9a1851f108           lcall 0x8f1, 0x5118  ; sub_s2:5118
+4:08AD  9a1851f108           lcall 0x8f1, 0x5118  ; DibRegion::free@s2:5118
 4:08B2  66ff76fc             push dword ptr [bp - 4]
 4:08B6  9ace17ae06           lcall 0x6ae, 0x17ce  ; operator_delete@s1:17CE
 4:08BB  83c404               add sp, 4
@@ -793,13 +808,14 @@ loc_08DF:
 4:08E8  26c7079a38           mov word ptr es:[bx], 0x389a
 4:08ED  26c747028f05         mov word ptr es:[bx + 2], 0x58f  ; SEGMENT s2:0000
 4:08F3  66ff7606             push dword ptr [bp + 6]
-4:08F7  9a801dd806           lcall 0x6d8, 0x1d80  ; sub_s3:1D80
+4:08F7  9a801dd806           lcall 0x6d8, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:08FC  5e                   pop si
 4:08FD  c9                   leave
 4:08FE  ca0400               retf 4
 4:0901  db 00
 
-; ---------------- sub_s4:0902 FAR size=166 callers=1
+; ---------------- MapViewModel::levelCount@s4:0902 FAR size=166 callers=1
+;   levels open on the site
 4:0902  c8060000             enter 6, 0
 4:0906  57                   push di
 4:0907  56                   push si
@@ -816,13 +832,13 @@ loc_08DF:
 4:091F  66ff364857           push dword ptr [0x5748]  ; g_sim
 4:0924  8bf0                 mov si, ax
 4:0926  8bfa                 mov di, dx
-4:0928  9a44833209           lcall 0x932, 0x8344  ; sub_s7:8344
+4:0928  9a44833209           lcall 0x932, 0x8344  ; Sim::resolve@s7:8344
 4:092D  52                   push dx
 4:092E  50                   push ax
-4:092F  9a525a6d04           lcall 0x46d, 0x5a52  ; sub_s7:5A52
+4:092F  9a525a6d04           lcall 0x46d, 0x5a52  ; Site::recordWords@s7:5A52
 4:0934  8ec7                 mov es, di
 4:0936  6626ff34             push dword ptr es:[si]
-4:093A  9a7247b008           lcall 0x8b0, 0x4772  ; sub_s2:4772
+4:093A  9a7247b008           lcall 0x8b0, 0x4772  ; DIB::rect@s2:4772
 4:093F  c45e06               les bx, ptr [bp + 6]
 4:0942  2689475a             mov word ptr es:[bx + 0x5a], ax
 4:0946  2689575c             mov word ptr es:[bx + 0x5c], dx
@@ -830,7 +846,7 @@ loc_08DF:
 4:094B  53                   push bx
 4:094C  90                   nop
 4:094D  0e                   push cs
-4:094E  e89f0e               call 0x17f0  ; sub_s4:17F0
+4:094E  e89f0e               call 0x17f0  ; firstFreeLevel@s4:17F0
 4:0951  8946fa               mov word ptr [bp - 6], ax
 4:0954  050200               add ax, 2
 4:0957  c45e06               les bx, ptr [bp + 6]
@@ -851,7 +867,7 @@ loc_08DF:
 4:0987  52                   push dx
 4:0988  26ff773c             push word ptr es:[bx + 0x3c]
 4:098C  6626ff772c           push dword ptr es:[bx + 0x2c]
-4:0991  9a18ec6108           lcall 0x861, 0xec18  ; sub_s3:EC18
+4:0991  9a18ec6108           lcall 0x861, 0xec18  ; View::planetField@s3:EC18
 4:0996  c45e06               les bx, ptr [bp + 6]
 4:0999  2689477c             mov word ptr es:[bx + 0x7c], ax
 4:099D  2689577e             mov word ptr es:[bx + 0x7e], dx
@@ -861,8 +877,9 @@ loc_08DF:
 4:09A4  ca0800               retf 8
 4:09A7  db 00
 
-; ---------------- sub_s4:09A8 FAR size=168 callers=0
+; ---------------- MapViewModel::rect@s4:09A8 FAR size=168 callers=0
 ;   apis: USER.GetSystemMetrics
+;   (vslot 8) the window rectangle
 4:09A8  c8200000             enter 0x20, 0
 4:09AC  57                   push di
 4:09AD  56                   push si
@@ -881,13 +898,13 @@ loc_08DF:
 4:09CE  50                   push ax
 4:09CF  6a48                 push 0x48
 4:09D1  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:09D6  9aba209409           lcall 0x994, 0x20ba  ; sub_s3:20BA
+4:09D6  9aba209409           lcall 0x994, 0x20ba  ; Registry_get@s3:20BA
 4:09DB  8946f4               mov word ptr [bp - 0xc], ax
 4:09DE  8956f6               mov word ptr [bp - 0xa], dx
 4:09E1  050e00               add ax, 0xe
 4:09E4  52                   push dx
 4:09E5  50                   push ax
-4:09E6  9a943e3d09           lcall 0x93d, 0x3e94  ; sub_s2:3E94
+4:09E6  9a943e3d09           lcall 0x93d, 0x3e94  ; Pos3::getXY@s2:3E94
 4:09EB  8b46fc               mov ax, word ptr [bp - 4]
 4:09EE  f76efe               imul word ptr [bp - 2]
 4:09F1  8bc8                 mov cx, ax
@@ -923,7 +940,8 @@ loc_08DF:
 4:0A4C  c9                   leave
 4:0A4D  ca0400               retf 4
 
-; ---------------- sub_s4:0A50 FAR size=38 callers=3
+; ---------------- MapViewModel::currentList@s4:0A50 FAR size=38 callers=3
+;   the surface or underground list (+0x84 mode)
 4:0A50  55                   push bp
 4:0A51  8bec                 mov bp, sp
 4:0A53  c45e06               les bx, ptr [bp + 6]
@@ -939,7 +957,8 @@ loc_0A6A:
 4:0A72  c9                   leave
 4:0A73  ca0400               retf 4
 
-; ---------------- sub_s4:0A76 FAR size=42 callers=1
+; ---------------- MapViewModel::toggleMode@s4:0A76 FAR size=42 callers=1
+;   switches mode 1 <-> 2, notice 4
 4:0A76  55                   push bp
 4:0A77  8bec                 mov bp, sp
 4:0A79  c45e06               les bx, ptr [bp + 6]
@@ -955,12 +974,13 @@ loc_0A8D:
 4:0A92  6a04                 push 4
 4:0A94  06                   push es
 4:0A95  53                   push bx
-4:0A96  9a621fd909           lcall 0x9d9, 0x1f62  ; sub_s3:1F62
+4:0A96  9a621fd909           lcall 0x9d9, 0x1f62  ; RegObj::notify@s3:1F62
 4:0A9B  c9                   leave
 4:0A9C  ca0400               retf 4
 4:0A9F  db 00
 
-; ---------------- sub_s4:0AA0 FAR size=32 callers=0
+; ---------------- MapViewModel::setLevel@s4:0AA0 FAR size=32 callers=0
+;   (vslot 10) the level, and the view's site
 4:0AA0  55                   push bp
 4:0AA1  8bec                 mov bp, sp
 4:0AA3  8b460a               mov ax, word ptr [bp + 0xa]
@@ -970,11 +990,12 @@ loc_0A8D:
 4:0AB2  6626ff772c           push dword ptr es:[bx + 0x2c]
 4:0AB7  90                   nop
 4:0AB8  0e                   push cs
-4:0AB9  e822fa               call 0x4de  ; sub_s4:04DE
+4:0AB9  e822fa               call 0x4de  ; View::setSite@s4:04DE
 4:0ABC  c9                   leave
 4:0ABD  ca0600               retf 6
 
-; ---------------- sub_s4:0AC0 FAR size=20 callers=1
+; ---------------- MapViewModel::setSelection@s4:0AC0 FAR size=20 callers=1
+;   +0x80
 4:0AC0  55                   push bp
 4:0AC1  8bec                 mov bp, sp
 4:0AC3  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -983,7 +1004,8 @@ loc_0A8D:
 4:0AD0  c9                   leave
 4:0AD1  ca0800               retf 8
 
-; ---------------- sub_s4:0AD4 FAR size=20 callers=2
+; ---------------- MapViewModel::selection@s4:0AD4 FAR size=20 callers=2
+;   +0x80
 4:0AD4  55                   push bp
 4:0AD5  8bec                 mov bp, sp
 4:0AD7  c45e06               les bx, ptr [bp + 6]
@@ -992,7 +1014,8 @@ loc_0A8D:
 4:0AE4  c9                   leave
 4:0AE5  ca0400               retf 4
 
-; ---------------- sub_s4:0AE8 FAR size=18 callers=2
+; ---------------- MapViewModel::setTool@s4:0AE8 FAR size=18 callers=2
+;   +0x5E
 4:0AE8  55                   push bp
 4:0AE9  8bec                 mov bp, sp
 4:0AEB  8b460a               mov ax, word ptr [bp + 0xa]
@@ -1002,7 +1025,8 @@ loc_0A8D:
 4:0AF6  ca0600               retf 6
 4:0AF9  db 00
 
-; ---------------- sub_s4:0AFA FAR size=14 callers=2
+; ---------------- MapViewModel::tool@s4:0AFA FAR size=14 callers=2
+;   +0x5E
 4:0AFA  55                   push bp
 4:0AFB  8bec                 mov bp, sp
 4:0AFD  c45e06               les bx, ptr [bp + 6]
@@ -1010,7 +1034,8 @@ loc_0A8D:
 4:0B04  c9                   leave
 4:0B05  ca0400               retf 4
 
-; ---------------- sub_s4:0B08 FAR size=22 callers=1
+; ---------------- MapViewModel::siteHandle@s4:0B08 FAR size=22 callers=1
+;   the site of the model's colony
 4:0B08  55                   push bp
 4:0B09  8bec                 mov bp, sp
 4:0B0B  c45e06               les bx, ptr [bp + 6]
@@ -1020,7 +1045,8 @@ loc_0A8D:
 4:0B1A  c9                   leave
 4:0B1B  ca0400               retf 4
 
-; ---------------- sub_s4:0B1E FAR size=214 callers=2
+; ---------------- MapViewModel::scrollTo@s4:0B1E FAR size=214 callers=2
+;   scroll box from a position
 4:0B1E  c80e0000             enter 0xe, 0
 4:0B22  57                   push di
 4:0B23  56                   push si
@@ -1036,7 +1062,7 @@ loc_0A8D:
 4:0B33  668b4e06             mov ecx, dword ptr [bp + 6]
 4:0B37  83c130               add cx, 0x30
 4:0B3A  6651                 push ecx
-4:0B3C  9ab43ec90b           lcall 0xbc9, 0x3eb4  ; sub_s2:3EB4
+4:0B3C  9ab43ec90b           lcall 0xbc9, 0x3eb4  ; Pos3::get@s2:3EB4
 4:0B41  8b46fe               mov ax, word ptr [bp - 2]
 4:0B44  2d0300               sub ax, 3
 4:0B47  0bc0                 or ax, ax
@@ -1090,25 +1116,26 @@ loc_0B95:
 4:0BC1  50                   push ax
 4:0BC2  8bf0                 mov si, ax
 4:0BC4  8bfa                 mov di, dx
-4:0BC6  9aec6cd40b           lcall 0xbd4, 0x6cec  ; sub_s2:6CEC
+4:0BC6  9aec6cd40b           lcall 0xbd4, 0x6cec  ; Box::set@s2:6CEC
 4:0BCB  57                   push di
 4:0BCC  56                   push si
 4:0BCD  66ff760a             push dword ptr [bp + 0xa]
-4:0BD1  9a623feb0b           lcall 0xbeb, 0x3f62  ; sub_s2:3F62
+4:0BD1  9a623feb0b           lcall 0xbeb, 0x3f62  ; Pos3::assign@s2:3F62
 4:0BD6  668b4606             mov eax, dword ptr [bp + 6]
 4:0BDA  054600               add ax, 0x46
 4:0BDD  6650                 push eax
 4:0BDF  668b460a             mov eax, dword ptr [bp + 0xa]
 4:0BE3  050600               add ax, 6
 4:0BE6  6650                 push eax
-4:0BE8  9a623fe909           lcall 0x9e9, 0x3f62  ; sub_s2:3F62
+4:0BE8  9a623fe909           lcall 0x9e9, 0x3f62  ; Pos3::assign@s2:3F62
 4:0BED  5e                   pop si
 4:0BEE  5f                   pop di
 4:0BEF  c9                   leave
 4:0BF0  ca0800               retf 8
 4:0BF3  db 00
 
-; ---------------- sub_s4:0BF4 FAR size=386 callers=0
+; ---------------- MapViewModel::onChange@s4:0BF4 FAR size=386 callers=0
+;   (vslot 16) rebuilds lists, scroll, buildings
 4:0BF4  c81a0000             enter 0x1a, 0
 4:0BF8  57                   push di
 4:0BF9  56                   push si
@@ -1136,7 +1163,7 @@ loc_0C16:
 4:0C25  668b4606             mov eax, dword ptr [bp + 6]
 4:0C29  051000               add ax, 0x10
 4:0C2C  6650                 push eax
-4:0C2E  9ab43e520c           lcall 0xc52, 0x3eb4  ; sub_s2:3EB4
+4:0C2E  9ab43e520c           lcall 0xc52, 0x3eb4  ; Pos3::get@s2:3EB4
 4:0C33  c45e06               les bx, ptr [bp + 6]
 4:0C36  26c45f0c             les bx, ptr es:[bx + 0xc]
 4:0C3A  268b471e             mov ax, word ptr es:[bx + 0x1e]
@@ -1146,11 +1173,11 @@ loc_0C16:
 4:0C46  668b4606             mov eax, dword ptr [bp + 6]
 4:0C4A  051000               add ax, 0x10
 4:0C4D  6650                 push eax
-4:0C4F  9a763e5c0c           lcall 0xc5c, 0x3e76  ; sub_s2:3E76
+4:0C4F  9a763e5c0c           lcall 0xc5c, 0x3e76  ; Pos3::set@s2:3E76
 4:0C54  8d46ee               lea ax, [bp - 0x12]
 4:0C57  16                   push ss
 4:0C58  50                   push ax
-4:0C59  9a906c3f0b           lcall 0xb3f, 0x6c90  ; sub_s2:6C90
+4:0C59  9a906c3f0b           lcall 0xb3f, 0x6c90  ; Box::Box@s2:6C90
 4:0C5E  8d46ee               lea ax, [bp - 0x12]
 4:0C61  16                   push ss
 4:0C62  50                   push ax
@@ -1159,7 +1186,7 @@ loc_0C16:
 4:0C6A  6650                 push eax
 4:0C6C  90                   nop
 4:0C6D  0e                   push cs
-4:0C6E  e8adfe               call 0xb1e  ; sub_s4:0B1E
+4:0C6E  e8adfe               call 0xb1e  ; MapViewModel::scrollTo@s4:0B1E
 loc_0C71:
 4:0C71  c45e06               les bx, ptr [bp + 6]
 4:0C74  6626c7472c00000000   mov dword ptr es:[bx + 0x2c], 0
@@ -1174,7 +1201,7 @@ loc_0C71:
 4:0C9E  6626ff770c           push dword ptr es:[bx + 0xc]
 4:0CA3  90                   nop
 4:0CA4  0e                   push cs
-4:0CA5  e8e4f5               call 0x28c  ; sub_s4:028C
+4:0CA5  e8e4f5               call 0x28c  ; MapViewModel::build@s4:028C
 4:0CA8  c45e06               les bx, ptr [bp + 6]
 4:0CAB  2689472c             mov word ptr es:[bx + 0x2c], ax
 4:0CAF  2689572e             mov word ptr es:[bx + 0x2e], dx
@@ -1182,7 +1209,7 @@ loc_0C71:
 4:0CB6  8d47e0               lea ax, [bx - 0x20]
 4:0CB9  06                   push es
 4:0CBA  50                   push ax
-4:0CBB  9a621f220d           lcall 0xd22, 0x1f62  ; sub_s3:1F62
+4:0CBB  9a621f220d           lcall 0xd22, 0x1f62  ; RegObj::notify@s3:1F62
 4:0CC0  5e                   pop si
 4:0CC1  5f                   pop di
 4:0CC2  c9                   leave
@@ -1197,17 +1224,17 @@ loc_0CC6:
 4:0CD3  8bfa                 mov di, dx
 4:0CD5  90                   nop
 4:0CD6  0e                   push cs
-4:0CD7  e8ec00               call 0xdc6  ; sub_s4:0DC6
+4:0CD7  e8ec00               call 0xdc6  ; MapViewModel::listColonyObjects@s4:0DC6
 4:0CDA  57                   push di
 4:0CDB  56                   push si
 4:0CDC  90                   nop
 4:0CDD  0e                   push cs
-4:0CDE  e8e303               call 0x10c4  ; sub_s4:10C4
+4:0CDE  e8e303               call 0x10c4  ; MapViewModel::listBuildings@s4:10C4
 4:0CE1  57                   push di
 4:0CE2  56                   push si
 4:0CE3  90                   nop
 4:0CE4  0e                   push cs
-4:0CE5  e85e06               call 0x1346  ; sub_s4:1346
+4:0CE5  e85e06               call 0x1346  ; MapViewModel::listButtons@s4:1346
 4:0CE8  eb87                 jmp 0xc71
 loc_0CEA:
 4:0CEA  c45e06               les bx, ptr [bp + 6]
@@ -1218,7 +1245,7 @@ loc_0CEA:
 4:0CFF  746f                 je 0xd70
 4:0D01  c45e06               les bx, ptr [bp + 6]
 4:0D04  6626ff7760           push dword ptr es:[bx + 0x60]
-4:0D09  9a1a29ffff           lcall 0xffff, 0x291a  ; sub_s5:291A
+4:0D09  9a1a29ffff           lcall 0xffff, 0x291a  ; SiteWnd::close@s5:291A
 4:0D0E  5e                   pop si
 4:0D0F  5f                   pop di
 4:0D10  c9                   leave
@@ -1227,7 +1254,7 @@ loc_0D14:
 4:0D14  688800               push 0x88
 4:0D17  c45e06               les bx, ptr [bp + 6]
 4:0D1A  6626ff777e           push dword ptr es:[bx + 0x7e]
-4:0D1F  9ad065990a           lcall 0xa99, 0x65d0  ; sub_s3:65D0
+4:0D1F  9ad065990a           lcall 0xa99, 0x65d0  ; Orbitals::launched@s3:65D0
 4:0D24  0bc0                 or ax, ax
 4:0D26  7448                 je 0xd70
 4:0D28  c45e06               les bx, ptr [bp + 6]
@@ -1271,7 +1298,8 @@ loc_0D70:
 4:0D72  c9                   leave
 4:0D73  ca0600               retf 6
 
-; ---------------- sub_s4:0D76 size=36 callers=0
+; ---------------- MapViewModel::isCurrentColony@s4:0D76 size=36 callers=0
+;   (vslot 9) is the model's colony the view's
 4:0D76  c8080000             enter 8, 0
 4:0D7A  c45e06               les bx, ptr [bp + 6]
 4:0D7D  66268b473c           mov eax, dword ptr es:[bx + 0x3c]
@@ -1286,7 +1314,8 @@ loc_0D94:
 4:0D96  c9                   leave
 4:0D97  ca0400               retf 4
 
-; ---------------- sub_s4:0D9A FAR size=44 callers=1
+; ---------------- MapViewModel::siteInfo@s4:0D9A FAR size=44 callers=1
+;   site record fields
 4:0D9A  55                   push bp
 4:0D9B  8bec                 mov bp, sp
 4:0D9D  c45e06               les bx, ptr [bp + 6]
@@ -1303,7 +1332,8 @@ loc_0D94:
 4:0DC2  ca0c00               retf 0xc
 4:0DC5  db 00
 
-; ---------------- sub_s4:0DC6 FAR size=654 callers=3
+; ---------------- MapViewModel::listColonyObjects@s4:0DC6 FAR size=654 callers=3
+;   the colony's objects (trade markers...)
 4:0DC6  c83c0000             enter 0x3c, 0
 4:0DCA  57                   push di
 4:0DCB  56                   push si
@@ -1359,7 +1389,7 @@ loc_0E60:
 4:0E74  6626ff7704           push dword ptr es:[bx + 4]
 4:0E79  c45e06               les bx, ptr [bp + 6]
 4:0E7C  6626ffb7a200         push dword ptr es:[bx + 0xa2]
-4:0E82  9aa6dfce0e           lcall 0xece, 0xdfa6  ; sub_s2:DFA6
+4:0E82  9aa6dfce0e           lcall 0xece, 0xdfa6  ; TradeAgreements::countFor@s2:DFA6
 4:0E87  0bc0                 or ax, ax
 4:0E89  74a1                 je 0xe2c
 loc_0E8B:
@@ -1390,7 +1420,7 @@ loc_0E96:
 4:0ECA  ff76d6               push word ptr [bp - 0x2a]
 4:0ECD  682d0f               push 0xf2d  ; SEGMENT s2:0000
 4:0ED0  68383e               push 0x3e38
-4:0ED3  9a8655140f           lcall 0xf14, 0x5586  ; sub_s1:5586
+4:0ED3  9a8655140f           lcall 0xf14, 0x5586  ; __vec_ctor@s1:5586
 4:0ED8  668b46e2             mov eax, dword ptr [bp - 0x1e]
 4:0EDC  c45e06               les bx, ptr [bp + 6]
 4:0EDF  662689879400         mov dword ptr es:[bx + 0x94], eax
@@ -1422,7 +1452,7 @@ loc_0EF5:
 4:0F29  ff76d6               push word ptr [bp - 0x2a]
 4:0F2C  68f70f               push 0xff7  ; SEGMENT s2:0000
 4:0F2F  68383e               push 0x3e38
-4:0F32  9a8655d507           lcall 0x7d5, 0x5586  ; sub_s1:5586
+4:0F32  9a8655d507           lcall 0x7d5, 0x5586  ; __vec_ctor@s1:5586
 4:0F37  668b46e2             mov eax, dword ptr [bp - 0x1e]
 4:0F3B  c45e06               les bx, ptr [bp + 6]
 4:0F3E  662689879a00         mov dword ptr es:[bx + 0x9a], eax
@@ -1492,7 +1522,7 @@ loc_0FE8:
 4:0FF0  03c1                 add ax, cx
 4:0FF2  52                   push dx
 4:0FF3  50                   push ax
-4:0FF4  9a623f2110           lcall 0x1021, 0x3f62  ; sub_s2:3F62
+4:0FF4  9a623f2110           lcall 0x1021, 0x3f62  ; Pos3::assign@s2:3F62
 4:0FF9  e978ff               jmp 0xf74
 loc_0FFC:
 4:0FFC  c45e06               les bx, ptr [bp + 6]
@@ -1503,7 +1533,7 @@ loc_0FFC:
 4:1010  6626ff7704           push dword ptr es:[bx + 4]
 4:1015  c45e06               les bx, ptr [bp + 6]
 4:1018  6626ffb7a200         push dword ptr es:[bx + 0xa2]
-4:101E  9aa6df4c10           lcall 0x104c, 0xdfa6  ; sub_s2:DFA6
+4:101E  9aa6df4c10           lcall 0x104c, 0xdfa6  ; TradeAgreements::countFor@s2:DFA6
 4:1023  0bc0                 or ax, ax
 4:1025  0f844bff             je 0xf74
 loc_1029:
@@ -1525,7 +1555,8 @@ loc_1044:
 4:1050  c9                   leave
 4:1051  ca0400               retf 4
 
-; ---------------- sub_s4:1054 FAR size=56 callers=1
+; ---------------- MapViewModel::objectsSurface@s4:1054 FAR size=56 callers=1
+;   list at +0x94 (made on first use)
 4:1054  55                   push bp
 4:1055  8bec                 mov bp, sp
 4:1057  c45e06               les bx, ptr [bp + 6]
@@ -1535,7 +1566,7 @@ loc_1044:
 4:1064  53                   push bx
 4:1065  90                   nop
 4:1066  0e                   push cs
-4:1067  e85cfd               call 0xdc6  ; sub_s4:0DC6
+4:1067  e85cfd               call 0xdc6  ; MapViewModel::listColonyObjects@s4:0DC6
 loc_106A:
 4:106A  c45e06               les bx, ptr [bp + 6]
 4:106D  66268b879400         mov eax, dword ptr es:[bx + 0x94]
@@ -1548,7 +1579,8 @@ loc_106A:
 4:1088  c9                   leave
 4:1089  ca0c00               retf 0xc
 
-; ---------------- sub_s4:108C FAR size=56 callers=1
+; ---------------- MapViewModel::objectsUnderground@s4:108C FAR size=56 callers=1
+;   list at +0x9A (made on first use)
 4:108C  55                   push bp
 4:108D  8bec                 mov bp, sp
 4:108F  c45e06               les bx, ptr [bp + 6]
@@ -1558,7 +1590,7 @@ loc_106A:
 4:109C  53                   push bx
 4:109D  90                   nop
 4:109E  0e                   push cs
-4:109F  e824fd               call 0xdc6  ; sub_s4:0DC6
+4:109F  e824fd               call 0xdc6  ; MapViewModel::listColonyObjects@s4:0DC6
 loc_10A2:
 4:10A2  c45e06               les bx, ptr [bp + 6]
 4:10A5  66268b879a00         mov eax, dword ptr es:[bx + 0x9a]
@@ -1571,7 +1603,8 @@ loc_10A2:
 4:10C0  c9                   leave
 4:10C1  ca0c00               retf 0xc
 
-; ---------------- sub_s4:10C4 FAR size=604 callers=1
+; ---------------- MapViewModel::listBuildings@s4:10C4 FAR size=604 callers=1
+;   the buildings by group
 4:10C4  c8460000             enter 0x46, 0
 4:10C8  57                   push di
 4:10C9  56                   push si
@@ -1615,13 +1648,13 @@ loc_1119:
 4:1141  75d6                 jne 0x1119
 4:1143  6a02                 push 2
 4:1145  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
-4:114A  9afac6d911           lcall 0x11d9, 0xc6fa  ; sub_s2:C6FA
+4:114A  9afac6d911           lcall 0x11d9, 0xc6fa  ; BldgGroups::get@s2:C6FA
 4:114F  8946d6               mov word ptr [bp - 0x2a], ax
 4:1152  8956d8               mov word ptr [bp - 0x28], dx
 4:1155  52                   push dx
 4:1156  50                   push ax
 4:1157  66ff76e8             push dword ptr [bp - 0x18]
-4:115B  9a784e6712           lcall 0x1267, 0x4e78  ; sub_s8:4E78
+4:115B  9a784e6712           lcall 0x1267, 0x4e78  ; colonyTilesInGroupAll@s8:4E78
 4:1160  8946d2               mov word ptr [bp - 0x2e], ax
 4:1163  8956d4               mov word ptr [bp - 0x2c], dx
 4:1166  52                   push dx
@@ -1670,7 +1703,7 @@ loc_119C:
 4:11D5  ff76e2               push word ptr [bp - 0x1e]
 4:11D8  685612               push 0x1256  ; SEGMENT s2:0000
 4:11DB  68383e               push 0x3e38
-4:11DE  9a8655f00d           lcall 0xdf0, 0x5586  ; sub_s1:5586
+4:11DE  9a8655f00d           lcall 0xdf0, 0x5586  ; __vec_ctor@s1:5586
 4:11E3  668b46ce             mov eax, dword ptr [bp - 0x32]
 4:11E7  c45e06               les bx, ptr [bp + 6]
 4:11EA  662689878800         mov dword ptr es:[bx + 0x88], eax
@@ -1709,13 +1742,13 @@ loc_1220:
 4:124A  75d4                 jne 0x1220
 4:124C  6a02                 push 2
 4:124E  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
-4:1253  9afac6cd12           lcall 0x12cd, 0xc6fa  ; sub_s2:C6FA
+4:1253  9afac6cd12           lcall 0x12cd, 0xc6fa  ; BldgGroups::get@s2:C6FA
 4:1258  8946d6               mov word ptr [bp - 0x2a], ax
 4:125B  8956d8               mov word ptr [bp - 0x28], dx
 4:125E  52                   push dx
 4:125F  50                   push ax
 4:1260  66ff76e8             push dword ptr [bp - 0x18]
-4:1264  9a784effff           lcall 0xffff, 0x4e78  ; sub_s8:4E78
+4:1264  9a784effff           lcall 0xffff, 0x4e78  ; colonyTilesInGroupAll@s8:4E78
 4:1269  8946da               mov word ptr [bp - 0x26], ax
 4:126C  8956dc               mov word ptr [bp - 0x24], dx
 4:126F  52                   push dx
@@ -1736,7 +1769,7 @@ loc_1290:
 4:1298  733c                 jae 0x12d6
 4:129A  66ff76c6             push dword ptr [bp - 0x3a]
 4:129E  66ff76da             push dword ptr [bp - 0x26]
-4:12A2  9a581d2b09           lcall 0x92b, 0x1d58  ; sub_s7:1D58
+4:12A2  9a581d2b09           lcall 0x92b, 0x1d58  ; HandleList::resolveAt@s7:1D58
 4:12A7  8946c2               mov word ptr [bp - 0x3e], ax
 4:12AA  8956c4               mov word ptr [bp - 0x3c], dx
 4:12AD  050c00               add ax, 0xc
@@ -1751,7 +1784,7 @@ loc_1290:
 4:12C4  03c9                 add cx, cx
 4:12C6  03c1                 add ax, cx
 4:12C8  6650                 push eax
-4:12CA  9a623f1813           lcall 0x1318, 0x3f62  ; sub_s2:3F62
+4:12CA  9a623f1813           lcall 0x1318, 0x3f62  ; Pos3::assign@s2:3F62
 4:12CF  66ff46e4             inc dword ptr [bp - 0x1c]
 4:12D3  ebb7                 jmp 0x128c
 4:12D5  db 90
@@ -1777,7 +1810,7 @@ loc_12FA:
 4:1307  6a06                 push 6
 4:1309  06                   push es
 4:130A  53                   push bx
-4:130B  9a621fbe0c           lcall 0xcbe, 0x1f62  ; sub_s3:1F62
+4:130B  9a621fbe0c           lcall 0xcbe, 0x1f62  ; RegObj::notify@s3:1F62
 loc_1310:
 4:1310  c746ec9a38           mov word ptr [bp - 0x14], 0x389a
 4:1315  c746ee850e           mov word ptr [bp - 0x12], 0xe85  ; SEGMENT s2:0000
@@ -1786,7 +1819,8 @@ loc_1310:
 4:131C  c9                   leave
 4:131D  ca0400               retf 4
 
-; ---------------- sub_s4:1320 FAR size=38 callers=1
+; ---------------- MapViewModel::buildingsList@s4:1320 FAR size=38 callers=1
+;   list at +0x88/+0x86
 4:1320  55                   push bp
 4:1321  8bec                 mov bp, sp
 4:1323  c45e06               les bx, ptr [bp + 6]
@@ -1801,7 +1835,8 @@ loc_1310:
 4:1342  ca0c00               retf 0xc
 4:1345  db 00
 
-; ---------------- sub_s4:1346 FAR size=688 callers=1
+; ---------------- MapViewModel::listButtons@s4:1346 FAR size=688 callers=1
+;   the list buttons (listbutn.bmp)
 4:1346  c84c0000             enter 0x4c, 0
 4:134A  c45e06               les bx, ptr [bp + 6]
 4:134D  268b878c00           mov ax, word ptr es:[bx + 0x8c]
@@ -1843,13 +1878,13 @@ loc_1399:
 4:13C3  75d4                 jne 0x1399
 4:13C5  6a02                 push 2
 4:13C7  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
-4:13CC  9afac69714           lcall 0x1497, 0xc6fa  ; sub_s2:C6FA
+4:13CC  9afac69714           lcall 0x1497, 0xc6fa  ; BldgGroups::get@s2:C6FA
 4:13D1  8946d6               mov word ptr [bp - 0x2a], ax
 4:13D4  8956d8               mov word ptr [bp - 0x28], dx
 4:13D7  52                   push dx
 4:13D8  50                   push ax
 4:13D9  66ff76e8             push dword ptr [bp - 0x18]
-4:13DD  9a784e2515           lcall 0x1525, 0x4e78  ; sub_s8:4E78
+4:13DD  9a784e2515           lcall 0x1525, 0x4e78  ; colonyTilesInGroupAll@s8:4E78
 4:13E2  8946d2               mov word ptr [bp - 0x2e], ax
 4:13E5  8956d4               mov word ptr [bp - 0x2c], dx
 4:13E8  52                   push dx
@@ -1869,7 +1904,7 @@ loc_1408:
 4:1410  7324                 jae 0x1436
 4:1412  66ff76ca             push dword ptr [bp - 0x36]
 4:1416  66ff76d2             push dword ptr [bp - 0x2e]
-4:141A  9a7c1d6315           lcall 0x1563, 0x1d7c  ; sub_s7:1D7C
+4:141A  9a7c1d6315           lcall 0x1563, 0x1d7c  ; HandleList::buildingAt@s7:1D7C
 4:141F  8946c6               mov word ptr [bp - 0x3a], ax
 4:1422  8956c8               mov word ptr [bp - 0x38], dx
 4:1425  c45ec6               les bx, ptr [bp - 0x3a]
@@ -1917,7 +1952,7 @@ loc_145A:
 4:1493  ff76e2               push word ptr [bp - 0x1e]
 4:1496  681415               push 0x1514  ; SEGMENT s2:0000 | 'listbutn.bmp'
 4:1499  68383e               push 0x3e38
-4:149C  9a8655e810           lcall 0x10e8, 0x5586  ; sub_s1:5586
+4:149C  9a8655e810           lcall 0x10e8, 0x5586  ; __vec_ctor@s1:5586
 4:14A1  668b46bc             mov eax, dword ptr [bp - 0x44]
 4:14A5  c45e06               les bx, ptr [bp + 6]
 4:14A8  662689878e00         mov dword ptr es:[bx + 0x8e], eax
@@ -1956,13 +1991,13 @@ loc_14DE:
 4:1508  75d4                 jne 0x14de
 4:150A  6a02                 push 2
 4:150C  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
-4:1511  9afac6a615           lcall 0x15a6, 0xc6fa  ; sub_s2:C6FA
+4:1511  9afac6a615           lcall 0x15a6, 0xc6fa  ; BldgGroups::get@s2:C6FA
 4:1516  8946c6               mov word ptr [bp - 0x3a], ax
 4:1519  8956c8               mov word ptr [bp - 0x38], dx
 4:151C  52                   push dx
 4:151D  50                   push ax
 4:151E  66ff76e8             push dword ptr [bp - 0x18]
-4:1522  9a784e5e11           lcall 0x115e, 0x4e78  ; sub_s8:4E78
+4:1522  9a784e5e11           lcall 0x115e, 0x4e78  ; colonyTilesInGroupAll@s8:4E78
 4:1527  8946ca               mov word ptr [bp - 0x36], ax
 4:152A  8956cc               mov word ptr [bp - 0x34], dx
 4:152D  52                   push dx
@@ -1983,7 +2018,7 @@ loc_154E:
 4:1556  7356                 jae 0x15ae
 4:1558  66ff76d2             push dword ptr [bp - 0x2e]
 4:155C  66ff76ca             push dword ptr [bp - 0x36]
-4:1560  9a581d7015           lcall 0x1570, 0x1d58  ; sub_s7:1D58
+4:1560  9a581d7015           lcall 0x1570, 0x1d58  ; HandleList::resolveAt@s7:1D58
 4:1565  8946d6               mov word ptr [bp - 0x2a], ax
 4:1568  8956d8               mov word ptr [bp - 0x28], dx
 4:156B  52                   push dx
@@ -2006,7 +2041,7 @@ loc_154E:
 4:159D  03c9                 add cx, cx
 4:159F  03c1                 add ax, cx
 4:15A1  6650                 push eax
-4:15A3  9a623ff015           lcall 0x15f0, 0x3f62  ; sub_s2:3F62
+4:15A3  9a623ff015           lcall 0x15f0, 0x3f62  ; Pos3::assign@s2:3F62
 4:15A8  66ff46e4             inc dword ptr [bp - 0x1c]
 4:15AC  eb9c                 jmp 0x154a
 loc_15AE:
@@ -2031,14 +2066,15 @@ loc_15D2:
 4:15DF  6a06                 push 6
 4:15E1  06                   push es
 4:15E2  53                   push bx
-4:15E3  9a621f0e13           lcall 0x130e, 0x1f62  ; sub_s3:1F62
+4:15E3  9a621f0e13           lcall 0x130e, 0x1f62  ; RegObj::notify@s3:1F62
 loc_15E8:
 4:15E8  c746ec9a38           mov word ptr [bp - 0x14], 0x389a
 4:15ED  c746ee4d11           mov word ptr [bp - 0x12], 0x114d  ; SEGMENT s2:0000
 4:15F2  c9                   leave
 4:15F3  ca0400               retf 4
 
-; ---------------- sub_s4:15F6 FAR size=38 callers=1
+; ---------------- MapViewModel::buttonsList@s4:15F6 FAR size=38 callers=1
+;   list at +0x8E/+0x8C
 4:15F6  55                   push bp
 4:15F7  8bec                 mov bp, sp
 4:15F9  c45e06               les bx, ptr [bp + 6]
@@ -2053,7 +2089,8 @@ loc_15E8:
 4:1618  ca0c00               retf 0xc
 4:161B  db 00
 
-; ---------------- sub_s4:161C FAR size=70 callers=3
+; ---------------- MapViewModel::cellOf@s4:161C FAR size=70 callers=3
+;   map cell of a window point
 4:161C  c80e0000             enter 0xe, 0
 4:1620  8d46fe               lea ax, [bp - 2]
 4:1623  16                   push ss
@@ -2064,7 +2101,7 @@ loc_15E8:
 4:162A  668b5606             mov edx, dword ptr [bp + 6]
 4:162E  83c236               add dx, 0x36
 4:1631  6652                 push edx
-4:1633  9a943e5c16           lcall 0x165c, 0x3e94  ; sub_s2:3E94
+4:1633  9a943e5c16           lcall 0x165c, 0x3e94  ; Pos3::getXY@s2:3E94
 4:1638  8b4610               mov ax, word ptr [bp + 0x10]
 4:163B  2d0300               sub ax, 3
 4:163E  0146fe               add word ptr [bp - 2], ax
@@ -2075,11 +2112,12 @@ loc_15E8:
 4:164E  c45e06               les bx, ptr [bp + 6]
 4:1651  26ff7744             push word ptr es:[bx + 0x44]
 4:1655  66ff760a             push dword ptr [bp + 0xa]
-4:1659  9a763ecf13           lcall 0x13cf, 0x3e76  ; sub_s2:3E76
+4:1659  9a763ecf13           lcall 0x13cf, 0x3e76  ; Pos3::set@s2:3E76
 4:165E  c9                   leave
 4:165F  ca0c00               retf 0xc
 
-; ---------------- sub_s4:1662 FAR size=60 callers=2
+; ---------------- MapViewModel::scrollBy@s4:1662 FAR size=60 callers=2
+;   scrolls by an offset
 4:1662  c80e0000             enter 0xe, 0
 4:1666  8d46fe               lea ax, [bp - 2]
 4:1669  16                   push ss
@@ -2090,7 +2128,7 @@ loc_15E8:
 4:1670  668b4606             mov eax, dword ptr [bp + 6]
 4:1674  053600               add ax, 0x36
 4:1677  6650                 push eax
-4:1679  9a943e3616           lcall 0x1636, 0x3e94  ; sub_s2:3E94
+4:1679  9a943e3616           lcall 0x1636, 0x3e94  ; Pos3::getXY@s2:3E94
 4:167E  8b46fe               mov ax, word ptr [bp - 2]
 4:1681  03460c               add ax, word ptr [bp + 0xc]
 4:1684  50                   push ax
@@ -2103,11 +2141,12 @@ loc_15E8:
 4:1694  53                   push bx
 4:1695  90                   nop
 4:1696  0e                   push cs
-4:1697  e81e00               call 0x16b8  ; sub_s4:16B8
+4:1697  e81e00               call 0x16b8  ; MapViewModel::setOrigin@s4:16B8
 4:169A  c9                   leave
 4:169B  ca0800               retf 8
 
-; ---------------- sub_s4:169E FAR size=26 callers=1
+; ---------------- MapViewModel::scrollToLevel@s4:169E FAR size=26 callers=1
+;   scrolls on the current level
 4:169E  c80a0000             enter 0xa, 0
 4:16A2  66ff760a             push dword ptr [bp + 0xa]
 4:16A6  c45e06               les bx, ptr [bp + 6]
@@ -2116,11 +2155,12 @@ loc_15E8:
 4:16AE  53                   push bx
 4:16AF  90                   nop
 4:16B0  0e                   push cs
-4:16B1  e80400               call 0x16b8  ; sub_s4:16B8
+4:16B1  e80400               call 0x16b8  ; MapViewModel::setOrigin@s4:16B8
 4:16B4  c9                   leave
 4:16B5  ca0800               retf 8
 
-; ---------------- sub_s4:16B8 FAR size=230 callers=3
+; ---------------- MapViewModel::setOrigin@s4:16B8 FAR size=230 callers=3
+;   the map origin, notice 4
 4:16B8  c80c0000             enter 0xc, 0
 4:16BC  57                   push di
 4:16BD  56                   push si
@@ -2161,7 +2201,7 @@ loc_1712:
 4:1719  668b4606             mov eax, dword ptr [bp + 6]
 4:171D  053000               add ax, 0x30
 4:1720  6650                 push eax
-4:1722  9a763e4317           lcall 0x1743, 0x3e76  ; sub_s2:3E76
+4:1722  9a763e4317           lcall 0x1743, 0x3e76  ; Pos3::set@s2:3E76
 4:1727  8d46fe               lea ax, [bp - 2]
 4:172A  16                   push ss
 4:172B  50                   push ax
@@ -2175,12 +2215,12 @@ loc_1712:
 4:173B  50                   push ax
 4:173C  8bf0                 mov si, ax
 4:173E  8bfa                 mov di, dx
-4:1740  9a943e5017           lcall 0x1750, 0x3e94  ; sub_s2:3E94
+4:1740  9a943e5017           lcall 0x1750, 0x3e94  ; Pos3::getXY@s2:3E94
 4:1745  66ff760c             push dword ptr [bp + 0xc]
 4:1749  6a00                 push 0
 4:174B  57                   push di
 4:174C  56                   push si
-4:174D  9a763e7c16           lcall 0x167c, 0x3e76  ; sub_s2:3E76
+4:174D  9a763e7c16           lcall 0x167c, 0x3e76  ; Pos3::set@s2:3E76
 4:1752  c45e06               les bx, ptr [bp + 6]
 4:1755  6626c7474c00000000   mov dword ptr es:[bx + 0x4c], 0
 4:175E  c45e06               les bx, ptr [bp + 6]
@@ -2193,14 +2233,14 @@ loc_1712:
 4:1779  6626ff772c           push dword ptr es:[bx + 0x2c]
 4:177E  90                   nop
 4:177F  0e                   push cs
-4:1780  e809eb               call 0x28c  ; sub_s4:028C
+4:1780  e809eb               call 0x28c  ; MapViewModel::build@s4:028C
 4:1783  c45e06               les bx, ptr [bp + 6]
 4:1786  2689474c             mov word ptr es:[bx + 0x4c], ax
 4:178A  2689574e             mov word ptr es:[bx + 0x4e], dx
 4:178E  6a04                 push 4
 4:1790  06                   push es
 4:1791  53                   push bx
-4:1792  9a621fe615           lcall 0x15e6, 0x1f62  ; sub_s3:1F62
+4:1792  9a621fe615           lcall 0x15e6, 0x1f62  ; RegObj::notify@s3:1F62
 loc_1797:
 4:1797  5e                   pop si
 4:1798  5f                   pop di
@@ -2208,7 +2248,8 @@ loc_1797:
 4:179A  ca0a00               retf 0xa
 4:179D  db 00
 
-; ---------------- sub_s4:179E FAR size=48 callers=1
+; ---------------- MapViewModel::restoreOrigin@s4:179E FAR size=48 callers=1
+;   origin from a saved position
 4:179E  c8060000             enter 6, 0
 4:17A2  8d46fe               lea ax, [bp - 2]
 4:17A5  16                   push ss
@@ -2220,17 +2261,18 @@ loc_1797:
 4:17AF  16                   push ss
 4:17B0  52                   push dx
 4:17B1  66ff760a             push dword ptr [bp + 0xa]
-4:17B5  9ab43e2517           lcall 0x1725, 0x3eb4  ; sub_s2:3EB4
+4:17B5  9ab43e2517           lcall 0x1725, 0x3eb4  ; Pos3::get@s2:3EB4
 4:17BA  66ff76fc             push dword ptr [bp - 4]
 4:17BE  ff76fa               push word ptr [bp - 6]
 4:17C1  66ff7606             push dword ptr [bp + 6]
 4:17C5  90                   nop
 4:17C6  0e                   push cs
-4:17C7  e8eefe               call 0x16b8  ; sub_s4:16B8
+4:17C7  e8eefe               call 0x16b8  ; MapViewModel::setOrigin@s4:16B8
 4:17CA  c9                   leave
 4:17CB  ca0800               retf 8
 
-; ---------------- sub_s4:17CE FAR size=34 callers=1
+; ---------------- MapViewModel::place@s4:17CE FAR size=34 callers=1
+;   places a building at a cell
 4:17CE  55                   push bp
 4:17CF  8bec                 mov bp, sp
 4:17D1  c45e06               les bx, ptr [bp + 6]
@@ -2240,12 +2282,13 @@ loc_1797:
 4:17E1  6626ff772c           push dword ptr es:[bx + 0x2c]
 4:17E6  90                   nop
 4:17E7  0e                   push cs
-4:17E8  e827ec               call 0x412  ; sub_s4:0412
+4:17E8  e827ec               call 0x412  ; MapViewModel::putBuilding@s4:0412
 4:17EB  c9                   leave
 4:17EC  ca0c00               retf 0xc
 4:17EF  db 00
 
-; ---------------- sub_s4:17F0 FAR size=44 callers=1
+; ---------------- firstFreeLevel@s4:17F0 FAR size=44 callers=1
+;   first level with no object (DGROUP 0x3962)
 4:17F0  c8020000             enter 2, 0
 4:17F4  56                   push si
 4:17F5  c746fe0000           mov word ptr [bp - 2], 0
@@ -2266,33 +2309,36 @@ loc_1814:
 4:1818  c9                   leave
 4:1819  ca0400               retf 4
 
-; ---------------- sub_s4:181C FAR size=38 callers=1
+; ---------------- MapViewModel::pickSite@s4:181C FAR size=38 callers=1
+;   the colony picks a site object
 4:181C  c8040000             enter 4, 0
 4:1820  66ff760a             push dword ptr [bp + 0xa]
 4:1824  c45e06               les bx, ptr [bp + 6]
 4:1827  6626ff773c           push dword ptr es:[bx + 0x3c]
 4:182C  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:1831  9a44833b18           lcall 0x183b, 0x8344  ; sub_s7:8344
+4:1831  9a44833b18           lcall 0x183b, 0x8344  ; Sim::resolve@s7:8344
 4:1836  52                   push dx
 4:1837  50                   push ax
-4:1838  9a6c5b1d14           lcall 0x141d, 0x5b6c  ; sub_s7:5B6C
+4:1838  9a6c5b1d14           lcall 0x141d, 0x5b6c  ; Site::rename@s7:5B6C
 4:183D  c9                   leave
 4:183E  ca0800               retf 8
 4:1841  db 00
 
-; ---------------- sub_s4:1842 FAR size=12 callers=0
+; ---------------- MapViewModel::thunk_dtor@s4:1842 FAR size=12 callers=0
+;   this-adjusting thunk
 4:1842  8bdc                 mov bx, sp
 4:1844  36836f0420           sub word ptr ss:[bx + 4], 0x20
 4:1849  e90200               jmp 0x184e
 4:184C  db 90 90
 
-; ---------------- sub_s4:184E FAR size=106 callers=0
+; ---------------- MapViewModel::scalar_dtor@s4:184E FAR size=106 callers=0
+;   deleting destructor
 4:184E  55                   push bp
 4:184F  8bec                 mov bp, sp
 4:1851  66ff7606             push dword ptr [bp + 6]
 4:1855  90                   nop
 4:1856  0e                   push cs
-4:1857  e834ef               call 0x78e  ; sub_s4:078E
+4:1857  e834ef               call 0x78e  ; MapViewModel::~MapViewModel@s4:078E
 4:185A  f6460a01             test byte ptr [bp + 0xa], 1
 4:185E  7409                 je 0x1869
 4:1860  66ff7606             push dword ptr [bp + 6]
@@ -2308,14 +2354,15 @@ loc_1869:
 4:18A3  db 18 ee 49 aa 18 00 4a ae 18 12 4a 95 17 42 18 b6
 4:18B3  db 18 f4 0b 76 18
 
-; ---------------- sub_s4:18B8 FAR size=332 callers=1
+; ---------------- StarMapModel::StarMapModel@s4:18B8 FAR size=332 callers=1
+;   registry 0x06: the star map (vtable 1FB0)
 4:18B8  c8200000             enter 0x20, 0
 4:18BC  ff760a               push word ptr [bp + 0xa]
 4:18BF  6a00                 push 0
 4:18C1  66ff7606             push dword ptr [bp + 6]
 4:18C5  90                   nop
 4:18C6  0e                   push cs
-4:18C7  e85432               call 0x4b1e  ; sub_s4:4B1E
+4:18C7  e85432               call 0x4b1e  ; WindowModel::WindowModel@s4:4B1E
 4:18CA  c45e06               les bx, ptr [bp + 6]
 4:18CD  26c747209a38         mov word ptr es:[bx + 0x20], 0x389a
 4:18D3  26c74722e618         mov word ptr es:[bx + 0x22], 0x18e6  ; SEGMENT s2:0000
@@ -2328,7 +2375,7 @@ loc_1869:
 4:18FA  8d473a               lea ax, [bx + 0x3a]
 4:18FD  06                   push es
 4:18FE  50                   push ax
-4:18FF  9a383e6b19           lcall 0x196b, 0x3e38  ; sub_s2:3E38
+4:18FF  9a383e6b19           lcall 0x196b, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:1904  c45e06               les bx, ptr [bp + 6]
 4:1907  662bc0               sub eax, eax
 4:190A  6626894740           mov dword ptr es:[bx + 0x40], eax
@@ -2345,7 +2392,7 @@ loc_1869:
 4:193A  8d474e               lea ax, [bx + 0x4e]
 4:193D  06                   push es
 4:193E  50                   push ax
-4:193F  9a0649a719           lcall 0x19a7, 0x4906  ; sub_s1:4906
+4:193F  9a0649a719           lcall 0x19a7, 0x4906  ; _fmemset@s1:4906
 4:1944  83c408               add sp, 8
 4:1947  8d46fe               lea ax, [bp - 2]
 4:194A  16                   push ss
@@ -2355,29 +2402,29 @@ loc_1869:
 4:1950  50                   push ax
 4:1951  6a48                 push 0x48
 4:1953  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:1958  9aba207819           lcall 0x1978, 0x20ba  ; sub_s3:20BA
+4:1958  9aba207819           lcall 0x1978, 0x20ba  ; Registry_get@s3:20BA
 4:195D  8946f8               mov word ptr [bp - 8], ax
 4:1960  8956fa               mov word ptr [bp - 6], dx
 4:1963  050e00               add ax, 0xe
 4:1966  52                   push dx
 4:1967  50                   push ax
-4:1968  9a943e8d19           lcall 0x198d, 0x3e94  ; sub_s2:3E94
+4:1968  9a943e8d19           lcall 0x198d, 0x3e94  ; Pos3::getXY@s2:3E94
 4:196D  689a00               push 0x9a
 4:1970  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:1975  9a0a837a18           lcall 0x187a, 0x830a  ; sub_s3:830A
+4:1975  9a0a837a18           lcall 0x187a, 0x830a  ; ResLibr::picture@s3:830A
 4:197A  c45e06               les bx, ptr [bp + 6]
 4:197D  26894724             mov word ptr es:[bx + 0x24], ax
 4:1981  26895726             mov word ptr es:[bx + 0x26], dx
 4:1985  52                   push dx
 4:1986  26ff7724             push word ptr es:[bx + 0x24]
-4:198A  9a7247f719           lcall 0x19f7, 0x4772  ; sub_s2:4772
+4:198A  9a7247f719           lcall 0x19f7, 0x4772  ; DIB::rect@s2:4772
 4:198F  8946f4               mov word ptr [bp - 0xc], ax
 4:1992  8956f6               mov word ptr [bp - 0xa], dx
 4:1995  666800000800         push 0x80000
 4:199B  668b4606             mov eax, dword ptr [bp + 6]
 4:199F  053200               add ax, 0x32
 4:19A2  6650                 push eax
-4:19A4  9a06496718           lcall 0x1867, 0x4906  ; sub_s1:4906
+4:19A4  9a06496718           lcall 0x1867, 0x4906  ; _fmemset@s1:4906
 4:19A9  83c408               add sp, 8
 4:19AC  c45ef4               les bx, ptr [bp - 0xc]
 4:19AF  268b4704             mov ax, word ptr es:[bx + 4]
@@ -2397,20 +2444,21 @@ loc_1869:
 4:19DD  53                   push bx
 4:19DE  90                   nop
 4:19DF  0e                   push cs
-4:19E0  e8bd04               call 0x1ea0  ; sub_s4:1EA0
+4:19E0  e8bd04               call 0x1ea0  ; StarMapModel::metrics@s4:1EA0
 4:19E3  666888009900         push 0x990088
 4:19E9  6a00                 push 0
 4:19EB  668b4606             mov eax, dword ptr [bp + 6]
 4:19EF  053a00               add ax, 0x3a
 4:19F2  6650                 push eax
-4:19F4  9a763eb817           lcall 0x17b8, 0x3e76  ; sub_s2:3E76
+4:19F4  9a763eb817           lcall 0x17b8, 0x3e76  ; Pos3::set@s2:3E76
 4:19F9  8b4606               mov ax, word ptr [bp + 6]
 4:19FC  8b5608               mov dx, word ptr [bp + 8]
 4:19FF  c9                   leave
 4:1A00  ca0600               retf 6
 4:1A03  db 00
 
-; ---------------- sub_s4:1A04 FAR size=138 callers=1
+; ---------------- StarMapModel::~StarMapModel@s4:1A04 FAR size=138 callers=1
+;   dtor
 4:1A04  c8140000             enter 0x14, 0
 4:1A08  56                   push si
 4:1A09  c45e06               les bx, ptr [bp + 6]
@@ -2454,13 +2502,14 @@ loc_1A6B:
 4:1A74  26c7079a38           mov word ptr es:[bx], 0x389a
 4:1A79  26c74702d718         mov word ptr es:[bx + 2], 0x18d7  ; SEGMENT s2:0000
 4:1A7F  66ff7606             push dword ptr [bp + 6]
-4:1A83  9a801d5b19           lcall 0x195b, 0x1d80  ; sub_s3:1D80
+4:1A83  9a801d5b19           lcall 0x195b, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:1A88  5e                   pop si
 4:1A89  c9                   leave
 4:1A8A  ca0400               retf 4
 4:1A8D  db 00
 
-; ---------------- sub_s4:1A8E FAR size=116 callers=1
+; ---------------- StarMapModel::build@s4:1A8E FAR size=116 callers=1
+;   lays out the stars
 4:1A8E  c80a0000             enter 0xa, 0
 4:1A92  c45e06               les bx, ptr [bp + 6]
 4:1A95  26837f4400           cmp word ptr es:[bx + 0x44], 0
@@ -2483,12 +2532,12 @@ loc_1AC6:
 4:1ACA  50                   push ax
 4:1ACB  6a03                 push 3
 4:1ACD  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:1AD2  9aba20e21a           lcall 0x1ae2, 0x20ba  ; sub_s3:20BA
+4:1AD2  9aba20e21a           lcall 0x1ae2, 0x20ba  ; Registry_get@s3:20BA
 4:1AD7  8946f6               mov word ptr [bp - 0xa], ax
 4:1ADA  8956f8               mov word ptr [bp - 8], dx
 4:1ADD  52                   push dx
 4:1ADE  50                   push ax
-4:1ADF  9a1ebf861a           lcall 0x1a86, 0xbf1e  ; sub_s3:BF1E
+4:1ADF  9a1ebf861a           lcall 0x1a86, 0xbf1e  ; SiteList::SiteList@s3:BF1E
 4:1AE4  8b46fa               mov ax, word ptr [bp - 6]
 4:1AE7  c45e06               les bx, ptr [bp + 6]
 4:1AEA  26894744             mov word ptr es:[bx + 0x44], ax
@@ -2498,11 +2547,12 @@ loc_1AC6:
 4:1AF8  53                   push bx
 4:1AF9  90                   nop
 4:1AFA  0e                   push cs
-4:1AFB  e8ea01               call 0x1ce8  ; sub_s4:1CE8
+4:1AFB  e8ea01               call 0x1ce8  ; StarMapModel::project@s4:1CE8
 4:1AFE  c9                   leave
 4:1AFF  ca0400               retf 4
 
-; ---------------- sub_s4:1B02 FAR size=216 callers=1
+; ---------------- StarMapModel::scroll@s4:1B02 FAR size=216 callers=1
+;   scrolls the map
 4:1B02  c80a0000             enter 0xa, 0
 4:1B06  56                   push si
 4:1B07  662bc0               sub eax, eax
@@ -2538,7 +2588,7 @@ loc_1B54:
 4:1B5E  051000               add ax, 0x10
 4:1B61  52                   push dx
 4:1B62  50                   push ax
-4:1B63  9a623f821b           lcall 0x1b82, 0x3f62  ; sub_s2:3F62
+4:1B63  9a623f821b           lcall 0x1b82, 0x3f62  ; Pos3::assign@s2:3F62
 4:1B68  c45ef8               les bx, ptr [bp - 8]
 4:1B6B  268b470a             mov ax, word ptr es:[bx + 0xa]
 4:1B6F  26894716             mov word ptr es:[bx + 0x16], ax
@@ -2550,7 +2600,7 @@ loc_1B54:
 4:1B7C  50                   push ax
 4:1B7D  06                   push es
 4:1B7E  53                   push bx
-4:1B7F  9a943ea71b           lcall 0x1ba7, 0x3e94  ; sub_s2:3E94
+4:1B7F  9a943ea71b           lcall 0x1ba7, 0x3e94  ; Pos3::getXY@s2:3E94
 4:1B84  c45ef8               les bx, ptr [bp - 8]
 4:1B87  266b770824           imul si, word ptr es:[bx + 8], 0x24
 4:1B8C  26037706             add si, word ptr es:[bx + 6]
@@ -2561,7 +2611,7 @@ loc_1B54:
 4:1B9E  6a00                 push 0
 4:1BA0  ff76fa               push word ptr [bp - 6]
 4:1BA3  53                   push bx
-4:1BA4  9a763e7d1a           lcall 0x1a7d, 0x3e76  ; sub_s2:3E76
+4:1BA4  9a763e7d1a           lcall 0x1a7d, 0x3e76  ; Pos3::set@s2:3E76
 4:1BA9  c45ef8               les bx, ptr [bp - 8]
 4:1BAC  268b7706             mov si, word ptr es:[bx + 6]
 4:1BB0  03f6                 add si, si
@@ -2576,14 +2626,15 @@ loc_1BBD:
 4:1BCB  6a0d                 push 0xd
 4:1BCD  06                   push es
 4:1BCE  53                   push bx
-4:1BCF  9a621fd51a           lcall 0x1ad5, 0x1f62  ; sub_s3:1F62
+4:1BCF  9a621fd51a           lcall 0x1ad5, 0x1f62  ; RegObj::notify@s3:1F62
 4:1BD4  5e                   pop si
 4:1BD5  c9                   leave
 4:1BD6  ca0600               retf 6
 4:1BD9  db 00
 
-; ---------------- sub_s4:1BDA FAR size=192 callers=1
+; ---------------- StarMapModel::hit@s4:1BDA FAR size=192 callers=1
 ;   apis: USER.PtInRect
+;   the star under a point (PtInRect)
 4:1BDA  c8180000             enter 0x18, 0
 4:1BDE  57                   push di
 4:1BDF  56                   push si
@@ -2597,7 +2648,7 @@ loc_1BBD:
 4:1BF2  668b4606             mov eax, dword ptr [bp + 6]
 4:1BF6  053a00               add ax, 0x3a
 4:1BF9  6650                 push eax
-4:1BFB  9a943e471c           lcall 0x1c47, 0x3e94  ; sub_s2:3E94
+4:1BFB  9a943e471c           lcall 0x1c47, 0x3e94  ; Pos3::getXY@s2:3E94
 4:1C00  8b460c               mov ax, word ptr [bp + 0xc]
 4:1C03  8946ea               mov word ptr [bp - 0x16], ax
 4:1C06  8b460a               mov ax, word ptr [bp + 0xa]
@@ -2627,7 +2678,7 @@ loc_1C19:
 4:1C3F  894ef6               mov word ptr [bp - 0xa], cx
 4:1C42  51                   push cx
 4:1C43  57                   push di
-4:1C44  9a943e661b           lcall 0x1b66, 0x3e94  ; sub_s2:3E94
+4:1C44  9a943e661b           lcall 0x1b66, 0x3e94  ; Pos3::getXY@s2:3E94
 4:1C49  8b46f0               mov ax, word ptr [bp - 0x10]
 4:1C4C  2d0600               sub ax, 6
 4:1C4F  0146f8               add word ptr [bp - 8], ax
@@ -2651,7 +2702,7 @@ loc_1C19:
 4:1C83  66ff7606             push dword ptr [bp + 6]
 4:1C87  90                   nop
 4:1C88  0e                   push cs
-4:1C89  e84e02               call 0x1eda  ; sub_s4:1EDA
+4:1C89  e84e02               call 0x1eda  ; StarMapModel::select@s4:1EDA
 4:1C8C  c746f20100           mov word ptr [bp - 0xe], 1
 loc_1C91:
 4:1C91  8b46f2               mov ax, word ptr [bp - 0xe]
@@ -2660,7 +2711,8 @@ loc_1C91:
 4:1C96  c9                   leave
 4:1C97  ca0800               retf 8
 
-; ---------------- sub_s4:1C9A FAR size=78 callers=4
+; ---------------- StarMapModel::selectButton@s4:1C9A FAR size=78 callers=4
+;   selects the star of a button
 4:1C9A  c8080000             enter 8, 0
 4:1C9E  56                   push si
 4:1C9F  66c746f800000000     mov dword ptr [bp - 8], 0
@@ -2685,7 +2737,7 @@ loc_1CAD:
 4:1CD2  66ff7606             push dword ptr [bp + 6]
 4:1CD6  90                   nop
 4:1CD7  0e                   push cs
-4:1CD8  e8ff01               call 0x1eda  ; sub_s4:1EDA
+4:1CD8  e8ff01               call 0x1eda  ; StarMapModel::select@s4:1EDA
 4:1CDB  c746fa0100           mov word ptr [bp - 6], 1
 loc_1CE0:
 4:1CE0  8b46fa               mov ax, word ptr [bp - 6]
@@ -2693,7 +2745,8 @@ loc_1CE0:
 4:1CE4  c9                   leave
 4:1CE5  ca0600               retf 6
 
-; ---------------- sub_s4:1CE8 FAR size=400 callers=1
+; ---------------- StarMapModel::project@s4:1CE8 FAR size=400 callers=1
+;   star positions on the map
 4:1CE8  c8180000             enter 0x18, 0
 4:1CEC  57                   push di
 4:1CED  56                   push si
@@ -2706,7 +2759,7 @@ loc_1D02:
 4:1D02  2956f6               sub word ptr [bp - 0xa], dx
 loc_1D05:
 4:1D05  ff76f4               push word ptr [bp - 0xc]
-4:1D08  9ab249291d           lcall 0x1d29, 0x49b2  ; sub_s1:49B2
+4:1D08  9ab249291d           lcall 0x1d29, 0x49b2  ; abs@s1:49B2
 4:1D0D  83c402               add sp, 2
 4:1D10  b90500               mov cx, 5
 4:1D13  99                   cdq
@@ -2716,7 +2769,7 @@ loc_1D05:
 4:1D1C  7c1e                 jl 0x1d3c
 4:1D1E  c746f01400           mov word ptr [bp - 0x10], 0x14
 4:1D23  ff76f4               push word ptr [bp - 0xc]
-4:1D26  9ab249421d           lcall 0x1d42, 0x49b2  ; sub_s1:49B2
+4:1D26  9ab249421d           lcall 0x1d42, 0x49b2  ; abs@s1:49B2
 4:1D2B  83c402               add sp, 2
 4:1D2E  8bc8                 mov cx, ax
 4:1D30  8b46f4               mov ax, word ptr [bp - 0xc]
@@ -2726,7 +2779,7 @@ loc_1D05:
 4:1D39  8946f4               mov word ptr [bp - 0xc], ax
 loc_1D3C:
 4:1D3C  ff76f4               push word ptr [bp - 0xc]
-4:1D3F  9ab249501a           lcall 0x1a50, 0x49b2  ; sub_s1:49B2
+4:1D3F  9ab249501a           lcall 0x1a50, 0x49b2  ; abs@s1:49B2
 4:1D44  83c402               add sp, 2
 4:1D47  b90500               mov cx, 5
 4:1D4A  99                   cdq
@@ -2787,7 +2840,7 @@ loc_1DB7:
 4:1DC1  668b4606             mov eax, dword ptr [bp + 6]
 4:1DC5  053a00               add ax, 0x3a
 4:1DC8  6650                 push eax
-4:1DCA  9a943e081e           lcall 0x1e08, 0x3e94  ; sub_s2:3E94
+4:1DCA  9a943e081e           lcall 0x1e08, 0x3e94  ; Pos3::getXY@s2:3E94
 4:1DCF  8b46f8               mov ax, word ptr [bp - 8]
 4:1DD2  6b5efa18             imul bx, word ptr [bp - 6], 0x18
 4:1DD6  035efc               add bx, word ptr [bp - 4]
@@ -2807,7 +2860,7 @@ loc_1DB7:
 4:1E00  53                   push bx
 4:1E01  8bf1                 mov si, cx
 4:1E03  8bfb                 mov di, bx
-4:1E05  9a763e451e           lcall 0x1e45, 0x3e76  ; sub_s2:3E76
+4:1E05  9a763e451e           lcall 0x1e45, 0x3e76  ; Pos3::set@s2:3E76
 4:1E0A  8b5ef8               mov bx, word ptr [bp - 8]
 4:1E0D  03db                 add bx, bx
 4:1E0F  8ec6                 mov es, si
@@ -2833,7 +2886,7 @@ loc_1E1C:
 4:1E3D  8b56fe               mov dx, word ptr [bp - 2]
 4:1E40  52                   push dx
 4:1E41  50                   push ax
-4:1E42  9ab43efe1b           lcall 0x1bfe, 0x3eb4  ; sub_s2:3EB4
+4:1E42  9ab43efe1b           lcall 0x1bfe, 0x3eb4  ; Pos3::get@s2:3EB4
 4:1E47  b90a00               mov cx, 0xa
 4:1E4A  8b46f8               mov ax, word ptr [bp - 8]
 4:1E4D  99                   cdq
@@ -2857,7 +2910,8 @@ loc_1E72:
 4:1E74  c9                   leave
 4:1E75  ca0400               retf 4
 
-; ---------------- sub_s4:1E78 FAR size=40 callers=3
+; ---------------- starText@s4:1E78 FAR size=40 callers=3
+;   star text row (30 bytes at DGROUP 0x3C18)
 4:1E78  c8020000             enter 2, 0
 4:1E7C  837e0aff             cmp word ptr [bp + 0xa], -1
 4:1E80  7406                 je 0x1e88
@@ -2876,8 +2930,9 @@ loc_1E93:
 4:1E9C  ca0600               retf 6
 4:1E9F  db 00
 
-; ---------------- sub_s4:1EA0 FAR size=58 callers=1
+; ---------------- StarMapModel::metrics@s4:1EA0 FAR size=58 callers=1
 ;   apis: USER.GetSystemMetrics
+;   window frame metrics
 4:1EA0  55                   push bp
 4:1EA1  8bec                 mov bp, sp
 4:1EA3  56                   push si
@@ -2900,7 +2955,8 @@ loc_1E93:
 4:1ED6  c9                   leave
 4:1ED7  ca0400               retf 4
 
-; ---------------- sub_s4:1EDA FAR size=64 callers=2
+; ---------------- StarMapModel::select@s4:1EDA FAR size=64 callers=2
+;   selects a star, notice
 4:1EDA  55                   push bp
 4:1EDB  8bec                 mov bp, sp
 4:1EDD  c45e06               les bx, ptr [bp + 6]
@@ -2918,11 +2974,12 @@ loc_1EF2:
 4:1F05  26c7470e0100         mov word ptr es:[bx + 0xe], 1
 4:1F0B  6a0d                 push 0xd
 4:1F0D  66ff7606             push dword ptr [bp + 6]
-4:1F11  9a621fd21b           lcall 0x1bd2, 0x1f62  ; sub_s3:1F62
+4:1F11  9a621fd21b           lcall 0x1bd2, 0x1f62  ; RegObj::notify@s3:1F62
 4:1F16  c9                   leave
 4:1F17  ca0800               retf 8
 
-; ---------------- sub_s4:1F1A FAR size=80 callers=1
+; ---------------- StarMapModel::countSelected@s4:1F1A FAR size=80 callers=1
+;   stars marked
 4:1F1A  c8040000             enter 4, 0
 4:1F1E  56                   push si
 4:1F1F  c746fe0000           mov word ptr [bp - 2], 0
@@ -2959,17 +3016,20 @@ loc_1F61:
 4:1F66  ca0600               retf 6
 4:1F69  db 00
 
-; ---------------- sub_s4:1F6A FAR size=12 callers=0
+; ---------------- StarMapModel::thunk_dtor@s4:1F6A FAR size=12 callers=0
+;   this-adjusting thunk
 4:1F6A  8bdc                 mov bx, sp
 4:1F6C  36836f0420           sub word ptr ss:[bx + 4], 0x20
 4:1F71  e91600               jmp 0x1f8a
 4:1F74  db 90 90
 
-; ---------------- sub_s4:1F76 FAR size=4 callers=0
+; ---------------- StarMapModel::nop@s4:1F76 FAR size=4 callers=0
+;   empty virtual
 4:1F76  ca0400               retf 4
 4:1F79  db 00
 
-; ---------------- sub_s4:1F7A FAR size=16 callers=0
+; ---------------- StarMapModel::name@s4:1F7A FAR size=16 callers=0
+;   (vslot 4) returns this+0x2A
 4:1F7A  55                   push bp
 4:1F7B  8bec                 mov bp, sp
 4:1F7D  8b4606               mov ax, word ptr [bp + 6]
@@ -2978,13 +3038,14 @@ loc_1F61:
 4:1F86  c9                   leave
 4:1F87  ca0400               retf 4
 
-; ---------------- sub_s4:1F8A FAR size=106 callers=0
+; ---------------- StarMapModel::scalar_dtor@s4:1F8A FAR size=106 callers=0
+;   deleting destructor
 4:1F8A  55                   push bp
 4:1F8B  8bec                 mov bp, sp
 4:1F8D  66ff7606             push dword ptr [bp + 6]
 4:1F91  90                   nop
 4:1F92  0e                   push cs
-4:1F93  e86efa               call 0x1a04  ; sub_s4:1A04
+4:1F93  e86efa               call 0x1a04  ; StarMapModel::~StarMapModel@s4:1A04
 4:1F96  f6460a01             test byte ptr [bp + 0xa], 1
 4:1F9A  7409                 je 0x1fa5
 4:1F9C  66ff7606             push dword ptr [bp + 6]
@@ -3000,11 +3061,12 @@ loc_1FA5:
 4:1FDF  db 1f ee 49 e6 1f 00 4a ea 1f 12 4a 14 1f 6a 1f b2
 4:1FEF  db 1f 10 3a cd 1d
 
-; ---------------- sub_s4:1FF4 FAR size=130 callers=1
+; ---------------- ViewConstants::ViewConstants@s4:1FF4 FAR size=130 callers=1
+;   registry 0x2E: view constants and animation caches (0x806 bytes)
 4:1FF4  c81c0000             enter 0x1c, 0
 4:1FF8  66ff7608             push dword ptr [bp + 8]
 4:1FFC  ff7606               push word ptr [bp + 6]
-4:1FFF  9a481d3820           lcall 0x2038, 0x1d48  ; sub_s3:1D48
+4:1FFF  9a481d3820           lcall 0x2038, 0x1d48  ; RegObj::RegObj@s3:1D48
 4:2004  c45e06               les bx, ptr [bp + 6]
 4:2007  6626c7470a0b01b900   mov dword ptr es:[bx + 0xa], 0xb9010b
 4:2010  6626c7470e35001700   mov dword ptr es:[bx + 0xe], 0x170035  ; 'New failed in Op::Op->ResLibr'
@@ -3018,13 +3080,13 @@ loc_1FA5:
 4:202D  50                   push ax
 4:202E  6a48                 push 0x48
 4:2030  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:2035  9aba20b61f           lcall 0x1fb6, 0x20ba  ; sub_s3:20BA
+4:2035  9aba20b61f           lcall 0x1fb6, 0x20ba  ; Registry_get@s3:20BA
 4:203A  8946fc               mov word ptr [bp - 4], ax
 4:203D  8956fe               mov word ptr [bp - 2], dx
 4:2040  050e00               add ax, 0xe
 4:2043  52                   push dx
 4:2044  50                   push ax
-4:2045  9a943ef21f           lcall 0x1ff2, 0x3e94  ; sub_s2:3E94
+4:2045  9a943ef21f           lcall 0x1ff2, 0x3e94  ; Pos3::getXY@s2:3E94
 4:204A  8b46fa               mov ax, word ptr [bp - 6]
 4:204D  c45e06               les bx, ptr [bp + 6]
 4:2050  2601470a             add word ptr es:[bx + 0xa], ax
@@ -3034,14 +3096,15 @@ loc_1FA5:
 4:2061  8d4712               lea ax, [bx + 0x12]
 4:2064  06                   push es
 4:2065  50                   push ax
-4:2066  9a0649a31f           lcall 0x1fa3, 0x4906  ; sub_s1:4906
+4:2066  9a0649a31f           lcall 0x1fa3, 0x4906  ; _fmemset@s1:4906
 4:206B  8b4606               mov ax, word ptr [bp + 6]
 4:206E  8b5608               mov dx, word ptr [bp + 8]
 4:2071  c9                   leave
 4:2072  ca0600               retf 6
 4:2075  db 00
 
-; ---------------- sub_s4:2076 FAR size=38 callers=1
+; ---------------- ViewConstants::~ViewConstants@s4:2076 FAR size=38 callers=1
+;   dtor
 4:2076  55                   push bp
 4:2077  8bec                 mov bp, sp
 4:2079  c45e06               les bx, ptr [bp + 6]
@@ -3051,14 +3114,15 @@ loc_1FA5:
 4:2088  53                   push bx
 4:2089  90                   nop
 4:208A  0e                   push cs
-4:208B  e80e00               call 0x209c  ; sub_s4:209C
+4:208B  e80e00               call 0x209c  ; ViewConstants::freeAnimations@s4:209C
 4:208E  66ff7606             push dword ptr [bp + 6]
-4:2092  9a801d0220           lcall 0x2002, 0x1d80  ; sub_s3:1D80
+4:2092  9a801d0220           lcall 0x2002, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:2097  c9                   leave
 4:2098  ca0400               retf 4
 4:209B  db 00
 
-; ---------------- sub_s4:209C FAR size=82 callers=2
+; ---------------- ViewConstants::freeAnimations@s4:209C FAR size=82 callers=2
+;   frees the cached animations
 4:209C  c80a0000             enter 0xa, 0
 4:20A0  56                   push si
 4:20A1  c746fe0000           mov word ptr [bp - 2], 0
@@ -3091,11 +3155,12 @@ loc_20CD:
 4:20EA  c9                   leave
 4:20EB  ca0400               retf 4
 
-; ---------------- sub_s4:20EE FAR size=96 callers=3
+; ---------------- AnimRef::frameDib@s4:20EE FAR size=96 callers=3
+;   the DIB of the current frame
 4:20EE  c80a0000             enter 0xa, 0
 4:20F2  56                   push si
 4:20F3  66ff760a             push dword ptr [bp + 0xa]
-4:20F7  9ad8ae4021           lcall 0x2140, 0xaed8  ; sub_s2:AED8
+4:20F7  9ad8ae4021           lcall 0x2140, 0xaed8  ; AnimRef::hasAnimation@s2:AED8
 4:20FC  0bc0                 or ax, ax
 4:20FE  7506                 jne 0x2106
 4:2100  99                   cdq
@@ -3117,13 +3182,13 @@ loc_2106:
 4:2127  53                   push bx
 4:2128  90                   nop
 4:2129  0e                   push cs
-4:212A  e84100               call 0x216e  ; sub_s4:216E
+4:212A  e84100               call 0x216e  ; AnimRef::loadFrames@s4:216E
 4:212D  c45e06               les bx, ptr [bp + 6]
 4:2130  66268b4012           mov eax, dword ptr es:[bx + si + 0x12]
 4:2135  668946fa             mov dword ptr [bp - 6], eax
 loc_2139:
 4:2139  66ff760a             push dword ptr [bp + 0xa]
-4:213D  9a26ae4820           lcall 0x2048, 0xae26  ; sub_s2:AE26
+4:213D  9a26ae4820           lcall 0x2048, 0xae26  ; AnimRef::advance@s2:AE26
 4:2142  8b46fa               mov ax, word ptr [bp - 6]
 4:2145  8b56fc               mov dx, word ptr [bp - 4]
 4:2148  5e                   pop si
@@ -3131,7 +3196,8 @@ loc_2139:
 4:214A  ca0800               retf 8
 4:214D  db 00
 
-; ---------------- sub_s4:214E FAR size=32 callers=1
+; ---------------- AnimRef::frameOffset@s4:214E FAR size=32 callers=1
+;   where a type's frames sit on its picture (DGROUP 0x3E8E)
 4:214E  55                   push bp
 4:214F  8bec                 mov bp, sp
 4:2151  8b5e0e               mov bx, word ptr [bp + 0xe]
@@ -3140,18 +3206,19 @@ loc_2139:
 4:215B  ffb7903e             push word ptr [bx + 0x3e90]
 4:215F  6a00                 push 0
 4:2161  66ff760a             push dword ptr [bp + 0xa]
-4:2165  9a763efa20           lcall 0x20fa, 0x3e76  ; sub_s2:3E76
+4:2165  9a763efa20           lcall 0x20fa, 0x3e76  ; Pos3::set@s2:3E76
 4:216A  c9                   leave
 4:216B  ca0a00               retf 0xa
 
-; ---------------- sub_s4:216E FAR size=84 callers=1
+; ---------------- AnimRef::loadFrames@s4:216E FAR size=84 callers=1
+;   loads the frames of an animation
 4:216E  c8060000             enter 6, 0
 4:2172  56                   push si
 4:2173  66ff760a             push dword ptr [bp + 0xa]
-4:2177  9af2ad8621           lcall 0x2186, 0xadf2  ; sub_s2:ADF2
+4:2177  9af2ad8621           lcall 0x2186, 0xadf2  ; AnimRef::firstFrame@s2:ADF2
 4:217C  8946fe               mov word ptr [bp - 2], ax
 4:217F  66ff760a             push dword ptr [bp + 0xa]
-4:2183  9a0cae6821           lcall 0x2168, 0xae0c  ; sub_s2:AE0C
+4:2183  9a0cae6821           lcall 0x2168, 0xae0c  ; AnimRef::mode@s2:AE0C
 4:2188  8946fc               mov word ptr [bp - 4], ax
 4:218B  8b46fe               mov ax, word ptr [bp - 2]
 4:218E  8946fa               mov word ptr [bp - 6], ax
@@ -3160,7 +3227,7 @@ loc_2139:
 loc_2194:
 4:2194  ff76fa               push word ptr [bp - 6]
 4:2197  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:219C  9a18809520           lcall 0x2095, 0x8018  ; sub_s3:8018
+4:219C  9a18809520           lcall 0x2095, 0x8018  ; ResLibr::frame@s3:8018
 4:21A1  8b76fa               mov si, word ptr [bp - 6]
 4:21A4  c1e602               shl si, 2
 4:21A7  c45e06               les bx, ptr [bp + 6]
@@ -3175,13 +3242,14 @@ loc_21B5:
 4:21BE  c9                   leave
 4:21BF  ca0800               retf 8
 
-; ---------------- sub_s4:21C2 FAR size=218 callers=0
+; ---------------- ViewConstants::scalar_dtor@s4:21C2 FAR size=218 callers=0
+;   deleting destructor
 4:21C2  55                   push bp
 4:21C3  8bec                 mov bp, sp
 4:21C5  66ff7606             push dword ptr [bp + 6]
 4:21C9  90                   nop
 4:21CA  0e                   push cs
-4:21CB  e8a8fe               call 0x2076  ; sub_s4:2076
+4:21CB  e8a8fe               call 0x2076  ; ViewConstants::~ViewConstants@s4:2076
 4:21CE  f6460a01             test byte ptr [bp + 0xa], 1
 4:21D2  7409                 je 0x21dd
 4:21D4  66ff7606             push dword ptr [bp + 6]
@@ -3204,7 +3272,8 @@ loc_21DD:
 4:2287  db 22 66 68 fd 00 fd 01 6a 00 68 ff ff 68 28 42 9a
 4:2297  db 54 3e 7a 21 cb
 
-; ---------------- sub_s4:229C FAR size=420 callers=1
+; ---------------- PlanetArea::PlanetArea@s4:229C FAR size=420 callers=1
+;   registry 0x29: the planet area view (plntarea.bmp, timer)
 4:229C  c80a0000             enter 0xa, 0
 4:22A0  57                   push di
 4:22A1  56                   push si
@@ -3212,7 +3281,7 @@ loc_21DD:
 4:22A6  ff7606               push word ptr [bp + 6]
 4:22A9  90                   nop
 4:22AA  0e                   push cs
-4:22AB  e82c2a               call 0x4cda  ; sub_s4:4CDA
+4:22AB  e82c2a               call 0x4cda  ; CmdTarget::CmdTarget@s4:4CDA
 4:22AE  c45e06               les bx, ptr [bp + 6]
 4:22B1  26c7471c9a38         mov word ptr es:[bx + 0x1c], 0x389a
 4:22B7  26c7471eca22         mov word ptr es:[bx + 0x1e], 0x22ca  ; SEGMENT s2:0000 | 'plntarea.bmp'
@@ -3241,10 +3310,10 @@ loc_21DD:
 4:2321  53                   push bx
 4:2322  90                   nop
 4:2323  0e                   push cs
-4:2324  e8a72a               call 0x4dce  ; sub_s4:4DCE
+4:2324  e8a72a               call 0x4dce  ; CmdTarget::setCommand@s4:4DCE
 4:2327  68a801               push 0x1a8
 4:232A  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:232F  9a0a837723           lcall 0x2377, 0x830a  ; sub_s3:830A
+4:232F  9a0a837723           lcall 0x2377, 0x830a  ; ResLibr::picture@s3:830A
 4:2334  c45e06               les bx, ptr [bp + 6]
 4:2337  2689472a             mov word ptr es:[bx + 0x2a], ax
 4:233B  2689572c             mov word ptr es:[bx + 0x2c], dx
@@ -3254,41 +3323,41 @@ loc_21DD:
 4:2349  50                   push ax
 4:234A  8bf0                 mov si, ax
 4:234C  8cc7                 mov di, es
-4:234E  9a06496823           lcall 0x2368, 0x4906  ; sub_s1:4906
+4:234E  9a06496823           lcall 0x2368, 0x4906  ; _fmemset@s1:4906
 4:2353  83c408               add sp, 8
 4:2356  666800002800         push 0x280000
 4:235C  668b4606             mov eax, dword ptr [bp + 6]
 4:2360  054600               add ax, 0x46
 4:2363  6650                 push eax
-4:2365  9a0649db21           lcall 0x21db, 0x4906  ; sub_s1:4906
+4:2365  9a0649db21           lcall 0x21db, 0x4906  ; _fmemset@s1:4906
 4:236A  83c408               add sp, 8
 4:236D  6a6c                 push 0x6c
 4:236F  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:2374  9a0a838c23           lcall 0x238c, 0x830a  ; sub_s3:830A
+4:2374  9a0a838c23           lcall 0x238c, 0x830a  ; ResLibr::picture@s3:830A
 4:2379  8ec7                 mov es, di
 4:237B  268904               mov word ptr es:[si], ax
 4:237E  26895402             mov word ptr es:[si + 2], dx
 4:2382  6a68                 push 0x68
 4:2384  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:2389  9a0a83a323           lcall 0x23a3, 0x830a  ; sub_s3:830A
+4:2389  9a0a83a323           lcall 0x23a3, 0x830a  ; ResLibr::picture@s3:830A
 4:238E  c45e06               les bx, ptr [bp + 6]
 4:2391  26894732             mov word ptr es:[bx + 0x32], ax
 4:2395  26895734             mov word ptr es:[bx + 0x34], dx
 4:2399  6a66                 push 0x66
 4:239B  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:23A0  9a0a83ba23           lcall 0x23ba, 0x830a  ; sub_s3:830A
+4:23A0  9a0a83ba23           lcall 0x23ba, 0x830a  ; ResLibr::picture@s3:830A
 4:23A5  c45e06               les bx, ptr [bp + 6]
 4:23A8  26894736             mov word ptr es:[bx + 0x36], ax
 4:23AC  26895738             mov word ptr es:[bx + 0x38], dx
 4:23B0  6a6a                 push 0x6a
 4:23B2  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:23B7  9a0a83d223           lcall 0x23d2, 0x830a  ; sub_s3:830A
+4:23B7  9a0a83d223           lcall 0x23d2, 0x830a  ; ResLibr::picture@s3:830A
 4:23BC  c45e06               les bx, ptr [bp + 6]
 4:23BF  2689473a             mov word ptr es:[bx + 0x3a], ax
 4:23C3  2689573c             mov word ptr es:[bx + 0x3c], dx
 4:23C7  68cd01               push 0x1cd
 4:23CA  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:23CF  9a0a83f323           lcall 0x23f3, 0x830a  ; sub_s3:830A
+4:23CF  9a0a83f323           lcall 0x23f3, 0x830a  ; ResLibr::picture@s3:830A
 4:23D4  c45e06               les bx, ptr [bp + 6]
 4:23D7  2689476e             mov word ptr es:[bx + 0x6e], ax
 4:23DB  26895770             mov word ptr es:[bx + 0x70], dx
@@ -3298,7 +3367,7 @@ loc_23E4:
 4:23E7  058f00               add ax, 0x8f
 4:23EA  50                   push ax
 4:23EB  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:23F0  9a0a83ee21           lcall 0x21ee, 0x830a  ; sub_s3:830A
+4:23F0  9a0a83ee21           lcall 0x21ee, 0x830a  ; ResLibr::picture@s3:830A
 4:23F5  8b76fe               mov si, word ptr [bp - 2]
 4:23F8  c1e602               shl si, 2
 4:23FB  c45e06               les bx, ptr [bp + 6]
@@ -3322,7 +3391,7 @@ loc_2425:
 4:2426  50                   push ax
 4:2427  666a73               push 0x73  ; 'New failed in Op::Op->DialogHandler'
 4:242A  66ff368803           push dword ptr [0x388]
-4:242F  9a62920922           lcall 0x2209, 0x9262  ; sub_s2:9262
+4:242F  9a62920922           lcall 0x2209, 0x9262  ; Timer::add@s2:9262
 4:2434  8b4606               mov ax, word ptr [bp + 6]
 4:2437  8b5608               mov dx, word ptr [bp + 8]
 4:243A  5e                   pop si
@@ -3330,7 +3399,8 @@ loc_2425:
 4:243C  c9                   leave
 4:243D  ca0600               retf 6
 
-; ---------------- sub_s4:2440 FAR size=196 callers=1
+; ---------------- PlanetArea::~PlanetArea@s4:2440 FAR size=196 callers=1
+;   dtor
 4:2440  c8140000             enter 0x14, 0
 4:2444  c45e06               les bx, ptr [bp + 6]
 4:2447  26c707da2a           mov word ptr es:[bx], 0x2ada
@@ -3357,7 +3427,7 @@ loc_247B:
 4:2482  50                   push ax
 4:2483  666a73               push 0x73  ; 'New failed in Op::Op->DialogHandler'
 4:2486  66ff368803           push dword ptr [0x388]
-4:248B  9ab292f524           lcall 0x24f5, 0x92b2  ; sub_s2:92B2
+4:248B  9ab292f524           lcall 0x24f5, 0x92b2  ; Timer::remove@s2:92B2
 loc_2490:
 4:2490  c45e06               les bx, ptr [bp + 6]
 4:2493  268b472a             mov ax, word ptr es:[bx + 0x2a]
@@ -3405,15 +3475,16 @@ loc_24E3:
 4:24F7  66ff7606             push dword ptr [bp + 6]
 4:24FB  90                   nop
 4:24FC  0e                   push cs
-4:24FD  e82228               call 0x4d22  ; sub_s4:4D22
+4:24FD  e82228               call 0x4d22  ; CmdTarget::~CmdTarget@s4:4D22
 4:2500  c9                   leave
 4:2501  ca0400               retf 4
 
-; ---------------- sub_s4:2504 FAR size=68 callers=1
+; ---------------- PlayerHasColony@s4:2504 FAR size=68 callers=1
+;   does player 1 have a colony
 4:2504  c8140000             enter 0x14, 0
 4:2508  666801000004         push 0x4000001
 4:250E  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:2513  9a44833418           lcall 0x1834, 0x8344  ; sub_s7:8344
+4:2513  9a44833418           lcall 0x1834, 0x8344  ; Sim::resolve@s7:8344
 4:2518  0bd0                 or dx, ax
 4:251A  7426                 je 0x2542
 4:251C  c41e4857             les bx, ptr [0x5748]  ; g_sim
@@ -3422,7 +3493,7 @@ loc_24E3:
 4:2528  c45efc               les bx, ptr [bp - 4]
 4:252B  66268b07             mov eax, dword ptr es:[bx]
 4:252F  6650                 push eax
-4:2531  9a9ed68c13           lcall 0x138c, 0xd69e  ; sub_s6:D69E
+4:2531  9a9ed68c13           lcall 0x138c, 0xd69e  ; Sim::hasPlayerColony@s6:D69E
 4:2536  0bc0                 or ax, ax
 4:2538  7508                 jne 0x2542
 4:253A  b80100               mov ax, 1
@@ -3434,17 +3505,19 @@ loc_2542:
 4:2544  c9                   leave
 4:2545  ca0400               retf 4
 
-; ---------------- sub_s4:2548 FAR size=22 callers=1
+; ---------------- defaultPosA@s4:2548 FAR size=22 callers=1
+;   copies a fixed position (DGROUP 0x4228)
 4:2548  55                   push bp
 4:2549  8bec                 mov bp, sp
 4:254B  680122               push 0x2201  ; SEGMENT s10:0000
 4:254E  682842               push 0x4228
 4:2551  66ff760a             push dword ptr [bp + 0xa]
-4:2555  9a623f8e24           lcall 0x248e, 0x3f62  ; sub_s2:3F62
+4:2555  9a623f8e24           lcall 0x248e, 0x3f62  ; Pos3::assign@s2:3F62
 4:255A  c9                   leave
 4:255B  ca0800               retf 8
 
-; ---------------- sub_s4:255E FAR size=34 callers=1
+; ---------------- PlanetArea::hover@s4:255E FAR size=34 callers=1
+;   the object under the cursor
 4:255E  c8080000             enter 8, 0
 4:2562  c45e06               les bx, ptr [bp + 6]
 4:2565  6626837f2600         cmp dword ptr es:[bx + 0x26], 0
@@ -3459,7 +3532,8 @@ loc_257A:
 4:257C  c9                   leave
 4:257D  ca0400               retf 4
 
-; ---------------- sub_s4:2580 FAR size=82 callers=1
+; ---------------- PlanetArea::click@s4:2580 FAR size=82 callers=1
+;   places at the clicked cell
 4:2580  c8060000             enter 6, 0
 4:2584  c45e06               les bx, ptr [bp + 6]
 4:2587  6626837f2000         cmp dword ptr es:[bx + 0x20], 0
@@ -3471,7 +3545,7 @@ loc_2596:
 4:2596  8d46fa               lea ax, [bp - 6]
 4:2599  16                   push ss
 4:259A  50                   push ax
-4:259B  9a383e5825           lcall 0x2558, 0x3e38  ; sub_s2:3E38
+4:259B  9a383e5825           lcall 0x2558, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:25A0  66ff760c             push dword ptr [bp + 0xc]
 4:25A4  8d46fa               lea ax, [bp - 6]
 4:25A7  16                   push ss
@@ -3480,7 +3554,7 @@ loc_2596:
 4:25AC  6626ff7720           push dword ptr es:[bx + 0x20]
 4:25B1  90                   nop
 4:25B2  0e                   push cs
-4:25B3  e866f0               call 0x161c  ; sub_s4:161C
+4:25B3  e866f0               call 0x161c  ; MapViewModel::cellOf@s4:161C
 4:25B6  ff7610               push word ptr [bp + 0x10]
 4:25B9  8d46fa               lea ax, [bp - 6]
 4:25BC  16                   push ss
@@ -3490,11 +3564,12 @@ loc_2596:
 4:25C4  6626ff7720           push dword ptr es:[bx + 0x20]
 4:25C9  90                   nop
 4:25CA  0e                   push cs
-4:25CB  e800f2               call 0x17ce  ; sub_s4:17CE
+4:25CB  e800f2               call 0x17ce  ; MapViewModel::place@s4:17CE
 4:25CE  c9                   leave
 4:25CF  ca0c00               retf 0xc
 
-; ---------------- sub_s4:25D2 FAR size=92 callers=1
+; ---------------- PlanetArea::open@s4:25D2 FAR size=92 callers=1
+;   opens the clicked building's window
 4:25D2  c80a0000             enter 0xa, 0
 4:25D6  c45e06               les bx, ptr [bp + 6]
 4:25D9  6626837f2000         cmp dword ptr es:[bx + 0x20], 0
@@ -3507,7 +3582,7 @@ loc_25E8:
 4:25E8  8d46fa               lea ax, [bp - 6]
 4:25EB  16                   push ss
 4:25EC  50                   push ax
-4:25ED  9a383e9e25           lcall 0x259e, 0x3e38  ; sub_s2:3E38
+4:25ED  9a383e9e25           lcall 0x259e, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:25F2  66ff760c             push dword ptr [bp + 0xc]
 4:25F6  8d46fa               lea ax, [bp - 6]
 4:25F9  16                   push ss
@@ -3516,24 +3591,25 @@ loc_25E8:
 4:25FE  6626ff7720           push dword ptr es:[bx + 0x20]
 4:2603  90                   nop
 4:2604  0e                   push cs
-4:2605  e814f0               call 0x161c  ; sub_s4:161C
+4:2605  e814f0               call 0x161c  ; MapViewModel::cellOf@s4:161C
 4:2608  8d46fa               lea ax, [bp - 6]
 4:260B  16                   push ss
 4:260C  50                   push ax
 4:260D  ff760a               push word ptr [bp + 0xa]
 4:2610  6a32                 push 0x32
 4:2612  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:2617  9aba202726           lcall 0x2627, 0x20ba  ; sub_s3:20BA
+4:2617  9aba202726           lcall 0x2627, 0x20ba  ; Registry_get@s3:20BA
 4:261C  8946f6               mov word ptr [bp - 0xa], ax
 4:261F  8956f8               mov word ptr [bp - 8], dx
 4:2622  52                   push dx
 4:2623  50                   push ax
-4:2624  9ad6713223           lcall 0x2332, 0x71d6  ; sub_s3:71D6
+4:2624  9ad6713223           lcall 0x2332, 0x71d6  ; BuildingWindows::openFor@s3:71D6
 4:2629  c9                   leave
 4:262A  ca0a00               retf 0xa
 4:262D  db 00
 
-; ---------------- sub_s4:262E FAR size=24 callers=2
+; ---------------- PlanetArea::resetAnim@s4:262E FAR size=24 callers=2
+;   restarts the animation
 4:262E  55                   push bp
 4:262F  8bec                 mov bp, sp
 4:2631  c45e06               les bx, ptr [bp + 6]
@@ -3543,23 +3619,26 @@ loc_25E8:
 4:2642  c9                   leave
 4:2643  ca0400               retf 4
 
-; ---------------- sub_s4:2646 FAR size=22 callers=1
+; ---------------- defaultPosB@s4:2646 FAR size=22 callers=1
+;   copies a fixed position (DGROUP 0x4222)
 4:2646  55                   push bp
 4:2647  8bec                 mov bp, sp
 4:2649  684c25               push 0x254c  ; SEGMENT s10:0000
 4:264C  682242               push 0x4222
 4:264F  66ff760a             push dword ptr [bp + 0xa]
-4:2653  9a623ff025           lcall 0x25f0, 0x3f62  ; sub_s2:3F62
+4:2653  9a623ff025           lcall 0x25f0, 0x3f62  ; Pos3::assign@s2:3F62
 4:2658  c9                   leave
 4:2659  ca0800               retf 8
 
-; ---------------- sub_s4:265C FAR size=14 callers=1
+; ---------------- currentTurnB@s4:265C FAR size=14 callers=1
+;   the turn number
 4:265C  66ff364857           push dword ptr [0x5748]  ; g_sim
 4:2661  9a26831625           lcall 0x2516, 0x8326  ; Sim::getTurnNumber@s7:8326
 4:2666  ca0400               retf 4
 4:2669  db 00
 
-; ---------------- sub_s4:266A FAR size=14 callers=1
+; ---------------- PlanetArea::animStarted@s4:266A FAR size=14 callers=1
+;   +0x44
 4:266A  55                   push bp
 4:266B  8bec                 mov bp, sp
 4:266D  c45e06               les bx, ptr [bp + 6]
@@ -3567,17 +3646,19 @@ loc_25E8:
 4:2674  c9                   leave
 4:2675  ca0400               retf 4
 
-; ---------------- sub_s4:2678 FAR size=22 callers=2
+; ---------------- defaultPosC@s4:2678 FAR size=22 callers=2
+;   copies a fixed position (DGROUP 0x4216)
 4:2678  55                   push bp
 4:2679  8bec                 mov bp, sp
 4:267B  684a26               push 0x264a  ; SEGMENT s10:0000
 4:267E  681642               push 0x4216
 4:2681  66ff760a             push dword ptr [bp + 0xa]
-4:2685  9a623f5626           lcall 0x2656, 0x3f62  ; sub_s2:3F62
+4:2685  9a623f5626           lcall 0x2656, 0x3f62  ; Pos3::assign@s2:3F62
 4:268A  c9                   leave
 4:268B  ca0800               retf 8
 
-; ---------------- sub_s4:268E FAR size=52 callers=2
+; ---------------- PlanetArea::currentFrame@s4:268E FAR size=52 callers=2
+;   the current frame's DIB
 4:268E  55                   push bp
 4:268F  8bec                 mov bp, sp
 4:2691  56                   push si
@@ -3596,17 +3677,19 @@ loc_26AB:
 4:26BE  c9                   leave
 4:26BF  ca0400               retf 4
 
-; ---------------- sub_s4:26C2 FAR size=22 callers=1
+; ---------------- defaultPosD@s4:26C2 FAR size=22 callers=1
+;   copies a fixed position (DGROUP 0x421C)
 4:26C2  55                   push bp
 4:26C3  8bec                 mov bp, sp
 4:26C5  687c26               push 0x267c  ; SEGMENT s10:0000
 4:26C8  681c42               push 0x421c
 4:26CB  66ff760a             push dword ptr [bp + 0xa]
-4:26CF  9a623f8826           lcall 0x2688, 0x3f62  ; sub_s2:3F62
+4:26CF  9a623f8826           lcall 0x2688, 0x3f62  ; Pos3::assign@s2:3F62
 4:26D4  c9                   leave
 4:26D5  ca0800               retf 8
 
-; ---------------- sub_s4:26D8 FAR size=32 callers=1
+; ---------------- cursorOffset@s4:26D8 FAR size=32 callers=1
+;   position of cursor n (DGROUP 0x65CA)
 4:26D8  55                   push bp
 4:26D9  8bec                 mov bp, sp
 4:26DB  8b460a               mov ax, word ptr [bp + 0xa]
@@ -3618,21 +3701,23 @@ loc_26AB:
 4:26E9  1e                   push ds
 4:26EA  50                   push ax
 4:26EB  66ff760c             push dword ptr [bp + 0xc]
-4:26EF  9a623fd226           lcall 0x26d2, 0x3f62  ; sub_s2:3F62
+4:26EF  9a623fd226           lcall 0x26d2, 0x3f62  ; Pos3::assign@s2:3F62
 4:26F4  c9                   leave
 4:26F5  ca0a00               retf 0xa
 
-; ---------------- sub_s4:26F8 FAR size=22 callers=1
+; ---------------- defaultPosE@s4:26F8 FAR size=22 callers=1
+;   copies a fixed position (DGROUP 0x4210)
 4:26F8  55                   push bp
 4:26F9  8bec                 mov bp, sp
 4:26FB  68c626               push 0x26c6  ; SEGMENT s10:0000 | 'fem29.wav'
 4:26FE  681042               push 0x4210
 4:2701  66ff760a             push dword ptr [bp + 0xa]
-4:2705  9a623ff226           lcall 0x26f2, 0x3f62  ; sub_s2:3F62
+4:2705  9a623ff226           lcall 0x26f2, 0x3f62  ; Pos3::assign@s2:3F62
 4:270A  c9                   leave
 4:270B  ca0800               retf 8
 
-; ---------------- sub_s4:270E FAR size=254 callers=1
+; ---------------- PlanetArea::setTarget@s4:270E FAR size=254 callers=1
+;   the object followed
 4:270E  c80a0000             enter 0xa, 0
 4:2712  837e0a00             cmp word ptr [bp + 0xa], 0
 4:2716  7442                 je 0x275a
@@ -3656,7 +3741,7 @@ loc_2739:
 4:273F  52                   push dx
 4:2740  50                   push ax
 4:2741  6626ff7720           push dword ptr es:[bx + 0x20]
-4:2746  9aa61e7d27           lcall 0x277d, 0x1ea6  ; sub_s3:1EA6
+4:2746  9aa61e7d27           lcall 0x277d, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 4:274B  c45e06               les bx, ptr [bp + 6]
 4:274E  662bc0               sub eax, eax
 4:2751  6626894720           mov dword ptr es:[bx + 0x20], eax
@@ -3673,7 +3758,7 @@ loc_275A:
 loc_2772:
 4:2772  ff760c               push word ptr [bp + 0xc]
 4:2775  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:277A  9aba20ad27           lcall 0x27ad, 0x20ba  ; sub_s3:20BA
+4:277A  9aba20ad27           lcall 0x27ad, 0x20ba  ; Registry_get@s3:20BA
 4:277F  8946fc               mov word ptr [bp - 4], ax
 4:2782  8956fe               mov word ptr [bp - 2], dx
 4:2785  c45e06               les bx, ptr [bp + 6]
@@ -3694,7 +3779,7 @@ loc_27A3:
 4:27A3  52                   push dx
 4:27A4  50                   push ax
 4:27A5  6626ff7720           push dword ptr es:[bx + 0x20]
-4:27AA  9aa61e0528           lcall 0x2805, 0x1ea6  ; sub_s3:1EA6
+4:27AA  9aa61e0528           lcall 0x2805, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 loc_27AF:
 4:27AF  668b46fc             mov eax, dword ptr [bp - 4]
 4:27B3  c45e06               les bx, ptr [bp + 6]
@@ -3722,7 +3807,7 @@ loc_27E6:
 4:27E6  66ff7606             push dword ptr [bp + 6]
 4:27EA  90                   nop
 4:27EB  0e                   push cs
-4:27EC  e87300               call 0x2862  ; sub_s4:2862
+4:27EC  e87300               call 0x2862  ; PlanetArea::targetField@s4:2862
 4:27EF  0bd0                 or dx, ax
 4:27F1  7409                 je 0x27fc
 4:27F3  c45e06               les bx, ptr [bp + 6]
@@ -3730,13 +3815,14 @@ loc_27E6:
 loc_27FC:
 4:27FC  6a07                 push 7
 4:27FE  66ff7606             push dword ptr [bp + 6]
-4:2802  9a621f1a26           lcall 0x261a, 0x1f62  ; sub_s3:1F62
+4:2802  9a621f1a26           lcall 0x261a, 0x1f62  ; RegObj::notify@s3:1F62
 loc_2807:
 4:2807  c9                   leave
 4:2808  ca0800               retf 8
 4:280B  db 00
 
-; ---------------- sub_s4:280C FAR size=86 callers=1
+; ---------------- PlanetArea::takeEvent@s4:280C FAR size=86 callers=1
+;   takes the pending event
 4:280C  c8080000             enter 8, 0
 4:2810  c45e06               les bx, ptr [bp + 6]
 4:2813  26837f2400           cmp word ptr es:[bx + 0x24], 0
@@ -3767,7 +3853,8 @@ loc_2852:
 4:285E  ca0400               retf 4
 4:2861  db 00
 
-; ---------------- sub_s4:2862 FAR size=58 callers=5
+; ---------------- PlanetArea::targetField@s4:2862 FAR size=58 callers=5
+;   the target's +0x4C
 4:2862  c8080000             enter 8, 0
 4:2866  c45e06               les bx, ptr [bp + 6]
 4:2869  6626837f2000         cmp dword ptr es:[bx + 0x20], 0
@@ -3786,7 +3873,8 @@ loc_288D:
 4:2898  c9                   leave
 4:2899  ca0400               retf 4
 
-; ---------------- sub_s4:289C FAR size=134 callers=0
+; ---------------- PlanetArea::onTimer@s4:289C FAR size=134 callers=0
+;   (vslot 7) advances
 4:289C  55                   push bp
 4:289D  8bec                 mov bp, sp
 4:289F  57                   push di
@@ -3810,12 +3898,12 @@ loc_28B8:
 4:28C5  8bfa                 mov di, dx
 4:28C7  90                   nop
 4:28C8  0e                   push cs
-4:28C9  e85600               call 0x2922  ; sub_s4:2922
+4:28C9  e85600               call 0x2922  ; PlanetArea::step@s4:2922
 4:28CC  ff760a               push word ptr [bp + 0xa]
 4:28CF  57                   push di
 4:28D0  56                   push si
 loc_28D1:
-4:28D1  9a621f4927           lcall 0x2749, 0x1f62  ; sub_s3:1F62
+4:28D1  9a621f4927           lcall 0x2749, 0x1f62  ; RegObj::notify@s3:1F62
 4:28D6  5e                   pop si
 4:28D7  5f                   pop di
 4:28D8  c9                   leave
@@ -3829,7 +3917,7 @@ loc_28DC:
 4:28EB  50                   push ax
 4:28EC  90                   nop
 4:28ED  0e                   push cs
-4:28EE  e871ff               call 0x2862  ; sub_s4:2862
+4:28EE  e871ff               call 0x2862  ; PlanetArea::targetField@s4:2862
 4:28F1  0bd0                 or dx, ax
 4:28F3  7409                 je 0x28fe
 4:28F5  c45e06               les bx, ptr [bp + 6]
@@ -3858,7 +3946,8 @@ loc_291C:
 4:291E  c9                   leave
 4:291F  ca0600               retf 6
 
-; ---------------- sub_s4:2922 FAR size=40 callers=1
+; ---------------- PlanetArea::step@s4:2922 FAR size=40 callers=1
+;   next of 10 frames
 4:2922  55                   push bp
 4:2923  8bec                 mov bp, sp
 4:2925  c45e06               les bx, ptr [bp + 6]
@@ -3873,7 +3962,8 @@ loc_2946:
 4:2946  c9                   leave
 4:2947  ca0400               retf 4
 
-; ---------------- sub_s4:294A FAR size=46 callers=0
+; ---------------- PlanetArea::paint@s4:294A FAR size=46 callers=0
+;   (vslot 4) draws (resolution 640 check)
 4:294A  55                   push bp
 4:294B  8bec                 mov bp, sp
 4:294D  c45e06               les bx, ptr [bp + 6]
@@ -3888,16 +3978,17 @@ loc_2964:
 4:296C  ff7606               push word ptr [bp + 6]
 4:296F  90                   nop
 4:2970  0e                   push cs
-4:2971  e89024               call 0x4e04  ; sub_s4:4E04
+4:2971  e89024               call 0x4e04  ; CmdTarget::paint@s4:4E04
 4:2974  c9                   leave
 4:2975  ca0a00               retf 0xa
 
-; ---------------- sub_s4:2978 size=304 callers=0
+; ---------------- PlanetArea::loadPictures@s4:2978 size=304 callers=0
 ;   apis: USER.GetClientRect
+;   (vslot 5) the planet's sheets
 4:2978  c8400000             enter 0x40, 0
 4:297C  6a01                 push 1
 4:297E  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:2983  9a9680d428           lcall 0x28d4, 0x8096  ; sub_s3:8096
+4:2983  9a9680d428           lcall 0x28d4, 0x8096  ; ResLibr::planetSheets@s3:8096
 4:2988  8946fc               mov word ptr [bp - 4], ax
 4:298B  8956fe               mov word ptr [bp - 2], dx
 4:298E  52                   push dx
@@ -3906,7 +3997,7 @@ loc_2964:
 4:2992  8d46d8               lea ax, [bp - 0x28]
 4:2995  16                   push ss
 4:2996  50                   push ax
-4:2997  9afe48bc29           lcall 0x29bc, 0x48fe  ; sub_s2:48FE
+4:2997  9afe48bc29           lcall 0x29bc, 0x48fe  ; BmpFile::BmpFile@s2:48FE
 4:299C  6a1e                 push 0x1e
 4:299E  9a9c17e029           lcall 0x29e0, 0x179c  ; operator_new@s1:179C
 4:29A3  83c402               add sp, 2
@@ -3918,7 +4009,7 @@ loc_2964:
 4:29B3  16                   push ss
 4:29B4  50                   push ax
 4:29B5  66ff76c4             push dword ptr [bp - 0x3c]
-4:29B9  9a923ff629           lcall 0x29f6, 0x3f92  ; sub_s2:3F92
+4:29B9  9a923ff629           lcall 0x29f6, 0x3f92  ; DIB::DIB(copy)@s2:3F92
 4:29BE  eb03                 jmp 0x29c3
 loc_29C0:
 4:29C0  33c0                 xor ax, ax
@@ -3942,7 +4033,7 @@ loc_29C3:
 4:29ED  740b                 je 0x29fa
 4:29EF  ff76c6               push word ptr [bp - 0x3a]
 4:29F2  50                   push ax
-4:29F3  9a584c172a           lcall 0x2a17, 0x4c58  ; sub_s2:4C58
+4:29F3  9a584c172a           lcall 0x2a17, 0x4c58  ; MemBlock::MemBlock@s2:4C58
 4:29F8  eb03                 jmp 0x29fd
 loc_29FA:
 4:29FA  33c0                 xor ax, ax
@@ -3954,7 +4045,7 @@ loc_29FD:
 4:2A08  66ff76d0             push dword ptr [bp - 0x30]
 4:2A0C  c45e06               les bx, ptr [bp + 6]
 4:2A0F  6626ff770e           push dword ptr es:[bx + 0xe]
-4:2A14  9a844d5a2a           lcall 0x2a5a, 0x4d84  ; sub_s2:4D84
+4:2A14  9a844d5a2a           lcall 0x2a5a, 0x4d84  ; MemBlock::copyFrom@s2:4D84
 4:2A19  ff369603             push word ptr [0x396]
 4:2A1D  8d46c8               lea ax, [bp - 0x38]
 4:2A20  16                   push ss
@@ -3978,7 +4069,7 @@ loc_29FD:
 4:2A4B  c45e06               les bx, ptr [bp + 6]
 4:2A4E  6626ff770e           push dword ptr es:[bx + 0xe]
 4:2A53  66ff76c4             push dword ptr [bp - 0x3c]
-4:2A57  9a5c409c2a           lcall 0x2a9c, 0x405c  ; sub_s2:405C
+4:2A57  9a5c409c2a           lcall 0x2a9c, 0x405c  ; DIB::DIB(w,h,bpp)@s2:405C
 4:2A5C  c45e06               les bx, ptr [bp + 6]
 4:2A5F  2689470a             mov word ptr es:[bx + 0xa], ax
 4:2A63  2689570c             mov word ptr es:[bx + 0xc], dx
@@ -4003,24 +4094,26 @@ loc_2A94:
 4:2A94  8d46d8               lea ax, [bp - 0x28]
 4:2A97  16                   push ss
 4:2A98  50                   push ax
-4:2A99  9a6c490827           lcall 0x2708, 0x496c  ; sub_s2:496C
+4:2A99  9a6c490827           lcall 0x2708, 0x496c  ; BmpFile::~BmpFile@s2:496C
 4:2A9E  c9                   leave
 4:2A9F  ca0600               retf 6
 4:2AA2  db 90 0e e8 51 f7 cb
 
-; ---------------- sub_s4:2AA8 FAR size=12 callers=0
+; ---------------- PlanetArea::thunk_dtor@s4:2AA8 FAR size=12 callers=0
+;   this-adjusting thunk
 4:2AA8  8bdc                 mov bx, sp
 4:2AAA  36836f041c           sub word ptr ss:[bx + 4], 0x1c
 4:2AAF  e90200               jmp 0x2ab4
 4:2AB2  db 90 90
 
-; ---------------- sub_s4:2AB4 FAR size=70 callers=0
+; ---------------- PlanetArea::scalar_dtor@s4:2AB4 FAR size=70 callers=0
+;   deleting destructor
 4:2AB4  55                   push bp
 4:2AB5  8bec                 mov bp, sp
 4:2AB7  66ff7606             push dword ptr [bp + 6]
 4:2ABB  90                   nop
 4:2ABC  0e                   push cs
-4:2ABD  e880f9               call 0x2440  ; sub_s4:2440
+4:2ABD  e880f9               call 0x2440  ; PlanetArea::~PlanetArea@s4:2440
 4:2AC0  f6460a01             test byte ptr [bp + 0xa], 1
 4:2AC4  7409                 je 0x2acf
 4:2AC6  66ff7606             push dword ptr [bp + 6]
@@ -4034,7 +4127,8 @@ loc_2ACF:
 4:2AE9  db 29 4a 29 f0 2a 78 29 50 24 a8 2a f8 2a 9c 28 dc
 4:2AF9  db 2a
 
-; ---------------- sub_s4:2AFA FAR size=22 callers=1
+; ---------------- deletePtrField@s4:2AFA FAR size=22 callers=1
+;   deletes the pointer at +0
 4:2AFA  c8080000             enter 8, 0
 4:2AFE  c45e06               les bx, ptr [bp + 6]
 4:2B01  66268b0f             mov ecx, dword ptr es:[bx]
@@ -4043,14 +4137,15 @@ loc_2ACF:
 4:2B0C  c9                   leave
 4:2B0D  ca0400               retf 4
 
-; ---------------- sub_s4:2B10 FAR size=336 callers=1
+; ---------------- ListModel04::ListModel04@s4:2B10 FAR size=336 callers=1
+;   registry 0x04: a scrolling list of objects (PtrArray +0x17E, index +0x174)
 4:2B10  c80c0000             enter 0xc, 0
 4:2B14  ff760a               push word ptr [bp + 0xa]
 4:2B17  6a01                 push 1
 4:2B19  66ff7606             push dword ptr [bp + 6]
 4:2B1D  90                   nop
 4:2B1E  0e                   push cs
-4:2B1F  e8fc1f               call 0x4b1e  ; sub_s4:4B1E
+4:2B1F  e8fc1f               call 0x4b1e  ; WindowModel::WindowModel@s4:4B1E
 4:2B22  c45e06               les bx, ptr [bp + 6]
 4:2B25  26c747209a38         mov word ptr es:[bx + 0x20], 0x389a
 4:2B2B  26c747223e2b         mov word ptr es:[bx + 0x22], 0x2b3e  ; SEGMENT s2:0000
@@ -4074,7 +4169,7 @@ loc_2ACF:
 4:2B86  26c74722f42a         mov word ptr es:[bx + 0x22], 0x2af4  ; SEGMENT s4:0000
 4:2B8C  6a2f                 push 0x2f
 4:2B8E  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:2B93  9aba20f22b           lcall 0x2bf2, 0x20ba  ; sub_s3:20BA
+4:2B93  9aba20f22b           lcall 0x2bf2, 0x20ba  ; Registry_get@s3:20BA
 4:2B98  c45e06               les bx, ptr [bp + 6]
 4:2B9B  2689878201           mov word ptr es:[bx + 0x182], ax
 4:2BA0  2689978401           mov word ptr es:[bx + 0x184], dx
@@ -4104,19 +4199,19 @@ loc_2BB9:
 4:2BE2  662689877a01         mov dword ptr es:[bx + 0x17a], eax
 4:2BE8  6a6e                 push 0x6e
 4:2BEA  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:2BEF  9a0a83e02a           lcall 0x2ae0, 0x830a  ; sub_s3:830A
+4:2BEF  9a0a83e02a           lcall 0x2ae0, 0x830a  ; ResLibr::picture@s3:830A
 4:2BF4  c45e06               les bx, ptr [bp + 6]
 4:2BF7  26894724             mov word ptr es:[bx + 0x24], ax
 4:2BFB  26895726             mov word ptr es:[bx + 0x26], dx
 4:2BFF  6626c7472800000000   mov dword ptr es:[bx + 0x28], 0
 4:2C08  6626ff7724           push dword ptr es:[bx + 0x24]
-4:2C0D  9a72479a29           lcall 0x299a, 0x4772  ; sub_s2:4772
+4:2C0D  9a72479a29           lcall 0x299a, 0x4772  ; DIB::rect@s2:4772
 4:2C12  8946fc               mov word ptr [bp - 4], ax
 4:2C15  8956fe               mov word ptr [bp - 2], dx
 4:2C18  66ff7606             push dword ptr [bp + 6]
 4:2C1C  90                   nop
 4:2C1D  0e                   push cs
-4:2C1E  e8571f               call 0x4b78  ; sub_s4:4B78
+4:2C1E  e8571f               call 0x4b78  ; WindowModel::restorePlace@s4:4B78
 4:2C21  b80100               mov ax, 1
 4:2C24  c45e06               les bx, ptr [bp + 6]
 4:2C27  2689876c01           mov word ptr es:[bx + 0x16c], ax
@@ -4137,7 +4232,8 @@ loc_2BB9:
 4:2C5C  ca0600               retf 6
 4:2C5F  db 00
 
-; ---------------- sub_s4:2C60 FAR size=194 callers=1
+; ---------------- ListModel04::~ListModel04@s4:2C60 FAR size=194 callers=1
+;   dtor
 4:2C60  c8140000             enter 0x14, 0
 4:2C64  56                   push si
 4:2C65  c45e06               les bx, ptr [bp + 6]
@@ -4165,7 +4261,7 @@ loc_2C9D:
 4:2CA4  50                   push ax
 4:2CA5  c45e06               les bx, ptr [bp + 6]
 4:2CA8  6626ffb78201         push dword ptr es:[bx + 0x182]
-4:2CAE  9aa61e1a2d           lcall 0x2d1a, 0x1ea6  ; sub_s3:1EA6
+4:2CAE  9aa61e1a2d           lcall 0x2d1a, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 loc_2CB3:
 4:2CB3  c45e06               les bx, ptr [bp + 6]
 4:2CB6  66268b878601         mov eax, dword ptr es:[bx + 0x186]
@@ -4204,13 +4300,14 @@ loc_2CFF:
 4:2D08  26c7079a38           mov word ptr es:[bx], 0x389a
 4:2D0D  26c747022f2b         mov word ptr es:[bx + 2], 0x2b2f  ; SEGMENT s2:0000
 4:2D13  66ff7606             push dword ptr [bp + 6]
-4:2D17  9a801d962b           lcall 0x2b96, 0x1d80  ; sub_s3:1D80
+4:2D17  9a801d962b           lcall 0x2b96, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:2D1C  5e                   pop si
 4:2D1D  c9                   leave
 4:2D1E  ca0400               retf 4
 4:2D21  db 00
 
-; ---------------- sub_s4:2D22 FAR size=98 callers=1
+; ---------------- ListModel04::rect@s4:2D22 FAR size=98 callers=1
+;   window rectangle
 4:2D22  c8040000             enter 4, 0
 4:2D26  33c0                 xor ax, ax
 4:2D28  c45e0e               les bx, ptr [bp + 0xe]
@@ -4219,7 +4316,7 @@ loc_2CFF:
 4:2D31  268907               mov word ptr es:[bx], ax
 4:2D34  c45e06               les bx, ptr [bp + 6]
 4:2D37  6626ff7724           push dword ptr es:[bx + 0x24]
-4:2D3C  9a7247112d           lcall 0x2d11, 0x4772  ; sub_s2:4772
+4:2D3C  9a7247112d           lcall 0x2d11, 0x4772  ; DIB::rect@s2:4772
 4:2D41  8bd8                 mov bx, ax
 4:2D43  8ec2                 mov es, dx
 4:2D45  268b4708             mov ax, word ptr es:[bx + 8]
@@ -4245,19 +4342,21 @@ loc_2D7F:
 4:2D80  ca0e00               retf 0xe
 4:2D83  db 00
 
-; ---------------- sub_s4:2D84 FAR size=22 callers=2
+; ---------------- ListModel04::currentName@s4:2D84 FAR size=22 callers=2
+;   the current entry's name
 4:2D84  55                   push bp
 4:2D85  8bec                 mov bp, sp
 4:2D87  66ff7606             push dword ptr [bp + 6]
 4:2D8B  90                   nop
 4:2D8C  0e                   push cs
-4:2D8D  e89800               call 0x2e28  ; sub_s4:2E28
+4:2D8D  e89800               call 0x2e28  ; ListModel04::current@s4:2E28
 4:2D90  50                   push ax
-4:2D91  9a80bd0c0d           lcall 0xd0c, 0xbd80  ; sub_s5:BD80
+4:2D91  9a80bd0c0d           lcall 0xd0c, 0xbd80  ; buildingName@s5:BD80
 4:2D96  c9                   leave
 4:2D97  ca0400               retf 4
 
-; ---------------- sub_s4:2D9A FAR size=68 callers=1
+; ---------------- ListModel04::previous@s4:2D9A FAR size=68 callers=1
+;   previous entry (wraps)
 4:2D9A  c8080000             enter 8, 0
 4:2D9E  c45e06               les bx, ptr [bp + 6]
 4:2DA1  268b878001           mov ax, word ptr es:[bx + 0x180]
@@ -4275,14 +4374,15 @@ loc_2DC9:
 4:2DC9  66ff7606             push dword ptr [bp + 6]
 4:2DCD  90                   nop
 4:2DCE  0e                   push cs
-4:2DCF  e85600               call 0x2e28  ; sub_s4:2E28
+4:2DCF  e85600               call 0x2e28  ; ListModel04::current@s4:2E28
 4:2DD2  c45e06               les bx, ptr [bp + 6]
 4:2DD5  2689877601           mov word ptr es:[bx + 0x176], ax
 loc_2DDA:
 4:2DDA  c9                   leave
 4:2DDB  ca0400               retf 4
 
-; ---------------- sub_s4:2DDE FAR size=74 callers=1
+; ---------------- ListModel04::next@s4:2DDE FAR size=74 callers=1
+;   next entry (wraps)
 4:2DDE  c8080000             enter 8, 0
 4:2DE2  c45e06               les bx, ptr [bp + 6]
 4:2DE5  268b878001           mov ax, word ptr es:[bx + 0x180]
@@ -4300,20 +4400,21 @@ loc_2E13:
 4:2E13  66ff7606             push dword ptr [bp + 6]
 4:2E17  90                   nop
 4:2E18  0e                   push cs
-4:2E19  e80c00               call 0x2e28  ; sub_s4:2E28
+4:2E19  e80c00               call 0x2e28  ; ListModel04::current@s4:2E28
 4:2E1C  c45e06               les bx, ptr [bp + 6]
 4:2E1F  2689877601           mov word ptr es:[bx + 0x176], ax
 loc_2E24:
 4:2E24  c9                   leave
 4:2E25  ca0400               retf 4
 
-; ---------------- sub_s4:2E28 FAR size=54 callers=7
+; ---------------- ListModel04::current@s4:2E28 FAR size=54 callers=7
+;   the current entry's object
 4:2E28  c80a0000             enter 0xa, 0
 4:2E2C  c45e06               les bx, ptr [bp + 6]
 4:2E2F  66260fbf877401       movsx eax, word ptr es:[bx + 0x174]
 4:2E36  6650                 push eax
 4:2E38  6626ffb77e01         push dword ptr es:[bx + 0x17e]
-4:2E3E  9ac48f3f2d           lcall 0x2d3f, 0x8fc4  ; sub_s2:8FC4
+4:2E3E  9ac48f3f2d           lcall 0x2d3f, 0x8fc4  ; PtrArray::get@s2:8FC4
 4:2E43  8946fc               mov word ptr [bp - 4], ax
 4:2E46  8956fe               mov word ptr [bp - 2], dx
 4:2E49  0bd0                 or dx, ax
@@ -4327,14 +4428,15 @@ loc_2E58:
 4:2E5A  c9                   leave
 4:2E5B  ca0400               retf 4
 
-; ---------------- sub_s4:2E5E FAR size=134 callers=2
+; ---------------- ListModel04::currentDetail@s4:2E5E FAR size=134 callers=2
+;   the current entry's details
 4:2E5E  c80e0000             enter 0xe, 0
 4:2E62  c45e06               les bx, ptr [bp + 6]
 4:2E65  662683bf7e0100       cmp dword ptr es:[bx + 0x17e], 0
 4:2E6C  751d                 jne 0x2e8b
 4:2E6E  6626ffb77a01         push dword ptr es:[bx + 0x17a]
 4:2E74  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:2E79  9af0826426           lcall 0x2664, 0x82f0  ; sub_s7:82F0
+4:2E79  9af0826426           lcall 0x2664, 0x82f0  ; Sim::stepAt@s7:82F0
 4:2E7E  c45e06               les bx, ptr [bp + 6]
 4:2E81  2689877e01           mov word ptr es:[bx + 0x17e], ax
 4:2E86  2689978001           mov word ptr es:[bx + 0x180], dx
@@ -4356,13 +4458,13 @@ loc_2E9E:
 4:2EAE  66260fbf877401       movsx eax, word ptr es:[bx + 0x174]
 4:2EB5  6650                 push eax
 4:2EB7  6626ffb77e01         push dword ptr es:[bx + 0x17e]
-4:2EBD  9ac48f412e           lcall 0x2e41, 0x8fc4  ; sub_s2:8FC4
+4:2EBD  9ac48f412e           lcall 0x2e41, 0x8fc4  ; PtrArray::get@s2:8FC4
 4:2EC2  8946fa               mov word ptr [bp - 6], ax
 4:2EC5  8956fc               mov word ptr [bp - 4], dx
 4:2EC8  66ff7606             push dword ptr [bp + 6]
 4:2ECC  90                   nop
 4:2ECD  0e                   push cs
-4:2ECE  e857ff               call 0x2e28  ; sub_s4:2E28
+4:2ECE  e857ff               call 0x2e28  ; ListModel04::current@s4:2E28
 4:2ED1  c45e06               les bx, ptr [bp + 6]
 4:2ED4  2689877601           mov word ptr es:[bx + 0x176], ax
 4:2ED9  8b46fa               mov ax, word ptr [bp - 6]
@@ -4371,7 +4473,8 @@ loc_2E9E:
 4:2EE0  ca0400               retf 4
 4:2EE3  db 00
 
-; ---------------- sub_s4:2EE4 FAR size=114 callers=0
+; ---------------- ListModel04::onNotify@s4:2EE4 FAR size=114 callers=0
+;   (vslot 16) refreshes
 4:2EE4  c8040000             enter 4, 0
 4:2EE8  57                   push di
 4:2EE9  56                   push si
@@ -4394,11 +4497,11 @@ loc_2F06:
 4:2F13  8bfa                 mov di, dx
 4:2F15  90                   nop
 4:2F16  0e                   push cs
-4:2F17  e8e002               call 0x31fa  ; sub_s4:31FA
+4:2F17  e8e002               call 0x31fa  ; ListModel04::refresh@s4:31FA
 4:2F1A  ff760a               push word ptr [bp + 0xa]
 4:2F1D  57                   push di
 4:2F1E  56                   push si
-4:2F1F  9a621fb12c           lcall 0x2cb1, 0x1f62  ; sub_s3:1F62
+4:2F1F  9a621fb12c           lcall 0x2cb1, 0x1f62  ; RegObj::notify@s3:1F62
 4:2F24  5e                   pop si
 4:2F25  5f                   pop di
 4:2F26  c9                   leave
@@ -4428,8 +4531,9 @@ loc_2F4F:
 4:2F52  ca0600               retf 6
 4:2F55  db 00
 
-; ---------------- sub_s4:2F56 FAR size=146 callers=0
+; ---------------- ListModel04::frameRect@s4:2F56 FAR size=146 callers=0
 ;   apis: USER.GetSystemMetrics
+;   (vslot 8)
 4:2F56  c8200000             enter 0x20, 0
 4:2F5A  56                   push si
 4:2F5B  8d46fe               lea ax, [bp - 2]
@@ -4440,16 +4544,16 @@ loc_2F4F:
 4:2F64  50                   push ax
 4:2F65  6a48                 push 0x48
 4:2F67  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:2F6C  9aba20222f           lcall 0x2f22, 0x20ba  ; sub_s3:20BA
+4:2F6C  9aba20222f           lcall 0x2f22, 0x20ba  ; Registry_get@s3:20BA
 4:2F71  8946f8               mov word ptr [bp - 8], ax
 4:2F74  8956fa               mov word ptr [bp - 6], dx
 4:2F77  050e00               add ax, 0xe
 4:2F7A  52                   push dx
 4:2F7B  50                   push ax
-4:2F7C  9a943e8c2f           lcall 0x2f8c, 0x3e94  ; sub_s2:3E94
+4:2F7C  9a943e8c2f           lcall 0x2f8c, 0x3e94  ; Pos3::getXY@s2:3E94
 4:2F81  c45e06               les bx, ptr [bp + 6]
 4:2F84  6626ff7724           push dword ptr es:[bx + 0x24]
-4:2F89  9a7247c02e           lcall 0x2ec0, 0x4772  ; sub_s2:4772
+4:2F89  9a7247c02e           lcall 0x2ec0, 0x4772  ; DIB::rect@s2:4772
 4:2F8E  8946f4               mov word ptr [bp - 0xc], ax
 4:2F91  8956f6               mov word ptr [bp - 0xa], dx
 4:2F94  8b46fe               mov ax, word ptr [bp - 2]
@@ -4481,7 +4585,8 @@ loc_2F4F:
 4:2FE4  ca0400               retf 4
 4:2FE7  db 00
 
-; ---------------- sub_s4:2FE8 FAR size=226 callers=1
+; ---------------- ListModel04::find@s4:2FE8 FAR size=226 callers=1
+;   entry by name
 4:2FE8  c8140000             enter 0x14, 0
 4:2FEC  c45e06               les bx, ptr [bp + 6]
 4:2FEF  268b877401           mov ax, word ptr es:[bx + 0x174]
@@ -4501,7 +4606,7 @@ loc_300E:
 4:3011  662683bf860100       cmp dword ptr es:[bx + 0x186], 0
 4:3018  74ed                 je 0x3007
 4:301A  6626ffb78601         push dword ptr es:[bx + 0x186]
-4:3020  9aa43d8430           lcall 0x3084, 0x3da4  ; sub_s1:3DA4
+4:3020  9aa43d8430           lcall 0x3084, 0x3da4  ; _fstrlen@s1:3DA4
 4:3025  83c404               add sp, 4
 4:3028  8946f6               mov word ptr [bp - 0xa], ax
 4:302B  c45e06               les bx, ptr [bp + 6]
@@ -4519,20 +4624,20 @@ loc_3040:
 4:304D  66260fbf877401       movsx eax, word ptr es:[bx + 0x174]
 4:3054  6650                 push eax
 4:3056  6626ffb77e01         push dword ptr es:[bx + 0x17e]
-4:305C  9ac48f7f2f           lcall 0x2f7f, 0x8fc4  ; sub_s2:8FC4
+4:305C  9ac48f7f2f           lcall 0x2f7f, 0x8fc4  ; PtrArray::get@s2:8FC4
 4:3061  66ff7606             push dword ptr [bp + 6]
 4:3065  90                   nop
 4:3066  0e                   push cs
-4:3067  e8befd               call 0x2e28  ; sub_s4:2E28
+4:3067  e8befd               call 0x2e28  ; ListModel04::current@s4:2E28
 4:306A  50                   push ax
-4:306B  9a80bd942d           lcall 0x2d94, 0xbd80  ; sub_s5:BD80
+4:306B  9a80bd942d           lcall 0x2d94, 0xbd80  ; buildingName@s5:BD80
 4:3070  83c402               add sp, 2
 4:3073  ff76f6               push word ptr [bp - 0xa]
 4:3076  c45e06               les bx, ptr [bp + 6]
 4:3079  6626ffb78601         push dword ptr es:[bx + 0x186]
 4:307F  52                   push dx
 4:3080  50                   push ax
-4:3081  9ae83dc52c           lcall 0x2cc5, 0x3de8  ; sub_s1:3DE8
+4:3081  9ae83dc52c           lcall 0x2cc5, 0x3de8  ; _fstrncmp?@s1:3DE8
 4:3086  83c40a               add sp, 0xa
 4:3089  0bc0                 or ax, ax
 4:308B  75ab                 jne 0x3038
@@ -4547,7 +4652,7 @@ loc_308D:
 4:30A3  53                   push bx
 4:30A4  90                   nop
 4:30A5  0e                   push cs
-4:30A6  e87ffd               call 0x2e28  ; sub_s4:2E28
+4:30A6  e87ffd               call 0x2e28  ; ListModel04::current@s4:2E28
 4:30A9  c45e06               les bx, ptr [bp + 6]
 4:30AC  2689877601           mov word ptr es:[bx + 0x176], ax
 4:30B1  e953ff               jmp 0x3007
@@ -4556,14 +4661,15 @@ loc_30B4:
 4:30B5  53                   push bx
 4:30B6  90                   nop
 4:30B7  0e                   push cs
-4:30B8  e86dfd               call 0x2e28  ; sub_s4:2E28
+4:30B8  e86dfd               call 0x2e28  ; ListModel04::current@s4:2E28
 4:30BB  c45e06               les bx, ptr [bp + 6]
 4:30BE  2689877601           mov word ptr es:[bx + 0x176], ax
 4:30C3  b80100               mov ax, 1
 4:30C6  c9                   leave
 4:30C7  ca0400               retf 4
 
-; ---------------- sub_s4:30CA FAR size=50 callers=1
+; ---------------- ListModel04::setFilter@s4:30CA FAR size=50 callers=1
+;   the filter string (+0x186)
 4:30CA  c8080000             enter 8, 0
 4:30CE  c45e06               les bx, ptr [bp + 6]
 4:30D1  66268b878601         mov eax, dword ptr es:[bx + 0x186]
@@ -4571,7 +4677,7 @@ loc_30B4:
 4:30D9  9ace172330           lcall 0x3023, 0x17ce  ; operator_delete@s1:17CE
 4:30DE  83c404               add sp, 4
 4:30E1  66ff760a             push dword ptr [bp + 0xa]
-4:30E5  9ae8605f30           lcall 0x305f, 0x60e8  ; sub_s2:60E8
+4:30E5  9ae8605f30           lcall 0x305f, 0x60e8  ; _strdup@s2:60E8
 4:30EA  c45e06               les bx, ptr [bp + 6]
 4:30ED  2689878601           mov word ptr es:[bx + 0x186], ax
 4:30F2  2689978801           mov word ptr es:[bx + 0x188], dx
@@ -4579,7 +4685,8 @@ loc_30B4:
 4:30F8  ca0800               retf 8
 4:30FB  db 00
 
-; ---------------- sub_s4:30FC FAR size=212 callers=1
+; ---------------- ListModel04::rebuild@s4:30FC FAR size=212 callers=1
+;   rebuilds the entries
 4:30FC  c8160000             enter 0x16, 0
 4:3100  56                   push si
 4:3101  c45e0a               les bx, ptr [bp + 0xa]
@@ -4634,7 +4741,7 @@ loc_318D:
 4:319A  6650                 push eax
 4:319C  c45e06               les bx, ptr [bp + 6]
 4:319F  6626ffb77e01         push dword ptr es:[bx + 0x17e]
-4:31A5  9ac48fe830           lcall 0x30e8, 0x8fc4  ; sub_s2:8FC4
+4:31A5  9ac48fe830           lcall 0x30e8, 0x8fc4  ; PtrArray::get@s2:8FC4
 4:31AA  8946f4               mov word ptr [bp - 0xc], ax
 4:31AD  8956f6               mov word ptr [bp - 0xa], dx
 4:31B0  c45ef4               les bx, ptr [bp - 0xc]
@@ -4652,7 +4759,8 @@ loc_31CA:
 4:31CC  ca0800               retf 8
 4:31CF  db 00
 
-; ---------------- sub_s4:31D0 FAR size=42 callers=2
+; ---------------- ListModel04::hasEntries@s4:31D0 FAR size=42 callers=2
+;   whether the list has entries
 4:31D0  c8080000             enter 8, 0
 4:31D4  c45e06               les bx, ptr [bp + 6]
 4:31D7  662683bf7e0100       cmp dword ptr es:[bx + 0x17e], 0
@@ -4668,12 +4776,13 @@ loc_31F4:
 4:31F6  c9                   leave
 4:31F7  ca0400               retf 4
 
-; ---------------- sub_s4:31FA FAR size=172 callers=1
+; ---------------- ListModel04::refresh@s4:31FA FAR size=172 callers=1
+;   refreshes the current entry
 4:31FA  c80c0000             enter 0xc, 0
 4:31FE  c45e06               les bx, ptr [bp + 6]
 4:3201  6626ffb77a01         push dword ptr es:[bx + 0x17a]
 4:3207  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:320C  9af0827c2e           lcall 0x2e7c, 0x82f0  ; sub_s7:82F0
+4:320C  9af0827c2e           lcall 0x2e7c, 0x82f0  ; Sim::stepAt@s7:82F0
 4:3211  c45e06               les bx, ptr [bp + 6]
 4:3214  2689877e01           mov word ptr es:[bx + 0x17e], ax
 4:3219  2689978001           mov word ptr es:[bx + 0x180], dx
@@ -4699,11 +4808,11 @@ loc_324B:
 4:3258  66260fbf877401       movsx eax, word ptr es:[bx + 0x174]
 4:325F  6650                 push eax
 4:3261  6626ffb77e01         push dword ptr es:[bx + 0x17e]
-4:3267  9ac48fa831           lcall 0x31a8, 0x8fc4  ; sub_s2:8FC4
+4:3267  9ac48fa831           lcall 0x31a8, 0x8fc4  ; PtrArray::get@s2:8FC4
 4:326C  66ff7606             push dword ptr [bp + 6]
 4:3270  90                   nop
 4:3271  0e                   push cs
-4:3272  e8b3fb               call 0x2e28  ; sub_s4:2E28
+4:3272  e8b3fb               call 0x2e28  ; ListModel04::current@s4:2E28
 4:3275  c45e06               les bx, ptr [bp + 6]
 4:3278  2639877601           cmp word ptr es:[bx + 0x176], ax
 4:327D  75c7                 jne 0x3246
@@ -4716,7 +4825,7 @@ loc_3290:
 4:3290  66ff7606             push dword ptr [bp + 6]
 4:3294  90                   nop
 4:3295  0e                   push cs
-4:3296  e88ffb               call 0x2e28  ; sub_s4:2E28
+4:3296  e88ffb               call 0x2e28  ; ListModel04::current@s4:2E28
 4:3299  c45e06               les bx, ptr [bp + 6]
 4:329C  2689877601           mov word ptr es:[bx + 0x176], ax
 loc_32A1:
@@ -4724,19 +4833,21 @@ loc_32A1:
 4:32A2  ca0400               retf 4
 4:32A5  db 00
 
-; ---------------- sub_s4:32A6 FAR size=12 callers=0
+; ---------------- ListModel04::thunk_dtor@s4:32A6 FAR size=12 callers=0
+;   this-adjusting thunk
 4:32A6  8bdc                 mov bx, sp
 4:32A8  36836f0420           sub word ptr ss:[bx + 4], 0x20
 4:32AD  e90200               jmp 0x32b2
 4:32B0  db 90 90
 
-; ---------------- sub_s4:32B2 FAR size=106 callers=0
+; ---------------- ListModel04::scalar_dtor@s4:32B2 FAR size=106 callers=0
+;   deleting destructor
 4:32B2  55                   push bp
 4:32B3  8bec                 mov bp, sp
 4:32B5  66ff7606             push dword ptr [bp + 6]
 4:32B9  90                   nop
 4:32BA  0e                   push cs
-4:32BB  e8a2f9               call 0x2c60  ; sub_s4:2C60
+4:32BB  e8a2f9               call 0x2c60  ; ListModel04::~ListModel04@s4:2C60
 4:32BE  f6460a01             test byte ptr [bp + 0xa], 1
 4:32C2  7409                 je 0x32cd
 4:32C4  66ff7606             push dword ptr [bp + 6]
@@ -4752,12 +4863,13 @@ loc_32CD:
 4:3307  db 33 ee 49 0e 33 00 4a 12 33 12 4a 6f 2f a6 32 1a
 4:3317  db 33 e4 2e da 32
 
-; ---------------- sub_s4:331C FAR size=152 callers=1
+; ---------------- TradeMarket::TradeMarket@s4:331C FAR size=152 callers=1
+;   registry 0x3C: the trade market (draws registry 0x3B, random prices)
 4:331C  55                   push bp
 4:331D  8bec                 mov bp, sp
 4:331F  66ff7608             push dword ptr [bp + 8]
 4:3323  ff7606               push word ptr [bp + 6]
-4:3326  9a5acaa133           lcall 0x33a1, 0xca5a  ; sub_s2:CA5A
+4:3326  9a5acaa133           lcall 0x33a1, 0xca5a  ; TradeLists::TradeLists@s2:CA5A
 4:332B  c45e06               les bx, ptr [bp + 6]
 4:332E  662bc0               sub eax, eax
 4:3331  662689872201         mov dword ptr es:[bx + 0x122], eax
@@ -4775,13 +4887,13 @@ loc_32CD:
 4:3374  26c747021633         mov word ptr es:[bx + 2], 0x3316  ; SEGMENT s4:0000
 4:337A  6a3b                 push 0x3b
 4:337C  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:3381  9aba20de32           lcall 0x32de, 0x20ba  ; sub_s3:20BA
+4:3381  9aba20de32           lcall 0x32de, 0x20ba  ; Registry_get@s3:20BA
 4:3386  c45e06               les bx, ptr [bp + 6]
 4:3389  2689872201           mov word ptr es:[bx + 0x122], ax
 4:338E  2689972401           mov word ptr es:[bx + 0x124], dx
 4:3393  26c6472200           mov byte ptr es:[bx + 0x22], 0
 4:3398  666808000c00         push 0xc0008
-4:339E  9a2e616a32           lcall 0x326a, 0x612e  ; sub_s2:612E
+4:339E  9a2e616a32           lcall 0x326a, 0x612e  ; random@s2:612E
 4:33A3  c45e06               les bx, ptr [bp + 6]
 4:33A6  2689873c01           mov word ptr es:[bx + 0x13c], ax
 4:33AB  8bc3                 mov ax, bx
@@ -4790,7 +4902,8 @@ loc_32CD:
 4:33B0  ca0600               retf 6
 4:33B3  db 00
 
-; ---------------- sub_s4:33B4 FAR size=112 callers=1
+; ---------------- TradeMarket::~TradeMarket@s4:33B4 FAR size=112 callers=1
+;   dtor
 4:33B4  c8100000             enter 0x10, 0
 4:33B8  56                   push si
 4:33B9  c45e06               les bx, ptr [bp + 6]
@@ -4821,34 +4934,35 @@ loc_33E5:
 4:340D  9ace17cb32           lcall 0x32cb, 0x17ce  ; operator_delete@s1:17CE
 4:3412  83c404               add sp, 4
 4:3415  66ff7606             push dword ptr [bp + 6]
-4:3419  9aa0ca2933           lcall 0x3329, 0xcaa0  ; sub_s2:CAA0
+4:3419  9aa0ca2933           lcall 0x3329, 0xcaa0  ; TradeLists::~TradeLists@s2:CAA0
 4:341E  5e                   pop si
 4:341F  c9                   leave
 4:3420  ca0400               retf 4
 4:3423  db 00
 
-; ---------------- sub_s4:3424 FAR size=130 callers=1
+; ---------------- TradeMarket::colonyPopulation@s4:3424 FAR size=130 callers=1
+;   a colony by name, its population
 4:3424  c8200000             enter 0x20, 0
 4:3428  c45e06               les bx, ptr [bp + 6]
 4:342B  6626ffb72601         push dword ptr es:[bx + 0x126]
 4:3431  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3437  9a52e85434           lcall 0x3454, 0xe852  ; sub_s2:E852
+4:3437  9a52e85434           lcall 0x3454, 0xe852  ; colonyByName@s2:E852
 4:343C  8946fc               mov word ptr [bp - 4], ax
 4:343F  8956fe               mov word ptr [bp - 2], dx
 4:3442  c45e06               les bx, ptr [bp + 6]
 4:3445  6626ffb72a01         push dword ptr es:[bx + 0x12a]
 4:344B  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3451  9a52e81c34           lcall 0x341c, 0xe852  ; sub_s2:E852
+4:3451  9a52e81c34           lcall 0x341c, 0xe852  ; colonyByName@s2:E852
 4:3456  8946f8               mov word ptr [bp - 8], ax
 4:3459  8956fa               mov word ptr [bp - 6], dx
 4:345C  66ff76fc             push dword ptr [bp - 4]
 4:3460  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:3465  9a44837c34           lcall 0x347c, 0x8344  ; sub_s7:8344
+4:3465  9a44837c34           lcall 0x347c, 0x8344  ; Sim::resolve@s7:8344
 4:346A  8946f4               mov word ptr [bp - 0xc], ax
 4:346D  8956f6               mov word ptr [bp - 0xa], dx
 4:3470  66ff76f8             push dword ptr [bp - 8]
 4:3474  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:3479  9a44830f32           lcall 0x320f, 0x8344  ; sub_s7:8344
+4:3479  9a44830f32           lcall 0x320f, 0x8344  ; Sim::resolve@s7:8344
 4:347E  8946f0               mov word ptr [bp - 0x10], ax
 4:3481  8956f2               mov word ptr [bp - 0xe], dx
 4:3484  c45ef4               les bx, ptr [bp - 0xc]
@@ -4865,18 +4979,20 @@ loc_34A0:
 4:34A2  c9                   leave
 4:34A3  ca0400               retf 4
 
-; ---------------- sub_s4:34A6 FAR size=16 callers=1
+; ---------------- TradeMarket::endTurn@s4:34A6 FAR size=16 callers=1
+;   SCEndSim: the price swing moves (s4:3D6C)
 4:34A6  55                   push bp
 4:34A7  8bec                 mov bp, sp
 4:34A9  66ff7606             push dword ptr [bp + 6]
 4:34AD  90                   nop
 4:34AE  0e                   push cs
-4:34AF  e8ba08               call 0x3d6c  ; sub_s4:3D6C
+4:34AF  e8ba08               call 0x3d6c  ; TradeMarket::swingPrices@s4:3D6C
 4:34B2  c9                   leave
 4:34B3  ca0400               retf 4
 
-; ---------------- sub_s4:34B6 FAR size=250 callers=1
+; ---------------- TradeMarket::offerText@s4:34B6 FAR size=250 callers=1
 ;   apis: USER._wsprintf
+;   "%ld %s" of an offer
 4:34B6  c80c0000             enter 0xc, 0
 4:34BA  c45e06               les bx, ptr [bp + 6]
 4:34BD  26ffb72e01           push word ptr es:[bx + 0x12e]
@@ -4884,7 +5000,7 @@ loc_34A0:
 4:34C3  53                   push bx
 4:34C4  90                   nop
 4:34C5  0e                   push cs
-4:34C6  e8d506               call 0x3b9e  ; sub_s4:3B9E
+4:34C6  e8d506               call 0x3b9e  ; TradeMarket::pageList@s4:3B9E
 4:34C9  8946fc               mov word ptr [bp - 4], ax
 4:34CC  8956fe               mov word ptr [bp - 2], dx
 4:34CF  668b4606             mov eax, dword ptr [bp + 6]
@@ -4904,7 +5020,7 @@ loc_34A0:
 loc_34F6:
 4:34F6  26ffb73001           push word ptr es:[bx + 0x130]
 4:34FB  66ff76fc             push dword ptr [bp - 4]
-4:34FF  9af0574435           lcall 0x3544, 0x57f0  ; sub_s2:57F0
+4:34FF  9af0574435           lcall 0x3544, 0x57f0  ; List::countItems@s2:57F0
 4:3504  8946f4               mov word ptr [bp - 0xc], ax
 4:3507  8956f6               mov word ptr [bp - 0xa], dx
 4:350A  c45ef4               les bx, ptr [bp - 0xc]
@@ -4928,7 +5044,7 @@ loc_3528:
 loc_3538:
 4:3538  26ffb73001           push word ptr es:[bx + 0x130]
 4:353D  66ff76fc             push dword ptr [bp - 4]
-4:3541  9af0577035           lcall 0x3570, 0x57f0  ; sub_s2:57F0
+4:3541  9af0577035           lcall 0x3570, 0x57f0  ; List::countItems@s2:57F0
 4:3546  8946f4               mov word ptr [bp - 0xc], ax
 4:3549  8956f6               mov word ptr [bp - 0xa], dx
 4:354C  c45ef4               les bx, ptr [bp - 0xc]
@@ -4942,7 +5058,7 @@ loc_3538:
 loc_3564:
 4:3564  26ffb73001           push word ptr es:[bx + 0x130]
 4:3569  66ff76fc             push dword ptr [bp - 4]
-4:356D  9af0573a34           lcall 0x343a, 0x57f0  ; sub_s2:57F0
+4:356D  9af0573a34           lcall 0x343a, 0x57f0  ; List::countItems@s2:57F0
 4:3572  8946f4               mov word ptr [bp - 0xc], ax
 4:3575  8956f6               mov word ptr [bp - 0xa], dx
 4:3578  c45ef4               les bx, ptr [bp - 0xc]
@@ -4960,7 +5076,7 @@ loc_3590:
 4:3597  50                   push ax
 4:3598  680001               push 0x100
 4:359B  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:35A0  9ae0848433           lcall 0x3384, 0x84e0  ; sub_s3:84E0
+4:35A0  9ae0848433           lcall 0x3384, 0x84e0  ; LoadStringTo@s3:84E0
 loc_35A5:
 4:35A5  8b46f8               mov ax, word ptr [bp - 8]
 4:35A8  8b56fa               mov dx, word ptr [bp - 6]
@@ -4968,8 +5084,9 @@ loc_35A5:
 4:35AC  ca0400               retf 4
 4:35AF  db 00
 
-; ---------------- sub_s4:35B0 FAR size=310 callers=1
+; ---------------- TradeMarket::priceText@s4:35B0 FAR size=310 callers=1
 ;   apis: USER._wsprintf
+;   the price of an offer
 4:35B0  c81a0000             enter 0x1a, 0
 4:35B4  57                   push di
 4:35B5  56                   push si
@@ -4999,7 +5116,7 @@ loc_35E2:
 4:35F6  2689974001           mov word ptr es:[bx + 0x140], dx
 4:35FB  26c7873a010000       mov word ptr es:[bx + 0x13a], 0
 4:3602  666808000c00         push 0xc0008
-4:3608  9a2e610235           lcall 0x3502, 0x612e  ; sub_s2:612E
+4:3608  9a2e610235           lcall 0x3502, 0x612e  ; random@s2:612E
 4:360D  83c404               add sp, 4
 4:3610  c45e06               les bx, ptr [bp + 6]
 4:3613  2689873c01           mov word ptr es:[bx + 0x13c], ax
@@ -5010,13 +5127,13 @@ loc_361A:
 4:3620  53                   push bx
 4:3621  90                   nop
 4:3622  0e                   push cs
-4:3623  e87805               call 0x3b9e  ; sub_s4:3B9E
+4:3623  e87805               call 0x3b9e  ; TradeMarket::pageList@s4:3B9E
 4:3626  8946f8               mov word ptr [bp - 8], ax
 4:3629  8956fa               mov word ptr [bp - 6], dx
 4:362C  66ff7606             push dword ptr [bp + 6]
 4:3630  90                   nop
 4:3631  0e                   push cs
-4:3632  e8470c               call 0x427c  ; sub_s4:427C
+4:3632  e8470c               call 0x427c  ; TradeMarket::unitPrice@s4:427C
 4:3635  8946f4               mov word ptr [bp - 0xc], ax
 4:3638  8956f6               mov word ptr [bp - 0xa], dx
 4:363B  8d46f2               lea ax, [bp - 0xe]
@@ -5028,7 +5145,7 @@ loc_361A:
 4:3645  66ff7606             push dword ptr [bp + 6]
 4:3649  90                   nop
 4:364A  0e                   push cs
-4:364B  e83e08               call 0x3e8c  ; sub_s4:3E8C
+4:364B  e83e08               call 0x3e8c  ; TradeMarket::defaultQuantity@s4:3E8C
 4:364E  660fbf46f0           movsx eax, word ptr [bp - 0x10]
 4:3653  663b46f4             cmp eax, dword ptr [bp - 0xc]
 4:3657  7e03                 jle 0x365c
@@ -5057,7 +5174,7 @@ loc_3689:
 4:3693  66ff7606             push dword ptr [bp + 6]
 4:3697  90                   nop
 4:3698  0e                   push cs
-4:3699  e8c20c               call 0x435e  ; sub_s4:435E
+4:3699  e8c20c               call 0x435e  ; TradeMarket::pickOffer@s4:435E
 4:369C  c45e06               les bx, ptr [bp + 6]
 4:369F  2689873601           mov word ptr es:[bx + 0x136], ax
 4:36A4  2689973801           mov word ptr es:[bx + 0x138], dx
@@ -5085,7 +5202,8 @@ loc_3689:
 4:36E2  ca0400               retf 4
 4:36E5  db 00
 
-; ---------------- sub_s4:36E6 FAR size=42 callers=1
+; ---------------- TradeMarket::setOffer@s4:36E6 FAR size=42 callers=1
+;   the chosen offer (+0x12E..)
 4:36E6  55                   push bp
 4:36E7  8bec                 mov bp, sp
 4:36E9  8b460e               mov ax, word ptr [bp + 0xe]
@@ -5100,7 +5218,8 @@ loc_3689:
 4:370C  ca0a00               retf 0xa
 4:370F  db 00
 
-; ---------------- sub_s4:3710 FAR size=712 callers=1
+; ---------------- TradeMarket::trade@s4:3710 FAR size=712 callers=1
+;   makes the trade (queues the step)
 4:3710  c8300100             enter 0x130, 0
 4:3714  66c746fc00000000     mov dword ptr [bp - 4], 0
 4:371C  c45e06               les bx, ptr [bp + 6]
@@ -5109,7 +5228,7 @@ loc_3689:
 4:3725  53                   push bx
 4:3726  90                   nop
 4:3727  0e                   push cs
-4:3728  e87304               call 0x3b9e  ; sub_s4:3B9E
+4:3728  e87304               call 0x3b9e  ; TradeMarket::pageList@s4:3B9E
 4:372B  8946f8               mov word ptr [bp - 8], ax
 4:372E  8956fa               mov word ptr [bp - 6], dx
 4:3731  c45e06               les bx, ptr [bp + 6]
@@ -5119,7 +5238,7 @@ loc_373C:
 4:373C  c45e06               les bx, ptr [bp + 6]
 4:373F  26ffb73001           push word ptr es:[bx + 0x130]
 4:3744  66ff76f8             push dword ptr [bp - 8]
-4:3748  9af0579b37           lcall 0x379b, 0x57f0  ; sub_s2:57F0
+4:3748  9af0579b37           lcall 0x379b, 0x57f0  ; List::countItems@s2:57F0
 4:374D  8986d4fe             mov word ptr [bp - 0x12c], ax
 4:3751  8996d6fe             mov word ptr [bp - 0x12a], dx
 4:3755  6a10                 push 0x10
@@ -5138,14 +5257,14 @@ loc_373C:
 4:3783  50                   push ax
 4:3784  90                   nop
 4:3785  0e                   push cs
-4:3786  e80710               call 0x4790  ; sub_s4:4790
+4:3786  e80710               call 0x4790  ; MarketRobot::MarketRobot@s4:4790
 4:3789  eb58                 jmp 0x37e3
 4:378B  db 90
 loc_378C:
 4:378C  c45e06               les bx, ptr [bp + 6]
 4:378F  26ffb73001           push word ptr es:[bx + 0x130]
 4:3794  66ff76f8             push dword ptr [bp - 8]
-4:3798  9af057fb37           lcall 0x37fb, 0x57f0  ; sub_s2:57F0
+4:3798  9af057fb37           lcall 0x37fb, 0x57f0  ; List::countItems@s2:57F0
 4:379D  8986d4fe             mov word ptr [bp - 0x12c], ax
 4:37A1  8996d6fe             mov word ptr [bp - 0x12a], dx
 4:37A5  6a14                 push 0x14
@@ -5165,7 +5284,7 @@ loc_378C:
 4:37D8  50                   push ax
 4:37D9  90                   nop
 4:37DA  0e                   push cs
-4:37DB  e8ea0f               call 0x47c8  ; sub_s4:47C8
+4:37DB  e8ea0f               call 0x47c8  ; MarketGroup::MarketGroup@s4:47C8
 4:37DE  eb03                 jmp 0x37e3
 loc_37E0:
 4:37E0  33c0                 xor ax, ax
@@ -5178,7 +5297,7 @@ loc_37EC:
 4:37EC  c45e06               les bx, ptr [bp + 6]
 4:37EF  26ffb73001           push word ptr es:[bx + 0x130]
 4:37F4  66ff76f8             push dword ptr [bp - 8]
-4:37F8  9af0574b38           lcall 0x384b, 0x57f0  ; sub_s2:57F0
+4:37F8  9af0574b38           lcall 0x384b, 0x57f0  ; List::countItems@s2:57F0
 4:37FD  8986d4fe             mov word ptr [bp - 0x12c], ax
 4:3801  8996d6fe             mov word ptr [bp - 0x12a], dx
 4:3805  6a12                 push 0x12  ; 'version %d %d'
@@ -5197,13 +5316,13 @@ loc_37EC:
 4:3834  50                   push ax
 4:3835  90                   nop
 4:3836  0e                   push cs
-4:3837  e8ce0f               call 0x4808  ; sub_s4:4808
+4:3837  e8ce0f               call 0x4808  ; MarketBuilding::MarketBuilding@s4:4808
 4:383A  eba7                 jmp 0x37e3
 loc_383C:
 4:383C  c45e06               les bx, ptr [bp + 6]
 4:383F  26ffb73001           push word ptr es:[bx + 0x130]
 4:3844  66ff76f8             push dword ptr [bp - 8]
-4:3848  9af0579d38           lcall 0x389d, 0x57f0  ; sub_s2:57F0
+4:3848  9af0579d38           lcall 0x389d, 0x57f0  ; List::countItems@s2:57F0
 4:384D  8986d4fe             mov word ptr [bp - 0x12c], ax
 4:3851  8996d6fe             mov word ptr [bp - 0x12a], dx
 4:3855  6a10                 push 0x10
@@ -5222,13 +5341,13 @@ loc_383C:
 4:3885  50                   push ax
 4:3886  90                   nop
 4:3887  0e                   push cs
-4:3888  e82510               call 0x48b0  ; sub_s4:48B0
+4:3888  e82510               call 0x48b0  ; MarketCargo::MarketCargo@s4:48B0
 4:388B  e955ff               jmp 0x37e3
 loc_388E:
 4:388E  c45e06               les bx, ptr [bp + 6]
 4:3891  26ffb73001           push word ptr es:[bx + 0x130]
 4:3896  66ff76f8             push dword ptr [bp - 8]
-4:389A  9af057f138           lcall 0x38f1, 0x57f0  ; sub_s2:57F0
+4:389A  9af057f138           lcall 0x38f1, 0x57f0  ; List::countItems@s2:57F0
 4:389F  8986d4fe             mov word ptr [bp - 0x12c], ax
 4:38A3  8996d6fe             mov word ptr [bp - 0x12a], dx
 4:38A7  6a12                 push 0x12  ; 'version %d %d'
@@ -5247,14 +5366,14 @@ loc_388E:
 4:38D8  50                   push ax
 4:38D9  90                   nop
 4:38DA  0e                   push cs
-4:38DB  e84210               call 0x4920  ; sub_s4:4920
+4:38DB  e84210               call 0x4920  ; MarketColony::MarketColony@s4:4920
 4:38DE  e902ff               jmp 0x37e3
 4:38E1  db 90
 loc_38E2:
 4:38E2  c45e06               les bx, ptr [bp + 6]
 4:38E5  26ffb73001           push word ptr es:[bx + 0x130]
 4:38EA  66ff76f8             push dword ptr [bp - 8]
-4:38EE  9af0576239           lcall 0x3962, 0x57f0  ; sub_s2:57F0
+4:38EE  9af0576239           lcall 0x3962, 0x57f0  ; List::countItems@s2:57F0
 4:38F3  8986d4fe             mov word ptr [bp - 0x12c], ax
 4:38F7  8996d6fe             mov word ptr [bp - 0x12a], dx
 4:38FB  6a14                 push 0x14
@@ -5273,7 +5392,7 @@ loc_38E2:
 4:392B  50                   push ax
 4:392C  90                   nop
 4:392D  0e                   push cs
-4:392E  e8110f               call 0x4842  ; sub_s4:4842
+4:392E  e8110f               call 0x4842  ; MarketResource::MarketResource@s4:4842
 4:3931  e9affe               jmp 0x37e3
 loc_3934:
 4:3934  2d8801               sub ax, 0x188
@@ -5293,13 +5412,13 @@ loc_3950:
 4:3950  c45e06               les bx, ptr [bp + 6]
 4:3953  6626ffb72601         push dword ptr es:[bx + 0x126]
 4:3959  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:395F  9a52e87c39           lcall 0x397c, 0xe852  ; sub_s2:E852
+4:395F  9a52e87c39           lcall 0x397c, 0xe852  ; colonyByName@s2:E852
 4:3964  8946f4               mov word ptr [bp - 0xc], ax
 4:3967  8956f6               mov word ptr [bp - 0xa], dx
 4:396A  c45e06               les bx, ptr [bp + 6]
 4:396D  6626ffb72a01         push dword ptr es:[bx + 0x12a]
 4:3973  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3979  9a52e80b36           lcall 0x360b, 0xe852  ; sub_s2:E852
+4:3979  9a52e80b36           lcall 0x360b, 0xe852  ; colonyByName@s2:E852
 4:397E  8946f0               mov word ptr [bp - 0x10], ax
 4:3981  8956f2               mov word ptr [bp - 0xe], dx
 4:3984  66ff76f4             push dword ptr [bp - 0xc]
@@ -5311,7 +5430,7 @@ loc_3950:
 4:3997  8d86d8fe             lea ax, [bp - 0x128]
 4:399B  16                   push ss
 4:399C  50                   push ax
-4:399D  9a0e2ad139           lcall 0x39d1, 0x2a0e  ; sub_s8:2A0E
+4:399D  9a0e2ad139           lcall 0x39d1, 0x2a0e  ; SCTrade::SCTrade@s8:2A0E
 4:39A2  8d86d8fe             lea ax, [bp - 0x128]
 4:39A6  16                   push ss
 4:39A7  50                   push ax
@@ -5326,12 +5445,13 @@ loc_3950:
 4:39C8  8d86d8fe             lea ax, [bp - 0x128]
 4:39CC  16                   push ss
 4:39CD  50                   push ax
-4:39CE  9a5c2ae013           lcall 0x13e0, 0x2a5c  ; sub_s8:2A5C
+4:39CE  9a5c2ae013           lcall 0x13e0, 0x2a5c  ; SCTrade::~SCTrade@s8:2A5C
 4:39D3  c9                   leave
 4:39D4  ca0400               retf 4
 4:39D7  db 00
 
-; ---------------- sub_s4:39D8 FAR size=106 callers=1
+; ---------------- TradeMarket::partnerByName@s4:39D8 FAR size=106 callers=1
+;   the partner colony by name
 4:39D8  c8080000             enter 8, 0
 4:39DC  66ff760a             push dword ptr [bp + 0xa]
 4:39E0  683105               push 0x531
@@ -5339,13 +5459,13 @@ loc_3950:
 4:39E8  9a7e84a335           lcall 0x35a3, 0x847e  ; LoadStringRes@s3:847E
 4:39ED  52                   push dx
 4:39EE  50                   push ax
-4:39EF  9a7a3d063a           lcall 0x3a06, 0x3d7a  ; sub_s1:3D7A
+4:39EF  9a7a3d063a           lcall 0x3a06, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:39F4  83c408               add sp, 8
 4:39F7  0bc0                 or ax, ax
 4:39F9  7414                 je 0x3a0f
 4:39FB  66ff760a             push dword ptr [bp + 0xa]
 4:39FF  66ff760e             push dword ptr [bp + 0xe]
-4:3A03  9a7a3d5a37           lcall 0x375a, 0x3d7a  ; sub_s1:3D7A
+4:3A03  9a7a3d5a37           lcall 0x375a, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:3A08  83c408               add sp, 8
 4:3A0B  0bc0                 or ax, ax
 4:3A0D  7507                 jne 0x3a16
@@ -5360,7 +5480,7 @@ loc_3A16:
 4:3A1E  66ff7606             push dword ptr [bp + 6]
 4:3A22  90                   nop
 4:3A23  0e                   push cs
-4:3A24  e8e10b               call 0x4608  ; sub_s4:4608
+4:3A24  e8e10b               call 0x4608  ; TradeMarket::findColony@s4:4608
 4:3A27  8946f8               mov word ptr [bp - 8], ax
 4:3A2A  8956fa               mov word ptr [bp - 6], dx
 4:3A2D  0bd0                 or dx, ax
@@ -5372,53 +5492,58 @@ loc_3A16:
 4:3A3E  c9                   leave
 4:3A3F  ca0c00               retf 0xc
 
-; ---------------- sub_s4:3A42 FAR size=26 callers=1
+; ---------------- TradeMarket::partner@s4:3A42 FAR size=26 callers=1
+;   the partner colony
 4:3A42  55                   push bp
 4:3A43  8bec                 mov bp, sp
 4:3A45  66ff760a             push dword ptr [bp + 0xa]
 4:3A49  c45e06               les bx, ptr [bp + 6]
 4:3A4C  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3A52  9a52e84b37           lcall 0x374b, 0xe852  ; sub_s2:E852
+4:3A52  9a52e84b37           lcall 0x374b, 0xe852  ; colonyByName@s2:E852
 4:3A57  c9                   leave
 4:3A58  ca0800               retf 8
 4:3A5B  db 00
 
-; ---------------- sub_s4:3A5C FAR size=30 callers=1
+; ---------------- TradeMarket::diplomacy@s4:3A5C FAR size=30 callers=1
+;   diplomacy text
 4:3A5C  55                   push bp
 4:3A5D  8bec                 mov bp, sp
 4:3A5F  66ff760e             push dword ptr [bp + 0xe]
 4:3A63  66ff760a             push dword ptr [bp + 0xa]
 4:3A67  c45e06               les bx, ptr [bp + 6]
 4:3A6A  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3A70  9a20e3553a           lcall 0x3a55, 0xe320  ; sub_s2:E320
+4:3A70  9a20e3553a           lcall 0x3a55, 0xe320  ; TradeAgreements::diplomacyText@s2:E320
 4:3A75  c9                   leave
 4:3A76  ca0c00               retf 0xc
 4:3A79  db 00
 
-; ---------------- sub_s4:3A7A FAR size=26 callers=2
+; ---------------- TradeMarket::partnerName@s4:3A7A FAR size=26 callers=2
+;   the partner's name
 4:3A7A  55                   push bp
 4:3A7B  8bec                 mov bp, sp
 4:3A7D  66ff760a             push dword ptr [bp + 0xa]
 4:3A81  c45e06               les bx, ptr [bp + 6]
 4:3A84  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3A8A  9a86e5733a           lcall 0x3a73, 0xe586  ; sub_s2:E586
+4:3A8A  9a86e5733a           lcall 0x3a73, 0xe586  ; colonyNameCopy@s2:E586
 4:3A8F  c9                   leave
 4:3A90  ca0800               retf 8
 4:3A93  db 00
 
-; ---------------- sub_s4:3A94 FAR size=30 callers=1
+; ---------------- TradeMarket::colonyLists@s4:3A94 FAR size=30 callers=1
+;   the colony lists
 4:3A94  55                   push bp
 4:3A95  8bec                 mov bp, sp
 4:3A97  66ff760e             push dword ptr [bp + 0xe]
 4:3A9B  66ff760a             push dword ptr [bp + 0xa]
 4:3A9F  c45e06               les bx, ptr [bp + 6]
 4:3AA2  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3AA8  9aece38d3a           lcall 0x3a8d, 0xe3ec  ; sub_s2:E3EC
+4:3AA8  9aece38d3a           lcall 0x3a8d, 0xe3ec  ; TradeAgreements::colonyLists@s2:E3EC
 4:3AAD  c9                   leave
 4:3AAE  ca0c00               retf 0xc
 4:3AB1  db 00
 
-; ---------------- sub_s4:3AB2 FAR size=236 callers=1
+; ---------------- TradeMarket::listText@s4:3AB2 FAR size=236 callers=1
+;   the text of a list
 4:3AB2  c8140000             enter 0x14, 0
 4:3AB6  66c746fc00000000     mov dword ptr [bp - 4], 0
 4:3ABE  8b460c               mov ax, word ptr [bp + 0xc]
@@ -5522,17 +5647,18 @@ loc_3B97:
 4:3B9A  c9                   leave
 4:3B9B  ca0800               retf 8
 
-; ---------------- sub_s4:3B9E FAR size=316 callers=6
+; ---------------- TradeMarket::pageList@s4:3B9E FAR size=316 callers=6
+;   the entries of a page (colonies, cargo, resources, buildings...)
 4:3B9E  c80c0000             enter 0xc, 0
 4:3BA2  66c746fc00000000     mov dword ptr [bp - 4], 0
 4:3BAA  c45e06               les bx, ptr [bp + 6]
 4:3BAD  6626ffb72601         push dword ptr es:[bx + 0x126]
 4:3BB3  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:3BB9  9a52e8ea3b           lcall 0x3bea, 0xe852  ; sub_s2:E852
+4:3BB9  9a52e8ea3b           lcall 0x3bea, 0xe852  ; colonyByName@s2:E852
 4:3BBE  52                   push dx
 4:3BBF  50                   push ax
 4:3BC0  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:3BC5  9a4483b039           lcall 0x39b0, 0x8344  ; sub_s7:8344
+4:3BC5  9a4483b039           lcall 0x39b0, 0x8344  ; Sim::resolve@s7:8344
 4:3BCA  8946f4               mov word ptr [bp - 0xc], ax
 4:3BCD  8956f6               mov word ptr [bp - 0xa], dx
 4:3BD0  8b460a               mov ax, word ptr [bp + 0xa]
@@ -5544,7 +5670,7 @@ loc_3BD6:
 4:3BE1  66ff76f4             push dword ptr [bp - 0xc]
 4:3BE5  06                   push es
 4:3BE6  53                   push bx
-4:3BE7  9aaed3143c           lcall 0x3c14, 0xd3ae  ; sub_s2:D3AE
+4:3BE7  9aaed3143c           lcall 0x3c14, 0xd3ae  ; TradeLists::listRobots@s2:D3AE
 loc_3BEC:
 4:3BEC  c45e06               les bx, ptr [bp + 6]
 4:3BEF  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -5560,7 +5686,7 @@ loc_3C00:
 4:3C0B  66ff76f4             push dword ptr [bp - 0xc]
 4:3C0F  06                   push es
 4:3C10  53                   push bx
-4:3C11  9af6d4383c           lcall 0x3c38, 0xd4f6  ; sub_s2:D4F6
+4:3C11  9af6d4383c           lcall 0x3c38, 0xd4f6  ; TradeLists::listGroupBuildings@s2:D4F6
 loc_3C16:
 4:3C16  c45e06               les bx, ptr [bp + 6]
 4:3C19  268b470e             mov ax, word ptr es:[bx + 0xe]
@@ -5574,7 +5700,7 @@ loc_3C24:
 4:3C2F  66ff76f4             push dword ptr [bp - 0xc]
 4:3C33  06                   push es
 4:3C34  53                   push bx
-4:3C35  9ac6d15c3c           lcall 0x3c5c, 0xd1c6  ; sub_s2:D1C6
+4:3C35  9ac6d15c3c           lcall 0x3c5c, 0xd1c6  ; TradeLists::listBuildings@s2:D1C6
 loc_3C3A:
 4:3C3A  c45e06               les bx, ptr [bp + 6]
 4:3C3D  268b4712             mov ax, word ptr es:[bx + 0x12]
@@ -5588,7 +5714,7 @@ loc_3C48:
 4:3C53  66ff76f4             push dword ptr [bp - 0xc]
 4:3C57  06                   push es
 4:3C58  53                   push bx
-4:3C59  9aa0cf803c           lcall 0x3c80, 0xcfa0  ; sub_s2:CFA0
+4:3C59  9aa0cf803c           lcall 0x3c80, 0xcfa0  ; TradeLists::listResources@s2:CFA0
 loc_3C5E:
 4:3C5E  c45e06               les bx, ptr [bp + 6]
 4:3C61  268b4716             mov ax, word ptr es:[bx + 0x16]
@@ -5602,7 +5728,7 @@ loc_3C6C:
 4:3C77  66ff76f4             push dword ptr [bp - 0xc]
 4:3C7B  06                   push es
 4:3C7C  53                   push bx
-4:3C7D  9aa2cda43c           lcall 0x3ca4, 0xcda2  ; sub_s2:CDA2
+4:3C7D  9aa2cda43c           lcall 0x3ca4, 0xcda2  ; TradeLists::listCargo@s2:CDA2
 loc_3C82:
 4:3C82  c45e06               les bx, ptr [bp + 6]
 4:3C85  268b471a             mov ax, word ptr es:[bx + 0x1a]
@@ -5615,7 +5741,7 @@ loc_3C90:
 4:3C9B  66ff76f4             push dword ptr [bp - 0xc]
 4:3C9F  06                   push es
 4:3CA0  53                   push bx
-4:3CA1  9ac4cb513b           lcall 0x3b51, 0xcbc4  ; sub_s2:CBC4
+4:3CA1  9ac4cb513b           lcall 0x3b51, 0xcbc4  ; TradeLists::listColonies@s2:CBC4
 loc_3CA6:
 4:3CA6  c45e06               les bx, ptr [bp + 6]
 4:3CA9  268b471e             mov ax, word ptr es:[bx + 0x1e]
@@ -5641,7 +5767,8 @@ loc_3CD0:
 4:3CD6  c9                   leave
 4:3CD7  ca0600               retf 6
 
-; ---------------- sub_s4:3CDA FAR size=106 callers=1
+; ---------------- TradeMarket::setPartner@s4:3CDA FAR size=106 callers=1
+;   the partner's name
 4:3CDA  c80c0000             enter 0xc, 0
 4:3CDE  c45e06               les bx, ptr [bp + 6]
 4:3CE1  06                   push es
@@ -5659,13 +5786,13 @@ loc_3CD0:
 4:3D08  9ace17f239           lcall 0x39f2, 0x17ce  ; operator_delete@s1:17CE
 4:3D0D  83c404               add sp, 4
 4:3D10  66ff760e             push dword ptr [bp + 0xe]
-4:3D14  9ae860303d           lcall 0x3d30, 0x60e8  ; sub_s2:60E8
+4:3D14  9ae860303d           lcall 0x3d30, 0x60e8  ; _strdup@s2:60E8
 4:3D19  83c404               add sp, 4
 4:3D1C  c45e06               les bx, ptr [bp + 6]
 4:3D1F  2689872601           mov word ptr es:[bx + 0x126], ax
 4:3D24  2689972801           mov word ptr es:[bx + 0x128], dx
 4:3D29  66ff760a             push dword ptr [bp + 0xa]
-4:3D2D  9ae860bc3b           lcall 0x3bbc, 0x60e8  ; sub_s2:60E8
+4:3D2D  9ae860bc3b           lcall 0x3bbc, 0x60e8  ; _strdup@s2:60E8
 4:3D32  c45e06               les bx, ptr [bp + 6]
 4:3D35  2689872a01           mov word ptr es:[bx + 0x12a], ax
 4:3D3A  2689972c01           mov word ptr es:[bx + 0x12c], dx
@@ -5673,7 +5800,8 @@ loc_3CD0:
 4:3D40  ca0c00               retf 0xc
 4:3D43  db 00
 
-; ---------------- sub_s4:3D44 FAR size=40 callers=2
+; ---------------- TradeMarket::prices@s4:3D44 FAR size=40 callers=2
+;   two prices (+0x126, +0x12A)
 4:3D44  55                   push bp
 4:3D45  8bec                 mov bp, sp
 4:3D47  c45e06               les bx, ptr [bp + 6]
@@ -5688,7 +5816,8 @@ loc_3CD0:
 4:3D68  ca0c00               retf 0xc
 4:3D6B  db 00
 
-; ---------------- sub_s4:3D6C FAR size=288 callers=1
+; ---------------- TradeMarket::swingPrices@s4:3D6C FAR size=288 callers=1
+;   the price swing walks 0 -> +-10 -> +-20 -> +-30 -> 0
 4:3D6C  55                   push bp
 4:3D6D  8bec                 mov bp, sp
 4:3D6F  c45e06               les bx, ptr [bp + 6]
@@ -5732,7 +5861,7 @@ loc_3DD0:
 4:3DD7  e9ae00               jmp 0x3e88
 loc_3DDA:
 4:3DDA  666801006400         push 0x640001
-4:3DE0  9a2e61173d           lcall 0x3d17, 0x612e  ; sub_s2:612E
+4:3DE0  9a2e61173d           lcall 0x3d17, 0x612e  ; random@s2:612E
 4:3DE5  8be5                 mov sp, bp
 4:3DE7  3d3200               cmp ax, 0x32
 4:3DEA  7c06                 jl 0x3df2
@@ -5799,7 +5928,8 @@ loc_3E88:
 4:3E88  c9                   leave
 4:3E89  ca0400               retf 4
 
-; ---------------- sub_s4:3E8C FAR size=24 callers=1
+; ---------------- TradeMarket::defaultQuantity@s4:3E8C FAR size=24 callers=1
+;   1 and 25
 4:3E8C  55                   push bp
 4:3E8D  8bec                 mov bp, sp
 4:3E8F  c45e0e               les bx, ptr [bp + 0xe]
@@ -5810,11 +5940,12 @@ loc_3E88:
 4:3EA0  ca0c00               retf 0xc
 4:3EA3  db 00
 
-; ---------------- sub_s4:3EA4 FAR size=66 callers=0
+; ---------------- TradeMarket::clear@s4:3EA4 FAR size=66 callers=0
+;   (vslot 4)
 4:3EA4  c8080000             enter 8, 0
 4:3EA8  56                   push si
 4:3EA9  66ff7606             push dword ptr [bp + 6]
-4:3EAD  9ac6cae33d           lcall 0x3de3, 0xcac6  ; sub_s2:CAC6
+4:3EAD  9ac6cae33d           lcall 0x3de3, 0xcac6  ; TradeLists::clear@s2:CAC6
 4:3EB2  c45e06               les bx, ptr [bp + 6]
 4:3EB5  268b873601           mov ax, word ptr es:[bx + 0x136]
 4:3EBA  268b973801           mov dx, word ptr es:[bx + 0x138]
@@ -5836,7 +5967,8 @@ loc_3ED3:
 4:3EE2  ca0400               retf 4
 4:3EE5  db 00
 
-; ---------------- sub_s4:3EE6 FAR size=918 callers=1
+; ---------------- TradeMarket::rebelOffers@s4:3EE6 FAR size=918 callers=1
+;   what the rebels offer (dialog 402)
 4:3EE6  c8180000             enter 0x18, 0
 4:3EEA  66c746fc00000000     mov dword ptr [bp - 4], 0
 4:3EF2  8b4610               mov ax, word ptr [bp + 0x10]
@@ -5960,7 +6092,7 @@ loc_3FE2:
 4:3FE9  66ff7606             push dword ptr [bp + 6]
 4:3FED  90                   nop
 4:3FEE  0e                   push cs
-4:3FEF  e87805               call 0x456a  ; sub_s4:456A
+4:3FEF  e87805               call 0x456a  ; TradeMarket::resourcePrice@s4:456A
 4:3FF2  8946f4               mov word ptr [bp - 0xc], ax
 4:3FF5  8956f6               mov word ptr [bp - 0xa], dx
 4:3FF8  c45efc               les bx, ptr [bp - 4]
@@ -5969,7 +6101,7 @@ loc_3FE2:
 4:4004  83c402               add sp, 2
 4:4007  52                   push dx
 4:4008  50                   push ax
-4:4009  9ae8607a40           lcall 0x407a, 0x60e8  ; sub_s2:60E8
+4:4009  9ae8607a40           lcall 0x407a, 0x60e8  ; _strdup@s2:60E8
 4:400E  83c404               add sp, 4
 4:4011  8946f0               mov word ptr [bp - 0x10], ax
 4:4014  8956f2               mov word ptr [bp - 0xe], dx
@@ -5990,7 +6122,7 @@ loc_3FE2:
 4:4044  66ff76ec             push dword ptr [bp - 0x14]
 4:4048  90                   nop
 4:4049  0e                   push cs
-4:404A  e84307               call 0x4790  ; sub_s4:4790
+4:404A  e84307               call 0x4790  ; MarketRobot::MarketRobot@s4:4790
 4:404D  eb70                 jmp 0x40bf
 4:404F  db 90
 loc_4050:
@@ -5999,16 +6131,16 @@ loc_4050:
 4:4057  66ff7606             push dword ptr [bp + 6]
 4:405B  90                   nop
 4:405C  0e                   push cs
-4:405D  e8be04               call 0x451e  ; sub_s4:451E
+4:405D  e8be04               call 0x451e  ; TradeMarket::productPrice@s4:451E
 4:4060  8946f0               mov word ptr [bp - 0x10], ax
 4:4063  8956f2               mov word ptr [bp - 0xe], dx
 4:4066  c45efc               les bx, ptr [bp - 4]
 4:4069  26ff7702             push word ptr es:[bx + 2]
-4:406D  9a22c2fd40           lcall 0x40fd, 0xc222  ; sub_s5:C222
+4:406D  9a22c2fd40           lcall 0x40fd, 0xc222  ; productAName@s5:C222
 4:4072  83c402               add sp, 2
 4:4075  52                   push dx
 4:4076  50                   push ax
-4:4077  9ae860d740           lcall 0x40d7, 0x60e8  ; sub_s2:60E8
+4:4077  9ae860d740           lcall 0x40d7, 0x60e8  ; _strdup@s2:60E8
 4:407C  83c404               add sp, 4
 4:407F  8946f4               mov word ptr [bp - 0xc], ax
 4:4082  8956f6               mov word ptr [bp - 0xa], dx
@@ -6029,7 +6161,7 @@ loc_4050:
 4:40B0  66ff76ec             push dword ptr [bp - 0x14]
 4:40B4  90                   nop
 4:40B5  0e                   push cs
-4:40B6  e8f707               call 0x48b0  ; sub_s4:48B0
+4:40B6  e8f707               call 0x48b0  ; MarketCargo::MarketCargo@s4:48B0
 4:40B9  eb04                 jmp 0x40bf
 4:40BB  db 90
 loc_40BC:
@@ -6043,7 +6175,7 @@ loc_40C8:
 4:40C8  c45efc               les bx, ptr [bp - 4]
 4:40CB  26ff7702             push word ptr es:[bx + 2]
 4:40CF  66ff36e006           push dword ptr [0x6e0]  ; g_bldgGroups
-4:40D4  9a46c60741           lcall 0x4107, 0xc646  ; sub_s2:C646
+4:40D4  9a46c60741           lcall 0x4107, 0xc646  ; BldgGroups::firstOffered@s2:C646
 4:40D9  8946f0               mov word ptr [bp - 0x10], ax
 4:40DC  0bc0                 or ax, ax
 4:40DE  7505                 jne 0x40e5
@@ -6053,15 +6185,15 @@ loc_40E5:
 4:40E8  66ff7606             push dword ptr [bp + 6]
 4:40EC  90                   nop
 4:40ED  0e                   push cs
-4:40EE  e8fb02               call 0x43ec  ; sub_s4:43EC
+4:40EE  e8fb02               call 0x43ec  ; TradeMarket::offerAmount@s4:43EC
 4:40F1  8946f4               mov word ptr [bp - 0xc], ax
 4:40F4  8956f6               mov word ptr [bp - 0xa], dx
 4:40F7  ff76f0               push word ptr [bp - 0x10]
-4:40FA  9a80bd1435           lcall 0x3514, 0xbd80  ; sub_s5:BD80
+4:40FA  9a80bd1435           lcall 0x3514, 0xbd80  ; buildingName@s5:BD80
 4:40FF  83c402               add sp, 2
 4:4102  52                   push dx
 4:4103  50                   push ax
-4:4104  9ae860b03e           lcall 0x3eb0, 0x60e8  ; sub_s2:60E8
+4:4104  9ae860b03e           lcall 0x3eb0, 0x60e8  ; _strdup@s2:60E8
 4:4109  83c404               add sp, 4
 4:410C  8946e8               mov word ptr [bp - 0x18], ax
 4:410F  8956ea               mov word ptr [bp - 0x16], dx
@@ -6082,7 +6214,7 @@ loc_40E5:
 4:413C  66ff76ec             push dword ptr [bp - 0x14]
 4:4140  90                   nop
 4:4141  0e                   push cs
-4:4142  e88306               call 0x47c8  ; sub_s4:47C8
+4:4142  e88306               call 0x47c8  ; MarketGroup::MarketGroup@s4:47C8
 4:4145  e977ff               jmp 0x40bf
 loc_4148:
 4:4148  c45efc               les bx, ptr [bp - 4]
@@ -6099,7 +6231,7 @@ loc_4148:
 loc_4160:
 4:4160  683004               push 0x430
 4:4163  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:4168  9aac84a141           lcall 0x41a1, 0x84ac  ; sub_s3:84AC
+4:4168  9aac84a141           lcall 0x41a1, 0x84ac  ; LoadStringDup@s3:84AC
 4:416D  8946e8               mov word ptr [bp - 0x18], ax
 4:4170  8956ea               mov word ptr [bp - 0x16], dx
 4:4173  6a14                 push 0x14
@@ -6117,7 +6249,7 @@ loc_4160:
 loc_4196:
 4:4196  683104               push 0x431
 4:4199  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:419E  9aac84d541           lcall 0x41d5, 0x84ac  ; sub_s3:84AC
+4:419E  9aac84d541           lcall 0x41d5, 0x84ac  ; LoadStringDup@s3:84AC
 4:41A3  8946e8               mov word ptr [bp - 0x18], ax
 4:41A6  8956ea               mov word ptr [bp - 0x16], dx
 4:41A9  6a14                 push 0x14
@@ -6134,7 +6266,7 @@ loc_4196:
 loc_41CA:
 4:41CA  683204               push 0x432
 4:41CD  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:41D2  9aac840942           lcall 0x4209, 0x84ac  ; sub_s3:84AC
+4:41D2  9aac840942           lcall 0x4209, 0x84ac  ; LoadStringDup@s3:84AC
 4:41D7  8946e8               mov word ptr [bp - 0x18], ax
 4:41DA  8956ea               mov word ptr [bp - 0x16], dx
 4:41DD  6a14                 push 0x14
@@ -6151,7 +6283,7 @@ loc_41CA:
 loc_41FE:
 4:41FE  683304               push 0x433
 4:4201  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:4206  9aac84eb39           lcall 0x39eb, 0x84ac  ; sub_s3:84AC
+4:4206  9aac84eb39           lcall 0x39eb, 0x84ac  ; LoadStringDup@s3:84AC
 4:420B  8946e8               mov word ptr [bp - 0x18], ax
 4:420E  8956ea               mov word ptr [bp - 0x16], dx
 4:4211  6a14                 push 0x14
@@ -6173,7 +6305,7 @@ loc_4230:
 4:423D  66ff76ec             push dword ptr [bp - 0x14]
 4:4241  90                   nop
 4:4242  0e                   push cs
-4:4243  e8fc05               call 0x4842  ; sub_s4:4842
+4:4243  e8fc05               call 0x4842  ; MarketResource::MarketResource@s4:4842
 4:4246  e976fe               jmp 0x40bf
 4:4249  db 90
 loc_424A:
@@ -6196,7 +6328,8 @@ loc_4272:
 4:4278  c9                   leave
 4:4279  ca1000               retf 0x10
 
-; ---------------- sub_s4:427C FAR size=226 callers=1
+; ---------------- TradeMarket::unitPrice@s4:427C FAR size=226 callers=1
+;   base + base * swing / 100 (page 392)
 4:427C  c8140000             enter 0x14, 0
 4:4280  66c746fc00000000     mov dword ptr [bp - 4], 0
 4:4288  c45e06               les bx, ptr [bp + 6]
@@ -6205,7 +6338,7 @@ loc_4272:
 4:4291  53                   push bx
 4:4292  90                   nop
 4:4293  0e                   push cs
-4:4294  e807f9               call 0x3b9e  ; sub_s4:3B9E
+4:4294  e807f9               call 0x3b9e  ; TradeMarket::pageList@s4:3B9E
 4:4297  8946f8               mov word ptr [bp - 8], ax
 4:429A  8956fa               mov word ptr [bp - 6], dx
 4:429D  c45e06               les bx, ptr [bp + 6]
@@ -6215,14 +6348,14 @@ loc_42A8:
 4:42A8  c45e06               les bx, ptr [bp + 6]
 4:42AB  26ffb73001           push word ptr es:[bx + 0x130]
 4:42B0  66ff76f8             push dword ptr [bp - 8]
-4:42B4  9af057ef42           lcall 0x42ef, 0x57f0  ; sub_s2:57F0
+4:42B4  9af057ef42           lcall 0x42ef, 0x57f0  ; List::countItems@s2:57F0
 4:42B9  8ec2                 mov es, dx
 4:42BB  8bd8                 mov bx, ax
 4:42BD  26ff770e             push word ptr es:[bx + 0xe]
 4:42C1  66ff7606             push dword ptr [bp + 6]
 4:42C5  90                   nop
 4:42C6  0e                   push cs
-4:42C7  e8a002               call 0x456a  ; sub_s4:456A
+4:42C7  e8a002               call 0x456a  ; TradeMarket::resourcePrice@s4:456A
 loc_42CA:
 4:42CA  52                   push dx
 4:42CB  50                   push ax
@@ -6236,27 +6369,27 @@ loc_42E0:
 4:42E0  c45e06               les bx, ptr [bp + 6]
 4:42E3  26ffb73001           push word ptr es:[bx + 0x130]
 4:42E8  66ff76f8             push dword ptr [bp - 8]
-4:42EC  9af0571343           lcall 0x4313, 0x57f0  ; sub_s2:57F0
+4:42EC  9af0571343           lcall 0x4313, 0x57f0  ; List::countItems@s2:57F0
 4:42F1  8ec2                 mov es, dx
 4:42F3  8bd8                 mov bx, ax
 4:42F5  26ff770e             push word ptr es:[bx + 0xe]
 4:42F9  66ff7606             push dword ptr [bp + 6]
 4:42FD  90                   nop
 4:42FE  0e                   push cs
-4:42FF  e81c02               call 0x451e  ; sub_s4:451E
+4:42FF  e81c02               call 0x451e  ; TradeMarket::productPrice@s4:451E
 4:4302  ebc6                 jmp 0x42ca
 loc_4304:
 4:4304  c45e06               les bx, ptr [bp + 6]
 4:4307  26ffb73001           push word ptr es:[bx + 0x130]
 4:430C  66ff76f8             push dword ptr [bp - 8]
-4:4310  9af0570c40           lcall 0x400c, 0x57f0  ; sub_s2:57F0
+4:4310  9af0570c40           lcall 0x400c, 0x57f0  ; List::countItems@s2:57F0
 4:4315  8ec2                 mov es, dx
 4:4317  8bd8                 mov bx, ax
 4:4319  26ff770e             push word ptr es:[bx + 0xe]
 4:431D  66ff7606             push dword ptr [bp + 6]
 4:4321  90                   nop
 4:4322  0e                   push cs
-4:4323  e8ae02               call 0x45d4  ; sub_s4:45D4
+4:4323  e8ae02               call 0x45d4  ; TradeMarket::robotPrice@s4:45D4
 4:4326  eba2                 jmp 0x42ca
 loc_4328:
 4:4328  2d8801               sub ax, 0x188
@@ -6278,7 +6411,8 @@ loc_4337:
 4:435A  c9                   leave
 4:435B  ca0400               retf 4
 
-; ---------------- sub_s4:435E FAR size=142 callers=1
+; ---------------- TradeMarket::pickOffer@s4:435E FAR size=142 callers=1
+;   picks an offer at random
 4:435E  c8120000             enter 0x12, 0
 4:4362  8b4610               mov ax, word ptr [bp + 0x10]
 4:4365  39460e               cmp word ptr [bp + 0xe], ax
@@ -6291,17 +6425,17 @@ loc_4370:
 4:4375  c45e06               les bx, ptr [bp + 6]
 4:4378  6626ffb72601         push dword ptr es:[bx + 0x126]
 4:437E  6626ffb72201         push dword ptr es:[bx + 0x122]
-4:4384  9a52e8a443           lcall 0x43a4, 0xe852  ; sub_s2:E852
+4:4384  9a52e8a443           lcall 0x43a4, 0xe852  ; colonyByName@s2:E852
 4:4389  52                   push dx
 4:438A  50                   push ax
 4:438B  66ff364857           push dword ptr [0x5748]  ; g_sim
-4:4390  9a4483533e           lcall 0x3e53, 0x8344  ; sub_s7:8344
+4:4390  9a4483533e           lcall 0x3e53, 0x8344  ; Sim::resolve@s7:8344
 4:4395  8946f4               mov word ptr [bp - 0xc], ax
 4:4398  8956f6               mov word ptr [bp - 0xa], dx
 loc_439B:
 4:439B  ff760e               push word ptr [bp + 0xe]
 4:439E  ff7610               push word ptr [bp + 0x10]
-4:43A1  9a2e61ca43           lcall 0x43ca, 0x612e  ; sub_s2:612E
+4:43A1  9a2e61ca43           lcall 0x43ca, 0x612e  ; random@s2:612E
 4:43A6  83c404               add sp, 4
 4:43A9  8bd8                 mov bx, ax
 4:43AB  03d8                 add bx, ax
@@ -6315,7 +6449,7 @@ loc_439B:
 4:43C2  740b                 je 0x43cf
 4:43C4  50                   push ax
 4:43C5  6a01                 push 1
-4:43C7  9a2e61b742           lcall 0x42b7, 0x612e  ; sub_s2:612E
+4:43C7  9a2e61b742           lcall 0x42b7, 0x612e  ; random@s2:612E
 4:43CC  83c404               add sp, 4
 loc_43CF:
 4:43CF  48                   dec ax
@@ -6324,7 +6458,7 @@ loc_43CF:
 4:43D5  66ff7606             push dword ptr [bp + 6]
 4:43D9  90                   nop
 4:43DA  0e                   push cs
-4:43DB  e808fb               call 0x3ee6  ; sub_s4:3EE6
+4:43DB  e808fb               call 0x3ee6  ; TradeMarket::rebelOffers@s4:3EE6
 4:43DE  8956fe               mov word ptr [bp - 2], dx
 4:43E1  0bd0                 or dx, ax
 4:43E3  74b6                 je 0x439b
@@ -6332,7 +6466,8 @@ loc_43CF:
 4:43E8  c9                   leave
 4:43E9  ca0c00               retf 0xc
 
-; ---------------- sub_s4:43EC FAR size=306 callers=1
+; ---------------- TradeMarket::offerAmount@s4:43EC FAR size=306 callers=1
+;   amount of an offer
 4:43EC  c8040000             enter 4, 0
 4:43F0  8b460a               mov ax, word ptr [bp + 0xa]
 4:43F3  eb4f                 jmp 0x4444
@@ -6485,7 +6620,8 @@ loc_4514:
 4:451A  c9                   leave
 4:451B  ca0600               retf 6
 
-; ---------------- sub_s4:451E FAR size=76 callers=2
+; ---------------- TradeMarket::productPrice@s4:451E FAR size=76 callers=2
+;   page 396 product prices
 4:451E  c8040000             enter 4, 0
 4:4522  8b460a               mov ax, word ptr [bp + 0xa]
 4:4525  2d0700               sub ax, 7
@@ -6521,7 +6657,8 @@ loc_4560:
 4:4566  c9                   leave
 4:4567  ca0600               retf 6
 
-; ---------------- sub_s4:456A FAR size=106 callers=2
+; ---------------- TradeMarket::resourcePrice@s4:456A FAR size=106 callers=2
+;   page 392 resource prices with the swing
 4:456A  c8040000             enter 4, 0
 4:456E  8b460a               mov ax, word ptr [bp + 0xa]
 4:4571  eb25                 jmp 0x4598
@@ -6574,7 +6711,8 @@ loc_45CA:
 4:45D0  c9                   leave
 4:45D1  ca0600               retf 6
 
-; ---------------- sub_s4:45D4 FAR size=52 callers=1
+; ---------------- TradeMarket::robotPrice@s4:45D4 FAR size=52 callers=1
+;   3 -> 22, 4 -> 23, else 20
 4:45D4  c8040000             enter 4, 0
 4:45D8  8b460a               mov ax, word ptr [bp + 0xa]
 4:45DB  2d0300               sub ax, 3
@@ -6598,7 +6736,8 @@ loc_45FE:
 4:4604  c9                   leave
 4:4605  ca0600               retf 6
 
-; ---------------- sub_s4:4608 FAR size=222 callers=1
+; ---------------- TradeMarket::findColony@s4:4608 FAR size=222 callers=1
+;   colony by name in a list
 4:4608  c8200000             enter 0x20, 0
 4:460C  c45e06               les bx, ptr [bp + 6]
 4:460F  26c49f2201           les bx, ptr es:[bx + 0x122]
@@ -6629,35 +6768,35 @@ loc_4623:
 4:4663  8946e8               mov word ptr [bp - 0x18], ax
 4:4666  8956ea               mov word ptr [bp - 0x16], dx
 4:4669  66ff76ec             push dword ptr [bp - 0x14]
-4:466D  9a284d7f46           lcall 0x467f, 0x4d28  ; sub_s8:4D28
+4:466D  9a284d7f46           lcall 0x467f, 0x4d28  ; Colony::name@s8:4D28
 4:4672  8946e4               mov word ptr [bp - 0x1c], ax
 4:4675  8956e6               mov word ptr [bp - 0x1a], dx
 4:4678  66ff76e8             push dword ptr [bp - 0x18]
-4:467C  9a284da039           lcall 0x39a0, 0x4d28  ; sub_s8:4D28
+4:467C  9a284da039           lcall 0x39a0, 0x4d28  ; Colony::name@s8:4D28
 4:4681  8946e0               mov word ptr [bp - 0x20], ax
 4:4684  8956e2               mov word ptr [bp - 0x1e], dx
 4:4687  66ff76e4             push dword ptr [bp - 0x1c]
 4:468B  66ff760e             push dword ptr [bp + 0xe]
-4:468F  9a7a3da646           lcall 0x46a6, 0x3d7a  ; sub_s1:3D7A
+4:468F  9a7a3da646           lcall 0x46a6, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:4694  83c408               add sp, 8
 4:4697  0bc0                 or ax, ax
 4:4699  7514                 jne 0x46af
 4:469B  66ff76e0             push dword ptr [bp - 0x20]
 4:469F  66ff760a             push dword ptr [bp + 0xa]
-4:46A3  9a7a3dba46           lcall 0x46ba, 0x3d7a  ; sub_s1:3D7A
+4:46A3  9a7a3dba46           lcall 0x46ba, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:46A8  83c408               add sp, 8
 4:46AB  0bc0                 or ax, ax
 4:46AD  742c                 je 0x46db
 loc_46AF:
 4:46AF  66ff76e4             push dword ptr [bp - 0x1c]
 4:46B3  66ff760a             push dword ptr [bp + 0xa]
-4:46B7  9a7a3dd046           lcall 0x46d0, 0x3d7a  ; sub_s1:3D7A
+4:46B7  9a7a3dd046           lcall 0x46d0, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:46BC  83c408               add sp, 8
 4:46BF  0bc0                 or ax, ax
 4:46C1  0f855eff             jne 0x4623
 4:46C5  66ff76e0             push dword ptr [bp - 0x20]
 4:46C9  66ff760e             push dword ptr [bp + 0xe]
-4:46CD  9a7a3d1c40           lcall 0x401c, 0x3d7a  ; sub_s1:3D7A
+4:46CD  9a7a3d1c40           lcall 0x401c, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:46D2  83c408               add sp, 8
 4:46D5  0bc0                 or ax, ax
 4:46D7  0f8548ff             jne 0x4623
@@ -6668,13 +6807,14 @@ loc_46DB:
 4:46E2  ca0c00               retf 0xc
 4:46E5  db 00
 
-; ---------------- sub_s4:46E6 FAR size=58 callers=0
+; ---------------- TradeMarket::scalar_dtor@s4:46E6 FAR size=58 callers=0
+;   deleting destructor
 4:46E6  55                   push bp
 4:46E7  8bec                 mov bp, sp
 4:46E9  66ff7606             push dword ptr [bp + 6]
 4:46ED  90                   nop
 4:46EE  0e                   push cs
-4:46EF  e8c2ec               call 0x33b4  ; sub_s4:33B4
+4:46EF  e8c2ec               call 0x33b4  ; TradeMarket::~TradeMarket@s4:33B4
 4:46F2  f6460a01             test byte ptr [bp + 0xa], 1
 4:46F6  7409                 je 0x4701
 4:46F8  66ff7606             push dword ptr [bp + 6]
@@ -6687,7 +6827,8 @@ loc_4701:
 4:470B  db 90 e6 46 1e 47 f2 1d 16 47 ce 1d 1a 47 d4 1d 6b
 4:471B  db 41 a4 3e c5 33
 
-; ---------------- sub_s4:4720 FAR size=64 callers=7
+; ---------------- MarketEntry::MarketEntry@s4:4720 FAR size=64 callers=7
+;   market list entry base (vtable 4AA6): name, object, kind
 4:4720  c8040000             enter 4, 0
 4:4724  c45e06               les bx, ptr [bp + 6]
 4:4727  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -6705,7 +6846,8 @@ loc_4701:
 4:475C  c9                   leave
 4:475D  ca0c00               retf 0xc
 
-; ---------------- sub_s4:4760 FAR size=48 callers=8
+; ---------------- MarketEntry::~MarketEntry@s4:4760 FAR size=48 callers=8
+;   dtor
 4:4760  c8080000             enter 8, 0
 4:4764  c45e06               les bx, ptr [bp + 6]
 4:4767  26c707a64a           mov word ptr es:[bx], 0x4aa6
@@ -6719,7 +6861,8 @@ loc_4701:
 4:478C  c9                   leave
 4:478D  ca0400               retf 4
 
-; ---------------- sub_s4:4790 FAR size=56 callers=4
+; ---------------- MarketRobot::MarketRobot@s4:4790 FAR size=56 callers=4
+;   kind 1: a robot
 4:4790  55                   push bp
 4:4791  8bec                 mov bp, sp
 4:4793  66ff760e             push dword ptr [bp + 0xe]
@@ -6727,7 +6870,7 @@ loc_4701:
 4:479B  66ff7606             push dword ptr [bp + 6]
 4:479F  90                   nop
 4:47A0  0e                   push cs
-4:47A1  e87cff               call 0x4720  ; sub_s4:4720
+4:47A1  e87cff               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:47A4  8b4612               mov ax, word ptr [bp + 0x12]
 4:47A7  c45e06               les bx, ptr [bp + 6]
 4:47AA  2689470e             mov word ptr es:[bx + 0xe], ax
@@ -6740,7 +6883,8 @@ loc_4701:
 4:47C4  ca0e00               retf 0xe
 4:47C7  db 00
 
-; ---------------- sub_s4:47C8 FAR size=64 callers=4
+; ---------------- MarketGroup::MarketGroup@s4:47C8 FAR size=64 callers=4
+;   kind 2: a building group
 4:47C8  55                   push bp
 4:47C9  8bec                 mov bp, sp
 4:47CB  66ff760e             push dword ptr [bp + 0xe]
@@ -6748,7 +6892,7 @@ loc_4701:
 4:47D3  66ff7606             push dword ptr [bp + 6]
 4:47D7  90                   nop
 4:47D8  0e                   push cs
-4:47D9  e844ff               call 0x4720  ; sub_s4:4720
+4:47D9  e844ff               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:47DC  668b4614             mov eax, dword ptr [bp + 0x14]
 4:47E0  c45e06               les bx, ptr [bp + 6]
 4:47E3  662689470e           mov dword ptr es:[bx + 0xe], eax
@@ -6762,7 +6906,8 @@ loc_4701:
 4:4804  c9                   leave
 4:4805  ca1200               retf 0x12
 
-; ---------------- sub_s4:4808 FAR size=58 callers=2
+; ---------------- MarketBuilding::MarketBuilding@s4:4808 FAR size=58 callers=2
+;   kind 3: a building
 4:4808  55                   push bp
 4:4809  8bec                 mov bp, sp
 4:480B  66ff760e             push dword ptr [bp + 0xe]
@@ -6770,7 +6915,7 @@ loc_4701:
 4:4813  66ff7606             push dword ptr [bp + 6]
 4:4817  90                   nop
 4:4818  0e                   push cs
-4:4819  e804ff               call 0x4720  ; sub_s4:4720
+4:4819  e804ff               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:481C  668b4612             mov eax, dword ptr [bp + 0x12]
 4:4820  c45e06               les bx, ptr [bp + 6]
 4:4823  662689470e           mov dword ptr es:[bx + 0xe], eax
@@ -6783,7 +6928,8 @@ loc_4701:
 4:483E  ca1000               retf 0x10
 4:4841  db 00
 
-; ---------------- sub_s4:4842 FAR size=64 callers=3
+; ---------------- MarketResource::MarketResource@s4:4842 FAR size=64 callers=3
+;   kind 4: a resource
 4:4842  55                   push bp
 4:4843  8bec                 mov bp, sp
 4:4845  66ff760e             push dword ptr [bp + 0xe]
@@ -6791,7 +6937,7 @@ loc_4701:
 4:484D  66ff7606             push dword ptr [bp + 6]
 4:4851  90                   nop
 4:4852  0e                   push cs
-4:4853  e8cafe               call 0x4720  ; sub_s4:4720
+4:4853  e8cafe               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:4856  8b4612               mov ax, word ptr [bp + 0x12]
 4:4859  c45e06               les bx, ptr [bp + 6]
 4:485C  2689470e             mov word ptr es:[bx + 0xe], ax
@@ -6804,7 +6950,8 @@ loc_4701:
 4:487E  c9                   leave
 4:487F  ca0e00               retf 0xe
 
-; ---------------- sub_s4:4882 FAR size=46 callers=1
+; ---------------- MarketResource::~MarketResource@s4:4882 FAR size=46 callers=1
+;   dtor
 4:4882  c8080000             enter 8, 0
 4:4886  c45e06               les bx, ptr [bp + 6]
 4:4889  26c7078e4a           mov word ptr es:[bx], 0x4a8e
@@ -6816,11 +6963,12 @@ loc_4701:
 4:48A3  66ff7606             push dword ptr [bp + 6]
 4:48A7  90                   nop
 4:48A8  0e                   push cs
-4:48A9  e8b4fe               call 0x4760  ; sub_s4:4760
+4:48A9  e8b4fe               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:48AC  c9                   leave
 4:48AD  ca0400               retf 4
 
-; ---------------- sub_s4:48B0 FAR size=56 callers=4
+; ---------------- MarketCargo::MarketCargo@s4:48B0 FAR size=56 callers=4
+;   kind 5: cargo
 4:48B0  55                   push bp
 4:48B1  8bec                 mov bp, sp
 4:48B3  66ff760e             push dword ptr [bp + 0xe]
@@ -6828,7 +6976,7 @@ loc_4701:
 4:48BB  66ff7606             push dword ptr [bp + 6]
 4:48BF  90                   nop
 4:48C0  0e                   push cs
-4:48C1  e85cfe               call 0x4720  ; sub_s4:4720
+4:48C1  e85cfe               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:48C4  8b4612               mov ax, word ptr [bp + 0x12]
 4:48C7  c45e06               les bx, ptr [bp + 6]
 4:48CA  2689470e             mov word ptr es:[bx + 0xe], ax
@@ -6841,7 +6989,8 @@ loc_4701:
 4:48E4  ca0e00               retf 0xe
 4:48E7  db 00
 
-; ---------------- sub_s4:48E8 FAR size=56 callers=1
+; ---------------- MarketProduct::MarketProduct@s4:48E8 FAR size=56 callers=1
+;   kind 6: a product
 4:48E8  55                   push bp
 4:48E9  8bec                 mov bp, sp
 4:48EB  66ff760e             push dword ptr [bp + 0xe]
@@ -6849,7 +6998,7 @@ loc_4701:
 4:48F3  66ff7606             push dword ptr [bp + 6]
 4:48F7  90                   nop
 4:48F8  0e                   push cs
-4:48F9  e824fe               call 0x4720  ; sub_s4:4720
+4:48F9  e824fe               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:48FC  8b4612               mov ax, word ptr [bp + 0x12]
 4:48FF  c45e06               les bx, ptr [bp + 6]
 4:4902  2689470e             mov word ptr es:[bx + 0xe], ax
@@ -6862,7 +7011,8 @@ loc_4701:
 4:491C  ca0e00               retf 0xe
 4:491F  db 00
 
-; ---------------- sub_s4:4920 FAR size=58 callers=2
+; ---------------- MarketColony::MarketColony@s4:4920 FAR size=58 callers=2
+;   kind 7: a colony
 4:4920  55                   push bp
 4:4921  8bec                 mov bp, sp
 4:4923  66ff760e             push dword ptr [bp + 0xe]
@@ -6870,7 +7020,7 @@ loc_4701:
 4:492B  66ff7606             push dword ptr [bp + 6]
 4:492F  90                   nop
 4:4930  0e                   push cs
-4:4931  e8ecfd               call 0x4720  ; sub_s4:4720
+4:4931  e8ecfd               call 0x4720  ; MarketEntry::MarketEntry@s4:4720
 4:4934  668b4612             mov eax, dword ptr [bp + 0x12]
 4:4938  c45e06               les bx, ptr [bp + 6]
 4:493B  662689470e           mov dword ptr es:[bx + 0xe], eax
@@ -6883,13 +7033,14 @@ loc_4701:
 4:4956  ca1000               retf 0x10
 4:4959  db 00
 
-; ---------------- sub_s4:495A FAR size=38 callers=0
+; ---------------- MarketColony::scalar_dtor@s4:495A FAR size=38 callers=0
+;   deleting destructor
 4:495A  55                   push bp
 4:495B  8bec                 mov bp, sp
 4:495D  66ff7606             push dword ptr [bp + 6]
 4:4961  90                   nop
 4:4962  0e                   push cs
-4:4963  e8fafd               call 0x4760  ; sub_s4:4760
+4:4963  e8fafd               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:4966  f6460a01             test byte ptr [bp + 0xa], 1
 4:496A  7409                 je 0x4975
 4:496C  66ff7606             push dword ptr [bp + 6]
@@ -6901,12 +7052,13 @@ loc_4975:
 4:497C  ca0600               retf 6
 4:497F  db 00
 
-; ---------------- sub_s4:4980 FAR size=38 callers=0
+; ---------------- MarketRobot::scalar_dtor@s4:4980 FAR size=38 callers=0
+;   deleting destructor
 4:4980  c8040000             enter 4, 0
 4:4984  66ff7606             push dword ptr [bp + 6]
 4:4988  90                   nop
 4:4989  0e                   push cs
-4:498A  e8d3fd               call 0x4760  ; sub_s4:4760
+4:498A  e8d3fd               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:498D  f6460a01             test byte ptr [bp + 0xa], 1
 4:4991  7409                 je 0x499c
 4:4993  66ff7606             push dword ptr [bp + 6]
@@ -6917,12 +7069,13 @@ loc_499C:
 4:49A2  c9                   leave
 4:49A3  ca0600               retf 6
 
-; ---------------- sub_s4:49A6 size=38 callers=0
+; ---------------- MarketBuilding::scalar_dtor@s4:49A6 size=38 callers=0
+;   deleting destructor
 4:49A6  c8040000             enter 4, 0
 4:49AA  66ff7606             push dword ptr [bp + 6]
 4:49AE  90                   nop
 4:49AF  0e                   push cs
-4:49B0  e8adfd               call 0x4760  ; sub_s4:4760
+4:49B0  e8adfd               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:49B3  f6460a01             test byte ptr [bp + 0xa], 1
 4:49B7  7409                 je 0x49c2
 4:49B9  66ff7606             push dword ptr [bp + 6]
@@ -6933,12 +7086,13 @@ loc_49C2:
 4:49C8  c9                   leave
 4:49C9  ca0600               retf 6
 
-; ---------------- sub_s4:49CC size=38 callers=0
+; ---------------- MarketProduct::scalar_dtor@s4:49CC size=38 callers=0
+;   deleting destructor
 4:49CC  c8040000             enter 4, 0
 4:49D0  66ff7606             push dword ptr [bp + 6]
 4:49D4  90                   nop
 4:49D5  0e                   push cs
-4:49D6  e887fd               call 0x4760  ; sub_s4:4760
+4:49D6  e887fd               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:49D9  f6460a01             test byte ptr [bp + 0xa], 1
 4:49DD  7409                 je 0x49e8
 4:49DF  66ff7606             push dword ptr [bp + 6]
@@ -6949,13 +7103,14 @@ loc_49E8:
 4:49EE  c9                   leave
 4:49EF  ca0600               retf 6
 
-; ---------------- sub_s4:49F2 FAR size=38 callers=0
+; ---------------- MarketResource::scalar_dtor@s4:49F2 FAR size=38 callers=0
+;   deleting destructor
 4:49F2  55                   push bp
 4:49F3  8bec                 mov bp, sp
 4:49F5  66ff7606             push dword ptr [bp + 6]
 4:49F9  90                   nop
 4:49FA  0e                   push cs
-4:49FB  e884fe               call 0x4882  ; sub_s4:4882
+4:49FB  e884fe               call 0x4882  ; MarketResource::~MarketResource@s4:4882
 4:49FE  f6460a01             test byte ptr [bp + 0xa], 1
 4:4A02  7409                 je 0x4a0d
 4:4A04  66ff7606             push dword ptr [bp + 6]
@@ -6967,12 +7122,13 @@ loc_4A0D:
 4:4A14  ca0600               retf 6
 4:4A17  db 00
 
-; ---------------- sub_s4:4A18 FAR size=38 callers=0
+; ---------------- MarketCargo::scalar_dtor@s4:4A18 FAR size=38 callers=0
+;   deleting destructor
 4:4A18  c8040000             enter 4, 0
 4:4A1C  66ff7606             push dword ptr [bp + 6]
 4:4A20  90                   nop
 4:4A21  0e                   push cs
-4:4A22  e83bfd               call 0x4760  ; sub_s4:4760
+4:4A22  e83bfd               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:4A25  f6460a01             test byte ptr [bp + 0xa], 1
 4:4A29  7409                 je 0x4a34
 4:4A2B  66ff7606             push dword ptr [bp + 6]
@@ -6983,12 +7139,13 @@ loc_4A34:
 4:4A3A  c9                   leave
 4:4A3B  ca0600               retf 6
 
-; ---------------- sub_s4:4A3E size=38 callers=0
+; ---------------- MarketGroup::scalar_dtor@s4:4A3E size=38 callers=0
+;   deleting destructor
 4:4A3E  c8040000             enter 4, 0
 4:4A42  66ff7606             push dword ptr [bp + 6]
 4:4A46  90                   nop
 4:4A47  0e                   push cs
-4:4A48  e815fd               call 0x4760  ; sub_s4:4760
+4:4A48  e815fd               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:4A4B  f6460a01             test byte ptr [bp + 0xa], 1
 4:4A4F  7409                 je 0x4a5a
 4:4A51  66ff7606             push dword ptr [bp + 6]
@@ -6999,12 +7156,13 @@ loc_4A5A:
 4:4A60  c9                   leave
 4:4A61  ca0600               retf 6
 
-; ---------------- sub_s4:4A64 size=70 callers=0
+; ---------------- MarketEntry::scalar_dtor@s4:4A64 size=70 callers=0
+;   deleting destructor
 4:4A64  c8040000             enter 4, 0
 4:4A68  66ff7606             push dword ptr [bp + 6]
 4:4A6C  90                   nop
 4:4A6D  0e                   push cs
-4:4A6E  e8effc               call 0x4760  ; sub_s4:4760
+4:4A6E  e8effc               call 0x4760  ; MarketEntry::~MarketEntry@s4:4760
 4:4A71  f6460a01             test byte ptr [bp + 0xa], 1
 4:4A75  7409                 je 0x4a80
 4:4A77  66ff7606             push dword ptr [bp + 6]
@@ -7017,14 +7175,15 @@ loc_4A80:
 4:4A8A  db 64 4a 49 49 f2 49 8c 4a 80 49 90 4a 18 4a 94 4a
 4:4A9A  db a6 49 98 4a 3e 4a 9c 4a cc 49 a0 4a 5a 49 a4 4a
 
-; ---------------- sub_s4:4AAA FAR size=54 callers=1
+; ---------------- RegObj25::RegObj25@s4:4AAA FAR size=54 callers=1
+;   registry 0x25: command target 0x9A
 4:4AAA  55                   push bp
 4:4AAB  8bec                 mov bp, sp
 4:4AAD  66ff7608             push dword ptr [bp + 8]
 4:4AB1  ff7606               push word ptr [bp + 6]
 4:4AB4  90                   nop
 4:4AB5  0e                   push cs
-4:4AB6  e82102               call 0x4cda  ; sub_s4:4CDA
+4:4AB6  e82102               call 0x4cda  ; CmdTarget::CmdTarget@s4:4CDA
 4:4AB9  c45e06               les bx, ptr [bp + 6]
 4:4ABC  26c707064b           mov word ptr es:[bx], 0x4b06
 4:4AC1  26c74702a84a         mov word ptr es:[bx + 2], 0x4aa8  ; SEGMENT s4:0000
@@ -7033,19 +7192,20 @@ loc_4A80:
 4:4ACB  53                   push bx
 4:4ACC  90                   nop
 4:4ACD  0e                   push cs
-4:4ACE  e8fd02               call 0x4dce  ; sub_s4:4DCE
+4:4ACE  e8fd02               call 0x4dce  ; CmdTarget::setCommand@s4:4DCE
 4:4AD1  668b4606             mov eax, dword ptr [bp + 6]
 4:4AD5  8b5608               mov dx, word ptr [bp + 8]
 4:4AD8  66a33042             mov dword ptr [0x4230], eax
 4:4ADC  c9                   leave
 4:4ADD  ca0600               retf 6
 
-; ---------------- sub_s4:4AE0 size=62 callers=0
+; ---------------- RegObj25::scalar_dtor@s4:4AE0 size=62 callers=0
+;   deleting destructor
 4:4AE0  c8040000             enter 4, 0
 4:4AE4  66ff7606             push dword ptr [bp + 6]
 4:4AE8  90                   nop
 4:4AE9  0e                   push cs
-4:4AEA  e83502               call 0x4d22  ; sub_s4:4D22
+4:4AEA  e83502               call 0x4d22  ; CmdTarget::~CmdTarget@s4:4D22
 4:4AED  f6460a01             test byte ptr [bp + 0xa], 1
 4:4AF1  7409                 je 0x4afc
 4:4AF3  66ff7606             push dword ptr [bp + 6]
@@ -7058,13 +7218,14 @@ loc_4AFC:
 4:4B06  db e0 4a 18 4b f2 1d 10 4b ce 1d 14 4b d4 1d 12 47
 4:4B16  db 04 4e 1c 4b 18 4f c5 4a
 
-; ---------------- sub_s4:4B1E FAR size=90 callers=4
+; ---------------- WindowModel::WindowModel@s4:4B1E FAR size=90 callers=4
 ;   apis: USER.GetSystemMetrics
+;   model of a window (vtable 4C9E): id +0x12, frame metrics
 4:4B1E  55                   push bp
 4:4B1F  8bec                 mov bp, sp
 4:4B21  ff760c               push word ptr [bp + 0xc]
 4:4B24  66ff7606             push dword ptr [bp + 6]
-4:4B28  9a481d0c4b           lcall 0x4b0c, 0x1d48  ; sub_s3:1D48
+4:4B28  9a481d0c4b           lcall 0x4b0c, 0x1d48  ; RegObj::RegObj@s3:1D48
 4:4B2D  8b460a               mov ax, word ptr [bp + 0xa]
 4:4B30  c45e06               les bx, ptr [bp + 6]
 4:4B33  26894712             mov word ptr es:[bx + 0x12], ax
@@ -7089,7 +7250,8 @@ loc_4B6D:
 4:4B74  ca0800               retf 8
 4:4B77  db 00
 
-; ---------------- sub_s4:4B78 FAR size=180 callers=2
+; ---------------- WindowModel::restorePlace@s4:4B78 FAR size=180 callers=2
+;   (vslot 6) the saved window place
 4:4B78  c8080000             enter 8, 0
 4:4B7C  57                   push di
 4:4B7D  56                   push si
@@ -7101,23 +7263,23 @@ loc_4B6D:
 4:4B8E  50                   push ax
 4:4B8F  8bf0                 mov si, ax
 4:4B91  8bfa                 mov di, dx
-4:4B93  9a0649ad4b           lcall 0x4bad, 0x4906  ; sub_s1:4906
+4:4B93  9a0649ad4b           lcall 0x4bad, 0x4906  ; _fmemset@s1:4906
 4:4B98  83c408               add sp, 8
 4:4B9B  666800000800         push 0x80000
 4:4BA1  668b4606             mov eax, dword ptr [bp + 6]
 4:4BA5  051800               add ax, 0x18
 4:4BA8  6650                 push eax
-4:4BAA  9a0649fa4a           lcall 0x4afa, 0x4906  ; sub_s1:4906
+4:4BAA  9a0649fa4a           lcall 0x4afa, 0x4906  ; _fmemset@s1:4906
 4:4BAF  83c408               add sp, 8
 4:4BB2  6a02                 push 2
 4:4BB4  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:4BB9  9aba20cc4b           lcall 0x4bcc, 0x20ba  ; sub_s3:20BA
+4:4BB9  9aba20cc4b           lcall 0x4bcc, 0x20ba  ; Registry_get@s3:20BA
 4:4BBE  c45e06               les bx, ptr [bp + 6]
 4:4BC1  26ff7712             push word ptr es:[bx + 0x12]
 4:4BC5  6a00                 push 0
 4:4BC7  52                   push dx
 4:4BC8  50                   push ax
-4:4BC9  9a7a5f2b4b           lcall 0x4b2b, 0x5f7a  ; sub_s3:5F7A
+4:4BC9  9a7a5f2b4b           lcall 0x4b2b, 0x5f7a  ; Options::hasWindowPlace@s3:5F7A
 4:4BCE  8956fa               mov word ptr [bp - 6], dx
 4:4BD1  0bd0                 or dx, ax
 4:4BD3  7411                 je 0x4be6
@@ -7157,7 +7319,8 @@ loc_4C13:
 4:4C28  c9                   leave
 4:4C29  ca0400               retf 4
 
-; ---------------- sub_s4:4C2C size=76 callers=0
+; ---------------- WindowModel::savePlace@s4:4C2C size=76 callers=0
+;   (vslot 5) stores the window place
 4:4C2C  c8040000             enter 4, 0
 4:4C30  57                   push di
 4:4C31  56                   push si
@@ -7179,7 +7342,7 @@ loc_4C13:
 4:4C51  66ff36d00e           push dword ptr [0xed0]  ; g_registry
 4:4C56  8bf0                 mov si, ax
 4:4C58  8bfa                 mov di, dx
-4:4C5A  9aba206f4c           lcall 0x4c6f, 0x20ba  ; sub_s3:20BA
+4:4C5A  9aba206f4c           lcall 0x4c6f, 0x20ba  ; Registry_get@s3:20BA
 4:4C5F  c45e06               les bx, ptr [bp + 6]
 4:4C62  26ff7712             push word ptr es:[bx + 0x12]
 4:4C66  57                   push di
@@ -7187,17 +7350,18 @@ loc_4C13:
 4:4C68  6a00                 push 0
 4:4C6A  52                   push dx
 4:4C6B  50                   push ax
-4:4C6C  9ab05fbc4b           lcall 0x4bbc, 0x5fb0  ; sub_s3:5FB0
+4:4C6C  9ab05fbc4b           lcall 0x4bbc, 0x5fb0  ; Options::setWindowPlace@s3:5FB0
 4:4C71  5e                   pop si
 4:4C72  5f                   pop di
 4:4C73  c9                   leave
 4:4C74  ca0800               retf 8
 4:4C77  db 00
 
-; ---------------- sub_s4:4C78 FAR size=98 callers=0
+; ---------------- WindowModel::scalar_dtor@s4:4C78 FAR size=98 callers=0
+;   deleting destructor
 4:4C78  c8040000             enter 4, 0
 4:4C7C  66ff7606             push dword ptr [bp + 6]
-4:4C80  9a801d5d4c           lcall 0x4c5d, 0x1d80  ; sub_s3:1D80
+4:4C80  9a801d5d4c           lcall 0x4c5d, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:4C85  f6460a01             test byte ptr [bp + 0xa], 1
 4:4C89  7409                 je 0x4c94
 4:4C8B  66ff7606             push dword ptr [bp + 6]
@@ -7212,12 +7376,13 @@ loc_4C94:
 4:4CBE  db 76 1f 46 4b c0 49 c8 4c ce 49 cc 4c e0 49 d0 4c
 4:4CCE  db ee 49 d4 4c 00 4a d8 4c 12 4a 83 4c
 
-; ---------------- sub_s4:4CDA FAR size=72 callers=8
+; ---------------- CmdTarget::CmdTarget@s4:4CDA FAR size=72 callers=8
+;   a registry object with a DIB DC (vtable 5058)
 4:4CDA  55                   push bp
 4:4CDB  8bec                 mov bp, sp
 4:4CDD  66ff7608             push dword ptr [bp + 8]
 4:4CE1  ff7606               push word ptr [bp + 6]
-4:4CE4  9a481da44c           lcall 0x4ca4, 0x1d48  ; sub_s3:1D48
+4:4CE4  9a481da44c           lcall 0x4ca4, 0x1d48  ; RegObj::RegObj@s3:1D48
 4:4CE9  c45e06               les bx, ptr [bp + 6]
 4:4CEC  662bc0               sub eax, eax
 4:4CEF  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -7234,8 +7399,9 @@ loc_4C94:
 4:4D1E  c9                   leave
 4:4D1F  ca0600               retf 6
 
-; ---------------- sub_s4:4D22 FAR size=142 callers=9
+; ---------------- CmdTarget::~CmdTarget@s4:4D22 FAR size=142 callers=9
 ;   apis: GDI.DeleteDC, GDI.DeleteObject, USER.SelectPalette
+;   releases the DC, palette and bitmap
 4:4D22  c8080000             enter 8, 0
 4:4D26  c45e06               les bx, ptr [bp + 6]
 4:4D29  26c7075850           mov word ptr es:[bx], 0x5058
@@ -7282,12 +7448,13 @@ loc_4D7B:
 loc_4D9A:
 4:4D9A  66c706304200000000   mov dword ptr [0x4230], 0
 4:4DA3  66ff7606             push dword ptr [bp + 6]
-4:4DA7  9a801de74c           lcall 0x4ce7, 0x1d80  ; sub_s3:1D80
+4:4DA7  9a801de74c           lcall 0x4ce7, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:4DAC  c9                   leave
 4:4DAD  ca0400               retf 4
 
-; ---------------- sub_s4:4DB0 FAR size=30 callers=8
+; ---------------- CmdTarget::getDC@s4:4DB0 FAR size=30 callers=8
 ;   apis: USER.GetDC
+;   GetDC of the window
 4:4DB0  55                   push bp
 4:4DB1  8bec                 mov bp, sp
 4:4DB3  8b460a               mov ax, word ptr [bp + 0xa]
@@ -7300,11 +7467,12 @@ loc_4D9A:
 4:4DCA  c9                   leave
 4:4DCB  ca0600               retf 6
 
-; ---------------- sub_s4:4DCE FAR size=54 callers=8
+; ---------------- CmdTarget::setCommand@s4:4DCE FAR size=54 callers=8
+;   command id, palette from registry 0x48
 4:4DCE  c81c0000             enter 0x1c, 0
 4:4DD2  6a48                 push 0x48
 4:4DD4  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:4DD9  9aba20aa4d           lcall 0x4daa, 0x20ba  ; sub_s3:20BA
+4:4DD9  9aba20aa4d           lcall 0x4daa, 0x20ba  ; Registry_get@s3:20BA
 4:4DDE  8bd8                 mov bx, ax
 4:4DE0  8ec2                 mov es, dx
 4:4DE2  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -7321,8 +7489,9 @@ loc_4D9A:
 4:4E00  c9                   leave
 4:4E01  ca0600               retf 6
 
-; ---------------- sub_s4:4E04 FAR size=276 callers=1
+; ---------------- CmdTarget::paint@s4:4E04 FAR size=276 callers=1
 ;   apis: GDI.CreateDC
+;   (vslot 4) draws its DIB (CreateDC "dib")
 4:4E04  c8120000             enter 0x12, 0
 4:4E08  56                   push si
 4:4E09  ff760a               push word ptr [bp + 0xa]
@@ -7333,12 +7502,12 @@ loc_4D9A:
 4:4E14  26ff5f14             lcall es:[bx + 0x14]
 4:4E18  c45e06               les bx, ptr [bp + 6]
 4:4E1B  6626ff770a           push dword ptr es:[bx + 0xa]
-4:4E20  9a7247364e           lcall 0x4e36, 0x4772  ; sub_s2:4772
+4:4E20  9a7247364e           lcall 0x4e36, 0x4772  ; DIB::rect@s2:4772
 4:4E25  8946f8               mov word ptr [bp - 8], ax
 4:4E28  8956fa               mov word ptr [bp - 6], dx
 4:4E2B  c45e06               les bx, ptr [bp + 6]
 4:4E2E  6626ff770a           push dword ptr es:[bx + 0xa]
-4:4E33  9acc438a47           lcall 0x478a, 0x43cc  ; sub_s2:43CC
+4:4E33  9acc438a47           lcall 0x478a, 0x43cc  ; DIB::width@s2:43CC
 4:4E38  1e                   push ds
 4:4E39  683442               push 0x4234  ; 'dib'
 4:4E3C  666a00               push 0
@@ -7417,13 +7586,14 @@ loc_4F0D:
 4:4F14  c9                   leave
 4:4F15  ca0a00               retf 0xa
 
-; ---------------- sub_s4:4F18 size=282 callers=0
+; ---------------- CmdTarget::loadPicture@s4:4F18 size=282 callers=0
 ;   apis: USER.GetClientRect
+;   (vslot 5) the catalog picture into a DIB
 4:4F18  c8180000             enter 0x18, 0
 4:4F1C  56                   push si
 4:4F1D  ff760a               push word ptr [bp + 0xa]
 4:4F20  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:4F25  9a0a83dc4d           lcall 0x4ddc, 0x830a  ; sub_s3:830A
+4:4F25  9a0a83dc4d           lcall 0x4ddc, 0x830a  ; ResLibr::picture@s3:830A
 4:4F2A  8946fc               mov word ptr [bp - 4], ax
 4:4F2D  8956fe               mov word ptr [bp - 2], dx
 4:4F30  52                   push dx
@@ -7460,7 +7630,7 @@ loc_4F72:
 4:4F84  740c                 je 0x4f92
 4:4F86  ff76ea               push word ptr [bp - 0x16]
 4:4F89  50                   push ax
-4:4F8A  9a584caf4f           lcall 0x4faf, 0x4c58  ; sub_s2:4C58
+4:4F8A  9a584caf4f           lcall 0x4faf, 0x4c58  ; MemBlock::MemBlock@s2:4C58
 4:4F8F  eb04                 jmp 0x4f95
 4:4F91  db 90
 loc_4F92:
@@ -7473,7 +7643,7 @@ loc_4F95:
 4:4FA0  66ff76f8             push dword ptr [bp - 8]
 4:4FA4  c45e06               les bx, ptr [bp + 6]
 4:4FA7  6626ff770e           push dword ptr es:[bx + 0xe]
-4:4FAC  9a844df24f           lcall 0x4ff2, 0x4d84  ; sub_s2:4D84
+4:4FAC  9a844df24f           lcall 0x4ff2, 0x4d84  ; MemBlock::copyFrom@s2:4D84
 4:4FB1  ff369603             push word ptr [0x396]
 4:4FB5  8d46f0               lea ax, [bp - 0x10]
 4:4FB8  16                   push ss
@@ -7497,7 +7667,7 @@ loc_4F95:
 4:4FE3  c45e06               les bx, ptr [bp + 6]
 4:4FE6  6626ff770e           push dword ptr es:[bx + 0xe]
 4:4FEB  66ff76ec             push dword ptr [bp - 0x14]
-4:4FEF  9a5c40234e           lcall 0x4e23, 0x405c  ; sub_s2:405C
+4:4FEF  9a5c40234e           lcall 0x4e23, 0x405c  ; DIB::DIB(w,h,bpp)@s2:405C
 4:4FF4  c45e06               les bx, ptr [bp + 6]
 4:4FF7  2689470a             mov word ptr es:[bx + 0xa], ax
 4:4FFB  2689570c             mov word ptr es:[bx + 0xc], dx
@@ -7524,13 +7694,14 @@ loc_502C:
 4:502E  ca0600               retf 6
 4:5031  db 00
 
-; ---------------- sub_s4:5032 FAR size=62 callers=0
+; ---------------- CmdTarget::scalar_dtor@s4:5032 FAR size=62 callers=0
+;   deleting destructor
 4:5032  55                   push bp
 4:5033  8bec                 mov bp, sp
 4:5035  66ff7606             push dword ptr [bp + 6]
 4:5039  90                   nop
 4:503A  0e                   push cs
-4:503B  e8e4fc               call 0x4d22  ; sub_s4:4D22
+4:503B  e8e4fc               call 0x4d22  ; CmdTarget::~CmdTarget@s4:4D22
 4:503E  f6460a01             test byte ptr [bp + 0xa], 1
 4:5042  7409                 je 0x504d
 4:5044  66ff7606             push dword ptr [bp + 6]
@@ -7543,12 +7714,13 @@ loc_504D:
 4:5057  db 90 32 50 6a 50 f2 1d 62 50 ce 1d 66 50 d4 1d 28
 4:5067  db 4f 04 4e 6e 50 18 4f 32 4d
 
-; ---------------- sub_s4:5070 FAR size=60 callers=1
+; ---------------- RegObj3E::RegObj3E@s4:5070 FAR size=60 callers=1
+;   registry 0x3E: a list holder (vtable 56D2)
 4:5070  55                   push bp
 4:5071  8bec                 mov bp, sp
 4:5073  66ff7608             push dword ptr [bp + 8]
 4:5077  ff7606               push word ptr [bp + 6]
-4:507A  9a481d5e50           lcall 0x505e, 0x1d48  ; sub_s3:1D48
+4:507A  9a481d5e50           lcall 0x505e, 0x1d48  ; RegObj::RegObj@s3:1D48
 4:507F  c45e06               les bx, ptr [bp + 6]
 4:5082  662bc0               sub eax, eax
 4:5085  662689470a           mov dword ptr es:[bx + 0xa], eax
@@ -7563,7 +7735,8 @@ loc_504D:
 4:50A8  ca0600               retf 6
 4:50AB  db 00
 
-; ---------------- sub_s4:50AC FAR size=62 callers=1
+; ---------------- RegObj3E::~RegObj3E@s4:50AC FAR size=62 callers=1
+;   dtor
 4:50AC  c8080000             enter 8, 0
 4:50B0  56                   push si
 4:50B1  c45e06               les bx, ptr [bp + 6]
@@ -7583,17 +7756,18 @@ loc_504D:
 4:50D8  26ff1f               lcall es:[bx]
 loc_50DB:
 4:50DB  66ff7606             push dword ptr [bp + 6]
-4:50DF  9a801d7d50           lcall 0x507d, 0x1d80  ; sub_s3:1D80
+4:50DF  9a801d7d50           lcall 0x507d, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:50E4  5e                   pop si
 4:50E5  c9                   leave
 4:50E6  ca0400               retf 4
 4:50E9  db 00
 
-; ---------------- sub_s4:50EA FAR size=232 callers=1
+; ---------------- CargoList::CargoList@s4:50EA FAR size=232 callers=1
+;   cargo list for the transfer window
 4:50EA  c8200000             enter 0x20, 0
 4:50EE  66a1a268             mov eax, dword ptr [0x68a2]
 4:50F2  6650                 push eax
-4:50F4  9afc074b50           lcall 0x504b, 0x7fc  ; sub_s1:07FC
+4:50F4  9afc074b50           lcall 0x504b, 0x7fc  ; SH_MemAllocFS@s1:07FC
 4:50F9  8946f8               mov word ptr [bp - 8], ax
 4:50FC  8956fa               mov word ptr [bp - 6], dx
 4:50FF  0bd0                 or dx, ax
@@ -7666,13 +7840,14 @@ loc_51BE:
 4:51BE  66ff76fc             push dword ptr [bp - 4]
 4:51C2  6a01                 push 1
 4:51C4  66ff760c             push dword ptr [bp + 0xc]
-4:51C8  9a666c9343           lcall 0x4393, 0x6c66  ; sub_s7:6C66
+4:51C8  9a666c9343           lcall 0x4393, 0x6c66  ; Tile::addProduct@s7:6C66
 loc_51CD:
 4:51CD  c9                   leave
 4:51CE  ca0a00               retf 0xa
 4:51D1  db 00
 
-; ---------------- sub_s4:51D2 FAR size=52 callers=0
+; ---------------- RegObj3E::clear@s4:51D2 FAR size=52 callers=0
+;   (vslot 5)
 4:51D2  c8080000             enter 8, 0
 4:51D6  c45e06               les bx, ptr [bp + 6]
 4:51D9  268b470e             mov ax, word ptr es:[bx + 0xe]
@@ -7694,7 +7869,8 @@ loc_51F5:
 4:5202  ca0400               retf 4
 4:5205  db 00
 
-; ---------------- sub_s4:5206 FAR size=100 callers=1
+; ---------------- CargoList::find@s4:5206 FAR size=100 callers=1
+;   entry by name
 4:5206  c8080000             enter 8, 0
 4:520A  c45e06               les bx, ptr [bp + 6]
 4:520D  6626c7470a00000000   mov dword ptr es:[bx + 0xa], 0
@@ -7717,7 +7893,7 @@ loc_5225:
 4:5242  66ff760a             push dword ptr [bp + 0xa]
 4:5246  26c45f0a             les bx, ptr es:[bx + 0xa]
 4:524A  6626ff7704           push dword ptr es:[bx + 4]
-4:524F  9a7a3df750           lcall 0x50f7, 0x3d7a  ; sub_s1:3D7A
+4:524F  9a7a3df750           lcall 0x50f7, 0x3d7a  ; _fstrcmp@s1:3D7A
 4:5254  83c408               add sp, 8
 4:5257  0bc0                 or ax, ax
 4:5259  75ca                 jne 0x5225
@@ -7728,7 +7904,8 @@ loc_525B:
 4:5266  c9                   leave
 4:5267  ca0800               retf 8
 
-; ---------------- sub_s4:526A FAR size=40 callers=1
+; ---------------- CargoList::entries@s4:526A FAR size=40 callers=1
+;   the entries (made on first use)
 4:526A  55                   push bp
 4:526B  8bec                 mov bp, sp
 4:526D  c45e06               les bx, ptr [bp + 6]
@@ -7739,7 +7916,7 @@ loc_525B:
 4:527D  53                   push bx
 4:527E  90                   nop
 4:527F  0e                   push cs
-4:5280  e80f00               call 0x5292  ; sub_s4:5292
+4:5280  e80f00               call 0x5292  ; CargoList::build@s4:5292
 loc_5283:
 4:5283  c45e06               les bx, ptr [bp + 6]
 4:5286  268b470e             mov ax, word ptr es:[bx + 0xe]
@@ -7747,7 +7924,8 @@ loc_5283:
 4:528E  c9                   leave
 4:528F  ca0800               retf 8
 
-; ---------------- sub_s4:5292 FAR size=1002 callers=1
+; ---------------- CargoList::build@s4:5292 FAR size=1002 callers=1
+;   the cargo a colony can move (robots, cargo, products)
 4:5292  c8300000             enter 0x30, 0
 4:5296  c45e06               les bx, ptr [bp + 6]
 4:5299  268b470e             mov ax, word ptr es:[bx + 0xe]
@@ -7776,7 +7954,7 @@ loc_52C1:
 4:52D3  740b                 je 0x52e0
 4:52D5  ff76f2               push word ptr [bp - 0xe]
 4:52D8  50                   push ax
-4:52D9  9a4a574353           lcall 0x5343, 0x574a  ; sub_s2:574A
+4:52D9  9a4a574353           lcall 0x5343, 0x574a  ; List::List@s2:574A
 4:52DE  eb03                 jmp 0x52e3
 loc_52E0:
 4:52E0  33c0                 xor ax, ax
@@ -7808,17 +7986,17 @@ loc_5317:
 4:531B  7c5b                 jl 0x5378
 4:531D  ff76fe               push word ptr [bp - 2]
 4:5320  66ff760a             push dword ptr [bp + 0xa]
-4:5324  9a287c7f53           lcall 0x537f, 0x7c28  ; sub_s7:7C28
+4:5324  9a287c7f53           lcall 0x537f, 0x7c28  ; Tile::bas@s7:7C28
 4:5329  8946ec               mov word ptr [bp - 0x14], ax
 4:532C  8956ee               mov word ptr [bp - 0x12], dx
 4:532F  0bd0                 or dx, ax
 4:5331  74e1                 je 0x5314
 4:5333  ff76fe               push word ptr [bp - 2]
-4:5336  9acac0fa53           lcall 0x53fa, 0xc0ca  ; sub_s5:C0CA
+4:5336  9acac0fa53           lcall 0x53fa, 0xc0ca  ; resourceName@s5:C0CA
 4:533B  83c402               add sp, 2
 4:533E  52                   push dx
 4:533F  50                   push ax
-4:5340  9ae8609c53           lcall 0x539c, 0x60e8  ; sub_s2:60E8
+4:5340  9ae8609c53           lcall 0x539c, 0x60e8  ; _strdup@s2:60E8
 4:5345  83c404               add sp, 4
 4:5348  8946e8               mov word ptr [bp - 0x18], ax
 4:534B  8956ea               mov word ptr [bp - 0x16], dx
@@ -7836,7 +8014,7 @@ loc_5317:
 4:5370  50                   push ax
 4:5371  90                   nop
 4:5372  0e                   push cs
-4:5373  e81af4               call 0x4790  ; sub_s4:4790
+4:5373  e81af4               call 0x4790  ; MarketRobot::MarketRobot@s4:4790
 4:5376  eb81                 jmp 0x52f9
 loc_5378:
 4:5378  66ff760a             push dword ptr [bp + 0xa]
@@ -7883,11 +8061,11 @@ loc_53C4:
 loc_53F0:
 4:53F0  c45eec               les bx, ptr [bp - 0x14]
 4:53F3  26ff7706             push word ptr es:[bx + 6]
-4:53F7  9a22c27154           lcall 0x5471, 0xc222  ; sub_s5:C222
+4:53F7  9a22c27154           lcall 0x5471, 0xc222  ; productAName@s5:C222
 4:53FC  83c402               add sp, 2
 4:53FF  52                   push dx
 4:5400  50                   push ax
-4:5401  9ae8607b54           lcall 0x547b, 0x60e8  ; sub_s2:60E8
+4:5401  9ae8607b54           lcall 0x547b, 0x60e8  ; _strdup@s2:60E8
 4:5406  83c404               add sp, 4
 4:5409  8946d4               mov word ptr [bp - 0x2c], ax
 4:540C  8956d6               mov word ptr [bp - 0x2a], dx
@@ -7907,7 +8085,7 @@ loc_53F0:
 4:5437  50                   push ax
 4:5438  90                   nop
 4:5439  0e                   push cs
-4:543A  e873f4               call 0x48b0  ; sub_s4:48B0
+4:543A  e873f4               call 0x48b0  ; MarketCargo::MarketCargo@s4:48B0
 4:543D  eb04                 jmp 0x5443
 4:543F  db 90
 loc_5440:
@@ -7928,11 +8106,11 @@ loc_545E:
 4:5461  26837f0800           cmp word ptr es:[bx + 8], 0
 4:5466  0f845aff             je 0x53c4
 4:546A  26ff7708             push word ptr es:[bx + 8]
-4:546E  9af8c22655           lcall 0x5526, 0xc2f8  ; sub_s5:C2F8
+4:546E  9af8c22655           lcall 0x5526, 0xc2f8  ; productBName@s5:C2F8
 4:5473  83c402               add sp, 2
 4:5476  52                   push dx
 4:5477  50                   push ax
-4:5478  9ae860fd54           lcall 0x54fd, 0x60e8  ; sub_s2:60E8
+4:5478  9ae860fd54           lcall 0x54fd, 0x60e8  ; _strdup@s2:60E8
 4:547D  83c404               add sp, 4
 4:5480  8946d0               mov word ptr [bp - 0x30], ax
 4:5483  8956d2               mov word ptr [bp - 0x2e], dx
@@ -7952,7 +8130,7 @@ loc_545E:
 4:54AE  50                   push ax
 4:54AF  90                   nop
 4:54B0  0e                   push cs
-4:54B1  e834f4               call 0x48e8  ; sub_s4:48E8
+4:54B1  e834f4               call 0x48e8  ; MarketProduct::MarketProduct@s4:48E8
 4:54B4  eb03                 jmp 0x54b9
 loc_54B6:
 4:54B6  33c0                 xor ax, ax
@@ -8000,7 +8178,7 @@ loc_54FF:
 4:5528  83c402               add sp, 2
 4:552B  52                   push dx
 4:552C  50                   push ax
-4:552D  9ae860a555           lcall 0x55a5, 0x60e8  ; sub_s2:60E8
+4:552D  9ae860a555           lcall 0x55a5, 0x60e8  ; _strdup@s2:60E8
 4:5532  83c404               add sp, 4
 4:5535  8946e4               mov word ptr [bp - 0x1c], ax
 4:5538  8956e6               mov word ptr [bp - 0x1a], dx
@@ -8020,7 +8198,7 @@ loc_54FF:
 4:5563  50                   push ax
 4:5564  90                   nop
 4:5565  0e                   push cs
-4:5566  e827f2               call 0x4790  ; sub_s4:4790
+4:5566  e827f2               call 0x4790  ; MarketRobot::MarketRobot@s4:4790
 4:5569  eb04                 jmp 0x556f
 4:556B  db 90
 loc_556C:
@@ -8041,11 +8219,11 @@ loc_558A:
 4:558D  26837f0600           cmp word ptr es:[bx + 6], 0
 4:5592  746a                 je 0x55fe
 4:5594  26ff7706             push word ptr es:[bx + 6]
-4:5598  9a22c21156           lcall 0x5611, 0xc222  ; sub_s5:C222
+4:5598  9a22c21156           lcall 0x5611, 0xc222  ; productAName@s5:C222
 4:559D  83c402               add sp, 2
 4:55A0  52                   push dx
 4:55A1  50                   push ax
-4:55A2  9ae8601b56           lcall 0x561b, 0x60e8  ; sub_s2:60E8
+4:55A2  9ae8601b56           lcall 0x561b, 0x60e8  ; _strdup@s2:60E8
 4:55A7  83c404               add sp, 4
 4:55AA  8946e4               mov word ptr [bp - 0x1c], ax
 4:55AD  8956e6               mov word ptr [bp - 0x1a], dx
@@ -8065,7 +8243,7 @@ loc_558A:
 4:55D8  50                   push ax
 4:55D9  90                   nop
 4:55DA  0e                   push cs
-4:55DB  e8d2f2               call 0x48b0  ; sub_s4:48B0
+4:55DB  e8d2f2               call 0x48b0  ; MarketCargo::MarketCargo@s4:48B0
 4:55DE  eb03                 jmp 0x55e3
 loc_55E0:
 4:55E0  33c0                 xor ax, ax
@@ -8085,11 +8263,11 @@ loc_55FE:
 4:5601  26837f0800           cmp word ptr es:[bx + 8], 0
 4:5606  0f84f5fe             je 0x54ff
 4:560A  26ff7708             push word ptr es:[bx + 8]
-4:560E  9af8c20240           lcall 0x4002, 0xc2f8  ; sub_s5:C2F8
+4:560E  9af8c20240           lcall 0x4002, 0xc2f8  ; productBName@s5:C2F8
 4:5613  83c402               add sp, 2
 4:5616  52                   push dx
 4:5617  50                   push ax
-4:5618  9ae8602352           lcall 0x5223, 0x60e8  ; sub_s2:60E8
+4:5618  9ae8602352           lcall 0x5223, 0x60e8  ; _strdup@s2:60E8
 4:561D  83c404               add sp, 4
 4:5620  8946e4               mov word ptr [bp - 0x1c], ax
 4:5623  8956e6               mov word ptr [bp - 0x1a], dx
@@ -8109,7 +8287,7 @@ loc_55FE:
 4:564E  50                   push ax
 4:564F  90                   nop
 4:5650  0e                   push cs
-4:5651  e894f2               call 0x48e8  ; sub_s4:48E8
+4:5651  e894f2               call 0x48e8  ; MarketProduct::MarketProduct@s4:48E8
 4:5654  eb03                 jmp 0x5659
 loc_5656:
 4:5656  33c0                 xor ax, ax
@@ -8130,7 +8308,8 @@ loc_5678:
 4:5678  c9                   leave
 4:5679  ca0800               retf 8
 
-; ---------------- sub_s4:567C size=44 callers=0
+; ---------------- CargoEntry::scalar_dtor@s4:567C size=44 callers=0
+;   deleting destructor (MemFreeFS)
 4:567C  c8080000             enter 8, 0
 4:5680  c45e06               les bx, ptr [bp + 6]
 4:5683  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -8138,7 +8317,7 @@ loc_5678:
 4:568E  f6460a01             test byte ptr [bp + 0xa], 1
 4:5692  7409                 je 0x569d
 4:5694  66ff7606             push dword ptr [bp + 6]
-4:5698  9a3a09c652           lcall 0x52c6, 0x93a  ; sub_s1:093A
+4:5698  9a3a09c652           lcall 0x52c6, 0x93a  ; SH_MemFreeFS@s1:093A
 loc_569D:
 4:569D  8b4606               mov ax, word ptr [bp + 6]
 4:56A0  8b5608               mov dx, word ptr [bp + 8]
@@ -8146,13 +8325,14 @@ loc_569D:
 4:56A4  ca0600               retf 6
 4:56A7  db 00
 
-; ---------------- sub_s4:56A8 FAR size=62 callers=0
+; ---------------- RegObj3E::scalar_dtor@s4:56A8 FAR size=62 callers=0
+;   deleting destructor
 4:56A8  55                   push bp
 4:56A9  8bec                 mov bp, sp
 4:56AB  66ff7606             push dword ptr [bp + 6]
 4:56AF  90                   nop
 4:56B0  0e                   push cs
-4:56B1  e8f8f9               call 0x50ac  ; sub_s4:50AC
+4:56B1  e8f8f9               call 0x50ac  ; RegObj3E::~RegObj3E@s4:50AC
 4:56B4  f6460a01             test byte ptr [bp + 0xa], 1
 4:56B8  7409                 je 0x56c3
 4:56BA  66ff7606             push dword ptr [bp + 6]
@@ -8165,12 +8345,13 @@ loc_56C3:
 4:56CD  db 90 7c 56 33 51 a8 56 e4 56 f2 1d dc 56 ce 1d e0
 4:56DD  db 56 d4 1d e2 50 d2 51 d0 56
 
-; ---------------- sub_s4:56E6 FAR size=46 callers=1
+; ---------------- RouteEdit::RouteEdit@s4:56E6 FAR size=46 callers=1
+;   registry 0x47: the route being edited
 4:56E6  55                   push bp
 4:56E7  8bec                 mov bp, sp
 4:56E9  66ff7608             push dword ptr [bp + 8]
 4:56ED  ff7606               push word ptr [bp + 6]
-4:56F0  9a481dd856           lcall 0x56d8, 0x1d48  ; sub_s3:1D48
+4:56F0  9a481dd856           lcall 0x56d8, 0x1d48  ; RegObj::RegObj@s3:1D48
 4:56F5  c45e06               les bx, ptr [bp + 6]
 4:56F8  6626c7470a00000000   mov dword ptr es:[bx + 0xa], 0
 4:5701  26c7073058           mov word ptr es:[bx], 0x5830
@@ -8180,26 +8361,29 @@ loc_56C3:
 4:5710  c9                   leave
 4:5711  ca0600               retf 6
 
-; ---------------- sub_s4:5714 FAR size=30 callers=1
+; ---------------- RouteEdit::~RouteEdit@s4:5714 FAR size=30 callers=1
+;   dtor
 4:5714  55                   push bp
 4:5715  8bec                 mov bp, sp
 4:5717  c45e06               les bx, ptr [bp + 6]
 4:571A  26c7073058           mov word ptr es:[bx], 0x5830
 4:571F  26c747020a57         mov word ptr es:[bx + 2], 0x570a  ; SEGMENT s4:0000
 4:5725  66ff7606             push dword ptr [bp + 6]
-4:5729  9a801df356           lcall 0x56f3, 0x1d80  ; sub_s3:1D80
+4:5729  9a801df356           lcall 0x56f3, 0x1d80  ; RegObj::~RegObj@s3:1D80
 4:572E  c9                   leave
 4:572F  ca0400               retf 4
 
-; ---------------- sub_s4:5732 FAR size=16 callers=1
+; ---------------- RouteEdit::start@s4:5732 FAR size=16 callers=1
+;   starts a route for a truck
 4:5732  55                   push bp
 4:5733  8bec                 mov bp, sp
 4:5735  66ff760a             push dword ptr [bp + 0xa]
-4:5739  9a4e6d2753           lcall 0x5327, 0x6d4e  ; sub_s7:6D4E
+4:5739  9a4e6d2753           lcall 0x5327, 0x6d4e  ; Tile::copyRoute@s7:6D4E
 4:573E  c9                   leave
 4:573F  ca0800               retf 8
 
-; ---------------- sub_s4:5742 FAR size=144 callers=1
+; ---------------- RouteEdit::addStop@s4:5742 FAR size=144 callers=1
+;   adds a stop
 4:5742  c81e0000             enter 0x1e, 0
 4:5746  c746fe0000           mov word ptr [bp - 2], 0
 4:574B  c45e0a               les bx, ptr [bp + 0xa]
@@ -8251,11 +8435,12 @@ loc_57C2:
 4:57C2  666a00               push 0
 loc_57C5:
 4:57C5  66ff760e             push dword ptr [bp + 0xe]
-4:57C9  9a806d3c57           lcall 0x573c, 0x6d80  ; sub_s7:6D80
+4:57C9  9a806d3c57           lcall 0x573c, 0x6d80  ; Tile::clearRoute@s7:6D80
 4:57CE  c9                   leave
 4:57CF  ca0c00               retf 0xc
 
-; ---------------- sub_s4:57D2 FAR size=20 callers=1
+; ---------------- RouteEdit::setRoute@s4:57D2 FAR size=20 callers=1
+;   +0x0A
 4:57D2  55                   push bp
 4:57D3  8bec                 mov bp, sp
 4:57D5  668b460a             mov eax, dword ptr [bp + 0xa]
@@ -8265,25 +8450,27 @@ loc_57C5:
 4:57E2  ca0800               retf 8
 4:57E5  db 00
 
-; ---------------- sub_s4:57E6 FAR size=36 callers=2
+; ---------------- RouteEdit::commit@s4:57E6 FAR size=36 callers=2
+;   hands the route to the truck
 4:57E6  55                   push bp
 4:57E7  8bec                 mov bp, sp
 4:57E9  66ff760a             push dword ptr [bp + 0xa]
 4:57ED  c45e06               les bx, ptr [bp + 6]
 4:57F0  6626ff770a           push dword ptr es:[bx + 0xa]
-4:57F5  9a0cd2ffff           lcall 0xffff, 0xd20c  ; sub_s9:D20C
+4:57F5  9a0cd2ffff           lcall 0xffff, 0xd20c  ; TransitInfoDlg::showRoute@s9:D20C
 4:57FA  c45e06               les bx, ptr [bp + 6]
 4:57FD  6626c7470a00000000   mov dword ptr es:[bx + 0xa], 0
 4:5806  c9                   leave
 4:5807  ca0800               retf 8
 
-; ---------------- sub_s4:580A FAR size=54 callers=0
+; ---------------- RouteEdit::scalar_dtor@s4:580A FAR size=54 callers=0
+;   deleting destructor
 4:580A  55                   push bp
 4:580B  8bec                 mov bp, sp
 4:580D  66ff7606             push dword ptr [bp + 6]
 4:5811  90                   nop
 4:5812  0e                   push cs
-4:5813  e8fefe               call 0x5714  ; sub_s4:5714
+4:5813  e8fefe               call 0x5714  ; RouteEdit::~RouteEdit@s4:5714
 4:5816  f6460a01             test byte ptr [bp + 0xa], 1
 4:581A  7409                 je 0x5825
 4:581C  66ff7606             push dword ptr [bp + 6]
@@ -8296,14 +8483,15 @@ loc_5825:
 4:582F  db 90 0a 58 23 57 f2 1d 3a 58 ce 1d 3e 58 d4 1d 2c
 4:583F  db 57
 
-; ---------------- sub_s4:5840 FAR size=118 callers=1
+; ---------------- Mode6View::Mode6View@s4:5840 FAR size=118 callers=1
+;   mode 6 view (after New Game): the A.I. greeting sequence
 4:5840  55                   push bp
 4:5841  8bec                 mov bp, sp
 4:5843  66ff760c             push dword ptr [bp + 0xc]
 4:5847  ff760a               push word ptr [bp + 0xa]
 4:584A  6a06                 push 6
 4:584C  66ff7606             push dword ptr [bp + 6]
-4:5850  9a7a7f3953           lcall 0x5339, 0x7f7a  ; sub_s5:7F7A
+4:5850  9a7a7f3953           lcall 0x5339, 0x7f7a  ; ScreenView::ScreenView@s5:7F7A
 4:5855  c45e06               les bx, ptr [bp + 6]
 4:5858  662bc0               sub eax, eax
 4:585B  66268987ee00         mov dword ptr es:[bx + 0xee], eax
@@ -8315,7 +8503,7 @@ loc_5825:
 4:587E  26c787e4003258       mov word ptr es:[bx + 0xe4], 0x5832  ; SEGMENT s4:0000
 4:5885  6a27                 push 0x27
 4:5887  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:588C  9aba203658           lcall 0x5836, 0x20ba  ; sub_s3:20BA
+4:588C  9aba203658           lcall 0x5836, 0x20ba  ; Registry_get@s3:20BA
 4:5891  c45e06               les bx, ptr [bp + 6]
 4:5894  268987f200           mov word ptr es:[bx + 0xf2], ax
 4:5899  268997f400           mov word ptr es:[bx + 0xf4], dx
@@ -8328,7 +8516,8 @@ loc_5825:
 4:58B2  ca0a00               retf 0xa
 4:58B5  db 00
 
-; ---------------- sub_s4:58B6 FAR size=44 callers=1
+; ---------------- Mode6View::~Mode6View@s4:58B6 FAR size=44 callers=1
+;   dtor
 4:58B6  55                   push bp
 4:58B7  8bec                 mov bp, sp
 4:58B9  c45e06               les bx, ptr [bp + 6]
@@ -8337,12 +8526,13 @@ loc_5825:
 4:58C7  26c787e200fe5a       mov word ptr es:[bx + 0xe2], 0x5afe
 4:58CE  26c787e4007558       mov word ptr es:[bx + 0xe4], 0x5875  ; SEGMENT s4:0000
 4:58D5  66ff7606             push dword ptr [bp + 6]
-4:58D9  9a8e805358           lcall 0x5853, 0x808e  ; sub_s5:808E
+4:58D9  9a8e805358           lcall 0x5853, 0x808e  ; ScreenView::~ScreenView@s5:808E
 4:58DE  c9                   leave
 4:58DF  ca0400               retf 4
 
-; ---------------- sub_s4:58E2 size=80 callers=0
+; ---------------- Mode6View::onTimer@s4:58E2 size=80 callers=0
 ;   apis: USER.InvalidateRect, USER.PostMessage
+;   (vslot 16) timer 0x105: counts, then posts command 0xCA
 4:58E2  c8080000             enter 8, 0
 4:58E6  817e0a0501           cmp word ptr [bp + 0xa], 0x105
 4:58EB  7541                 jne 0x592e
@@ -8369,7 +8559,8 @@ loc_592E:
 4:592E  c9                   leave
 4:592F  ca0600               retf 6
 
-; ---------------- sub_s4:5932 size=90 callers=0
+; ---------------- Mode6View::onShow@s4:5932 size=90 callers=0
+;   (vslot 13) opens the window list 10, 11, 12, 13, 4 (s8:AF40)
 4:5932  c8060000             enter 6, 0
 4:5936  56                   push si
 4:5937  c45e06               les bx, ptr [bp + 6]
@@ -8391,23 +8582,24 @@ loc_5958:
 4:5974  ffb43842             push word ptr [si + 0x4238]
 4:5978  26ff7708             push word ptr es:[bx + 8]
 4:597C  66ff367c5b           push dword ptr [0x5b7c]
-4:5981  9a40af7046           lcall 0x4670, 0xaf40  ; sub_s8:AF40
+4:5981  9a40af7046           lcall 0x4670, 0xaf40  ; DialogCtr::open@s8:AF40
 loc_5986:
 4:5986  5e                   pop si
 4:5987  c9                   leave
 4:5988  ca0400               retf 4
 4:598B  db 00
 
-; ---------------- sub_s4:598C FAR size=100 callers=0
+; ---------------- Mode6View::create@s4:598C FAR size=100 callers=0
+;   (vslot 2) creates the window and its picture
 4:598C  c8040000             enter 4, 0
 4:5990  66ff7606             push dword ptr [bp + 6]
-4:5994  9a60978c56           lcall 0x568c, 0x9760  ; sub_s2:9760
+4:5994  9a60978c56           lcall 0x568c, 0x9760  ; SOLWnd::create@s2:9760
 4:5999  c45e06               les bx, ptr [bp + 6]
 4:599C  26ff7708             push word ptr es:[bx + 8]
 4:59A0  6626ffb7f200         push dword ptr es:[bx + 0xf2]
 4:59A6  90                   nop
 4:59A7  0e                   push cs
-4:59A8  e805f4               call 0x4db0  ; sub_s4:4DB0
+4:59A8  e805f4               call 0x4db0  ; CmdTarget::getDC@s4:4DB0
 4:59AB  6a2a                 push 0x2a
 4:59AD  9a9c172358           lcall 0x5823, 0x179c  ; operator_new@s1:179C
 4:59B2  83c402               add sp, 2
@@ -8420,7 +8612,7 @@ loc_5986:
 4:59C6  50                   push ax
 4:59C7  90                   nop
 4:59C8  0e                   push cs
-4:59C9  e83a01               call 0x5b06  ; sub_s4:5B06
+4:59C9  e83a01               call 0x5b06  ; PictureLayer::PictureLayer@s4:5B06
 4:59CC  c45e06               les bx, ptr [bp + 6]
 4:59CF  268987ee00           mov word ptr es:[bx + 0xee], ax
 4:59D4  268997f000           mov word ptr es:[bx + 0xf0], dx
@@ -8434,7 +8626,8 @@ loc_59DE:
 4:59EC  ca0400               retf 4
 4:59EF  db 00
 
-; ---------------- sub_s4:59F0 FAR size=62 callers=0
+; ---------------- Mode6View::destroy@s4:59F0 FAR size=62 callers=0
+;   (vslot 36)
 4:59F0  c8080000             enter 8, 0
 4:59F4  c45e06               les bx, ptr [bp + 6]
 4:59F7  268b87ee00           mov ax, word ptr es:[bx + 0xee]
@@ -8454,24 +8647,26 @@ loc_5A15:
 4:5A18  6626c787ee0000000000 mov dword ptr es:[bx + 0xee], 0
 4:5A22  06                   push es
 4:5A23  53                   push bx
-4:5A24  9a8e629759           lcall 0x5997, 0x628e  ; sub_s2:628E
+4:5A24  9a8e629759           lcall 0x5997, 0x628e  ; DanWnd::destroy@s2:628E
 4:5A29  c9                   leave
 4:5A2A  ca0400               retf 4
 4:5A2D  db 00
 
-; ---------------- sub_s4:5A2E FAR size=14 callers=0
+; ---------------- Mode6View::thunk_dtor@s4:5A2E FAR size=14 callers=0
+;   this-adjusting thunk
 4:5A2E  8bdc                 mov bx, sp
 4:5A30  36816f04e200         sub word ptr ss:[bx + 4], 0xe2
 4:5A36  e90300               jmp 0x5a3c
 4:5A39  db 90 90 00
 
-; ---------------- sub_s4:5A3C FAR size=202 callers=0
+; ---------------- Mode6View::scalar_dtor@s4:5A3C FAR size=202 callers=0
+;   deleting destructor
 4:5A3C  55                   push bp
 4:5A3D  8bec                 mov bp, sp
 4:5A3F  66ff7606             push dword ptr [bp + 6]
 4:5A43  90                   nop
 4:5A44  0e                   push cs
-4:5A45  e86efe               call 0x58b6  ; sub_s4:58B6
+4:5A45  e86efe               call 0x58b6  ; Mode6View::~Mode6View@s4:58B6
 4:5A48  f6460a01             test byte ptr [bp + 0xa], 1
 4:5A4C  7409                 je 0x5a57
 4:5A4E  66ff7606             push dword ptr [bp + 6]
@@ -8493,13 +8688,14 @@ loc_5A57:
 4:5AF1  db 5a f0 59 c5 58 28 63 27 5a 28 81 dc 58 2e 5a 64
 4:5B01  db 5a 10 3a 68 5a
 
-; ---------------- sub_s4:5B06 FAR size=450 callers=1
+; ---------------- PictureLayer::PictureLayer@s4:5B06 FAR size=450 callers=1
+;   a picture drawn on a view (saves what is under it)
 4:5B06  c82a0000             enter 0x2a, 0
 4:5B0A  57                   push di
 4:5B0B  56                   push si
 4:5B0C  66ff7608             push dword ptr [bp + 8]
 4:5B10  ff7606               push word ptr [bp + 6]
-4:5B13  9a1c92d85b           lcall 0x5bd8, 0x921c  ; sub_s5:921C
+4:5B13  9a1c92d85b           lcall 0x5bd8, 0x921c  ; Layer::Layer@s5:921C
 4:5B18  c45e06               les bx, ptr [bp + 6]
 4:5B1B  662bc0               sub eax, eax
 4:5B1E  6626894714           mov dword ptr es:[bx + 0x14], eax
@@ -8507,29 +8703,29 @@ loc_5A57:
 4:5B28  8d471c               lea ax, [bx + 0x1c]
 4:5B2B  06                   push es
 4:5B2C  50                   push ax
-4:5B2D  9a383e5a5b           lcall 0x5b5a, 0x3e38  ; sub_s2:3E38
+4:5B2D  9a383e5a5b           lcall 0x5b5a, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:5B32  c45e06               les bx, ptr [bp + 6]
 4:5B35  26c7071a5e           mov word ptr es:[bx], 0x5e1a
 4:5B3A  26c74702005b         mov word ptr es:[bx + 2], 0x5b00  ; SEGMENT s4:0000
 4:5B40  6a48                 push 0x48
 4:5B42  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:5B47  9aba20795b           lcall 0x5b79, 0x20ba  ; sub_s3:20BA
+4:5B47  9aba20795b           lcall 0x5b79, 0x20ba  ; Registry_get@s3:20BA
 4:5B4C  8946fc               mov word ptr [bp - 4], ax
 4:5B4F  8956fe               mov word ptr [bp - 2], dx
 4:5B52  8d46f6               lea ax, [bp - 0xa]
 4:5B55  16                   push ss
 4:5B56  50                   push ax
-4:5B57  9a383e6d5b           lcall 0x5b6d, 0x3e38  ; sub_s2:3E38
+4:5B57  9a383e6d5b           lcall 0x5b6d, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:5B5C  668b46fc             mov eax, dword ptr [bp - 4]
 4:5B60  050e00               add ax, 0xe
 4:5B63  6650                 push eax
 4:5B65  8d46f6               lea ax, [bp - 0xa]
 4:5B68  16                   push ss
 4:5B69  50                   push ax
-4:5B6A  9a623fef5b           lcall 0x5bef, 0x3f62  ; sub_s2:3F62
+4:5B6A  9a623fef5b           lcall 0x5bef, 0x3f62  ; Pos3::assign@s2:3F62
 4:5B6F  6a27                 push 0x27
 4:5B71  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:5B76  9aba208f58           lcall 0x588f, 0x20ba  ; sub_s3:20BA
+4:5B76  9aba208f58           lcall 0x588f, 0x20ba  ; Registry_get@s3:20BA
 4:5B7B  c45e06               les bx, ptr [bp + 6]
 4:5B7E  26894714             mov word ptr es:[bx + 0x14], ax
 4:5B82  26895716             mov word ptr es:[bx + 0x16], dx
@@ -8560,7 +8756,7 @@ loc_5A57:
 4:5BCF  26894712             mov word ptr es:[bx + 0x12], ax
 4:5BD3  06                   push es
 4:5BD4  53                   push bx
-4:5BD5  9a6493a05a           lcall 0x5aa0, 0x9364  ; sub_s5:9364
+4:5BD5  9a6493a05a           lcall 0x5aa0, 0x9364  ; Layer::drawFrame@s5:9364
 4:5BDA  c45e06               les bx, ptr [bp + 6]
 4:5BDD  66268b4714           mov eax, dword ptr es:[bx + 0x14]
 4:5BE2  055200               add ax, 0x52
@@ -8568,7 +8764,7 @@ loc_5A57:
 4:5BE7  8d471c               lea ax, [bx + 0x1c]
 4:5BEA  06                   push es
 4:5BEB  50                   push ax
-4:5BEC  9a623f085c           lcall 0x5c08, 0x3f62  ; sub_s2:3F62
+4:5BEC  9a623f085c           lcall 0x5c08, 0x3f62  ; Pos3::assign@s2:3F62
 4:5BF1  8d46f6               lea ax, [bp - 0xa]
 4:5BF4  16                   push ss
 4:5BF5  50                   push ax
@@ -8579,15 +8775,15 @@ loc_5A57:
 4:5C00  50                   push ax
 4:5C01  8bf0                 mov si, ax
 4:5C03  8bfa                 mov di, dx
-4:5C05  9a323f155c           lcall 0x5c15, 0x3f32  ; sub_s2:3F32
+4:5C05  9a323f155c           lcall 0x5c15, 0x3f32  ; Pos3::add@s2:3F32
 4:5C0A  c45e06               les bx, ptr [bp + 6]
 4:5C0D  6626ff7714           push dword ptr es:[bx + 0x14]
-4:5C12  9a489f225c           lcall 0x5c22, 0x9f48  ; sub_s2:9F48
+4:5C12  9a489f225c           lcall 0x5c22, 0x9f48  ; AnimTicker::current@s2:9F48
 4:5C17  8946ee               mov word ptr [bp - 0x12], ax
 4:5C1A  8956f0               mov word ptr [bp - 0x10], dx
 4:5C1D  52                   push dx
 4:5C1E  50                   push ax
-4:5C1F  9a7247585c           lcall 0x5c58, 0x4772  ; sub_s2:4772
+4:5C1F  9a7247585c           lcall 0x5c58, 0x4772  ; DIB::rect@s2:4772
 4:5C24  8946ea               mov word ptr [bp - 0x16], ax
 4:5C27  8956ec               mov word ptr [bp - 0x14], dx
 4:5C2A  6a14                 push 0x14
@@ -8605,7 +8801,7 @@ loc_5A57:
 4:5C4C  6626ff7708           push dword ptr es:[bx + 8]
 4:5C51  ff76d8               push word ptr [bp - 0x28]
 4:5C54  50                   push ax
-4:5C55  9ac2507f5c           lcall 0x5c7f, 0x50c2  ; sub_s2:50C2
+4:5C55  9ac2507f5c           lcall 0x5c7f, 0x50c2  ; DibRegion::DibRegion@s2:50C2
 4:5C5A  c45e06               les bx, ptr [bp + 6]
 4:5C5D  26894718             mov word ptr es:[bx + 0x18], ax
 4:5C61  2689571a             mov word ptr es:[bx + 0x1a], dx
@@ -8617,7 +8813,7 @@ loc_5C68:
 loc_5C74:
 4:5C74  c45e06               les bx, ptr [bp + 6]
 4:5C77  6626ff7718           push dword ptr es:[bx + 0x18]
-4:5C7C  9a3451045b           lcall 0x5b04, 0x5134  ; sub_s2:5134
+4:5C7C  9a3451045b           lcall 0x5b04, 0x5134  ; DibRegion::save@s2:5134
 4:5C81  c45e06               les bx, ptr [bp + 6]
 4:5C84  268b471c             mov ax, word ptr es:[bx + 0x1c]
 4:5C88  26894722             mov word ptr es:[bx + 0x22], ax
@@ -8644,7 +8840,8 @@ loc_5C74:
 4:5CC4  ca0600               retf 6
 4:5CC7  db 00
 
-; ---------------- sub_s4:5CC8 FAR size=106 callers=1
+; ---------------- PictureLayer::~PictureLayer@s4:5CC8 FAR size=106 callers=1
+;   dtor
 4:5CC8  c8100000             enter 0x10, 0
 4:5CCC  c45e06               les bx, ptr [bp + 6]
 4:5CCF  26c7071a5e           mov word ptr es:[bx], 0x5e1a
@@ -8657,7 +8854,7 @@ loc_5C74:
 4:5CEB  7413                 je 0x5d00
 4:5CED  53                   push bx
 4:5CEE  50                   push ax
-4:5CEF  9a1851305b           lcall 0x5b30, 0x5118  ; sub_s2:5118
+4:5CEF  9a1851305b           lcall 0x5b30, 0x5118  ; DibRegion::free@s2:5118
 4:5CF4  66ff76fc             push dword ptr [bp - 4]
 4:5CF8  9ace172f5c           lcall 0x5c2f, 0x17ce  ; operator_delete@s1:17CE
 4:5CFD  83c404               add sp, 4
@@ -8668,19 +8865,20 @@ loc_5D00:
 4:5D0B  06                   push es
 4:5D0C  53                   push bx
 4:5D0D  6626ff7714           push dword ptr es:[bx + 0x14]
-4:5D12  9aa61e225d           lcall 0x5d22, 0x1ea6  ; sub_s3:1EA6
+4:5D12  9aa61e225d           lcall 0x5d22, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 4:5D17  c45e06               les bx, ptr [bp + 6]
 4:5D1A  6626ff7714           push dword ptr es:[bx + 0x14]
-4:5D1F  9ada1d4a5b           lcall 0x5b4a, 0x1dda  ; sub_s3:1DDA
+4:5D1F  9ada1d4a5b           lcall 0x5b4a, 0x1dda  ; RegObj::makeCurrent@s3:1DDA
 loc_5D24:
 4:5D24  66ff7606             push dword ptr [bp + 6]
-4:5D28  9ac492165b           lcall 0x5b16, 0x92c4  ; sub_s5:92C4
+4:5D28  9ac492165b           lcall 0x5b16, 0x92c4  ; Layer::~Layer@s5:92C4
 4:5D2D  c9                   leave
 4:5D2E  ca0400               retf 4
 4:5D31  db 00
 
-; ---------------- sub_s4:5D32 FAR size=58 callers=0
+; ---------------- PictureLayer::onNotify@s4:5D32 FAR size=58 callers=0
 ;   apis: USER.InvalidateRect
+;   (vslot 1) invalidates
 4:5D32  55                   push bp
 4:5D33  8bec                 mov bp, sp
 4:5D35  8b460a               mov ax, word ptr [bp + 0xa]
@@ -8709,8 +8907,9 @@ loc_5D62:
 4:5D68  c9                   leave
 4:5D69  ca0600               retf 6
 
-; ---------------- sub_s4:5D6C size=136 callers=0
+; ---------------- PictureLayer::paint@s4:5D6C size=136 callers=0
 ;   apis: USER.BeginPaint, USER.EndPaint
+;   (vslot 2)
 4:5D6C  c8300000             enter 0x30, 0
 4:5D70  c45e06               les bx, ptr [bp + 6]
 4:5D73  26ff7704             push word ptr es:[bx + 4]
@@ -8724,18 +8923,18 @@ loc_5D62:
 4:5D8D  668946dc             mov dword ptr [bp - 0x24], eax
 4:5D91  c45e06               les bx, ptr [bp + 6]
 4:5D94  6626ff7714           push dword ptr es:[bx + 0x14]
-4:5D99  9a489faf5d           lcall 0x5daf, 0x9f48  ; sub_s2:9F48
+4:5D99  9a489faf5d           lcall 0x5daf, 0x9f48  ; AnimTicker::current@s2:9F48
 4:5D9E  8946d8               mov word ptr [bp - 0x28], ax
 4:5DA1  8956da               mov word ptr [bp - 0x26], dx
 4:5DA4  c45e06               les bx, ptr [bp + 6]
 4:5DA7  6626ff7718           push dword ptr es:[bx + 0x18]
-4:5DAC  9a3652c55d           lcall 0x5dc5, 0x5236  ; sub_s2:5236
+4:5DAC  9a3652c55d           lcall 0x5dc5, 0x5236  ; DibRegion::restore@s2:5236
 4:5DB1  66ff76d8             push dword ptr [bp - 0x28]
 4:5DB5  668b4606             mov eax, dword ptr [bp + 6]
 4:5DB9  051c00               add ax, 0x1c
 4:5DBC  6650                 push eax
 4:5DBE  66ff76dc             push dword ptr [bp - 0x24]
-4:5DC2  9a8044f25c           lcall 0x5cf2, 0x4480  ; sub_s2:4480
+4:5DC2  9a8044f25c           lcall 0x5cf2, 0x4480  ; DIB::blitRect@s2:4480
 4:5DC7  668b4606             mov eax, dword ptr [bp + 6]
 4:5DCB  050a00               add ax, 0xa
 4:5DCE  6650                 push eax
@@ -8754,13 +8953,14 @@ loc_5D62:
 4:5DF0  c9                   leave
 4:5DF1  ca0400               retf 4
 
-; ---------------- sub_s4:5DF4 FAR size=50 callers=0
+; ---------------- PictureLayer::scalar_dtor@s4:5DF4 FAR size=50 callers=0
+;   deleting destructor
 4:5DF4  55                   push bp
 4:5DF5  8bec                 mov bp, sp
 4:5DF7  66ff7606             push dword ptr [bp + 6]
 4:5DFB  90                   nop
 4:5DFC  0e                   push cs
-4:5DFD  e8c8fe               call 0x5cc8  ; sub_s4:5CC8
+4:5DFD  e8c8fe               call 0x5cc8  ; PictureLayer::~PictureLayer@s4:5CC8
 4:5E00  f6460a01             test byte ptr [bp + 0xa], 1
 4:5E04  7409                 je 0x5e0f
 4:5E06  66ff7606             push dword ptr [bp + 6]
@@ -8772,14 +8972,15 @@ loc_5E0F:
 4:5E16  ca0600               retf 6
 4:5E19  db 90 f4 5d 20 5e 32 5d 24 5e 6c 5d d8 5c
 
-; ---------------- sub_s4:5E26 FAR size=52 callers=1
+; ---------------- StarSystemInfoDialog::StarSystemInfoDialog@s4:5E26 FAR size=52 callers=1
+;   dialog 4048 "Star System:" (information only)
 4:5E26  55                   push bp
 4:5E27  8bec                 mov bp, sp
 4:5E29  ff760a               push word ptr [bp + 0xa]
 4:5E2C  66680000d00f         push 0xfd00000
 4:5E32  666a01               push 1
 4:5E35  66ff7606             push dword ptr [bp + 6]
-4:5E39  9a2877f857           lcall 0x57f8, 0x7728  ; sub_s9:7728
+4:5E39  9a2877f857           lcall 0x57f8, 0x7728  ; OPDialog::OPDialog@s9:7728
 4:5E3E  c45e06               les bx, ptr [bp + 6]
 4:5E41  26c7072861           mov word ptr es:[bx], 0x6128
 4:5E46  26c747021c5e         mov word ptr es:[bx + 2], 0x5e1c  ; SEGMENT s4:0000 | 'thisLo'
@@ -8789,7 +8990,8 @@ loc_5E0F:
 4:5E56  c9                   leave
 4:5E57  ca0600               retf 6
 
-; ---------------- sub_s4:5E5A FAR size=44 callers=1
+; ---------------- StarSystemInfoDialog::~StarSystemInfoDialog@s4:5E5A FAR size=44 callers=1
+;   dtor
 4:5E5A  55                   push bp
 4:5E5B  8bec                 mov bp, sp
 4:5E5D  c45e06               les bx, ptr [bp + 6]
@@ -8797,13 +8999,14 @@ loc_5E0F:
 4:5E65  26c747024a5e         mov word ptr es:[bx + 2], 0x5e4a  ; SEGMENT s4:0000
 4:5E6B  26ff7706             push word ptr es:[bx + 6]
 4:5E6F  66ff367c5b           push dword ptr [0x5b7c]
-4:5E74  9ae0b68459           lcall 0x5984, 0xb6e0  ; sub_s8:B6E0
+4:5E74  9ae0b68459           lcall 0x5984, 0xb6e0  ; DialogCtr::forget@s8:B6E0
 4:5E79  66ff7606             push dword ptr [bp + 6]
-4:5E7D  9a2c783c5e           lcall 0x5e3c, 0x782c  ; sub_s9:782C
+4:5E7D  9a2c783c5e           lcall 0x5e3c, 0x782c  ; OPDialog::~OPDialog@s9:782C
 4:5E82  c9                   leave
 4:5E83  ca0400               retf 4
 
-; ---------------- sub_s4:5E86 FAR size=20 callers=0
+; ---------------- StarSystemInfoDialog::refresh@s4:5E86 FAR size=20 callers=0
+;   (vslot 9)
 4:5E86  55                   push bp
 4:5E87  8bec                 mov bp, sp
 4:5E89  c45e06               les bx, ptr [bp + 6]
@@ -8815,14 +9018,15 @@ loc_5E0F:
 4:5E96  ca0400               retf 4
 4:5E99  db 00
 
-; ---------------- sub_s4:5E9A FAR size=352 callers=0
+; ---------------- StarSystemInfoDialog::init@s4:5E9A FAR size=352 callers=0
 ;   apis: USER.GetClientRect, USER.GetSystemMetrics, USER.SetWindowPos
+;   (vslot 2) lists the star's planets, sizes the window
 4:5E9A  c84c0000             enter 0x4c, 0
 4:5E9E  66ff7606             push dword ptr [bp + 6]
-4:5EA2  9ae278805e           lcall 0x5e80, 0x78e2  ; sub_s9:78E2
+4:5EA2  9ae278805e           lcall 0x5e80, 0x78e2  ; OPDialog::create@s9:78E2
 4:5EA7  6a39                 push 0x39
 4:5EA9  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:5EAE  9aba203c5f           lcall 0x5f3c, 0x20ba  ; sub_s3:20BA
+4:5EAE  9aba203c5f           lcall 0x5f3c, 0x20ba  ; Registry_get@s3:20BA
 4:5EB3  c45e06               les bx, ptr [bp + 6]
 4:5EB6  2689878e00           mov word ptr es:[bx + 0x8e], ax
 4:5EBB  2689979000           mov word ptr es:[bx + 0x90], dx
@@ -8841,7 +9045,7 @@ loc_5E0F:
 4:5EE0  50                   push ax
 4:5EE1  90                   nop
 4:5EE2  0e                   push cs
-4:5EE3  e8b202               call 0x6198  ; sub_s4:6198
+4:5EE3  e8b202               call 0x6198  ; PlanetFactsPainter::PlanetFactsPainter@s4:6198
 4:5EE6  c45e06               les bx, ptr [bp + 6]
 4:5EE9  2689879200           mov word ptr es:[bx + 0x92], ax
 4:5EEE  2689979400           mov word ptr es:[bx + 0x94], dx
@@ -8867,7 +9071,7 @@ loc_5F03:
 4:5F2E  26894706             mov word ptr es:[bx + 6], ax
 4:5F32  6a48                 push 0x48
 4:5F34  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:5F39  9aba20155d           lcall 0x5d15, 0x20ba  ; sub_s3:20BA
+4:5F39  9aba20155d           lcall 0x5d15, 0x20ba  ; Registry_get@s3:20BA
 4:5F3E  8ec2                 mov es, dx
 4:5F40  8bd8                 mov bx, ax
 4:5F42  8946ec               mov word ptr [bp - 0x14], ax
@@ -8914,7 +9118,7 @@ loc_5F8B:
 4:5FB7  668b4606             mov eax, dword ptr [bp + 6]
 4:5FBB  051000               add ax, 0x10
 4:5FBE  6650                 push eax
-4:5FC0  9aea3c0d5e           lcall 0x5e0d, 0x3cea  ; sub_s1:3CEA
+4:5FC0  9aea3c0d5e           lcall 0x5e0d, 0x3cea  ; _fstrcat@s1:3CEA
 4:5FC5  83c408               add sp, 8
 4:5FC8  ebc1                 jmp 0x5f8b
 loc_5FCA:
@@ -8933,7 +9137,8 @@ loc_5FCA:
 4:5FF6  c9                   leave
 4:5FF7  ca0400               retf 4
 
-; ---------------- sub_s4:5FFA size=78 callers=0
+; ---------------- StarSystemInfoDialog::onClose@s4:5FFA size=78 callers=0
+;   (vslot 27)
 4:5FFA  c8080000             enter 8, 0
 4:5FFE  c45e06               les bx, ptr [bp + 6]
 4:6001  268b879200           mov ax, word ptr es:[bx + 0x92]
@@ -8952,13 +9157,14 @@ loc_601F:
 4:601F  c45e06               les bx, ptr [bp + 6]
 4:6022  6626c787920000000000 mov dword ptr es:[bx + 0x92], 0
 4:602C  6626ffb78e00         push dword ptr es:[bx + 0x8e]
-4:6032  9ada1db15e           lcall 0x5eb1, 0x1dda  ; sub_s3:1DDA
+4:6032  9ada1db15e           lcall 0x5eb1, 0x1dda  ; RegObj::makeCurrent@s3:1DDA
 4:6037  c45e06               les bx, ptr [bp + 6]
 4:603A  6626c7878e0000000000 mov dword ptr es:[bx + 0x8e], 0
 4:6044  c9                   leave
 4:6045  ca0400               retf 4
 
-; ---------------- sub_s4:6048 FAR size=30 callers=0
+; ---------------- StarSystemInfoDialog::onCommand@s4:6048 FAR size=30 callers=0
+;   (vslot 24)
 4:6048  55                   push bp
 4:6049  8bec                 mov bp, sp
 4:604B  c45e06               les bx, ptr [bp + 6]
@@ -8970,8 +9176,9 @@ loc_601F:
 4:6062  c9                   leave
 4:6063  ca0400               retf 4
 
-; ---------------- sub_s4:6066 FAR size=32 callers=1
+; ---------------- setDlgItemText@s4:6066 FAR size=32 callers=1
 ;   apis: USER.GetDlgItem, USER.SetWindowText
+;   GetDlgItem + SetWindowText
 4:6066  55                   push bp
 4:6067  8bec                 mov bp, sp
 4:6069  c45e06               les bx, ptr [bp + 6]
@@ -8984,8 +9191,9 @@ loc_601F:
 4:6082  c9                   leave
 4:6083  ca0a00               retf 0xa
 
-; ---------------- sub_s4:6086 FAR size=100 callers=1
+; ---------------- showProbeDepth@s4:6086 FAR size=100 callers=1
 ;   apis: USER.GetDlgItem, USER.SetWindowText, USER._wsprintf
+;   a planet's depth after a geological penetrator
 4:6086  c80a0000             enter 0xa, 0
 4:608A  ff760c               push word ptr [bp + 0xc]
 4:608D  1e                   push ds
@@ -9024,35 +9232,41 @@ loc_601F:
 4:60E6  c9                   leave
 4:60E7  ca0800               retf 8
 
-; ---------------- sub_s4:60EA FAR size=4 callers=0
+; ---------------- Dialog::nop_A@s4:60EA FAR size=4 callers=0
+;   empty virtual
 4:60EA  ca0a00               retf 0xa
 4:60ED  db 00
 
-; ---------------- sub_s4:60EE FAR size=6 callers=0
+; ---------------- Dialog::zero_A@s4:60EE FAR size=6 callers=0
+;   virtual returning 0
 4:60EE  33c0                 xor ax, ax
 4:60F0  ca0a00               retf 0xa
 4:60F3  db 00
 
-; ---------------- sub_s4:60F4 FAR size=6 callers=0
+; ---------------- Dialog::zero_Ab@s4:60F4 FAR size=6 callers=0
+;   virtual returning 0
 4:60F4  33c0                 xor ax, ax
 4:60F6  ca0a00               retf 0xa
 4:60F9  db 00
 
-; ---------------- sub_s4:60FA FAR size=4 callers=0
+; ---------------- Dialog::nop_4@s4:60FA FAR size=4 callers=0
+;   empty virtual
 4:60FA  ca0400               retf 4
 4:60FD  db 00
 
-; ---------------- sub_s4:60FE FAR size=4 callers=0
+; ---------------- Dialog::nop_Ab@s4:60FE FAR size=4 callers=0
+;   empty virtual
 4:60FE  ca0a00               retf 0xa
 4:6101  db 00
 
-; ---------------- sub_s4:6102 FAR size=150 callers=0
+; ---------------- StarSystemInfoDialog::scalar_dtor@s4:6102 FAR size=150 callers=0
+;   deleting destructor
 4:6102  55                   push bp
 4:6103  8bec                 mov bp, sp
 4:6105  66ff7606             push dword ptr [bp + 6]
 4:6109  90                   nop
 4:610A  0e                   push cs
-4:610B  e84cfd               call 0x5e5a  ; sub_s4:5E5A
+4:610B  e84cfd               call 0x5e5a  ; StarSystemInfoDialog::~StarSystemInfoDialog@s4:5E5A
 4:610E  f6460a01             test byte ptr [bp + 0xa], 1
 4:6112  7409                 je 0x611d
 4:6114  66ff7606             push dword ptr [bp + 6]
@@ -9071,7 +9285,8 @@ loc_611D:
 4:6187  db 61 48 60 8e 61 fe 60 96 61 7e 80 a5 5e fa 5f 69
 4:6197  db 5e
 
-; ---------------- sub_s4:6198 FAR size=116 callers=1
+; ---------------- PlanetFactsPainter::PlanetFactsPainter@s4:6198 FAR size=116 callers=1
+;   painter of the Star System window
 4:6198  c8100000             enter 0x10, 0
 4:619C  c45e06               les bx, ptr [bp + 6]
 4:619F  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -9092,7 +9307,7 @@ loc_611D:
 4:61E7  26c747022a61         mov word ptr es:[bx + 2], 0x612a  ; SEGMENT s4:0000
 4:61ED  6a39                 push 0x39
 4:61EF  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:61F4  9aba203560           lcall 0x6035, 0x20ba  ; sub_s3:20BA
+4:61F4  9aba203560           lcall 0x6035, 0x20ba  ; Registry_get@s3:20BA
 4:61F9  c45e06               les bx, ptr [bp + 6]
 4:61FC  26894706             mov word ptr es:[bx + 6], ax
 4:6200  26895708             mov word ptr es:[bx + 8], dx
@@ -9101,7 +9316,8 @@ loc_611D:
 4:6208  c9                   leave
 4:6209  ca0a00               retf 0xa
 
-; ---------------- sub_s4:620C FAR size=50 callers=1
+; ---------------- PlanetFactsPainter::~PlanetFactsPainter@s4:620C FAR size=50 callers=1
+;   dtor
 4:620C  c80c0000             enter 0xc, 0
 4:6210  c45e06               les bx, ptr [bp + 6]
 4:6213  26c707c066           mov word ptr es:[bx], 0x66c0
@@ -9115,8 +9331,9 @@ loc_611D:
 4:623A  c9                   leave
 4:623B  ca0400               retf 4
 
-; ---------------- sub_s4:623E size=496 callers=0
+; ---------------- PlanetFactsPainter::paint@s4:623E size=496 callers=0
 ;   apis: GDI.CreatePen, GDI.CreateSolidBrush, GDI.DeleteObject, GDI.SelectObject, USER.BeginPaint, USER.EndPaint, USER.SelectPalette
+;   (vslot 2) the planets in a row, the selected one's facts
 4:623E  c8480000             enter 0x48, 0
 4:6242  57                   push di
 4:6243  56                   push si
@@ -9129,7 +9346,7 @@ loc_611D:
 4:6255  8946de               mov word ptr [bp - 0x22], ax
 4:6258  c45e06               les bx, ptr [bp + 6]
 4:625B  6626ff7706           push dword ptr es:[bx + 6]
-4:6260  9a2c4c3a63           lcall 0x633a, 0x4c2c  ; sub_s3:4C2C
+4:6260  9a2c4c3a63           lcall 0x633a, 0x4c2c  ; PlanetPicker::list@s3:4C2C
 4:6265  8946da               mov word ptr [bp - 0x26], ax
 4:6268  8956dc               mov word ptr [bp - 0x24], dx
 4:626B  8d46de               lea ax, [bp - 0x22]
@@ -9156,7 +9373,7 @@ loc_611D:
 4:62AE  8d46ca               lea ax, [bp - 0x36]
 4:62B1  16                   push ss
 4:62B2  50                   push ax
-4:62B3  9a383ed262           lcall 0x62d2, 0x3e38  ; sub_s2:3E38
+4:62B3  9a383ed262           lcall 0x62d2, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:62B8  c746c80000           mov word ptr [bp - 0x38], 0
 4:62BD  e99500               jmp 0x6355
 loc_62C0:
@@ -9165,7 +9382,7 @@ loc_62C0:
 4:62C6  c476d4               les si, ptr [bp - 0x2c]
 4:62C9  6626ff30             push dword ptr es:[bx + si]
 4:62CD  8bfb                 mov di, bx
-4:62CF  9a7247fe62           lcall 0x62fe, 0x4772  ; sub_s2:4772
+4:62CF  9a7247fe62           lcall 0x62fe, 0x4772  ; DIB::rect@s2:4772
 4:62D4  8946bc               mov word ptr [bp - 0x44], ax
 4:62D7  8956be               mov word ptr [bp - 0x42], dx
 4:62DA  8ec2                 mov es, dx
@@ -9177,20 +9394,20 @@ loc_62C0:
 4:62E7  66ff7606             push dword ptr [bp + 6]
 4:62EB  90                   nop
 4:62EC  0e                   push cs
-4:62ED  e83e01               call 0x642e  ; sub_s4:642E
+4:62ED  e83e01               call 0x642e  ; PlanetFactsPainter::barTop@s4:642E
 4:62F0  66ff76d0             push dword ptr [bp - 0x30]
 4:62F4  6a00                 push 0
 4:62F6  8d46ca               lea ax, [bp - 0x36]
 4:62F9  16                   push ss
 4:62FA  50                   push ax
-4:62FB  9a763e1363           lcall 0x6313, 0x3e76  ; sub_s2:3E76
+4:62FB  9a763e1363           lcall 0x6313, 0x3e76  ; Pos3::set@s2:3E76
 4:6300  c45ed4               les bx, ptr [bp - 0x2c]
 4:6303  6626ff31             push dword ptr es:[bx + di]
 4:6307  8d46ca               lea ax, [bp - 0x36]
 4:630A  16                   push ss
 4:630B  50                   push ax
 4:630C  66ff76da             push dword ptr [bp - 0x26]
-4:6310  9a80442a62           lcall 0x622a, 0x4480  ; sub_s2:4480
+4:6310  9a80442a62           lcall 0x622a, 0x4480  ; DIB::blitRect@s2:4480
 4:6315  ff76c8               push word ptr [bp - 0x38]
 4:6318  66ff76d0             push dword ptr [bp - 0x30]
 4:631C  c45ebc               les bx, ptr [bp - 0x44]
@@ -9202,7 +9419,7 @@ loc_62C0:
 4:632E  50                   push ax
 4:632F  c45e06               les bx, ptr [bp + 6]
 4:6332  6626ff7706           push dword ptr es:[bx + 6]
-4:6337  9a5c4dc463           lcall 0x63c4, 0x4d5c  ; sub_s3:4D5C
+4:6337  9a5c4dc463           lcall 0x63c4, 0x4d5c  ; PlanetPicker::entries@s3:4D5C
 4:633C  c45ebc               les bx, ptr [bp - 0x44]
 4:633F  837ec801             cmp word ptr [bp - 0x38], 1
 4:6343  1bc0                 sbb ax, ax
@@ -9243,22 +9460,22 @@ loc_6355:
 4:63AD  66ff7606             push dword ptr [bp + 6]
 4:63B1  90                   nop
 4:63B2  0e                   push cs
-4:63B3  e88e00               call 0x6444  ; sub_s4:6444
+4:63B3  e88e00               call 0x6444  ; PlanetFactsPainter::drawOrbit@s4:6444
 4:63B6  ff76de               push word ptr [bp - 0x22]
 4:63B9  c45e06               les bx, ptr [bp + 6]
 4:63BC  6626ff7706           push dword ptr es:[bx + 6]
-4:63C1  9ac84df761           lcall 0x61f7, 0x4dc8  ; sub_s3:4DC8
+4:63C1  9ac84df761           lcall 0x61f7, 0x4dc8  ; PlanetPicker::selected@s3:4DC8
 4:63C6  52                   push dx
 4:63C7  50                   push ax
 4:63C8  66ff7606             push dword ptr [bp + 6]
 4:63CC  90                   nop
 4:63CD  0e                   push cs
-4:63CE  e87301               call 0x6544  ; sub_s4:6544
+4:63CE  e87301               call 0x6544  ; PlanetFactsPainter::drawMarker@s4:6544
 4:63D1  ff76de               push word ptr [bp - 0x22]
 4:63D4  66ff7606             push dword ptr [bp + 6]
 4:63D8  90                   nop
 4:63D9  0e                   push cs
-4:63DA  e85302               call 0x6630  ; sub_s4:6630
+4:63DA  e85302               call 0x6630  ; PlanetFactsPainter::showFacts@s4:6630
 4:63DD  ff76de               push word ptr [bp - 0x22]
 4:63E0  c45e06               les bx, ptr [bp + 6]
 4:63E3  26ff7710             push word ptr es:[bx + 0x10]
@@ -9288,7 +9505,8 @@ loc_6355:
 4:642A  ca0400               retf 4
 4:642D  db 00
 
-; ---------------- sub_s4:642E FAR size=22 callers=1
+; ---------------- PlanetFactsPainter::barTop@s4:642E FAR size=22 callers=1
+;   (100 - n) / 2
 4:642E  55                   push bp
 4:642F  8bec                 mov bp, sp
 4:6431  b86400               mov ax, 0x64
@@ -9300,8 +9518,9 @@ loc_6355:
 4:6440  ca0a00               retf 0xa
 4:6443  db 00
 
-; ---------------- sub_s4:6444 FAR size=256 callers=1
+; ---------------- PlanetFactsPainter::drawOrbit@s4:6444 FAR size=256 callers=1
 ;   apis: GDI.LineTo, GDI.MoveTo
+;   draws lines
 4:6444  c8100000             enter 0x10, 0
 4:6448  56                   push si
 4:6449  c45e06               les bx, ptr [bp + 6]
@@ -9392,7 +9611,8 @@ loc_6537:
 4:6540  c9                   leave
 4:6541  ca0600               retf 6
 
-; ---------------- sub_s4:6544 FAR size=86 callers=1
+; ---------------- PlanetFactsPainter::drawMarker@s4:6544 FAR size=86 callers=1
+;   a triangle under the selected planet
 4:6544  c80c0000             enter 0xc, 0
 4:6548  66837e0a00           cmp dword ptr [bp + 0xa], 0
 4:654D  7447                 je 0x6596
@@ -9407,7 +9627,7 @@ loc_6537:
 4:6568  8d46f8               lea ax, [bp - 8]
 4:656B  16                   push ss
 4:656C  50                   push ax
-4:656D  9a543eb662           lcall 0x62b6, 0x3e54  ; sub_s2:3E54
+4:656D  9a543eb662           lcall 0x62b6, 0x3e54  ; Pos3::Pos3(x,y,z)@s2:3E54
 4:6572  ff760e               push word ptr [bp + 0xe]
 4:6575  8d46f8               lea ax, [bp - 8]
 4:6578  16                   push ss
@@ -9415,7 +9635,7 @@ loc_6537:
 4:657A  66ff7606             push dword ptr [bp + 6]
 4:657E  90                   nop
 4:657F  0e                   push cs
-4:6580  e81700               call 0x659a  ; sub_s4:659A
+4:6580  e81700               call 0x659a  ; PlanetFactsPainter::markerPoints@s4:659A
 4:6583  8946f4               mov word ptr [bp - 0xc], ax
 4:6586  8956f6               mov word ptr [bp - 0xa], dx
 4:6589  52                   push dx
@@ -9424,12 +9644,13 @@ loc_6537:
 4:658D  66ff7606             push dword ptr [bp + 6]
 4:6591  90                   nop
 4:6592  0e                   push cs
-4:6593  e88600               call 0x661c  ; sub_s4:661C
+4:6593  e88600               call 0x661c  ; PlanetFactsPainter::polygon@s4:661C
 loc_6596:
 4:6596  c9                   leave
 4:6597  ca0a00               retf 0xa
 
-; ---------------- sub_s4:659A FAR size=130 callers=1
+; ---------------- PlanetFactsPainter::markerPoints@s4:659A FAR size=130 callers=1
+;   the triangle's points
 4:659A  c8100000             enter 0x10, 0
 4:659E  57                   push di
 4:659F  56                   push si
@@ -9440,7 +9661,7 @@ loc_6596:
 4:65A8  16                   push ss
 4:65A9  50                   push ax
 4:65AA  66ff760a             push dword ptr [bp + 0xa]
-4:65AE  9a943e7065           lcall 0x6570, 0x3e94  ; sub_s2:3E94
+4:65AE  9a943e7065           lcall 0x6570, 0x3e94  ; Pos3::getXY@s2:3E94
 4:65B3  c746f84842           mov word ptr [bp - 8], 0x4248
 4:65B8  8c5efa               mov word ptr [bp - 6], ds
 4:65BB  c746f60300           mov word ptr [bp - 0xa], 3
@@ -9480,8 +9701,9 @@ loc_6608:
 4:6618  c9                   leave
 4:6619  ca0800               retf 8
 
-; ---------------- sub_s4:661C FAR size=20 callers=1
+; ---------------- PlanetFactsPainter::polygon@s4:661C FAR size=20 callers=1
 ;   apis: GDI.Polygon
+;   GDI Polygon
 4:661C  55                   push bp
 4:661D  8bec                 mov bp, sp
 4:661F  66ff760e             push dword ptr [bp + 0xe]
@@ -9490,11 +9712,12 @@ loc_6608:
 4:662C  c9                   leave
 4:662D  ca0c00               retf 0xc
 
-; ---------------- sub_s4:6630 FAR size=106 callers=1
+; ---------------- PlanetFactsPainter::showFacts@s4:6630 FAR size=106 callers=1
+;   the RCDATA fact sheet into the dialog
 4:6630  c80c0000             enter 0xc, 0
 4:6634  c45e06               les bx, ptr [bp + 6]
 4:6637  6626ff7706           push dword ptr es:[bx + 6]
-4:663C  9a9e4e6f66           lcall 0x666f, 0x4e9e  ; sub_s3:4E9E
+4:663C  9a9e4e6f66           lcall 0x666f, 0x4e9e  ; planetFacts@s3:4E9E
 4:6641  8956fe               mov word ptr [bp - 2], dx
 4:6644  0bd0                 or dx, ax
 4:6646  744e                 je 0x6696
@@ -9511,16 +9734,16 @@ loc_665B:
 4:6661  ff76f6               push word ptr [bp - 0xa]
 4:6664  c45e06               les bx, ptr [bp + 6]
 4:6667  6626ff7706           push dword ptr es:[bx + 6]
-4:666C  9a204f6362           lcall 0x6263, 0x4f20  ; sub_s3:4F20
+4:666C  9a204f6362           lcall 0x6263, 0x4f20  ; planetFactsId@s3:4F20
 4:6671  50                   push ax
 4:6672  66ff76f8             push dword ptr [bp - 8]
 4:6676  c45e06               les bx, ptr [bp + 6]
 4:6679  6626ff770a           push dword ptr es:[bx + 0xa]
 4:667E  90                   nop
 4:667F  0e                   push cs
-4:6680  e8e3f9               call 0x6066  ; sub_s4:6066
+4:6680  e8e3f9               call 0x6066  ; setDlgItemText@s4:6066
 4:6683  66ff76f8             push dword ptr [bp - 8]
-4:6687  9aa43dc565           lcall 0x65c5, 0x3da4  ; sub_s1:3DA4
+4:6687  9aa43dc565           lcall 0x65c5, 0x3da4  ; _fstrlen@s1:3DA4
 4:668C  83c404               add sp, 4
 4:668F  40                   inc ax
 4:6690  0146f8               add word ptr [bp - 8], ax
@@ -9530,13 +9753,14 @@ loc_6696:
 4:6696  c9                   leave
 4:6697  ca0600               retf 6
 
-; ---------------- sub_s4:669A FAR size=50 callers=0
+; ---------------- PlanetFactsPainter::scalar_dtor@s4:669A FAR size=50 callers=0
+;   deleting destructor
 4:669A  55                   push bp
 4:669B  8bec                 mov bp, sp
 4:669D  66ff7606             push dword ptr [bp + 6]
 4:66A1  90                   nop
 4:66A2  0e                   push cs
-4:66A3  e866fb               call 0x620c  ; sub_s4:620C
+4:66A3  e866fb               call 0x620c  ; PlanetFactsPainter::~PlanetFactsPainter@s4:620C
 4:66A6  f6460a01             test byte ptr [bp + 0xa], 1
 4:66AA  7409                 je 0x66b5
 4:66AC  66ff7606             push dword ptr [bp + 6]
@@ -9548,14 +9772,15 @@ loc_66B5:
 4:66BC  ca0600               retf 6
 4:66BF  db 90 9a 66 ca 66 10 3a b1 65 3e 62 1c 62
 
-; ---------------- sub_s4:66CC FAR size=112 callers=1
+; ---------------- Mode8View::Mode8View@s4:66CC FAR size=112 callers=1
+;   mode view with a picture layer (getKid)
 4:66CC  55                   push bp
 4:66CD  8bec                 mov bp, sp
 4:66CF  66ff760c             push dword ptr [bp + 0xc]
 4:66D3  ff760a               push word ptr [bp + 0xa]
 4:66D6  6a0a                 push 0xa
 4:66D8  66ff7606             push dword ptr [bp + 6]
-4:66DC  9a7a7f2b5d           lcall 0x5d2b, 0x7f7a  ; sub_s5:7F7A
+4:66DC  9a7a7f2b5d           lcall 0x5d2b, 0x7f7a  ; ScreenView::ScreenView@s5:7F7A
 4:66E1  c45e06               les bx, ptr [bp + 6]
 4:66E4  662bc0               sub eax, eax
 4:66E7  66268987ee00         mov dword ptr es:[bx + 0xee], eax
@@ -9566,7 +9791,7 @@ loc_66B5:
 4:6705  26c787e400c266       mov word ptr es:[bx + 0xe4], 0x66c2  ; SEGMENT s4:0000
 4:670C  6a0b                 push 0xb
 4:670E  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:6713  9aba203f66           lcall 0x663f, 0x20ba  ; sub_s3:20BA
+4:6713  9aba203f66           lcall 0x663f, 0x20ba  ; Registry_get@s3:20BA
 4:6718  c45e06               les bx, ptr [bp + 6]
 4:671B  268987f200           mov word ptr es:[bx + 0xf2], ax
 4:6720  268997f400           mov word ptr es:[bx + 0xf4], dx
@@ -9578,7 +9803,8 @@ loc_66B5:
 4:6738  c9                   leave
 4:6739  ca0a00               retf 0xa
 
-; ---------------- sub_s4:673C FAR size=44 callers=1
+; ---------------- Mode8View::~Mode8View@s4:673C FAR size=44 callers=1
+;   dtor
 4:673C  55                   push bp
 4:673D  8bec                 mov bp, sp
 4:673F  c45e06               les bx, ptr [bp + 6]
@@ -9587,11 +9813,12 @@ loc_66B5:
 4:674D  26c787e2001c69       mov word ptr es:[bx + 0xe2], 0x691c
 4:6754  26c787e400fc66       mov word ptr es:[bx + 0xe4], 0x66fc  ; SEGMENT s4:0000
 4:675B  66ff7606             push dword ptr [bp + 6]
-4:675F  9a8e80df66           lcall 0x66df, 0x808e  ; sub_s5:808E
+4:675F  9a8e80df66           lcall 0x66df, 0x808e  ; ScreenView::~ScreenView@s5:808E
 4:6764  c9                   leave
 4:6765  ca0400               retf 4
 
-; ---------------- sub_s4:6768 size=78 callers=0
+; ---------------- Mode8View::onShow@s4:6768 size=78 callers=0
+;   (vslot 13) opens its window (s8:AF40)
 4:6768  c8060000             enter 6, 0
 4:676C  c45e06               les bx, ptr [bp + 6]
 4:676F  268b87f000           mov ax, word ptr es:[bx + 0xf0]
@@ -9610,21 +9837,22 @@ loc_678D:
 4:67A1  c45e06               les bx, ptr [bp + 6]
 4:67A4  26ff7708             push word ptr es:[bx + 8]
 4:67A8  66ff367c5b           push dword ptr [0x5b7c]
-4:67AD  9a40af775e           lcall 0x5e77, 0xaf40  ; sub_s8:AF40
+4:67AD  9a40af775e           lcall 0x5e77, 0xaf40  ; DialogCtr::open@s8:AF40
 loc_67B2:
 4:67B2  c9                   leave
 4:67B3  ca0400               retf 4
 
-; ---------------- sub_s4:67B6 size=100 callers=0
+; ---------------- Mode8View::create@s4:67B6 size=100 callers=0
+;   (vslot 2)
 4:67B6  c8040000             enter 4, 0
 4:67BA  66ff7606             push dword ptr [bp + 6]
-4:67BE  9a6097c666           lcall 0x66c6, 0x9760  ; sub_s2:9760
+4:67BE  9a6097c666           lcall 0x66c6, 0x9760  ; SOLWnd::create@s2:9760
 4:67C3  c45e06               les bx, ptr [bp + 6]
 4:67C6  26ff7708             push word ptr es:[bx + 8]
 4:67CA  6626ffb7f200         push dword ptr es:[bx + 0xf2]
 4:67D0  90                   nop
 4:67D1  0e                   push cs
-4:67D2  e8dbe5               call 0x4db0  ; sub_s4:4DB0
+4:67D2  e8dbe5               call 0x4db0  ; CmdTarget::getDC@s4:4DB0
 4:67D5  6a18                 push 0x18
 4:67D7  9a9c17b366           lcall 0x66b3, 0x179c  ; operator_new@s1:179C
 4:67DC  83c402               add sp, 2
@@ -9637,7 +9865,7 @@ loc_67B2:
 4:67F0  50                   push ax
 4:67F1  90                   nop
 4:67F2  0e                   push cs
-4:67F3  e82e01               call 0x6924  ; sub_s4:6924
+4:67F3  e82e01               call 0x6924  ; Mode8Layer::Mode8Layer@s4:6924
 4:67F6  c45e06               les bx, ptr [bp + 6]
 4:67F9  268987ee00           mov word ptr es:[bx + 0xee], ax
 4:67FE  268997f000           mov word ptr es:[bx + 0xf0], dx
@@ -9651,7 +9879,8 @@ loc_6808:
 4:6816  ca0400               retf 4
 4:6819  db 00
 
-; ---------------- sub_s4:681A FAR size=50 callers=0
+; ---------------- Mode8View::destroy@s4:681A FAR size=50 callers=0
+;   (vslot 36)
 4:681A  c8080000             enter 8, 0
 4:681E  c45e06               les bx, ptr [bp + 6]
 4:6821  268b87ee00           mov ax, word ptr es:[bx + 0xee]
@@ -9668,23 +9897,25 @@ loc_6808:
 4:683C  26ff1f               lcall es:[bx]
 loc_683F:
 4:683F  66ff7606             push dword ptr [bp + 6]
-4:6843  9a8e62c167           lcall 0x67c1, 0x628e  ; sub_s2:628E
+4:6843  9a8e62c167           lcall 0x67c1, 0x628e  ; DanWnd::destroy@s2:628E
 4:6848  c9                   leave
 4:6849  ca0400               retf 4
 
-; ---------------- sub_s4:684C FAR size=14 callers=0
+; ---------------- Mode8View::thunk_dtor@s4:684C FAR size=14 callers=0
+;   this-adjusting thunk
 4:684C  8bdc                 mov bx, sp
 4:684E  36816f04e200         sub word ptr ss:[bx + 4], 0xe2
 4:6854  e90300               jmp 0x685a
 4:6857  db 90 90 00
 
-; ---------------- sub_s4:685A FAR size=202 callers=0
+; ---------------- Mode8View::scalar_dtor@s4:685A FAR size=202 callers=0
+;   deleting destructor
 4:685A  55                   push bp
 4:685B  8bec                 mov bp, sp
 4:685D  66ff7606             push dword ptr [bp + 6]
 4:6861  90                   nop
 4:6862  0e                   push cs
-4:6863  e8d6fe               call 0x673c  ; sub_s4:673C
+4:6863  e8d6fe               call 0x673c  ; Mode8View::~Mode8View@s4:673C
 4:6866  f6460a01             test byte ptr [bp + 0xa], 1
 4:686A  7409                 je 0x6875
 4:686C  66ff7606             push dword ptr [bp + 6]
@@ -9706,18 +9937,19 @@ loc_6875:
 4:690F  db 69 1a 68 4b 67 28 63 46 68 28 81 62 67 4c 68 82
 4:691F  db 68 10 3a 86 68
 
-; ---------------- sub_s4:6924 FAR size=136 callers=1
+; ---------------- Mode8Layer::Mode8Layer@s4:6924 FAR size=136 callers=1
+;   its picture layer
 4:6924  c80c0000             enter 0xc, 0
 4:6928  66ff7608             push dword ptr [bp + 8]
 4:692C  ff7606               push word ptr [bp + 6]
-4:692F  9a1c929f69           lcall 0x699f, 0x921c  ; sub_s5:921C
+4:692F  9a1c929f69           lcall 0x699f, 0x921c  ; Layer::Layer@s5:921C
 4:6934  c45e06               les bx, ptr [bp + 6]
 4:6937  6626c7471400000000   mov dword ptr es:[bx + 0x14], 0
 4:6940  26c707026a           mov word ptr es:[bx], 0x6a02
 4:6945  26c747021e69         mov word ptr es:[bx + 2], 0x691e  ; SEGMENT s4:0000
 4:694B  6a0b                 push 0xb
 4:694D  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:6952  9aba201667           lcall 0x6716, 0x20ba  ; sub_s3:20BA
+4:6952  9aba201667           lcall 0x6716, 0x20ba  ; Registry_get@s3:20BA
 4:6957  c45e06               les bx, ptr [bp + 6]
 4:695A  26894714             mov word ptr es:[bx + 0x14], ax
 4:695E  26895716             mov word ptr es:[bx + 0x16], dx
@@ -9740,14 +9972,15 @@ loc_6875:
 4:6996  26894712             mov word ptr es:[bx + 0x12], ax
 4:699A  06                   push es
 4:699B  53                   push bx
-4:699C  9a6493be68           lcall 0x68be, 0x9364  ; sub_s5:9364
+4:699C  9a6493be68           lcall 0x68be, 0x9364  ; Layer::drawFrame@s5:9364
 4:69A1  8b4606               mov ax, word ptr [bp + 6]
 4:69A4  8b5608               mov dx, word ptr [bp + 8]
 4:69A7  c9                   leave
 4:69A8  ca0600               retf 6
 4:69AB  db 00
 
-; ---------------- sub_s4:69AC FAR size=48 callers=1
+; ---------------- Mode8Layer::~Mode8Layer@s4:69AC FAR size=48 callers=1
+;   dtor
 4:69AC  55                   push bp
 4:69AD  8bec                 mov bp, sp
 4:69AF  c45e06               les bx, ptr [bp + 6]
@@ -9756,20 +9989,21 @@ loc_6875:
 4:69BD  6626837f1400         cmp dword ptr es:[bx + 0x14], 0
 4:69C3  740a                 je 0x69cf
 4:69C5  6626ff7714           push dword ptr es:[bx + 0x14]
-4:69CA  9ada1d5569           lcall 0x6955, 0x1dda  ; sub_s3:1DDA
+4:69CA  9ada1d5569           lcall 0x6955, 0x1dda  ; RegObj::makeCurrent@s3:1DDA
 loc_69CF:
 4:69CF  66ff7606             push dword ptr [bp + 6]
-4:69D3  9ac4923269           lcall 0x6932, 0x92c4  ; sub_s5:92C4
+4:69D3  9ac4923269           lcall 0x6932, 0x92c4  ; Layer::~Layer@s5:92C4
 4:69D8  c9                   leave
 4:69D9  ca0400               retf 4
 
-; ---------------- sub_s4:69DC FAR size=50 callers=0
+; ---------------- Mode8Layer::scalar_dtor@s4:69DC FAR size=50 callers=0
+;   deleting destructor
 4:69DC  55                   push bp
 4:69DD  8bec                 mov bp, sp
 4:69DF  66ff7606             push dword ptr [bp + 6]
 4:69E3  90                   nop
 4:69E4  0e                   push cs
-4:69E5  e8c4ff               call 0x69ac  ; sub_s4:69AC
+4:69E5  e8c4ff               call 0x69ac  ; Mode8Layer::~Mode8Layer@s4:69AC
 4:69E8  f6460a01             test byte ptr [bp + 0xa], 1
 4:69EC  7409                 je 0x69f7
 4:69EE  66ff7606             push dword ptr [bp + 6]
@@ -9781,14 +10015,15 @@ loc_69F7:
 4:69FE  ca0600               retf 6
 4:6A01  db 90 dc 69 bb 69 10 3a 22 69 12 93 d6 69
 
-; ---------------- sub_s4:6A0E FAR size=104 callers=78
+; ---------------- MovieView::MovieView@s4:6A0E FAR size=104 callers=78
+;   movie view base (sound, mode, movie, next command); 640x480
 4:6A0E  55                   push bp
 4:6A0F  8bec                 mov bp, sp
 4:6A11  66ff7614             push dword ptr [bp + 0x14]
 4:6A15  ff7612               push word ptr [bp + 0x12]
 4:6A18  ff760c               push word ptr [bp + 0xc]
 4:6A1B  66ff7606             push dword ptr [bp + 6]
-4:6A1F  9ab261086a           lcall 0x6a08, 0x61b2  ; sub_s2:61B2
+4:6A1F  9ab261086a           lcall 0x6a08, 0x61b2  ; DanWnd::DanWnd@s2:61B2
 4:6A24  8b4610               mov ax, word ptr [bp + 0x10]
 4:6A27  c45e06               les bx, ptr [bp + 6]
 4:6A2A  268987ea00           mov word ptr es:[bx + 0xea], ax
@@ -9809,12 +10044,14 @@ loc_69F7:
 4:6A72  c9                   leave
 4:6A73  ca1200               retf 0x12
 
-; ---------------- sub_s4:6A76 FAR size=4 callers=0
+; ---------------- MovieView::nop@s4:6A76 FAR size=4 callers=0
+;   empty virtual
 4:6A76  ca0600               retf 6
 4:6A79  db 00
 
-; ---------------- sub_s4:6A7A FAR size=98 callers=1
+; ---------------- MovieView::paint@s4:6A7A FAR size=98 callers=1
 ;   apis: USER.BeginPaint, USER.EndPaint
+;   (vslot 13) plays the movie on the first paint, or posts the next command
 4:6A7A  c82a0000             enter 0x2a, 0
 4:6A7E  c45e06               les bx, ptr [bp + 6]
 4:6A81  26ff7708             push word ptr es:[bx + 8]
@@ -9830,7 +10067,7 @@ loc_69F7:
 4:6A9B  9a23640000           lcall 0, 0x6423  ; USER.EndPaint
 4:6AA0  6a02                 push 2
 4:6AA2  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:6AA7  9aba20cd69           lcall 0x69cd, 0x20ba  ; sub_s3:20BA
+4:6AA7  9aba20cd69           lcall 0x69cd, 0x20ba  ; Registry_get@s3:20BA
 4:6AAC  8946dc               mov word ptr [bp - 0x24], ax
 4:6AAF  8956de               mov word ptr [bp - 0x22], dx
 4:6AB2  c45edc               les bx, ptr [bp - 0x24]
@@ -9841,7 +10078,7 @@ loc_69F7:
 4:6AC0  66ff7606             push dword ptr [bp + 6]
 4:6AC4  90                   nop
 4:6AC5  0e                   push cs
-4:6AC6  e8ed00               call 0x6bb6  ; sub_s4:6BB6
+4:6AC6  e8ed00               call 0x6bb6  ; MovieView::done@s4:6BB6
 4:6AC9  c9                   leave
 4:6ACA  ca0400               retf 4
 4:6ACD  db 90
@@ -9849,17 +10086,18 @@ loc_6ACE:
 4:6ACE  66ff7606             push dword ptr [bp + 6]
 4:6AD2  90                   nop
 4:6AD3  0e                   push cs
-4:6AD4  e80500               call 0x6adc  ; sub_s4:6ADC
+4:6AD4  e80500               call 0x6adc  ; MovieView::play@s4:6ADC
 4:6AD7  c9                   leave
 4:6AD8  ca0400               retf 4
 4:6ADB  db 00
 
-; ---------------- sub_s4:6ADC FAR size=218 callers=1
+; ---------------- MovieView::play@s4:6ADC FAR size=218 callers=1
 ;   apis: USER.ShowCursor
+;   hides the cursor, plays the FLC centred (MCI), its sound
 4:6ADC  c8200000             enter 0x20, 0
 4:6AE0  6a48                 push 0x48
 4:6AE2  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:6AE7  9aba208f6b           lcall 0x6b8f, 0x20ba  ; sub_s3:20BA
+4:6AE7  9aba208f6b           lcall 0x6b8f, 0x20ba  ; Registry_get@s3:20BA
 4:6AEC  8bd8                 mov bx, ax
 4:6AEE  8ec2                 mov es, dx
 4:6AF0  268b470a             mov ax, word ptr es:[bx + 0xa]
@@ -9909,31 +10147,32 @@ loc_6B56:
 4:6B66  7417                 je 0x6b7f
 4:6B68  26ffb7ee00           push word ptr es:[bx + 0xee]
 4:6B6D  66ff36a002           push dword ptr [0x2a0]
-4:6B72  9a5c5c9d6b           lcall 0x6b9d, 0x5c5c  ; sub_s2:5C5C
+4:6B72  9a5c5c9d6b           lcall 0x6b9d, 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 4:6B77  c45e06               les bx, ptr [bp + 6]
 4:6B7A  268987f000           mov word ptr es:[bx + 0xf0], ax
 loc_6B7F:
 4:6B7F  c45e06               les bx, ptr [bp + 6]
 4:6B82  26ffb7ec00           push word ptr es:[bx + 0xec]
 4:6B87  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:6B8C  9a0a83aa6a           lcall 0x6aaa, 0x830a  ; sub_s3:830A
+4:6B8C  9a0a83aa6a           lcall 0x6aaa, 0x830a  ; ResLibr::picture@s3:830A
 4:6B91  c45e06               les bx, ptr [bp + 6]
 4:6B94  26ff7708             push word ptr es:[bx + 8]
 4:6B98  52                   push dx
 4:6B99  50                   push ax
-4:6B9A  9aae53226a           lcall 0x6a22, 0x53ae  ; Mci_s2_53AE@s2:53AE
+4:6B9A  9aae53226a           lcall 0x6a22, 0x53ae  ; playMovieMci@s2:53AE
 4:6B9F  83c406               add sp, 6
 4:6BA2  6a01                 push 1
 4:6BA4  9affff0000           lcall 0, 0xffff  ; USER.ShowCursor
 4:6BA9  66ff7606             push dword ptr [bp + 6]
 4:6BAD  90                   nop
 4:6BAE  0e                   push cs
-4:6BAF  e80400               call 0x6bb6  ; sub_s4:6BB6
+4:6BAF  e80400               call 0x6bb6  ; MovieView::done@s4:6BB6
 4:6BB2  c9                   leave
 4:6BB3  ca0400               retf 4
 
-; ---------------- sub_s4:6BB6 FAR size=104 callers=2
+; ---------------- MovieView::done@s4:6BB6 FAR size=104 callers=2
 ;   apis: USER.DestroyWindow, USER.IsWindow, USER.PostMessage
+;   posts the next command and closes
 4:6BB6  55                   push bp
 4:6BB7  8bec                 mov bp, sp
 4:6BB9  c45e06               les bx, ptr [bp + 6]
@@ -9965,12 +10204,13 @@ loc_6C1A:
 4:6C1A  c9                   leave
 4:6C1B  ca0400               retf 4
 
-; ---------------- sub_s4:6C1E size=228 callers=0
+; ---------------- MovieView::scalar_dtor@s4:6C1E size=228 callers=0
+;   deleting destructor (vtable 6C66)
 4:6C1E  c8180000             enter 0x18, 0
 4:6C22  668b4606             mov eax, dword ptr [bp + 6]
 4:6C26  05d200               add ax, 0xd2
 4:6C29  6650                 push eax
-4:6C2B  9ac4573c6c           lcall 0x6c3c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:6C2B  9ac4573c6c           lcall 0x6c3c, 0x57c4  ; List::~List@s2:57C4
 4:6C30  c45e06               les bx, ptr [bp + 6]
 4:6C33  26c7070a38           mov word ptr es:[bx], 0x380a
 4:6C38  26c747024a6c         mov word ptr es:[bx + 2], 0x6c4a  ; SEGMENT s2:0000
@@ -9997,7 +10237,8 @@ loc_6C5B:
 4:6CE5  db 6c 30 9c ec 6c 86 9c f0 6c c4 9c f4 6c e0 9c f8
 4:6CF5  db 6c 8e 62 fc 6c 28 63 00 6d 2c 63 2e 6c
 
-; ---------------- sub_s4:6D02 FAR size=54 callers=1
+; ---------------- MovieView11::MovieView11@s4:6D02 FAR size=54 callers=1
+;   movie view, mode 11: movie 156, then command 139
 4:6D02  55                   push bp
 4:6D03  8bec                 mov bp, sp
 4:6D05  66ff760c             push dword ptr [bp + 0xc]
@@ -10007,7 +10248,7 @@ loc_6C5B:
 4:6D18  66ff7606             push dword ptr [bp + 6]
 4:6D1C  90                   nop
 4:6D1D  0e                   push cs
-4:6D1E  e8edfc               call 0x6a0e  ; sub_s4:6A0E
+4:6D1E  e8edfc               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6D21  c45e06               les bx, ptr [bp + 6]
 4:6D24  26c7077ea2           mov word ptr es:[bx], 0xa27e
 4:6D29  26c74702686c         mov word ptr es:[bx + 2], 0x6c68  ; SEGMENT s4:0000
@@ -10017,7 +10258,8 @@ loc_6C5B:
 4:6D34  ca0a00               retf 0xa
 4:6D37  db 00
 
-; ---------------- sub_s4:6D38 FAR size=54 callers=1
+; ---------------- MovieView12::MovieView12@s4:6D38 FAR size=54 callers=1
+;   movie view, mode 12: movie 157, then command 208
 4:6D38  55                   push bp
 4:6D39  8bec                 mov bp, sp
 4:6D3B  66ff760c             push dword ptr [bp + 0xc]
@@ -10027,7 +10269,7 @@ loc_6C5B:
 4:6D4E  66ff7606             push dword ptr [bp + 6]
 4:6D52  90                   nop
 4:6D53  0e                   push cs
-4:6D54  e8b7fc               call 0x6a0e  ; sub_s4:6A0E
+4:6D54  e8b7fc               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6D57  c45e06               les bx, ptr [bp + 6]
 4:6D5A  26c70762b5           mov word ptr es:[bx], 0xb562
 4:6D5F  26c747022d6d         mov word ptr es:[bx + 2], 0x6d2d  ; SEGMENT s4:0000
@@ -10037,7 +10279,8 @@ loc_6C5B:
 4:6D6A  ca0a00               retf 0xa
 4:6D6D  db 00
 
-; ---------------- sub_s4:6D6E FAR size=54 callers=1
+; ---------------- MovieView13::MovieView13@s4:6D6E FAR size=54 callers=1
+;   movie view, mode 13: movie 158, then command 209
 4:6D6E  55                   push bp
 4:6D6F  8bec                 mov bp, sp
 4:6D71  66ff760c             push dword ptr [bp + 0xc]
@@ -10047,7 +10290,7 @@ loc_6C5B:
 4:6D84  66ff7606             push dword ptr [bp + 6]
 4:6D88  90                   nop
 4:6D89  0e                   push cs
-4:6D8A  e881fc               call 0x6a0e  ; sub_s4:6A0E
+4:6D8A  e881fc               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6D8D  c45e06               les bx, ptr [bp + 6]
 4:6D90  26c7072298           mov word ptr es:[bx], 0x9822
 4:6D95  26c74702636d         mov word ptr es:[bx + 2], 0x6d63  ; SEGMENT s4:0000
@@ -10057,7 +10300,8 @@ loc_6C5B:
 4:6DA0  ca0a00               retf 0xa
 4:6DA3  db 00
 
-; ---------------- sub_s4:6DA4 FAR size=54 callers=1
+; ---------------- MovieView14::MovieView14@s4:6DA4 FAR size=54 callers=1
+;   movie view, mode 14: movie 159, then command 210
 4:6DA4  55                   push bp
 4:6DA5  8bec                 mov bp, sp
 4:6DA7  66ff760c             push dword ptr [bp + 0xc]
@@ -10067,7 +10311,7 @@ loc_6C5B:
 4:6DBA  66ff7606             push dword ptr [bp + 6]
 4:6DBE  90                   nop
 4:6DBF  0e                   push cs
-4:6DC0  e84bfc               call 0x6a0e  ; sub_s4:6A0E
+4:6DC0  e84bfc               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6DC3  c45e06               les bx, ptr [bp + 6]
 4:6DC6  26c70706ab           mov word ptr es:[bx], 0xab06
 4:6DCB  26c74702996d         mov word ptr es:[bx + 2], 0x6d99  ; SEGMENT s4:0000
@@ -10077,7 +10321,8 @@ loc_6C5B:
 4:6DD6  ca0a00               retf 0xa
 4:6DD9  db 00
 
-; ---------------- sub_s4:6DDA FAR size=54 callers=1
+; ---------------- MovieView15::MovieView15@s4:6DDA FAR size=54 callers=1
+;   movie view, mode 15: movie 160, then command 212
 4:6DDA  55                   push bp
 4:6DDB  8bec                 mov bp, sp
 4:6DDD  66ff760c             push dword ptr [bp + 0xc]
@@ -10087,7 +10332,7 @@ loc_6C5B:
 4:6DF0  66ff7606             push dword ptr [bp + 6]
 4:6DF4  90                   nop
 4:6DF5  0e                   push cs
-4:6DF6  e815fc               call 0x6a0e  ; sub_s4:6A0E
+4:6DF6  e815fc               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6DF9  c45e06               les bx, ptr [bp + 6]
 4:6DFC  26c707eabd           mov word ptr es:[bx], 0xbdea
 4:6E01  26c74702cf6d         mov word ptr es:[bx + 2], 0x6dcf  ; SEGMENT s4:0000
@@ -10097,7 +10342,8 @@ loc_6C5B:
 4:6E0C  ca0a00               retf 0xa
 4:6E0F  db 00
 
-; ---------------- sub_s4:6E10 FAR size=54 callers=1
+; ---------------- MovieView16::MovieView16@s4:6E10 FAR size=54 callers=1
+;   movie view, mode 16: movie 161, then command 218
 4:6E10  55                   push bp
 4:6E11  8bec                 mov bp, sp
 4:6E13  66ff760c             push dword ptr [bp + 0xc]
@@ -10107,7 +10353,7 @@ loc_6C5B:
 4:6E26  66ff7606             push dword ptr [bp + 6]
 4:6E2A  90                   nop
 4:6E2B  0e                   push cs
-4:6E2C  e8dffb               call 0x6a0e  ; sub_s4:6A0E
+4:6E2C  e8dffb               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6E2F  c45e06               les bx, ptr [bp + 6]
 4:6E32  26c707aaa0           mov word ptr es:[bx], 0xa0aa
 4:6E37  26c74702056e         mov word ptr es:[bx + 2], 0x6e05  ; SEGMENT s4:0000
@@ -10117,7 +10363,8 @@ loc_6C5B:
 4:6E42  ca0a00               retf 0xa
 4:6E45  db 00
 
-; ---------------- sub_s4:6E46 FAR size=54 callers=1
+; ---------------- MovieView17::MovieView17@s4:6E46 FAR size=54 callers=1
+;   movie view, mode 17: movie 162, then command 220
 4:6E46  55                   push bp
 4:6E47  8bec                 mov bp, sp
 4:6E49  66ff760c             push dword ptr [bp + 0xc]
@@ -10127,7 +10374,7 @@ loc_6C5B:
 4:6E5C  66ff7606             push dword ptr [bp + 6]
 4:6E60  90                   nop
 4:6E61  0e                   push cs
-4:6E62  e8a9fb               call 0x6a0e  ; sub_s4:6A0E
+4:6E62  e8a9fb               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6E65  c45e06               les bx, ptr [bp + 6]
 4:6E68  26c7078eb3           mov word ptr es:[bx], 0xb38e
 4:6E6D  26c747023b6e         mov word ptr es:[bx + 2], 0x6e3b  ; SEGMENT s4:0000
@@ -10137,7 +10384,8 @@ loc_6C5B:
 4:6E78  ca0a00               retf 0xa
 4:6E7B  db 00
 
-; ---------------- sub_s4:6E7C FAR size=54 callers=1
+; ---------------- MovieView18::MovieView18@s4:6E7C FAR size=54 callers=1
+;   movie view, mode 18: movie 163, then command 211
 4:6E7C  55                   push bp
 4:6E7D  8bec                 mov bp, sp
 4:6E7F  66ff760c             push dword ptr [bp + 0xc]
@@ -10147,7 +10395,7 @@ loc_6C5B:
 4:6E92  66ff7606             push dword ptr [bp + 6]
 4:6E96  90                   nop
 4:6E97  0e                   push cs
-4:6E98  e873fb               call 0x6a0e  ; sub_s4:6A0E
+4:6E98  e873fb               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6E9B  c45e06               les bx, ptr [bp + 6]
 4:6E9E  26c7074e96           mov word ptr es:[bx], 0x964e
 4:6EA3  26c74702716e         mov word ptr es:[bx + 2], 0x6e71  ; SEGMENT s4:0000
@@ -10157,7 +10405,8 @@ loc_6C5B:
 4:6EAE  ca0a00               retf 0xa
 4:6EB1  db 00
 
-; ---------------- sub_s4:6EB2 FAR size=54 callers=1
+; ---------------- MovieView19::MovieView19@s4:6EB2 FAR size=54 callers=1
+;   movie view, mode 19: movie 164, then command 219
 4:6EB2  55                   push bp
 4:6EB3  8bec                 mov bp, sp
 4:6EB5  66ff760c             push dword ptr [bp + 0xc]
@@ -10167,7 +10416,7 @@ loc_6C5B:
 4:6EC8  66ff7606             push dword ptr [bp + 6]
 4:6ECC  90                   nop
 4:6ECD  0e                   push cs
-4:6ECE  e83dfb               call 0x6a0e  ; sub_s4:6A0E
+4:6ECE  e83dfb               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6ED1  c45e06               les bx, ptr [bp + 6]
 4:6ED4  26c70732a9           mov word ptr es:[bx], 0xa932
 4:6ED9  26c74702a76e         mov word ptr es:[bx + 2], 0x6ea7  ; SEGMENT s4:0000
@@ -10177,7 +10426,8 @@ loc_6C5B:
 4:6EE4  ca0a00               retf 0xa
 4:6EE7  db 00
 
-; ---------------- sub_s4:6EE8 FAR size=54 callers=1
+; ---------------- MovieView20::MovieView20@s4:6EE8 FAR size=54 callers=1
+;   movie view, mode 20: movie 165, then command 165
 4:6EE8  55                   push bp
 4:6EE9  8bec                 mov bp, sp
 4:6EEB  66ff760c             push dword ptr [bp + 0xc]
@@ -10187,7 +10437,7 @@ loc_6C5B:
 4:6EFE  66ff7606             push dword ptr [bp + 6]
 4:6F02  90                   nop
 4:6F03  0e                   push cs
-4:6F04  e807fb               call 0x6a0e  ; sub_s4:6A0E
+4:6F04  e807fb               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6F07  c45e06               les bx, ptr [bp + 6]
 4:6F0A  26c70716bc           mov word ptr es:[bx], 0xbc16
 4:6F0F  26c74702dd6e         mov word ptr es:[bx + 2], 0x6edd  ; SEGMENT s4:0000
@@ -10197,7 +10447,8 @@ loc_6C5B:
 4:6F1A  ca0a00               retf 0xa
 4:6F1D  db 00
 
-; ---------------- sub_s4:6F1E FAR size=54 callers=1
+; ---------------- MovieView21::MovieView21@s4:6F1E FAR size=54 callers=1
+;   movie view, mode 21: movie 167, then command 178
 4:6F1E  55                   push bp
 4:6F1F  8bec                 mov bp, sp
 4:6F21  66ff760c             push dword ptr [bp + 0xc]
@@ -10207,7 +10458,7 @@ loc_6C5B:
 4:6F34  66ff7606             push dword ptr [bp + 6]
 4:6F38  90                   nop
 4:6F39  0e                   push cs
-4:6F3A  e8d1fa               call 0x6a0e  ; sub_s4:6A0E
+4:6F3A  e8d1fa               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6F3D  c45e06               les bx, ptr [bp + 6]
 4:6F40  26c7073a9e           mov word ptr es:[bx], 0x9e3a
 4:6F45  26c74702136f         mov word ptr es:[bx + 2], 0x6f13  ; SEGMENT s4:0000
@@ -10217,7 +10468,8 @@ loc_6C5B:
 4:6F50  ca0a00               retf 0xa
 4:6F53  db 00
 
-; ---------------- sub_s4:6F54 FAR size=54 callers=1
+; ---------------- MovieView22::MovieView22@s4:6F54 FAR size=54 callers=1
+;   movie view, mode 22: movie 168, then command 0
 4:6F54  55                   push bp
 4:6F55  8bec                 mov bp, sp
 4:6F57  66ff760c             push dword ptr [bp + 0xc]
@@ -10227,7 +10479,7 @@ loc_6C5B:
 4:6F6A  66ff7606             push dword ptr [bp + 6]
 4:6F6E  90                   nop
 4:6F6F  0e                   push cs
-4:6F70  e89bfa               call 0x6a0e  ; sub_s4:6A0E
+4:6F70  e89bfa               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6F73  c45e06               les bx, ptr [bp + 6]
 4:6F76  26c7071eb1           mov word ptr es:[bx], 0xb11e
 4:6F7B  26c74702496f         mov word ptr es:[bx + 2], 0x6f49  ; SEGMENT s4:0000
@@ -10237,7 +10489,8 @@ loc_6C5B:
 4:6F86  ca0a00               retf 0xa
 4:6F89  db 00
 
-; ---------------- sub_s4:6F8A FAR size=54 callers=1
+; ---------------- MovieView23::MovieView23@s4:6F8A FAR size=54 callers=1
+;   movie view, mode 23: movie 175, then command 192
 4:6F8A  55                   push bp
 4:6F8B  8bec                 mov bp, sp
 4:6F8D  66ff760c             push dword ptr [bp + 0xc]
@@ -10247,7 +10500,7 @@ loc_6C5B:
 4:6FA0  66ff7606             push dword ptr [bp + 6]
 4:6FA4  90                   nop
 4:6FA5  0e                   push cs
-4:6FA6  e865fa               call 0x6a0e  ; sub_s4:6A0E
+4:6FA6  e865fa               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6FA9  c45e06               les bx, ptr [bp + 6]
 4:6FAC  26c707de93           mov word ptr es:[bx], 0x93de
 4:6FB1  26c747027f6f         mov word ptr es:[bx + 2], 0x6f7f  ; SEGMENT s4:0000
@@ -10257,7 +10510,8 @@ loc_6C5B:
 4:6FBC  ca0a00               retf 0xa
 4:6FBF  db 00
 
-; ---------------- sub_s4:6FC0 FAR size=54 callers=1
+; ---------------- MovieView24::MovieView24@s4:6FC0 FAR size=54 callers=1
+;   movie view, mode 24: movie 176, then command 193
 4:6FC0  55                   push bp
 4:6FC1  8bec                 mov bp, sp
 4:6FC3  66ff760c             push dword ptr [bp + 0xc]
@@ -10267,7 +10521,7 @@ loc_6C5B:
 4:6FD6  66ff7606             push dword ptr [bp + 6]
 4:6FDA  90                   nop
 4:6FDB  0e                   push cs
-4:6FDC  e82ffa               call 0x6a0e  ; sub_s4:6A0E
+4:6FDC  e82ffa               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:6FDF  c45e06               les bx, ptr [bp + 6]
 4:6FE2  26c707c2a6           mov word ptr es:[bx], 0xa6c2
 4:6FE7  26c74702b56f         mov word ptr es:[bx + 2], 0x6fb5  ; SEGMENT s4:0000
@@ -10277,7 +10531,8 @@ loc_6C5B:
 4:6FF2  ca0a00               retf 0xa
 4:6FF5  db 00
 
-; ---------------- sub_s4:6FF6 FAR size=54 callers=1
+; ---------------- MovieView25::MovieView25@s4:6FF6 FAR size=54 callers=1
+;   movie view, mode 25: movie 177, then command 128
 4:6FF6  55                   push bp
 4:6FF7  8bec                 mov bp, sp
 4:6FF9  66ff760c             push dword ptr [bp + 0xc]
@@ -10287,7 +10542,7 @@ loc_6C5B:
 4:700C  66ff7606             push dword ptr [bp + 6]
 4:7010  90                   nop
 4:7011  0e                   push cs
-4:7012  e8f9f9               call 0x6a0e  ; sub_s4:6A0E
+4:7012  e8f9f9               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7015  c45e06               les bx, ptr [bp + 6]
 4:7018  26c707a6b9           mov word ptr es:[bx], 0xb9a6
 4:701D  26c74702eb6f         mov word ptr es:[bx + 2], 0x6feb  ; SEGMENT s4:0000
@@ -10297,7 +10552,8 @@ loc_6C5B:
 4:7028  ca0a00               retf 0xa
 4:702B  db 00
 
-; ---------------- sub_s4:702C FAR size=54 callers=1
+; ---------------- MovieView26::MovieView26@s4:702C FAR size=54 callers=1
+;   movie view, mode 26: movie 178, then command 195, sound 492
 4:702C  55                   push bp
 4:702D  8bec                 mov bp, sp
 4:702F  66ff760c             push dword ptr [bp + 0xc]
@@ -10307,7 +10563,7 @@ loc_6C5B:
 4:7042  66ff7606             push dword ptr [bp + 6]
 4:7046  90                   nop
 4:7047  0e                   push cs
-4:7048  e8c3f9               call 0x6a0e  ; sub_s4:6A0E
+4:7048  e8c3f9               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:704B  c45e06               les bx, ptr [bp + 6]
 4:704E  26c707669c           mov word ptr es:[bx], 0x9c66
 4:7053  26c747022170         mov word ptr es:[bx + 2], 0x7021  ; SEGMENT s4:0000
@@ -10317,7 +10573,8 @@ loc_6C5B:
 4:705E  ca0a00               retf 0xa
 4:7061  db 00
 
-; ---------------- sub_s4:7062 FAR size=54 callers=1
+; ---------------- MovieView27::MovieView27@s4:7062 FAR size=54 callers=1
+;   movie view, mode 27: movie 179, then command 196
 4:7062  55                   push bp
 4:7063  8bec                 mov bp, sp
 4:7065  66ff760c             push dword ptr [bp + 0xc]
@@ -10327,7 +10584,7 @@ loc_6C5B:
 4:7078  66ff7606             push dword ptr [bp + 6]
 4:707C  90                   nop
 4:707D  0e                   push cs
-4:707E  e88df9               call 0x6a0e  ; sub_s4:6A0E
+4:707E  e88df9               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7081  c45e06               les bx, ptr [bp + 6]
 4:7084  26c7074aaf           mov word ptr es:[bx], 0xaf4a
 4:7089  26c747025770         mov word ptr es:[bx + 2], 0x7057  ; SEGMENT s4:0000
@@ -10337,7 +10594,8 @@ loc_6C5B:
 4:7094  ca0a00               retf 0xa
 4:7097  db 00
 
-; ---------------- sub_s4:7098 FAR size=54 callers=1
+; ---------------- MovieView28::MovieView28@s4:7098 FAR size=54 callers=1
+;   movie view, mode 28: movie 180, then command 216
 4:7098  55                   push bp
 4:7099  8bec                 mov bp, sp
 4:709B  66ff760c             push dword ptr [bp + 0xc]
@@ -10347,7 +10605,7 @@ loc_6C5B:
 4:70AE  66ff7606             push dword ptr [bp + 6]
 4:70B2  90                   nop
 4:70B3  0e                   push cs
-4:70B4  e857f9               call 0x6a0e  ; sub_s4:6A0E
+4:70B4  e857f9               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:70B7  c45e06               les bx, ptr [bp + 6]
 4:70BA  26c7072ec2           mov word ptr es:[bx], 0xc22e
 4:70BF  26c747028d70         mov word ptr es:[bx + 2], 0x708d  ; SEGMENT s4:0000
@@ -10357,7 +10615,8 @@ loc_6C5B:
 4:70CA  ca0a00               retf 0xa
 4:70CD  db 00
 
-; ---------------- sub_s4:70CE FAR size=54 callers=1
+; ---------------- MovieView29::MovieView29@s4:70CE FAR size=54 callers=1
+;   movie view, mode 29: movie 181, then command 123
 4:70CE  55                   push bp
 4:70CF  8bec                 mov bp, sp
 4:70D1  66ff760c             push dword ptr [bp + 0xc]
@@ -10367,7 +10626,7 @@ loc_6C5B:
 4:70E4  66ff7606             push dword ptr [bp + 6]
 4:70E8  90                   nop
 4:70E9  0e                   push cs
-4:70EA  e821f9               call 0x6a0e  ; sub_s4:6A0E
+4:70EA  e821f9               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:70ED  c45e06               les bx, ptr [bp + 6]
 4:70F0  26c707eea4           mov word ptr es:[bx], 0xa4ee
 4:70F5  26c74702c370         mov word ptr es:[bx + 2], 0x70c3  ; SEGMENT s4:0000
@@ -10377,7 +10636,8 @@ loc_6C5B:
 4:7100  ca0a00               retf 0xa
 4:7103  db 00
 
-; ---------------- sub_s4:7104 FAR size=54 callers=1
+; ---------------- MovieView30::MovieView30@s4:7104 FAR size=54 callers=1
+;   movie view, mode 30: movie 182, then command 217
 4:7104  55                   push bp
 4:7105  8bec                 mov bp, sp
 4:7107  66ff760c             push dword ptr [bp + 0xc]
@@ -10387,7 +10647,7 @@ loc_6C5B:
 4:711A  66ff7606             push dword ptr [bp + 6]
 4:711E  90                   nop
 4:711F  0e                   push cs
-4:7120  e8ebf8               call 0x6a0e  ; sub_s4:6A0E
+4:7120  e8ebf8               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7123  c45e06               les bx, ptr [bp + 6]
 4:7126  26c707d2b7           mov word ptr es:[bx], 0xb7d2
 4:712B  26c74702f970         mov word ptr es:[bx + 2], 0x70f9  ; SEGMENT s4:0000
@@ -10397,7 +10657,8 @@ loc_6C5B:
 4:7136  ca0a00               retf 0xa
 4:7139  db 00
 
-; ---------------- sub_s4:713A FAR size=54 callers=1
+; ---------------- MovieView31::MovieView31@s4:713A FAR size=54 callers=1
+;   movie view, mode 31: movie 183, then command 125
 4:713A  55                   push bp
 4:713B  8bec                 mov bp, sp
 4:713D  66ff760c             push dword ptr [bp + 0xc]
@@ -10407,7 +10668,7 @@ loc_6C5B:
 4:7150  66ff7606             push dword ptr [bp + 6]
 4:7154  90                   nop
 4:7155  0e                   push cs
-4:7156  e8b5f8               call 0x6a0e  ; sub_s4:6A0E
+4:7156  e8b5f8               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7159  c45e06               les bx, ptr [bp + 6]
 4:715C  26c707929a           mov word ptr es:[bx], 0x9a92
 4:7161  26c747022f71         mov word ptr es:[bx + 2], 0x712f  ; SEGMENT s4:0000
@@ -10417,7 +10678,8 @@ loc_6C5B:
 4:716C  ca0a00               retf 0xa
 4:716F  db 00
 
-; ---------------- sub_s4:7170 FAR size=54 callers=1
+; ---------------- MovieView33::MovieView33@s4:7170 FAR size=54 callers=1
+;   movie view, mode 33: movie 185, then command 221
 4:7170  55                   push bp
 4:7171  8bec                 mov bp, sp
 4:7173  66ff760c             push dword ptr [bp + 0xc]
@@ -10427,7 +10689,7 @@ loc_6C5B:
 4:7186  66ff7606             push dword ptr [bp + 6]
 4:718A  90                   nop
 4:718B  0e                   push cs
-4:718C  e87ff8               call 0x6a0e  ; sub_s4:6A0E
+4:718C  e87ff8               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:718F  c45e06               les bx, ptr [bp + 6]
 4:7192  26c70776ad           mov word ptr es:[bx], 0xad76
 4:7197  26c747026571         mov word ptr es:[bx + 2], 0x7165  ; SEGMENT s4:0000
@@ -10437,7 +10699,8 @@ loc_6C5B:
 4:71A2  ca0a00               retf 0xa
 4:71A5  db 00
 
-; ---------------- sub_s4:71A6 FAR size=54 callers=1
+; ---------------- MovieView35::MovieView35@s4:71A6 FAR size=54 callers=1
+;   movie view, mode 35: movie 211, then command 214
 4:71A6  55                   push bp
 4:71A7  8bec                 mov bp, sp
 4:71A9  66ff760c             push dword ptr [bp + 0xc]
@@ -10447,7 +10710,7 @@ loc_6C5B:
 4:71BC  66ff7606             push dword ptr [bp + 6]
 4:71C0  90                   nop
 4:71C1  0e                   push cs
-4:71C2  e849f8               call 0x6a0e  ; sub_s4:6A0E
+4:71C2  e849f8               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:71C5  c45e06               les bx, ptr [bp + 6]
 4:71C8  26c7079ab6           mov word ptr es:[bx], 0xb69a
 4:71CD  26c747029b71         mov word ptr es:[bx + 2], 0x719b  ; SEGMENT s4:0000
@@ -10457,7 +10720,8 @@ loc_6C5B:
 4:71D8  ca0a00               retf 0xa
 4:71DB  db 00
 
-; ---------------- sub_s4:71DC FAR size=54 callers=1
+; ---------------- MovieView36::MovieView36@s4:71DC FAR size=54 callers=1
+;   movie view, mode 36: movie 212, then command 215, sound 493
 4:71DC  55                   push bp
 4:71DD  8bec                 mov bp, sp
 4:71DF  66ff760c             push dword ptr [bp + 0xc]
@@ -10467,7 +10731,7 @@ loc_6C5B:
 4:71F2  66ff7606             push dword ptr [bp + 6]
 4:71F6  90                   nop
 4:71F7  0e                   push cs
-4:71F8  e813f8               call 0x6a0e  ; sub_s4:6A0E
+4:71F8  e813f8               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:71FB  c45e06               les bx, ptr [bp + 6]
 4:71FE  26c7075a99           mov word ptr es:[bx], 0x995a
 4:7203  26c74702d171         mov word ptr es:[bx + 2], 0x71d1  ; SEGMENT s4:0000
@@ -10477,7 +10741,8 @@ loc_6C5B:
 4:720E  ca0a00               retf 0xa
 4:7211  db 00
 
-; ---------------- sub_s4:7212 FAR size=54 callers=1
+; ---------------- MovieView37::MovieView37@s4:7212 FAR size=54 callers=1
+;   movie view, mode 37: movie 233, then command 238
 4:7212  55                   push bp
 4:7213  8bec                 mov bp, sp
 4:7215  66ff760c             push dword ptr [bp + 0xc]
@@ -10487,7 +10752,7 @@ loc_6C5B:
 4:7228  66ff7606             push dword ptr [bp + 6]
 4:722C  90                   nop
 4:722D  0e                   push cs
-4:722E  e8ddf7               call 0x6a0e  ; sub_s4:6A0E
+4:722E  e8ddf7               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7231  c45e06               les bx, ptr [bp + 6]
 4:7234  26c70752a4           mov word ptr es:[bx], 0xa452
 4:7239  26c747020772         mov word ptr es:[bx + 2], 0x7207  ; SEGMENT s4:0000
@@ -10497,7 +10762,8 @@ loc_6C5B:
 4:7244  ca0a00               retf 0xa
 4:7247  db 00
 
-; ---------------- sub_s4:7248 FAR size=54 callers=1
+; ---------------- MovieView99::MovieView99@s4:7248 FAR size=54 callers=1
+;   movie view, mode 99: movie 166, then command 0
 4:7248  55                   push bp
 4:7249  8bec                 mov bp, sp
 4:724B  66ff760c             push dword ptr [bp + 0xc]
@@ -10507,7 +10773,7 @@ loc_6C5B:
 4:725E  66ff7606             push dword ptr [bp + 6]
 4:7262  90                   nop
 4:7263  0e                   push cs
-4:7264  e8a7f7               call 0x6a0e  ; sub_s4:6A0E
+4:7264  e8a7f7               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7267  c45e06               les bx, ptr [bp + 6]
 4:726A  26c7075ac0           mov word ptr es:[bx], 0xc05a
 4:726F  26c747023d72         mov word ptr es:[bx + 2], 0x723d  ; SEGMENT s4:0000
@@ -10517,7 +10783,8 @@ loc_6C5B:
 4:727A  ca0a00               retf 0xa
 4:727D  db 00
 
-; ---------------- sub_s4:727E FAR size=54 callers=1
+; ---------------- MovieView100::MovieView100@s4:727E FAR size=54 callers=1
+;   movie view, mode 100: movie 169, then command 0
 4:727E  55                   push bp
 4:727F  8bec                 mov bp, sp
 4:7281  66ff760c             push dword ptr [bp + 0xc]
@@ -10527,7 +10794,7 @@ loc_6C5B:
 4:7294  66ff7606             push dword ptr [bp + 6]
 4:7298  90                   nop
 4:7299  0e                   push cs
-4:729A  e871f7               call 0x6a0e  ; sub_s4:6A0E
+4:729A  e871f7               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:729D  c45e06               les bx, ptr [bp + 6]
 4:72A0  26c7071aa3           mov word ptr es:[bx], 0xa31a
 4:72A5  26c747027372         mov word ptr es:[bx + 2], 0x7273  ; SEGMENT s4:0000
@@ -10537,7 +10804,8 @@ loc_6C5B:
 4:72B0  ca0a00               retf 0xa
 4:72B3  db 00
 
-; ---------------- sub_s4:72B4 FAR size=54 callers=1
+; ---------------- MovieView101::MovieView101@s4:72B4 FAR size=54 callers=1
+;   movie view, mode 101: movie 170, then command 187
 4:72B4  55                   push bp
 4:72B5  8bec                 mov bp, sp
 4:72B7  66ff760c             push dword ptr [bp + 0xc]
@@ -10547,7 +10815,7 @@ loc_6C5B:
 4:72CA  66ff7606             push dword ptr [bp + 6]
 4:72CE  90                   nop
 4:72CF  0e                   push cs
-4:72D0  e83bf7               call 0x6a0e  ; sub_s4:6A0E
+4:72D0  e83bf7               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:72D3  c45e06               les bx, ptr [bp + 6]
 4:72D6  26c707feb5           mov word ptr es:[bx], 0xb5fe
 4:72DB  26c74702a972         mov word ptr es:[bx + 2], 0x72a9  ; SEGMENT s4:0000
@@ -10557,7 +10825,8 @@ loc_6C5B:
 4:72E6  ca0a00               retf 0xa
 4:72E9  db 00
 
-; ---------------- sub_s4:72EA FAR size=54 callers=1
+; ---------------- MovieView102::MovieView102@s4:72EA FAR size=54 callers=1
+;   movie view, mode 102: movie 171, then command 0
 4:72EA  55                   push bp
 4:72EB  8bec                 mov bp, sp
 4:72ED  66ff760c             push dword ptr [bp + 0xc]
@@ -10567,7 +10836,7 @@ loc_6C5B:
 4:7300  66ff7606             push dword ptr [bp + 6]
 4:7304  90                   nop
 4:7305  0e                   push cs
-4:7306  e805f7               call 0x6a0e  ; sub_s4:6A0E
+4:7306  e805f7               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7309  c45e06               les bx, ptr [bp + 6]
 4:730C  26c707be98           mov word ptr es:[bx], 0x98be
 4:7311  26c74702df72         mov word ptr es:[bx + 2], 0x72df  ; SEGMENT s4:0000
@@ -10577,7 +10846,8 @@ loc_6C5B:
 4:731C  ca0a00               retf 0xa
 4:731F  db 00
 
-; ---------------- sub_s4:7320 FAR size=54 callers=1
+; ---------------- MovieView103::MovieView103@s4:7320 FAR size=54 callers=1
+;   movie view, mode 103: movie 172, then command 189
 4:7320  55                   push bp
 4:7321  8bec                 mov bp, sp
 4:7323  66ff760c             push dword ptr [bp + 0xc]
@@ -10587,7 +10857,7 @@ loc_6C5B:
 4:7336  66ff7606             push dword ptr [bp + 6]
 4:733A  90                   nop
 4:733B  0e                   push cs
-4:733C  e8cff6               call 0x6a0e  ; sub_s4:6A0E
+4:733C  e8cff6               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:733F  c45e06               les bx, ptr [bp + 6]
 4:7342  26c707a2ab           mov word ptr es:[bx], 0xaba2
 4:7347  26c747021573         mov word ptr es:[bx + 2], 0x7315  ; SEGMENT s4:0000
@@ -10597,7 +10867,8 @@ loc_6C5B:
 4:7352  ca0a00               retf 0xa
 4:7355  db 00
 
-; ---------------- sub_s4:7356 FAR size=54 callers=1
+; ---------------- MovieView104::MovieView104@s4:7356 FAR size=54 callers=1
+;   movie view, mode 104: movie 173, then command 0
 4:7356  55                   push bp
 4:7357  8bec                 mov bp, sp
 4:7359  66ff760c             push dword ptr [bp + 0xc]
@@ -10607,7 +10878,7 @@ loc_6C5B:
 4:736C  66ff7606             push dword ptr [bp + 6]
 4:7370  90                   nop
 4:7371  0e                   push cs
-4:7372  e899f6               call 0x6a0e  ; sub_s4:6A0E
+4:7372  e899f6               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7375  c45e06               les bx, ptr [bp + 6]
 4:7378  26c70786be           mov word ptr es:[bx], 0xbe86
 4:737D  26c747024b73         mov word ptr es:[bx + 2], 0x734b  ; SEGMENT s4:0000
@@ -10617,7 +10888,8 @@ loc_6C5B:
 4:7388  ca0a00               retf 0xa
 4:738B  db 00
 
-; ---------------- sub_s4:738C FAR size=54 callers=1
+; ---------------- MovieView105::MovieView105@s4:738C FAR size=54 callers=1
+;   movie view, mode 105: movie 174, then command 0
 4:738C  55                   push bp
 4:738D  8bec                 mov bp, sp
 4:738F  66ff760c             push dword ptr [bp + 0xc]
@@ -10627,7 +10899,7 @@ loc_6C5B:
 4:73A2  66ff7606             push dword ptr [bp + 6]
 4:73A6  90                   nop
 4:73A7  0e                   push cs
-4:73A8  e863f6               call 0x6a0e  ; sub_s4:6A0E
+4:73A8  e863f6               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:73AB  c45e06               les bx, ptr [bp + 6]
 4:73AE  26c7073eac           mov word ptr es:[bx], 0xac3e
 4:73B3  26c747028173         mov word ptr es:[bx + 2], 0x7381  ; SEGMENT s4:0000
@@ -10637,7 +10909,8 @@ loc_6C5B:
 4:73BE  ca0a00               retf 0xa
 4:73C1  db 00
 
-; ---------------- sub_s4:73C2 FAR size=54 callers=1
+; ---------------- MovieView53::MovieView53@s4:73C2 FAR size=54 callers=1
+;   movie view, mode 53: movie 186, then command 129
 4:73C2  55                   push bp
 4:73C3  8bec                 mov bp, sp
 4:73C5  66ff760c             push dword ptr [bp + 0xc]
@@ -10647,7 +10920,7 @@ loc_6C5B:
 4:73D8  66ff7606             push dword ptr [bp + 6]
 4:73DC  90                   nop
 4:73DD  0e                   push cs
-4:73DE  e82df6               call 0x6a0e  ; sub_s4:6A0E
+4:73DE  e82df6               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:73E1  c45e06               les bx, ptr [bp + 6]
 4:73E4  26c70722bf           mov word ptr es:[bx], 0xbf22
 4:73E9  26c74702b773         mov word ptr es:[bx + 2], 0x73b7  ; SEGMENT s4:0000
@@ -10657,7 +10930,8 @@ loc_6C5B:
 4:73F4  ca0a00               retf 0xa
 4:73F7  db 00
 
-; ---------------- sub_s4:73F8 FAR size=54 callers=1
+; ---------------- MovieView57::MovieView57@s4:73F8 FAR size=54 callers=1
+;   movie view, mode 57: movie 187, then command 0
 4:73F8  55                   push bp
 4:73F9  8bec                 mov bp, sp
 4:73FB  66ff760c             push dword ptr [bp + 0xc]
@@ -10667,7 +10941,7 @@ loc_6C5B:
 4:740E  66ff7606             push dword ptr [bp + 6]
 4:7412  90                   nop
 4:7413  0e                   push cs
-4:7414  e8f7f5               call 0x6a0e  ; sub_s4:6A0E
+4:7414  e8f7f5               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7417  c45e06               les bx, ptr [bp + 6]
 4:741A  26c70746a1           mov word ptr es:[bx], 0xa146
 4:741F  26c74702ed73         mov word ptr es:[bx + 2], 0x73ed  ; SEGMENT s4:0000
@@ -10677,17 +10951,18 @@ loc_6C5B:
 4:742A  ca0a00               retf 0xa
 4:742D  db 00
 
-; ---------------- sub_s4:742E FAR size=48 callers=0
+; ---------------- MovieView57::paint@s4:742E FAR size=48 callers=0
+;   (vslot 13 of the mode 57 view, movie 187) paints the movie, then plays smlstp (489) once a run (DGROUP 0x4254, set when it starts)
 4:742E  c8020000             enter 2, 0
 4:7432  66ff7606             push dword ptr [bp + 6]
 4:7436  90                   nop
 4:7437  0e                   push cs
-4:7438  e83ff6               call 0x6a7a  ; sub_s4:6A7A
+4:7438  e83ff6               call 0x6a7a  ; MovieView::paint@s4:6A7A
 4:743B  833e544200           cmp word ptr [0x4254], 0
 4:7440  7517                 jne 0x7459
 4:7442  68e901               push 0x1e9
 4:7445  66ff36a002           push dword ptr [0x2a0]
-4:744A  9a5c5c6c6c           lcall 0x6c6c, 0x5c5c  ; sub_s2:5C5C
+4:744A  9a5c5c6c6c           lcall 0x6c6c, 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 4:744F  0bc0                 or ax, ax
 4:7451  7406                 je 0x7459
 4:7453  c70654420100         mov word ptr [0x4254], 1
@@ -10696,7 +10971,8 @@ loc_7459:
 4:745A  ca0400               retf 4
 4:745D  db 00
 
-; ---------------- sub_s4:745E FAR size=54 callers=1
+; ---------------- MovieView34::MovieView34@s4:745E FAR size=54 callers=1
+;   movie view, mode 34: movie 188, then command 213
 4:745E  55                   push bp
 4:745F  8bec                 mov bp, sp
 4:7461  66ff760c             push dword ptr [bp + 0xc]
@@ -10706,7 +10982,7 @@ loc_7459:
 4:7474  66ff7606             push dword ptr [bp + 6]
 4:7478  90                   nop
 4:7479  0e                   push cs
-4:747A  e891f5               call 0x6a0e  ; sub_s4:6A0E
+4:747A  e891f5               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:747D  c45e06               les bx, ptr [bp + 6]
 4:7480  26c7072ab4           mov word ptr es:[bx], 0xb42a
 4:7485  26c747022374         mov word ptr es:[bx + 2], 0x7423  ; SEGMENT s4:0000
@@ -10716,7 +10992,8 @@ loc_7459:
 4:7490  ca0a00               retf 0xa
 4:7493  db 00
 
-; ---------------- sub_s4:7494 FAR size=54 callers=1
+; ---------------- MovieView54::MovieView54@s4:7494 FAR size=54 callers=1
+;   movie view, mode 54: movie 189, then command 205
 4:7494  55                   push bp
 4:7495  8bec                 mov bp, sp
 4:7497  66ff760c             push dword ptr [bp + 0xc]
@@ -10726,7 +11003,7 @@ loc_7459:
 4:74AA  66ff7606             push dword ptr [bp + 6]
 4:74AE  90                   nop
 4:74AF  0e                   push cs
-4:74B0  e85bf5               call 0x6a0e  ; sub_s4:6A0E
+4:74B0  e85bf5               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:74B3  c45e06               les bx, ptr [bp + 6]
 4:74B6  26c707ea96           mov word ptr es:[bx], 0x96ea
 4:74BB  26c747028974         mov word ptr es:[bx + 2], 0x7489  ; SEGMENT s4:0000
@@ -10736,7 +11013,8 @@ loc_7459:
 4:74C6  ca0a00               retf 0xa
 4:74C9  db 00
 
-; ---------------- sub_s4:74CA FAR size=54 callers=1
+; ---------------- MovieView55::MovieView55@s4:74CA FAR size=54 callers=1
+;   movie view, mode 55: movie 190, then command 131
 4:74CA  55                   push bp
 4:74CB  8bec                 mov bp, sp
 4:74CD  66ff760c             push dword ptr [bp + 0xc]
@@ -10746,7 +11024,7 @@ loc_7459:
 4:74E0  66ff7606             push dword ptr [bp + 6]
 4:74E4  90                   nop
 4:74E5  0e                   push cs
-4:74E6  e825f5               call 0x6a0e  ; sub_s4:6A0E
+4:74E6  e825f5               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:74E9  c45e06               les bx, ptr [bp + 6]
 4:74EC  26c707cea9           mov word ptr es:[bx], 0xa9ce
 4:74F1  26c74702bf74         mov word ptr es:[bx + 2], 0x74bf  ; SEGMENT s4:0000
@@ -10756,7 +11034,8 @@ loc_7459:
 4:74FC  ca0a00               retf 0xa
 4:74FF  db 00
 
-; ---------------- sub_s4:7500 FAR size=54 callers=1
+; ---------------- MovieView56::MovieView56@s4:7500 FAR size=54 callers=1
+;   movie view, mode 56: movie 191, then command 0
 4:7500  55                   push bp
 4:7501  8bec                 mov bp, sp
 4:7503  66ff760c             push dword ptr [bp + 0xc]
@@ -10766,7 +11045,7 @@ loc_7459:
 4:7516  66ff7606             push dword ptr [bp + 6]
 4:751A  90                   nop
 4:751B  0e                   push cs
-4:751C  e8eff4               call 0x6a0e  ; sub_s4:6A0E
+4:751C  e8eff4               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:751F  c45e06               les bx, ptr [bp + 6]
 4:7522  26c707b2bc           mov word ptr es:[bx], 0xbcb2
 4:7527  26c74702f574         mov word ptr es:[bx + 2], 0x74f5  ; SEGMENT s4:0000
@@ -10776,7 +11055,8 @@ loc_7459:
 4:7532  ca0a00               retf 0xa
 4:7535  db 00
 
-; ---------------- sub_s4:7536 FAR size=54 callers=1
+; ---------------- MovieView58::MovieView58@s4:7536 FAR size=54 callers=1
+;   movie view, mode 58: movie 192, then command 133
 4:7536  55                   push bp
 4:7537  8bec                 mov bp, sp
 4:7539  66ff760c             push dword ptr [bp + 0xc]
@@ -10786,7 +11066,7 @@ loc_7459:
 4:754C  66ff7606             push dword ptr [bp + 6]
 4:7550  90                   nop
 4:7551  0e                   push cs
-4:7552  e8b9f4               call 0x6a0e  ; sub_s4:6A0E
+4:7552  e8b9f4               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7555  c45e06               les bx, ptr [bp + 6]
 4:7558  26c707729f           mov word ptr es:[bx], 0x9f72
 4:755D  26c747022b75         mov word ptr es:[bx + 2], 0x752b  ; SEGMENT s4:0000
@@ -10796,7 +11076,8 @@ loc_7459:
 4:7568  ca0a00               retf 0xa
 4:756B  db 00
 
-; ---------------- sub_s4:756C FAR size=54 callers=1
+; ---------------- MovieView59::MovieView59@s4:756C FAR size=54 callers=1
+;   movie view, mode 59: movie 193, then command 134, sound 482
 4:756C  55                   push bp
 4:756D  8bec                 mov bp, sp
 4:756F  66ff760c             push dword ptr [bp + 0xc]
@@ -10806,7 +11087,7 @@ loc_7459:
 4:7582  66ff7606             push dword ptr [bp + 6]
 4:7586  90                   nop
 4:7587  0e                   push cs
-4:7588  e883f4               call 0x6a0e  ; sub_s4:6A0E
+4:7588  e883f4               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:758B  c45e06               les bx, ptr [bp + 6]
 4:758E  26c70756b2           mov word ptr es:[bx], 0xb256
 4:7593  26c747026175         mov word ptr es:[bx + 2], 0x7561  ; SEGMENT s4:0000
@@ -10816,7 +11097,8 @@ loc_7459:
 4:759E  ca0a00               retf 0xa
 4:75A1  db 00
 
-; ---------------- sub_s4:75A2 FAR size=54 callers=1
+; ---------------- MovieView60::MovieView60@s4:75A2 FAR size=54 callers=1
+;   movie view, mode 60: movie 194, then command 135
 4:75A2  55                   push bp
 4:75A3  8bec                 mov bp, sp
 4:75A5  66ff760c             push dword ptr [bp + 0xc]
@@ -10826,7 +11108,7 @@ loc_7459:
 4:75B8  66ff7606             push dword ptr [bp + 6]
 4:75BC  90                   nop
 4:75BD  0e                   push cs
-4:75BE  e84df4               call 0x6a0e  ; sub_s4:6A0E
+4:75BE  e84df4               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:75C1  c45e06               les bx, ptr [bp + 6]
 4:75C4  26c7071695           mov word ptr es:[bx], 0x9516
 4:75C9  26c747029775         mov word ptr es:[bx + 2], 0x7597  ; SEGMENT s4:0000
@@ -10836,7 +11118,8 @@ loc_7459:
 4:75D4  ca0a00               retf 0xa
 4:75D7  db 00
 
-; ---------------- sub_s4:75D8 FAR size=54 callers=1
+; ---------------- MovieView61::MovieView61@s4:75D8 FAR size=54 callers=1
+;   movie view, mode 61: movie 195, then command 136
 4:75D8  55                   push bp
 4:75D9  8bec                 mov bp, sp
 4:75DB  66ff760c             push dword ptr [bp + 0xc]
@@ -10846,7 +11129,7 @@ loc_7459:
 4:75EE  66ff7606             push dword ptr [bp + 6]
 4:75F2  90                   nop
 4:75F3  0e                   push cs
-4:75F4  e817f4               call 0x6a0e  ; sub_s4:6A0E
+4:75F4  e817f4               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:75F7  c45e06               les bx, ptr [bp + 6]
 4:75FA  26c707faa7           mov word ptr es:[bx], 0xa7fa
 4:75FF  26c74702cd75         mov word ptr es:[bx + 2], 0x75cd  ; SEGMENT s4:0000
@@ -10856,7 +11139,8 @@ loc_7459:
 4:760A  ca0a00               retf 0xa
 4:760D  db 00
 
-; ---------------- sub_s4:760E FAR size=54 callers=1
+; ---------------- MovieView62::MovieView62@s4:760E FAR size=54 callers=1
+;   movie view, mode 62: movie 196, then command 0
 4:760E  55                   push bp
 4:760F  8bec                 mov bp, sp
 4:7611  66ff760c             push dword ptr [bp + 0xc]
@@ -10866,7 +11150,7 @@ loc_7459:
 4:7624  66ff7606             push dword ptr [bp + 6]
 4:7628  90                   nop
 4:7629  0e                   push cs
-4:762A  e8e1f3               call 0x6a0e  ; sub_s4:6A0E
+4:762A  e8e1f3               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:762D  c45e06               les bx, ptr [bp + 6]
 4:7630  26c707deba           mov word ptr es:[bx], 0xbade
 4:7635  26c747020376         mov word ptr es:[bx + 2], 0x7603  ; SEGMENT s4:0000
@@ -10876,7 +11160,8 @@ loc_7459:
 4:7640  ca0a00               retf 0xa
 4:7643  db 00
 
-; ---------------- sub_s4:7644 FAR size=54 callers=1
+; ---------------- MovieView63::MovieView63@s4:7644 FAR size=54 callers=1
+;   movie view, mode 63: movie 197, then command 0
 4:7644  55                   push bp
 4:7645  8bec                 mov bp, sp
 4:7647  66ff760c             push dword ptr [bp + 0xc]
@@ -10886,7 +11171,7 @@ loc_7459:
 4:765A  66ff7606             push dword ptr [bp + 6]
 4:765E  90                   nop
 4:765F  0e                   push cs
-4:7660  e8abf3               call 0x6a0e  ; sub_s4:6A0E
+4:7660  e8abf3               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7663  c45e06               les bx, ptr [bp + 6]
 4:7666  26c707029d           mov word ptr es:[bx], 0x9d02
 4:766B  26c747023976         mov word ptr es:[bx + 2], 0x7639  ; SEGMENT s4:0000
@@ -10896,7 +11181,8 @@ loc_7459:
 4:7676  ca0a00               retf 0xa
 4:7679  db 00
 
-; ---------------- sub_s4:767A FAR size=54 callers=1
+; ---------------- MovieView64::MovieView64@s4:767A FAR size=54 callers=1
+;   movie view, mode 64: movie 198, then command 0
 4:767A  55                   push bp
 4:767B  8bec                 mov bp, sp
 4:767D  66ff760c             push dword ptr [bp + 0xc]
@@ -10906,7 +11192,7 @@ loc_7459:
 4:7690  66ff7606             push dword ptr [bp + 6]
 4:7694  90                   nop
 4:7695  0e                   push cs
-4:7696  e875f3               call 0x6a0e  ; sub_s4:6A0E
+4:7696  e875f3               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7699  c45e06               les bx, ptr [bp + 6]
 4:769C  26c707e6af           mov word ptr es:[bx], 0xafe6
 4:76A1  26c747026f76         mov word ptr es:[bx + 2], 0x766f  ; SEGMENT s4:0000
@@ -10916,7 +11202,8 @@ loc_7459:
 4:76AC  ca0a00               retf 0xa
 4:76AF  db 00
 
-; ---------------- sub_s4:76B0 FAR size=54 callers=1
+; ---------------- MovieView65::MovieView65@s4:76B0 FAR size=54 callers=1
+;   movie view, mode 65: movie 199, then command 141
 4:76B0  55                   push bp
 4:76B1  8bec                 mov bp, sp
 4:76B3  66ff760c             push dword ptr [bp + 0xc]
@@ -10926,7 +11213,7 @@ loc_7459:
 4:76C6  66ff7606             push dword ptr [bp + 6]
 4:76CA  90                   nop
 4:76CB  0e                   push cs
-4:76CC  e83ff3               call 0x6a0e  ; sub_s4:6A0E
+4:76CC  e83ff3               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:76CF  c45e06               les bx, ptr [bp + 6]
 4:76D2  26c707cac2           mov word ptr es:[bx], 0xc2ca
 4:76D7  26c74702a576         mov word ptr es:[bx + 2], 0x76a5  ; SEGMENT s4:0000
@@ -10936,7 +11223,8 @@ loc_7459:
 4:76E2  ca0a00               retf 0xa
 4:76E5  db 00
 
-; ---------------- sub_s4:76E6 FAR size=54 callers=1
+; ---------------- MovieView66::MovieView66@s4:76E6 FAR size=54 callers=1
+;   movie view, mode 66: movie 200, then command 0
 4:76E6  55                   push bp
 4:76E7  8bec                 mov bp, sp
 4:76E9  66ff760c             push dword ptr [bp + 0xc]
@@ -10946,7 +11234,7 @@ loc_7459:
 4:76FC  66ff7606             push dword ptr [bp + 6]
 4:7700  90                   nop
 4:7701  0e                   push cs
-4:7702  e809f3               call 0x6a0e  ; sub_s4:6A0E
+4:7702  e809f3               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7705  c45e06               les bx, ptr [bp + 6]
 4:7708  26c7078aa5           mov word ptr es:[bx], 0xa58a
 4:770D  26c74702db76         mov word ptr es:[bx + 2], 0x76db  ; SEGMENT s4:0000
@@ -10956,7 +11244,8 @@ loc_7459:
 4:7718  ca0a00               retf 0xa
 4:771B  db 00
 
-; ---------------- sub_s4:771C FAR size=54 callers=1
+; ---------------- MovieView67::MovieView67@s4:771C FAR size=54 callers=1
+;   movie view, mode 67: movie 201, then command 0
 4:771C  55                   push bp
 4:771D  8bec                 mov bp, sp
 4:771F  66ff760c             push dword ptr [bp + 0xc]
@@ -10966,7 +11255,7 @@ loc_7459:
 4:7732  66ff7606             push dword ptr [bp + 6]
 4:7736  90                   nop
 4:7737  0e                   push cs
-4:7738  e8d3f2               call 0x6a0e  ; sub_s4:6A0E
+4:7738  e8d3f2               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:773B  c45e06               les bx, ptr [bp + 6]
 4:773E  26c7076eb8           mov word ptr es:[bx], 0xb86e
 4:7743  26c747021177         mov word ptr es:[bx + 2], 0x7711  ; SEGMENT s4:0000
@@ -10976,7 +11265,8 @@ loc_7459:
 4:774E  ca0a00               retf 0xa
 4:7751  db 00
 
-; ---------------- sub_s4:7752 FAR size=54 callers=1
+; ---------------- MovieView68::MovieView68@s4:7752 FAR size=54 callers=1
+;   movie view, mode 68: movie 204, then command 0
 4:7752  55                   push bp
 4:7753  8bec                 mov bp, sp
 4:7755  66ff760c             push dword ptr [bp + 0xc]
@@ -10986,7 +11276,7 @@ loc_7459:
 4:7768  66ff7606             push dword ptr [bp + 6]
 4:776C  90                   nop
 4:776D  0e                   push cs
-4:776E  e89df2               call 0x6a0e  ; sub_s4:6A0E
+4:776E  e89df2               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7771  c45e06               les bx, ptr [bp + 6]
 4:7774  26c7072e9b           mov word ptr es:[bx], 0x9b2e
 4:7779  26c747024777         mov word ptr es:[bx + 2], 0x7747  ; SEGMENT s4:0000
@@ -10996,7 +11286,8 @@ loc_7459:
 4:7784  ca0a00               retf 0xa
 4:7787  db 00
 
-; ---------------- sub_s4:7788 FAR size=54 callers=1
+; ---------------- MovieView69::MovieView69@s4:7788 FAR size=54 callers=1
+;   movie view, mode 69: movie 205, then command 0
 4:7788  55                   push bp
 4:7789  8bec                 mov bp, sp
 4:778B  66ff760c             push dword ptr [bp + 0xc]
@@ -11006,7 +11297,7 @@ loc_7459:
 4:779E  66ff7606             push dword ptr [bp + 6]
 4:77A2  90                   nop
 4:77A3  0e                   push cs
-4:77A4  e867f2               call 0x6a0e  ; sub_s4:6A0E
+4:77A4  e867f2               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:77A7  c45e06               les bx, ptr [bp + 6]
 4:77AA  26c70712ae           mov word ptr es:[bx], 0xae12
 4:77AF  26c747027d77         mov word ptr es:[bx + 2], 0x777d  ; SEGMENT s4:0000
@@ -11016,7 +11307,8 @@ loc_7459:
 4:77BA  ca0a00               retf 0xa
 4:77BD  db 00
 
-; ---------------- sub_s4:77BE FAR size=54 callers=1
+; ---------------- MovieView70::MovieView70@s4:77BE FAR size=54 callers=1
+;   movie view, mode 70: movie 209, then command 146
 4:77BE  55                   push bp
 4:77BF  8bec                 mov bp, sp
 4:77C1  66ff760c             push dword ptr [bp + 0xc]
@@ -11026,7 +11318,7 @@ loc_7459:
 4:77D4  66ff7606             push dword ptr [bp + 6]
 4:77D8  90                   nop
 4:77D9  0e                   push cs
-4:77DA  e831f2               call 0x6a0e  ; sub_s4:6A0E
+4:77DA  e831f2               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:77DD  c45e06               les bx, ptr [bp + 6]
 4:77E0  26c707f6c0           mov word ptr es:[bx], 0xc0f6
 4:77E5  26c74702b377         mov word ptr es:[bx + 2], 0x77b3  ; SEGMENT s4:0000
@@ -11036,7 +11328,8 @@ loc_7459:
 4:77F0  ca0a00               retf 0xa
 4:77F3  db 00
 
-; ---------------- sub_s4:77F4 FAR size=54 callers=1
+; ---------------- MovieView71::MovieView71@s4:77F4 FAR size=54 callers=1
+;   movie view, mode 71: movie 210, then command 0
 4:77F4  55                   push bp
 4:77F5  8bec                 mov bp, sp
 4:77F7  66ff760c             push dword ptr [bp + 0xc]
@@ -11046,7 +11339,7 @@ loc_7459:
 4:780A  66ff7606             push dword ptr [bp + 6]
 4:780E  90                   nop
 4:780F  0e                   push cs
-4:7810  e8fbf1               call 0x6a0e  ; sub_s4:6A0E
+4:7810  e8fbf1               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7813  c45e06               les bx, ptr [bp + 6]
 4:7816  26c707b6a3           mov word ptr es:[bx], 0xa3b6
 4:781B  26c74702e977         mov word ptr es:[bx + 2], 0x77e9  ; SEGMENT s4:0000
@@ -11056,7 +11349,8 @@ loc_7459:
 4:7826  ca0a00               retf 0xa
 4:7829  db 00
 
-; ---------------- sub_s4:782A FAR size=54 callers=1
+; ---------------- MovieView72::MovieView72@s4:782A FAR size=54 callers=1
+;   movie view, mode 72: movie 213, then command 0
 4:782A  55                   push bp
 4:782B  8bec                 mov bp, sp
 4:782D  66ff760c             push dword ptr [bp + 0xc]
@@ -11066,7 +11360,7 @@ loc_7459:
 4:7840  66ff7606             push dword ptr [bp + 6]
 4:7844  90                   nop
 4:7845  0e                   push cs
-4:7846  e8c5f1               call 0x6a0e  ; sub_s4:6A0E
+4:7846  e8c5f1               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7849  c45e06               les bx, ptr [bp + 6]
 4:784C  26c707daac           mov word ptr es:[bx], 0xacda
 4:7851  26c747021f78         mov word ptr es:[bx + 2], 0x781f  ; SEGMENT s4:0000
@@ -11076,7 +11370,8 @@ loc_7459:
 4:785C  ca0a00               retf 0xa
 4:785F  db 00
 
-; ---------------- sub_s4:7860 FAR size=54 callers=1
+; ---------------- MovieView73::MovieView73@s4:7860 FAR size=54 callers=1
+;   movie view, mode 73: movie 214, then command 0
 4:7860  55                   push bp
 4:7861  8bec                 mov bp, sp
 4:7863  66ff760c             push dword ptr [bp + 0xc]
@@ -11086,7 +11381,7 @@ loc_7459:
 4:7876  66ff7606             push dword ptr [bp + 6]
 4:787A  90                   nop
 4:787B  0e                   push cs
-4:787C  e88ff1               call 0x6a0e  ; sub_s4:6A0E
+4:787C  e88ff1               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:787F  c45e06               les bx, ptr [bp + 6]
 4:7882  26c707bebf           mov word ptr es:[bx], 0xbfbe
 4:7887  26c747025578         mov word ptr es:[bx + 2], 0x7855  ; SEGMENT s4:0000
@@ -11096,7 +11391,8 @@ loc_7459:
 4:7892  ca0a00               retf 0xa
 4:7895  db 00
 
-; ---------------- sub_s4:7896 FAR size=54 callers=1
+; ---------------- MovieView74::MovieView74@s4:7896 FAR size=54 callers=1
+;   movie view, mode 74: movie 215, then command 152, sound 500
 4:7896  55                   push bp
 4:7897  8bec                 mov bp, sp
 4:7899  66ff760c             push dword ptr [bp + 0xc]
@@ -11106,7 +11402,7 @@ loc_7459:
 4:78AC  66ff7606             push dword ptr [bp + 6]
 4:78B0  90                   nop
 4:78B1  0e                   push cs
-4:78B2  e859f1               call 0x6a0e  ; sub_s4:6A0E
+4:78B2  e859f1               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:78B5  c45e06               les bx, ptr [bp + 6]
 4:78B8  26c707e2a1           mov word ptr es:[bx], 0xa1e2
 4:78BD  26c747028b78         mov word ptr es:[bx + 2], 0x788b  ; SEGMENT s4:0000
@@ -11116,7 +11412,8 @@ loc_7459:
 4:78C8  ca0a00               retf 0xa
 4:78CB  db 00
 
-; ---------------- sub_s4:78CC FAR size=54 callers=1
+; ---------------- MovieView75::MovieView75@s4:78CC FAR size=54 callers=1
+;   movie view, mode 75: movie 216, then command 153
 4:78CC  55                   push bp
 4:78CD  8bec                 mov bp, sp
 4:78CF  66ff760c             push dword ptr [bp + 0xc]
@@ -11126,7 +11423,7 @@ loc_7459:
 4:78E2  66ff7606             push dword ptr [bp + 6]
 4:78E6  90                   nop
 4:78E7  0e                   push cs
-4:78E8  e823f1               call 0x6a0e  ; sub_s4:6A0E
+4:78E8  e823f1               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:78EB  c45e06               les bx, ptr [bp + 6]
 4:78EE  26c707c6b4           mov word ptr es:[bx], 0xb4c6
 4:78F3  26c74702c178         mov word ptr es:[bx + 2], 0x78c1  ; SEGMENT s4:0000
@@ -11136,7 +11433,8 @@ loc_7459:
 4:78FE  ca0a00               retf 0xa
 4:7901  db 00
 
-; ---------------- sub_s4:7902 FAR size=54 callers=1
+; ---------------- MovieView76::MovieView76@s4:7902 FAR size=54 callers=1
+;   movie view, mode 76: movie 217, then command 238
 4:7902  55                   push bp
 4:7903  8bec                 mov bp, sp
 4:7905  66ff760c             push dword ptr [bp + 0xc]
@@ -11146,7 +11444,7 @@ loc_7459:
 4:7918  66ff7606             push dword ptr [bp + 6]
 4:791C  90                   nop
 4:791D  0e                   push cs
-4:791E  e8edf0               call 0x6a0e  ; sub_s4:6A0E
+4:791E  e8edf0               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7921  c45e06               les bx, ptr [bp + 6]
 4:7924  26c7078697           mov word ptr es:[bx], 0x9786
 4:7929  26c74702f778         mov word ptr es:[bx + 2], 0x78f7  ; SEGMENT s4:0000
@@ -11156,7 +11454,8 @@ loc_7459:
 4:7934  ca0a00               retf 0xa
 4:7937  db 00
 
-; ---------------- sub_s4:7938 FAR size=54 callers=1
+; ---------------- MovieView77::MovieView77@s4:7938 FAR size=54 callers=1
+;   movie view, mode 77: movie 218, then command 156
 4:7938  55                   push bp
 4:7939  8bec                 mov bp, sp
 4:793B  66ff760c             push dword ptr [bp + 0xc]
@@ -11166,7 +11465,7 @@ loc_7459:
 4:794E  66ff7606             push dword ptr [bp + 6]
 4:7952  90                   nop
 4:7953  0e                   push cs
-4:7954  e8b7f0               call 0x6a0e  ; sub_s4:6A0E
+4:7954  e8b7f0               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7957  c45e06               les bx, ptr [bp + 6]
 4:795A  26c7076aaa           mov word ptr es:[bx], 0xaa6a
 4:795F  26c747022d79         mov word ptr es:[bx + 2], 0x792d  ; SEGMENT s4:0000
@@ -11176,7 +11475,8 @@ loc_7459:
 4:796A  ca0a00               retf 0xa
 4:796D  db 00
 
-; ---------------- sub_s4:796E FAR size=54 callers=1
+; ---------------- MovieView78::MovieView78@s4:796E FAR size=54 callers=1
+;   movie view, mode 78: movie 219, then command 157
 4:796E  55                   push bp
 4:796F  8bec                 mov bp, sp
 4:7971  66ff760c             push dword ptr [bp + 0xc]
@@ -11186,7 +11486,7 @@ loc_7459:
 4:7984  66ff7606             push dword ptr [bp + 6]
 4:7988  90                   nop
 4:7989  0e                   push cs
-4:798A  e881f0               call 0x6a0e  ; sub_s4:6A0E
+4:798A  e881f0               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:798D  c45e06               les bx, ptr [bp + 6]
 4:7990  26c7074ebd           mov word ptr es:[bx], 0xbd4e
 4:7995  26c747026379         mov word ptr es:[bx + 2], 0x7963  ; SEGMENT s4:0000
@@ -11196,7 +11496,8 @@ loc_7459:
 4:79A0  ca0a00               retf 0xa
 4:79A3  db 00
 
-; ---------------- sub_s4:79A4 FAR size=54 callers=1
+; ---------------- MovieView79::MovieView79@s4:79A4 FAR size=54 callers=1
+;   movie view, mode 79: movie 220, then command 158
 4:79A4  55                   push bp
 4:79A5  8bec                 mov bp, sp
 4:79A7  66ff760c             push dword ptr [bp + 0xc]
@@ -11206,7 +11507,7 @@ loc_7459:
 4:79BA  66ff7606             push dword ptr [bp + 6]
 4:79BE  90                   nop
 4:79BF  0e                   push cs
-4:79C0  e84bf0               call 0x6a0e  ; sub_s4:6A0E
+4:79C0  e84bf0               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:79C3  c45e06               les bx, ptr [bp + 6]
 4:79C6  26c7070ea0           mov word ptr es:[bx], 0xa00e
 4:79CB  26c747029979         mov word ptr es:[bx + 2], 0x7999  ; SEGMENT s4:0000
@@ -11216,7 +11517,8 @@ loc_7459:
 4:79D6  ca0a00               retf 0xa
 4:79D9  db 00
 
-; ---------------- sub_s4:79DA FAR size=54 callers=1
+; ---------------- MovieView80::MovieView80@s4:79DA FAR size=54 callers=1
+;   movie view, mode 80: movie 221, then command 0
 4:79DA  55                   push bp
 4:79DB  8bec                 mov bp, sp
 4:79DD  66ff760c             push dword ptr [bp + 0xc]
@@ -11226,7 +11528,7 @@ loc_7459:
 4:79F0  66ff7606             push dword ptr [bp + 6]
 4:79F4  90                   nop
 4:79F5  0e                   push cs
-4:79F6  e815f0               call 0x6a0e  ; sub_s4:6A0E
+4:79F6  e815f0               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:79F9  c45e06               les bx, ptr [bp + 6]
 4:79FC  26c707f2b2           mov word ptr es:[bx], 0xb2f2
 4:7A01  26c74702cf79         mov word ptr es:[bx + 2], 0x79cf  ; SEGMENT s4:0000
@@ -11236,7 +11538,8 @@ loc_7459:
 4:7A0C  ca0a00               retf 0xa
 4:7A0F  db 00
 
-; ---------------- sub_s4:7A10 FAR size=54 callers=1
+; ---------------- MovieView81::MovieView81@s4:7A10 FAR size=54 callers=1
+;   movie view, mode 81: movie 222, then command 0, sound 473
 4:7A10  55                   push bp
 4:7A11  8bec                 mov bp, sp
 4:7A13  66ff760c             push dword ptr [bp + 0xc]
@@ -11246,7 +11549,7 @@ loc_7459:
 4:7A26  66ff7606             push dword ptr [bp + 6]
 4:7A2A  90                   nop
 4:7A2B  0e                   push cs
-4:7A2C  e8dfef               call 0x6a0e  ; sub_s4:6A0E
+4:7A2C  e8dfef               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7A2F  c45e06               les bx, ptr [bp + 6]
 4:7A32  26c707b295           mov word ptr es:[bx], 0x95b2
 4:7A37  26c74702057a         mov word ptr es:[bx + 2], 0x7a05  ; SEGMENT s4:0000
@@ -11256,7 +11559,8 @@ loc_7459:
 4:7A42  ca0a00               retf 0xa
 4:7A45  db 00
 
-; ---------------- sub_s4:7A46 FAR size=54 callers=1
+; ---------------- MovieView82::MovieView82@s4:7A46 FAR size=54 callers=1
+;   movie view, mode 82: movie 223, then command 0
 4:7A46  55                   push bp
 4:7A47  8bec                 mov bp, sp
 4:7A49  66ff760c             push dword ptr [bp + 0xc]
@@ -11266,7 +11570,7 @@ loc_7459:
 4:7A5C  66ff7606             push dword ptr [bp + 6]
 4:7A60  90                   nop
 4:7A61  0e                   push cs
-4:7A62  e8a9ef               call 0x6a0e  ; sub_s4:6A0E
+4:7A62  e8a9ef               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7A65  c45e06               les bx, ptr [bp + 6]
 4:7A68  26c70796a8           mov word ptr es:[bx], 0xa896
 4:7A6D  26c747023b7a         mov word ptr es:[bx + 2], 0x7a3b  ; SEGMENT s4:0000
@@ -11276,7 +11580,8 @@ loc_7459:
 4:7A78  ca0a00               retf 0xa
 4:7A7B  db 00
 
-; ---------------- sub_s4:7A7C FAR size=54 callers=1
+; ---------------- MovieView83::MovieView83@s4:7A7C FAR size=54 callers=1
+;   movie view, mode 83: movie 224, then command 0
 4:7A7C  55                   push bp
 4:7A7D  8bec                 mov bp, sp
 4:7A7F  66ff760c             push dword ptr [bp + 0xc]
@@ -11286,7 +11591,7 @@ loc_7459:
 4:7A92  66ff7606             push dword ptr [bp + 6]
 4:7A96  90                   nop
 4:7A97  0e                   push cs
-4:7A98  e873ef               call 0x6a0e  ; sub_s4:6A0E
+4:7A98  e873ef               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7A9B  c45e06               les bx, ptr [bp + 6]
 4:7A9E  26c7077abb           mov word ptr es:[bx], 0xbb7a
 4:7AA3  26c74702717a         mov word ptr es:[bx + 2], 0x7a71  ; SEGMENT s4:0000
@@ -11296,7 +11601,8 @@ loc_7459:
 4:7AAE  ca0a00               retf 0xa
 4:7AB1  db 00
 
-; ---------------- sub_s4:7AB2 FAR size=54 callers=1
+; ---------------- MovieView85::MovieView85@s4:7AB2 FAR size=54 callers=1
+;   movie view, mode 85: movie 226, then command 0, sound 484
 4:7AB2  55                   push bp
 4:7AB3  8bec                 mov bp, sp
 4:7AB5  66ff760c             push dword ptr [bp + 0xc]
@@ -11306,7 +11612,7 @@ loc_7459:
 4:7AC8  66ff7606             push dword ptr [bp + 6]
 4:7ACC  90                   nop
 4:7ACD  0e                   push cs
-4:7ACE  e83def               call 0x6a0e  ; sub_s4:6A0E
+4:7ACE  e83def               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7AD1  c45e06               les bx, ptr [bp + 6]
 4:7AD4  26c70782b0           mov word ptr es:[bx], 0xb082
 4:7AD9  26c74702a77a         mov word ptr es:[bx + 2], 0x7aa7  ; SEGMENT s4:0000
@@ -11316,7 +11622,8 @@ loc_7459:
 4:7AE4  ca0a00               retf 0xa
 4:7AE7  db 00
 
-; ---------------- sub_s4:7AE8 FAR size=54 callers=1
+; ---------------- MovieView86::MovieView86@s4:7AE8 FAR size=54 callers=1
+;   movie view, mode 86: movie 227, then command 0, sound 484
 4:7AE8  55                   push bp
 4:7AE9  8bec                 mov bp, sp
 4:7AEB  66ff760c             push dword ptr [bp + 0xc]
@@ -11326,7 +11633,7 @@ loc_7459:
 4:7AFE  66ff7606             push dword ptr [bp + 6]
 4:7B02  90                   nop
 4:7B03  0e                   push cs
-4:7B04  e807ef               call 0x6a0e  ; sub_s4:6A0E
+4:7B04  e807ef               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7B07  c45e06               les bx, ptr [bp + 6]
 4:7B0A  26c70766c3           mov word ptr es:[bx], 0xc366
 4:7B0F  26c74702dd7a         mov word ptr es:[bx + 2], 0x7add  ; SEGMENT s4:0000
@@ -11336,7 +11643,8 @@ loc_7459:
 4:7B1A  ca0a00               retf 0xa
 4:7B1D  db 00
 
-; ---------------- sub_s4:7B1E FAR size=54 callers=1
+; ---------------- MovieView87::MovieView87@s4:7B1E FAR size=54 callers=1
+;   movie view, mode 87: movie 228, then command 0, sound 474
 4:7B1E  55                   push bp
 4:7B1F  8bec                 mov bp, sp
 4:7B21  66ff760c             push dword ptr [bp + 0xc]
@@ -11346,7 +11654,7 @@ loc_7459:
 4:7B34  66ff7606             push dword ptr [bp + 6]
 4:7B38  90                   nop
 4:7B39  0e                   push cs
-4:7B3A  e8d1ee               call 0x6a0e  ; sub_s4:6A0E
+4:7B3A  e8d1ee               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7B3D  c45e06               les bx, ptr [bp + 6]
 4:7B40  26c70726a6           mov word ptr es:[bx], 0xa626
 4:7B45  26c74702137b         mov word ptr es:[bx + 2], 0x7b13  ; SEGMENT s4:0000
@@ -11356,7 +11664,8 @@ loc_7459:
 4:7B50  ca0a00               retf 0xa
 4:7B53  db 00
 
-; ---------------- sub_s4:7B54 FAR size=54 callers=1
+; ---------------- MovieView88::MovieView88@s4:7B54 FAR size=54 callers=1
+;   movie view, mode 88: movie 229, then command 0, sound 472
 4:7B54  55                   push bp
 4:7B55  8bec                 mov bp, sp
 4:7B57  66ff760c             push dword ptr [bp + 0xc]
@@ -11366,7 +11675,7 @@ loc_7459:
 4:7B6A  66ff7606             push dword ptr [bp + 6]
 4:7B6E  90                   nop
 4:7B6F  0e                   push cs
-4:7B70  e89bee               call 0x6a0e  ; sub_s4:6A0E
+4:7B70  e89bee               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7B73  c45e06               les bx, ptr [bp + 6]
 4:7B76  26c7070ab9           mov word ptr es:[bx], 0xb90a
 4:7B7B  26c74702497b         mov word ptr es:[bx + 2], 0x7b49  ; SEGMENT s4:0000
@@ -11376,7 +11685,8 @@ loc_7459:
 4:7B86  ca0a00               retf 0xa
 4:7B89  db 00
 
-; ---------------- sub_s4:7B8A FAR size=54 callers=1
+; ---------------- MovieView89::MovieView89@s4:7B8A FAR size=54 callers=1
+;   movie view, mode 89: movie 230, then command 0
 4:7B8A  55                   push bp
 4:7B8B  8bec                 mov bp, sp
 4:7B8D  66ff760c             push dword ptr [bp + 0xc]
@@ -11386,7 +11696,7 @@ loc_7459:
 4:7BA0  66ff7606             push dword ptr [bp + 6]
 4:7BA4  90                   nop
 4:7BA5  0e                   push cs
-4:7BA6  e865ee               call 0x6a0e  ; sub_s4:6A0E
+4:7BA6  e865ee               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7BA9  c45e06               les bx, ptr [bp + 6]
 4:7BAC  26c707ca9b           mov word ptr es:[bx], 0x9bca
 4:7BB1  26c747027f7b         mov word ptr es:[bx + 2], 0x7b7f  ; SEGMENT s4:0000
@@ -11396,7 +11706,8 @@ loc_7459:
 4:7BBC  ca0a00               retf 0xa
 4:7BBF  db 00
 
-; ---------------- sub_s4:7BC0 FAR size=54 callers=1
+; ---------------- MovieView90::MovieView90@s4:7BC0 FAR size=54 callers=1
+;   movie view, mode 90: movie 231, then command 0, sound 495
 4:7BC0  55                   push bp
 4:7BC1  8bec                 mov bp, sp
 4:7BC3  66ff760c             push dword ptr [bp + 0xc]
@@ -11406,7 +11717,7 @@ loc_7459:
 4:7BD6  66ff7606             push dword ptr [bp + 6]
 4:7BDA  90                   nop
 4:7BDB  0e                   push cs
-4:7BDC  e82fee               call 0x6a0e  ; sub_s4:6A0E
+4:7BDC  e82fee               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7BDF  c45e06               les bx, ptr [bp + 6]
 4:7BE2  26c707aeae           mov word ptr es:[bx], 0xaeae
 4:7BE7  26c74702b57b         mov word ptr es:[bx + 2], 0x7bb5  ; SEGMENT s4:0000
@@ -11416,7 +11727,8 @@ loc_7459:
 4:7BF2  ca0a00               retf 0xa
 4:7BF5  db 00
 
-; ---------------- sub_s4:7BF6 FAR size=54 callers=1
+; ---------------- MovieView91::MovieView91@s4:7BF6 FAR size=54 callers=1
+;   movie view, mode 91: movie 232, then command 0
 4:7BF6  55                   push bp
 4:7BF7  8bec                 mov bp, sp
 4:7BF9  66ff760c             push dword ptr [bp + 0xc]
@@ -11426,7 +11738,7 @@ loc_7459:
 4:7C0C  66ff7606             push dword ptr [bp + 6]
 4:7C10  90                   nop
 4:7C11  0e                   push cs
-4:7C12  e8f9ed               call 0x6a0e  ; sub_s4:6A0E
+4:7C12  e8f9ed               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7C15  c45e06               les bx, ptr [bp + 6]
 4:7C18  26c70792c1           mov word ptr es:[bx], 0xc192
 4:7C1D  26c74702eb7b         mov word ptr es:[bx + 2], 0x7beb  ; SEGMENT s4:0000
@@ -11436,7 +11748,8 @@ loc_7459:
 4:7C28  ca0a00               retf 0xa
 4:7C2B  db 00
 
-; ---------------- sub_s4:7C2C FAR size=54 callers=1
+; ---------------- MovieView92::MovieView92@s4:7C2C FAR size=54 callers=1
+;   movie view, mode 92: movie 234, then command 0
 4:7C2C  55                   push bp
 4:7C2D  8bec                 mov bp, sp
 4:7C2F  66ff760c             push dword ptr [bp + 0xc]
@@ -11446,7 +11759,7 @@ loc_7459:
 4:7C42  66ff7606             push dword ptr [bp + 6]
 4:7C46  90                   nop
 4:7C47  0e                   push cs
-4:7C48  e8c3ed               call 0x6a0e  ; sub_s4:6A0E
+4:7C48  e8c3ed               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7C4B  c45e06               les bx, ptr [bp + 6]
 4:7C4E  26c70736b7           mov word ptr es:[bx], 0xb736
 4:7C53  26c74702217c         mov word ptr es:[bx + 2], 0x7c21  ; SEGMENT s4:0000
@@ -11456,7 +11769,8 @@ loc_7459:
 4:7C5E  ca0a00               retf 0xa
 4:7C61  db 00
 
-; ---------------- sub_s4:7C62 FAR size=54 callers=1
+; ---------------- MovieView93::MovieView93@s4:7C62 FAR size=54 callers=1
+;   movie view, mode 93: movie 235, then command 0
 4:7C62  55                   push bp
 4:7C63  8bec                 mov bp, sp
 4:7C65  66ff760c             push dword ptr [bp + 0xc]
@@ -11466,7 +11780,7 @@ loc_7459:
 4:7C78  66ff7606             push dword ptr [bp + 6]
 4:7C7C  90                   nop
 4:7C7D  0e                   push cs
-4:7C7E  e88ded               call 0x6a0e  ; sub_s4:6A0E
+4:7C7E  e88ded               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7C81  c45e06               les bx, ptr [bp + 6]
 4:7C84  26c707f699           mov word ptr es:[bx], 0x99f6
 4:7C89  26c74702577c         mov word ptr es:[bx + 2], 0x7c57  ; SEGMENT s4:0000
@@ -11476,7 +11790,8 @@ loc_7459:
 4:7C94  ca0a00               retf 0xa
 4:7C97  db 00
 
-; ---------------- sub_s4:7C98 FAR size=54 callers=1
+; ---------------- MovieView94::MovieView94@s4:7C98 FAR size=54 callers=1
+;   movie view, mode 94: movie 236, then command 238, sound 486
 4:7C98  55                   push bp
 4:7C99  8bec                 mov bp, sp
 4:7C9B  66ff760c             push dword ptr [bp + 0xc]
@@ -11486,7 +11801,7 @@ loc_7459:
 4:7CAE  66ff7606             push dword ptr [bp + 6]
 4:7CB2  90                   nop
 4:7CB3  0e                   push cs
-4:7CB4  e857ed               call 0x6a0e  ; sub_s4:6A0E
+4:7CB4  e857ed               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7CB7  c45e06               les bx, ptr [bp + 6]
 4:7CBA  26c70742ba           mov word ptr es:[bx], 0xba42
 4:7CBF  26c747028d7c         mov word ptr es:[bx + 2], 0x7c8d  ; SEGMENT s4:0000
@@ -11496,7 +11811,8 @@ loc_7459:
 4:7CCA  ca0a00               retf 0xa
 4:7CCD  db 00
 
-; ---------------- sub_s4:7CCE FAR size=54 callers=1
+; ---------------- MovieView95::MovieView95@s4:7CCE FAR size=54 callers=1
+;   movie view, mode 95: movie 237, then command 0, sound 474
 4:7CCE  55                   push bp
 4:7CCF  8bec                 mov bp, sp
 4:7CD1  66ff760c             push dword ptr [bp + 0xc]
@@ -11506,7 +11822,7 @@ loc_7459:
 4:7CE4  66ff7606             push dword ptr [bp + 6]
 4:7CE8  90                   nop
 4:7CE9  0e                   push cs
-4:7CEA  e821ed               call 0x6a0e  ; sub_s4:6A0E
+4:7CEA  e821ed               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7CED  c45e06               les bx, ptr [bp + 6]
 4:7CF0  26c707d69e           mov word ptr es:[bx], 0x9ed6
 4:7CF5  26c74702c37c         mov word ptr es:[bx + 2], 0x7cc3  ; SEGMENT s4:0000
@@ -11516,7 +11832,8 @@ loc_7459:
 4:7D00  ca0a00               retf 0xa
 4:7D03  db 00
 
-; ---------------- sub_s4:7D04 FAR size=54 callers=1
+; ---------------- MovieView96::MovieView96@s4:7D04 FAR size=54 callers=1
+;   movie view, mode 96: movie 238, then command 0
 4:7D04  55                   push bp
 4:7D05  8bec                 mov bp, sp
 4:7D07  66ff760c             push dword ptr [bp + 0xc]
@@ -11526,7 +11843,7 @@ loc_7459:
 4:7D1A  66ff7606             push dword ptr [bp + 6]
 4:7D1E  90                   nop
 4:7D1F  0e                   push cs
-4:7D20  e8ebec               call 0x6a0e  ; sub_s4:6A0E
+4:7D20  e8ebec               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7D23  c45e06               les bx, ptr [bp + 6]
 4:7D26  26c707bab1           mov word ptr es:[bx], 0xb1ba
 4:7D2B  26c74702f97c         mov word ptr es:[bx + 2], 0x7cf9  ; SEGMENT s4:0000
@@ -11536,7 +11853,8 @@ loc_7459:
 4:7D36  ca0a00               retf 0xa
 4:7D39  db 00
 
-; ---------------- sub_s4:7D3A FAR size=54 callers=1
+; ---------------- MovieView97::MovieView97@s4:7D3A FAR size=54 callers=1
+;   movie view, mode 97: movie 239, then command 0, sound 496
 4:7D3A  55                   push bp
 4:7D3B  8bec                 mov bp, sp
 4:7D3D  66ff760c             push dword ptr [bp + 0xc]
@@ -11546,7 +11864,7 @@ loc_7459:
 4:7D50  66ff7606             push dword ptr [bp + 6]
 4:7D54  90                   nop
 4:7D55  0e                   push cs
-4:7D56  e8b5ec               call 0x6a0e  ; sub_s4:6A0E
+4:7D56  e8b5ec               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7D59  c45e06               les bx, ptr [bp + 6]
 4:7D5C  26c7077a94           mov word ptr es:[bx], 0x947a
 4:7D61  26c747022f7d         mov word ptr es:[bx + 2], 0x7d2f  ; SEGMENT s4:0000
@@ -11556,7 +11874,8 @@ loc_7459:
 4:7D6C  ca0a00               retf 0xa
 4:7D6F  db 00
 
-; ---------------- sub_s4:7D70 FAR size=54 callers=1
+; ---------------- MovieView98::MovieView98@s4:7D70 FAR size=54 callers=1
+;   movie view, mode 98: movie 240, then command 204, sound 503
 4:7D70  55                   push bp
 4:7D71  8bec                 mov bp, sp
 4:7D73  66ff760c             push dword ptr [bp + 0xc]
@@ -11566,7 +11885,7 @@ loc_7459:
 4:7D86  66ff7606             push dword ptr [bp + 6]
 4:7D8A  90                   nop
 4:7D8B  0e                   push cs
-4:7D8C  e87fec               call 0x6a0e  ; sub_s4:6A0E
+4:7D8C  e87fec               call 0x6a0e  ; MovieView::MovieView@s4:6A0E
 4:7D8F  c45e06               les bx, ptr [bp + 6]
 4:7D92  26c7075ea7           mov word ptr es:[bx], 0xa75e
 4:7D97  26c74702657d         mov word ptr es:[bx + 2], 0x7d65  ; SEGMENT s4:0000
@@ -11576,12 +11895,13 @@ loc_7459:
 4:7DA2  ca0a00               retf 0xa
 4:7DA5  db 00
 
-; ---------------- sub_s4:7DA6 FAR size=72 callers=0
+; ---------------- MovieView11::scalar_dtor@s4:7DA6 FAR size=72 callers=0
+;   mode 11 movie view deleting destructor
 4:7DA6  c81c0000             enter 0x1c, 0
 4:7DAA  668b4606             mov eax, dword ptr [bp + 6]
 4:7DAE  05d200               add ax, 0xd2
 4:7DB1  6650                 push eax
-4:7DB3  9ac457c47d           lcall 0x7dc4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7DB3  9ac457c47d           lcall 0x7dc4, 0x57c4  ; List::~List@s2:57C4
 4:7DB8  c45e06               les bx, ptr [bp + 6]
 4:7DBB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7DC0  26c74702d27d         mov word ptr es:[bx + 2], 0x7dd2  ; SEGMENT s2:0000
@@ -11599,12 +11919,13 @@ loc_7DE3:
 4:7DEA  ca0600               retf 6
 4:7DED  db 00
 
-; ---------------- sub_s4:7DEE FAR size=72 callers=0
+; ---------------- MovieView12::scalar_dtor@s4:7DEE FAR size=72 callers=0
+;   mode 12 movie view deleting destructor
 4:7DEE  c81c0000             enter 0x1c, 0
 4:7DF2  668b4606             mov eax, dword ptr [bp + 6]
 4:7DF6  05d200               add ax, 0xd2
 4:7DF9  6650                 push eax
-4:7DFB  9ac4570c7e           lcall 0x7e0c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7DFB  9ac4570c7e           lcall 0x7e0c, 0x57c4  ; List::~List@s2:57C4
 4:7E00  c45e06               les bx, ptr [bp + 6]
 4:7E03  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7E08  26c747021a7e         mov word ptr es:[bx + 2], 0x7e1a  ; SEGMENT s2:0000
@@ -11622,12 +11943,13 @@ loc_7E2B:
 4:7E32  ca0600               retf 6
 4:7E35  db 00
 
-; ---------------- sub_s4:7E36 FAR size=72 callers=0
+; ---------------- MovieView13::scalar_dtor@s4:7E36 FAR size=72 callers=0
+;   mode 13 movie view deleting destructor
 4:7E36  c81c0000             enter 0x1c, 0
 4:7E3A  668b4606             mov eax, dword ptr [bp + 6]
 4:7E3E  05d200               add ax, 0xd2
 4:7E41  6650                 push eax
-4:7E43  9ac457547e           lcall 0x7e54, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7E43  9ac457547e           lcall 0x7e54, 0x57c4  ; List::~List@s2:57C4
 4:7E48  c45e06               les bx, ptr [bp + 6]
 4:7E4B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7E50  26c74702627e         mov word ptr es:[bx + 2], 0x7e62  ; SEGMENT s2:0000
@@ -11645,12 +11967,13 @@ loc_7E73:
 4:7E7A  ca0600               retf 6
 4:7E7D  db 00
 
-; ---------------- sub_s4:7E7E FAR size=72 callers=0
+; ---------------- MovieView14::scalar_dtor@s4:7E7E FAR size=72 callers=0
+;   mode 14 movie view deleting destructor
 4:7E7E  c81c0000             enter 0x1c, 0
 4:7E82  668b4606             mov eax, dword ptr [bp + 6]
 4:7E86  05d200               add ax, 0xd2
 4:7E89  6650                 push eax
-4:7E8B  9ac4579c7e           lcall 0x7e9c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7E8B  9ac4579c7e           lcall 0x7e9c, 0x57c4  ; List::~List@s2:57C4
 4:7E90  c45e06               les bx, ptr [bp + 6]
 4:7E93  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7E98  26c74702aa7e         mov word ptr es:[bx + 2], 0x7eaa  ; SEGMENT s2:0000
@@ -11668,12 +11991,13 @@ loc_7EBB:
 4:7EC2  ca0600               retf 6
 4:7EC5  db 00
 
-; ---------------- sub_s4:7EC6 FAR size=72 callers=0
+; ---------------- MovieView15::scalar_dtor@s4:7EC6 FAR size=72 callers=0
+;   mode 15 movie view deleting destructor
 4:7EC6  c81c0000             enter 0x1c, 0
 4:7ECA  668b4606             mov eax, dword ptr [bp + 6]
 4:7ECE  05d200               add ax, 0xd2
 4:7ED1  6650                 push eax
-4:7ED3  9ac457e47e           lcall 0x7ee4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7ED3  9ac457e47e           lcall 0x7ee4, 0x57c4  ; List::~List@s2:57C4
 4:7ED8  c45e06               les bx, ptr [bp + 6]
 4:7EDB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7EE0  26c74702f27e         mov word ptr es:[bx + 2], 0x7ef2  ; SEGMENT s2:0000
@@ -11691,12 +12015,13 @@ loc_7F03:
 4:7F0A  ca0600               retf 6
 4:7F0D  db 00
 
-; ---------------- sub_s4:7F0E FAR size=72 callers=0
+; ---------------- MovieView16::scalar_dtor@s4:7F0E FAR size=72 callers=0
+;   mode 16 movie view deleting destructor
 4:7F0E  c81c0000             enter 0x1c, 0
 4:7F12  668b4606             mov eax, dword ptr [bp + 6]
 4:7F16  05d200               add ax, 0xd2
 4:7F19  6650                 push eax
-4:7F1B  9ac4572c7f           lcall 0x7f2c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7F1B  9ac4572c7f           lcall 0x7f2c, 0x57c4  ; List::~List@s2:57C4
 4:7F20  c45e06               les bx, ptr [bp + 6]
 4:7F23  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7F28  26c747023a7f         mov word ptr es:[bx + 2], 0x7f3a  ; SEGMENT s2:0000
@@ -11714,12 +12039,13 @@ loc_7F4B:
 4:7F52  ca0600               retf 6
 4:7F55  db 00
 
-; ---------------- sub_s4:7F56 FAR size=72 callers=0
+; ---------------- MovieView17::scalar_dtor@s4:7F56 FAR size=72 callers=0
+;   mode 17 movie view deleting destructor
 4:7F56  c81c0000             enter 0x1c, 0
 4:7F5A  668b4606             mov eax, dword ptr [bp + 6]
 4:7F5E  05d200               add ax, 0xd2
 4:7F61  6650                 push eax
-4:7F63  9ac457747f           lcall 0x7f74, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7F63  9ac457747f           lcall 0x7f74, 0x57c4  ; List::~List@s2:57C4
 4:7F68  c45e06               les bx, ptr [bp + 6]
 4:7F6B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7F70  26c74702827f         mov word ptr es:[bx + 2], 0x7f82  ; SEGMENT s2:0000
@@ -11737,12 +12063,13 @@ loc_7F93:
 4:7F9A  ca0600               retf 6
 4:7F9D  db 00
 
-; ---------------- sub_s4:7F9E FAR size=72 callers=0
+; ---------------- MovieView18::scalar_dtor@s4:7F9E FAR size=72 callers=0
+;   mode 18 movie view deleting destructor
 4:7F9E  c81c0000             enter 0x1c, 0
 4:7FA2  668b4606             mov eax, dword ptr [bp + 6]
 4:7FA6  05d200               add ax, 0xd2
 4:7FA9  6650                 push eax
-4:7FAB  9ac457bc7f           lcall 0x7fbc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7FAB  9ac457bc7f           lcall 0x7fbc, 0x57c4  ; List::~List@s2:57C4
 4:7FB0  c45e06               les bx, ptr [bp + 6]
 4:7FB3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:7FB8  26c74702ca7f         mov word ptr es:[bx + 2], 0x7fca  ; SEGMENT s2:0000
@@ -11760,12 +12087,13 @@ loc_7FDB:
 4:7FE2  ca0600               retf 6
 4:7FE5  db 00
 
-; ---------------- sub_s4:7FE6 FAR size=72 callers=0
+; ---------------- MovieView19::scalar_dtor@s4:7FE6 FAR size=72 callers=0
+;   mode 19 movie view deleting destructor
 4:7FE6  c81c0000             enter 0x1c, 0
 4:7FEA  668b4606             mov eax, dword ptr [bp + 6]
 4:7FEE  05d200               add ax, 0xd2
 4:7FF1  6650                 push eax
-4:7FF3  9ac4570480           lcall 0x8004, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:7FF3  9ac4570480           lcall 0x8004, 0x57c4  ; List::~List@s2:57C4
 4:7FF8  c45e06               les bx, ptr [bp + 6]
 4:7FFB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8000  26c747021280         mov word ptr es:[bx + 2], 0x8012  ; SEGMENT s2:0000
@@ -11783,12 +12111,13 @@ loc_8023:
 4:802A  ca0600               retf 6
 4:802D  db 00
 
-; ---------------- sub_s4:802E FAR size=72 callers=0
+; ---------------- MovieView20::scalar_dtor@s4:802E FAR size=72 callers=0
+;   mode 20 movie view deleting destructor
 4:802E  c81c0000             enter 0x1c, 0
 4:8032  668b4606             mov eax, dword ptr [bp + 6]
 4:8036  05d200               add ax, 0xd2
 4:8039  6650                 push eax
-4:803B  9ac4574c80           lcall 0x804c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:803B  9ac4574c80           lcall 0x804c, 0x57c4  ; List::~List@s2:57C4
 4:8040  c45e06               les bx, ptr [bp + 6]
 4:8043  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8048  26c747025a80         mov word ptr es:[bx + 2], 0x805a  ; SEGMENT s2:0000
@@ -11806,12 +12135,13 @@ loc_806B:
 4:8072  ca0600               retf 6
 4:8075  db 00
 
-; ---------------- sub_s4:8076 FAR size=72 callers=0
+; ---------------- MovieView21::scalar_dtor@s4:8076 FAR size=72 callers=0
+;   mode 21 movie view deleting destructor
 4:8076  c81c0000             enter 0x1c, 0
 4:807A  668b4606             mov eax, dword ptr [bp + 6]
 4:807E  05d200               add ax, 0xd2
 4:8081  6650                 push eax
-4:8083  9ac4579480           lcall 0x8094, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8083  9ac4579480           lcall 0x8094, 0x57c4  ; List::~List@s2:57C4
 4:8088  c45e06               les bx, ptr [bp + 6]
 4:808B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8090  26c74702a280         mov word ptr es:[bx + 2], 0x80a2  ; SEGMENT s2:0000
@@ -11829,12 +12159,13 @@ loc_80B3:
 4:80BA  ca0600               retf 6
 4:80BD  db 00
 
-; ---------------- sub_s4:80BE FAR size=72 callers=0
+; ---------------- MovieView22::scalar_dtor@s4:80BE FAR size=72 callers=0
+;   mode 22 movie view deleting destructor
 4:80BE  c81c0000             enter 0x1c, 0
 4:80C2  668b4606             mov eax, dword ptr [bp + 6]
 4:80C6  05d200               add ax, 0xd2
 4:80C9  6650                 push eax
-4:80CB  9ac457dc80           lcall 0x80dc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:80CB  9ac457dc80           lcall 0x80dc, 0x57c4  ; List::~List@s2:57C4
 4:80D0  c45e06               les bx, ptr [bp + 6]
 4:80D3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:80D8  26c74702ea80         mov word ptr es:[bx + 2], 0x80ea  ; SEGMENT s2:0000
@@ -11852,12 +12183,13 @@ loc_80FB:
 4:8102  ca0600               retf 6
 4:8105  db 00
 
-; ---------------- sub_s4:8106 FAR size=72 callers=0
+; ---------------- MovieView23::scalar_dtor@s4:8106 FAR size=72 callers=0
+;   mode 23 movie view deleting destructor
 4:8106  c81c0000             enter 0x1c, 0
 4:810A  668b4606             mov eax, dword ptr [bp + 6]
 4:810E  05d200               add ax, 0xd2
 4:8111  6650                 push eax
-4:8113  9ac4572481           lcall 0x8124, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8113  9ac4572481           lcall 0x8124, 0x57c4  ; List::~List@s2:57C4
 4:8118  c45e06               les bx, ptr [bp + 6]
 4:811B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8120  26c747023281         mov word ptr es:[bx + 2], 0x8132  ; SEGMENT s2:0000
@@ -11875,12 +12207,13 @@ loc_8143:
 4:814A  ca0600               retf 6
 4:814D  db 00
 
-; ---------------- sub_s4:814E FAR size=72 callers=0
+; ---------------- MovieView24::scalar_dtor@s4:814E FAR size=72 callers=0
+;   mode 24 movie view deleting destructor
 4:814E  c81c0000             enter 0x1c, 0
 4:8152  668b4606             mov eax, dword ptr [bp + 6]
 4:8156  05d200               add ax, 0xd2
 4:8159  6650                 push eax
-4:815B  9ac4576c81           lcall 0x816c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:815B  9ac4576c81           lcall 0x816c, 0x57c4  ; List::~List@s2:57C4
 4:8160  c45e06               les bx, ptr [bp + 6]
 4:8163  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8168  26c747027a81         mov word ptr es:[bx + 2], 0x817a  ; SEGMENT s2:0000
@@ -11898,12 +12231,13 @@ loc_818B:
 4:8192  ca0600               retf 6
 4:8195  db 00
 
-; ---------------- sub_s4:8196 FAR size=72 callers=0
+; ---------------- MovieView25::scalar_dtor@s4:8196 FAR size=72 callers=0
+;   mode 25 movie view deleting destructor
 4:8196  c81c0000             enter 0x1c, 0
 4:819A  668b4606             mov eax, dword ptr [bp + 6]
 4:819E  05d200               add ax, 0xd2
 4:81A1  6650                 push eax
-4:81A3  9ac457b481           lcall 0x81b4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:81A3  9ac457b481           lcall 0x81b4, 0x57c4  ; List::~List@s2:57C4
 4:81A8  c45e06               les bx, ptr [bp + 6]
 4:81AB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:81B0  26c74702c281         mov word ptr es:[bx + 2], 0x81c2  ; SEGMENT s2:0000
@@ -11921,12 +12255,13 @@ loc_81D3:
 4:81DA  ca0600               retf 6
 4:81DD  db 00
 
-; ---------------- sub_s4:81DE FAR size=72 callers=0
+; ---------------- MovieView26::scalar_dtor@s4:81DE FAR size=72 callers=0
+;   mode 26 movie view deleting destructor
 4:81DE  c81c0000             enter 0x1c, 0
 4:81E2  668b4606             mov eax, dword ptr [bp + 6]
 4:81E6  05d200               add ax, 0xd2
 4:81E9  6650                 push eax
-4:81EB  9ac457fc81           lcall 0x81fc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:81EB  9ac457fc81           lcall 0x81fc, 0x57c4  ; List::~List@s2:57C4
 4:81F0  c45e06               les bx, ptr [bp + 6]
 4:81F3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:81F8  26c747020a82         mov word ptr es:[bx + 2], 0x820a  ; SEGMENT s2:0000
@@ -11944,12 +12279,13 @@ loc_821B:
 4:8222  ca0600               retf 6
 4:8225  db 00
 
-; ---------------- sub_s4:8226 FAR size=72 callers=0
+; ---------------- MovieView27::scalar_dtor@s4:8226 FAR size=72 callers=0
+;   mode 27 movie view deleting destructor
 4:8226  c81c0000             enter 0x1c, 0
 4:822A  668b4606             mov eax, dword ptr [bp + 6]
 4:822E  05d200               add ax, 0xd2
 4:8231  6650                 push eax
-4:8233  9ac4574482           lcall 0x8244, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8233  9ac4574482           lcall 0x8244, 0x57c4  ; List::~List@s2:57C4
 4:8238  c45e06               les bx, ptr [bp + 6]
 4:823B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8240  26c747025282         mov word ptr es:[bx + 2], 0x8252  ; SEGMENT s2:0000
@@ -11967,12 +12303,13 @@ loc_8263:
 4:826A  ca0600               retf 6
 4:826D  db 00
 
-; ---------------- sub_s4:826E FAR size=72 callers=0
+; ---------------- MovieView28::scalar_dtor@s4:826E FAR size=72 callers=0
+;   mode 28 movie view deleting destructor
 4:826E  c81c0000             enter 0x1c, 0
 4:8272  668b4606             mov eax, dword ptr [bp + 6]
 4:8276  05d200               add ax, 0xd2
 4:8279  6650                 push eax
-4:827B  9ac4578c82           lcall 0x828c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:827B  9ac4578c82           lcall 0x828c, 0x57c4  ; List::~List@s2:57C4
 4:8280  c45e06               les bx, ptr [bp + 6]
 4:8283  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8288  26c747029a82         mov word ptr es:[bx + 2], 0x829a  ; SEGMENT s2:0000
@@ -11990,12 +12327,13 @@ loc_82AB:
 4:82B2  ca0600               retf 6
 4:82B5  db 00
 
-; ---------------- sub_s4:82B6 FAR size=72 callers=0
+; ---------------- MovieView29::scalar_dtor@s4:82B6 FAR size=72 callers=0
+;   mode 29 movie view deleting destructor
 4:82B6  c81c0000             enter 0x1c, 0
 4:82BA  668b4606             mov eax, dword ptr [bp + 6]
 4:82BE  05d200               add ax, 0xd2
 4:82C1  6650                 push eax
-4:82C3  9ac457d482           lcall 0x82d4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:82C3  9ac457d482           lcall 0x82d4, 0x57c4  ; List::~List@s2:57C4
 4:82C8  c45e06               les bx, ptr [bp + 6]
 4:82CB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:82D0  26c74702e282         mov word ptr es:[bx + 2], 0x82e2  ; SEGMENT s2:0000
@@ -12013,12 +12351,13 @@ loc_82F3:
 4:82FA  ca0600               retf 6
 4:82FD  db 00
 
-; ---------------- sub_s4:82FE FAR size=72 callers=0
+; ---------------- MovieView30::scalar_dtor@s4:82FE FAR size=72 callers=0
+;   mode 30 movie view deleting destructor
 4:82FE  c81c0000             enter 0x1c, 0
 4:8302  668b4606             mov eax, dword ptr [bp + 6]
 4:8306  05d200               add ax, 0xd2
 4:8309  6650                 push eax
-4:830B  9ac4571c83           lcall 0x831c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:830B  9ac4571c83           lcall 0x831c, 0x57c4  ; List::~List@s2:57C4
 4:8310  c45e06               les bx, ptr [bp + 6]
 4:8313  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8318  26c747022a83         mov word ptr es:[bx + 2], 0x832a  ; SEGMENT s2:0000
@@ -12036,12 +12375,13 @@ loc_833B:
 4:8342  ca0600               retf 6
 4:8345  db 00
 
-; ---------------- sub_s4:8346 FAR size=72 callers=0
+; ---------------- MovieView31::scalar_dtor@s4:8346 FAR size=72 callers=0
+;   mode 31 movie view deleting destructor
 4:8346  c81c0000             enter 0x1c, 0
 4:834A  668b4606             mov eax, dword ptr [bp + 6]
 4:834E  05d200               add ax, 0xd2
 4:8351  6650                 push eax
-4:8353  9ac4576483           lcall 0x8364, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8353  9ac4576483           lcall 0x8364, 0x57c4  ; List::~List@s2:57C4
 4:8358  c45e06               les bx, ptr [bp + 6]
 4:835B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8360  26c747027283         mov word ptr es:[bx + 2], 0x8372  ; SEGMENT s2:0000
@@ -12059,12 +12399,13 @@ loc_8383:
 4:838A  ca0600               retf 6
 4:838D  db 00
 
-; ---------------- sub_s4:838E FAR size=72 callers=0
+; ---------------- MovieView33::scalar_dtor@s4:838E FAR size=72 callers=0
+;   mode 33 movie view deleting destructor
 4:838E  c81c0000             enter 0x1c, 0
 4:8392  668b4606             mov eax, dword ptr [bp + 6]
 4:8396  05d200               add ax, 0xd2
 4:8399  6650                 push eax
-4:839B  9ac457ac83           lcall 0x83ac, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:839B  9ac457ac83           lcall 0x83ac, 0x57c4  ; List::~List@s2:57C4
 4:83A0  c45e06               les bx, ptr [bp + 6]
 4:83A3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:83A8  26c74702ba83         mov word ptr es:[bx + 2], 0x83ba  ; SEGMENT s2:0000
@@ -12082,12 +12423,13 @@ loc_83CB:
 4:83D2  ca0600               retf 6
 4:83D5  db 00
 
-; ---------------- sub_s4:83D6 FAR size=72 callers=0
+; ---------------- MovieView35::scalar_dtor@s4:83D6 FAR size=72 callers=0
+;   mode 35 movie view deleting destructor
 4:83D6  c81c0000             enter 0x1c, 0
 4:83DA  668b4606             mov eax, dword ptr [bp + 6]
 4:83DE  05d200               add ax, 0xd2
 4:83E1  6650                 push eax
-4:83E3  9ac457f483           lcall 0x83f4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:83E3  9ac457f483           lcall 0x83f4, 0x57c4  ; List::~List@s2:57C4
 4:83E8  c45e06               les bx, ptr [bp + 6]
 4:83EB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:83F0  26c747020284         mov word ptr es:[bx + 2], 0x8402  ; SEGMENT s2:0000
@@ -12105,12 +12447,13 @@ loc_8413:
 4:841A  ca0600               retf 6
 4:841D  db 00
 
-; ---------------- sub_s4:841E FAR size=72 callers=0
+; ---------------- MovieView36::scalar_dtor@s4:841E FAR size=72 callers=0
+;   mode 36 movie view deleting destructor
 4:841E  c81c0000             enter 0x1c, 0
 4:8422  668b4606             mov eax, dword ptr [bp + 6]
 4:8426  05d200               add ax, 0xd2
 4:8429  6650                 push eax
-4:842B  9ac4573c84           lcall 0x843c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:842B  9ac4573c84           lcall 0x843c, 0x57c4  ; List::~List@s2:57C4
 4:8430  c45e06               les bx, ptr [bp + 6]
 4:8433  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8438  26c747024a84         mov word ptr es:[bx + 2], 0x844a  ; SEGMENT s2:0000
@@ -12128,12 +12471,13 @@ loc_845B:
 4:8462  ca0600               retf 6
 4:8465  db 00
 
-; ---------------- sub_s4:8466 FAR size=72 callers=0
+; ---------------- MovieView37::scalar_dtor@s4:8466 FAR size=72 callers=0
+;   mode 37 movie view deleting destructor
 4:8466  c81c0000             enter 0x1c, 0
 4:846A  668b4606             mov eax, dword ptr [bp + 6]
 4:846E  05d200               add ax, 0xd2
 4:8471  6650                 push eax
-4:8473  9ac4578484           lcall 0x8484, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8473  9ac4578484           lcall 0x8484, 0x57c4  ; List::~List@s2:57C4
 4:8478  c45e06               les bx, ptr [bp + 6]
 4:847B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8480  26c747029284         mov word ptr es:[bx + 2], 0x8492  ; SEGMENT s2:0000
@@ -12151,12 +12495,13 @@ loc_84A3:
 4:84AA  ca0600               retf 6
 4:84AD  db 00
 
-; ---------------- sub_s4:84AE FAR size=72 callers=0
+; ---------------- MovieView99::scalar_dtor@s4:84AE FAR size=72 callers=0
+;   mode 99 movie view deleting destructor
 4:84AE  c81c0000             enter 0x1c, 0
 4:84B2  668b4606             mov eax, dword ptr [bp + 6]
 4:84B6  05d200               add ax, 0xd2
 4:84B9  6650                 push eax
-4:84BB  9ac457cc84           lcall 0x84cc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:84BB  9ac457cc84           lcall 0x84cc, 0x57c4  ; List::~List@s2:57C4
 4:84C0  c45e06               les bx, ptr [bp + 6]
 4:84C3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:84C8  26c74702da84         mov word ptr es:[bx + 2], 0x84da  ; SEGMENT s2:0000
@@ -12174,12 +12519,13 @@ loc_84EB:
 4:84F2  ca0600               retf 6
 4:84F5  db 00
 
-; ---------------- sub_s4:84F6 FAR size=72 callers=0
+; ---------------- MovieView100::scalar_dtor@s4:84F6 FAR size=72 callers=0
+;   mode 100 movie view deleting destructor
 4:84F6  c81c0000             enter 0x1c, 0
 4:84FA  668b4606             mov eax, dword ptr [bp + 6]
 4:84FE  05d200               add ax, 0xd2
 4:8501  6650                 push eax
-4:8503  9ac4571485           lcall 0x8514, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8503  9ac4571485           lcall 0x8514, 0x57c4  ; List::~List@s2:57C4
 4:8508  c45e06               les bx, ptr [bp + 6]
 4:850B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8510  26c747022285         mov word ptr es:[bx + 2], 0x8522  ; SEGMENT s2:0000
@@ -12197,12 +12543,13 @@ loc_8533:
 4:853A  ca0600               retf 6
 4:853D  db 00
 
-; ---------------- sub_s4:853E FAR size=72 callers=0
+; ---------------- MovieView101::scalar_dtor@s4:853E FAR size=72 callers=0
+;   mode 101 movie view deleting destructor
 4:853E  c81c0000             enter 0x1c, 0
 4:8542  668b4606             mov eax, dword ptr [bp + 6]
 4:8546  05d200               add ax, 0xd2
 4:8549  6650                 push eax
-4:854B  9ac4575c85           lcall 0x855c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:854B  9ac4575c85           lcall 0x855c, 0x57c4  ; List::~List@s2:57C4
 4:8550  c45e06               les bx, ptr [bp + 6]
 4:8553  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8558  26c747026a85         mov word ptr es:[bx + 2], 0x856a  ; SEGMENT s2:0000
@@ -12220,12 +12567,13 @@ loc_857B:
 4:8582  ca0600               retf 6
 4:8585  db 00
 
-; ---------------- sub_s4:8586 FAR size=72 callers=0
+; ---------------- MovieView102::scalar_dtor@s4:8586 FAR size=72 callers=0
+;   mode 102 movie view deleting destructor
 4:8586  c81c0000             enter 0x1c, 0
 4:858A  668b4606             mov eax, dword ptr [bp + 6]
 4:858E  05d200               add ax, 0xd2
 4:8591  6650                 push eax
-4:8593  9ac457a485           lcall 0x85a4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8593  9ac457a485           lcall 0x85a4, 0x57c4  ; List::~List@s2:57C4
 4:8598  c45e06               les bx, ptr [bp + 6]
 4:859B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:85A0  26c74702b285         mov word ptr es:[bx + 2], 0x85b2  ; SEGMENT s2:0000
@@ -12243,12 +12591,13 @@ loc_85C3:
 4:85CA  ca0600               retf 6
 4:85CD  db 00
 
-; ---------------- sub_s4:85CE FAR size=72 callers=0
+; ---------------- MovieView103::scalar_dtor@s4:85CE FAR size=72 callers=0
+;   mode 103 movie view deleting destructor
 4:85CE  c81c0000             enter 0x1c, 0
 4:85D2  668b4606             mov eax, dword ptr [bp + 6]
 4:85D6  05d200               add ax, 0xd2
 4:85D9  6650                 push eax
-4:85DB  9ac457ec85           lcall 0x85ec, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:85DB  9ac457ec85           lcall 0x85ec, 0x57c4  ; List::~List@s2:57C4
 4:85E0  c45e06               les bx, ptr [bp + 6]
 4:85E3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:85E8  26c74702fa85         mov word ptr es:[bx + 2], 0x85fa  ; SEGMENT s2:0000
@@ -12266,12 +12615,13 @@ loc_860B:
 4:8612  ca0600               retf 6
 4:8615  db 00
 
-; ---------------- sub_s4:8616 FAR size=72 callers=0
+; ---------------- MovieView104::scalar_dtor@s4:8616 FAR size=72 callers=0
+;   mode 104 movie view deleting destructor
 4:8616  c81c0000             enter 0x1c, 0
 4:861A  668b4606             mov eax, dword ptr [bp + 6]
 4:861E  05d200               add ax, 0xd2
 4:8621  6650                 push eax
-4:8623  9ac4573486           lcall 0x8634, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8623  9ac4573486           lcall 0x8634, 0x57c4  ; List::~List@s2:57C4
 4:8628  c45e06               les bx, ptr [bp + 6]
 4:862B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8630  26c747024286         mov word ptr es:[bx + 2], 0x8642  ; SEGMENT s2:0000
@@ -12289,12 +12639,13 @@ loc_8653:
 4:865A  ca0600               retf 6
 4:865D  db 00
 
-; ---------------- sub_s4:865E FAR size=72 callers=0
+; ---------------- MovieView105::scalar_dtor@s4:865E FAR size=72 callers=0
+;   mode 105 movie view deleting destructor
 4:865E  c81c0000             enter 0x1c, 0
 4:8662  668b4606             mov eax, dword ptr [bp + 6]
 4:8666  05d200               add ax, 0xd2
 4:8669  6650                 push eax
-4:866B  9ac4577c86           lcall 0x867c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:866B  9ac4577c86           lcall 0x867c, 0x57c4  ; List::~List@s2:57C4
 4:8670  c45e06               les bx, ptr [bp + 6]
 4:8673  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8678  26c747028a86         mov word ptr es:[bx + 2], 0x868a  ; SEGMENT s2:0000
@@ -12312,12 +12663,13 @@ loc_869B:
 4:86A2  ca0600               retf 6
 4:86A5  db 00
 
-; ---------------- sub_s4:86A6 FAR size=72 callers=0
+; ---------------- MovieView53::scalar_dtor@s4:86A6 FAR size=72 callers=0
+;   mode 53 movie view deleting destructor
 4:86A6  c81c0000             enter 0x1c, 0
 4:86AA  668b4606             mov eax, dword ptr [bp + 6]
 4:86AE  05d200               add ax, 0xd2
 4:86B1  6650                 push eax
-4:86B3  9ac457c486           lcall 0x86c4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:86B3  9ac457c486           lcall 0x86c4, 0x57c4  ; List::~List@s2:57C4
 4:86B8  c45e06               les bx, ptr [bp + 6]
 4:86BB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:86C0  26c74702d286         mov word ptr es:[bx + 2], 0x86d2  ; SEGMENT s2:0000
@@ -12335,12 +12687,13 @@ loc_86E3:
 4:86EA  ca0600               retf 6
 4:86ED  db 00
 
-; ---------------- sub_s4:86EE FAR size=72 callers=0
+; ---------------- MovieView57::scalar_dtor@s4:86EE FAR size=72 callers=0
+;   mode 57 movie view deleting destructor
 4:86EE  c81c0000             enter 0x1c, 0
 4:86F2  668b4606             mov eax, dword ptr [bp + 6]
 4:86F6  05d200               add ax, 0xd2
 4:86F9  6650                 push eax
-4:86FB  9ac4570c87           lcall 0x870c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:86FB  9ac4570c87           lcall 0x870c, 0x57c4  ; List::~List@s2:57C4
 4:8700  c45e06               les bx, ptr [bp + 6]
 4:8703  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8708  26c747021a87         mov word ptr es:[bx + 2], 0x871a  ; SEGMENT s2:0000
@@ -12358,12 +12711,13 @@ loc_872B:
 4:8732  ca0600               retf 6
 4:8735  db 00
 
-; ---------------- sub_s4:8736 FAR size=72 callers=0
+; ---------------- MovieView34::scalar_dtor@s4:8736 FAR size=72 callers=0
+;   mode 34 movie view deleting destructor
 4:8736  c81c0000             enter 0x1c, 0
 4:873A  668b4606             mov eax, dword ptr [bp + 6]
 4:873E  05d200               add ax, 0xd2
 4:8741  6650                 push eax
-4:8743  9ac4575487           lcall 0x8754, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8743  9ac4575487           lcall 0x8754, 0x57c4  ; List::~List@s2:57C4
 4:8748  c45e06               les bx, ptr [bp + 6]
 4:874B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8750  26c747026287         mov word ptr es:[bx + 2], 0x8762  ; SEGMENT s2:0000
@@ -12381,12 +12735,13 @@ loc_8773:
 4:877A  ca0600               retf 6
 4:877D  db 00
 
-; ---------------- sub_s4:877E FAR size=72 callers=0
+; ---------------- MovieView54::scalar_dtor@s4:877E FAR size=72 callers=0
+;   mode 54 movie view deleting destructor
 4:877E  c81c0000             enter 0x1c, 0
 4:8782  668b4606             mov eax, dword ptr [bp + 6]
 4:8786  05d200               add ax, 0xd2
 4:8789  6650                 push eax
-4:878B  9ac4579c87           lcall 0x879c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:878B  9ac4579c87           lcall 0x879c, 0x57c4  ; List::~List@s2:57C4
 4:8790  c45e06               les bx, ptr [bp + 6]
 4:8793  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8798  26c74702aa87         mov word ptr es:[bx + 2], 0x87aa  ; SEGMENT s2:0000
@@ -12404,12 +12759,13 @@ loc_87BB:
 4:87C2  ca0600               retf 6
 4:87C5  db 00
 
-; ---------------- sub_s4:87C6 FAR size=72 callers=0
+; ---------------- MovieView55::scalar_dtor@s4:87C6 FAR size=72 callers=0
+;   mode 55 movie view deleting destructor
 4:87C6  c81c0000             enter 0x1c, 0
 4:87CA  668b4606             mov eax, dword ptr [bp + 6]
 4:87CE  05d200               add ax, 0xd2
 4:87D1  6650                 push eax
-4:87D3  9ac457e487           lcall 0x87e4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:87D3  9ac457e487           lcall 0x87e4, 0x57c4  ; List::~List@s2:57C4
 4:87D8  c45e06               les bx, ptr [bp + 6]
 4:87DB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:87E0  26c74702f287         mov word ptr es:[bx + 2], 0x87f2  ; SEGMENT s2:0000
@@ -12427,12 +12783,13 @@ loc_8803:
 4:880A  ca0600               retf 6
 4:880D  db 00
 
-; ---------------- sub_s4:880E FAR size=72 callers=0
+; ---------------- MovieView56::scalar_dtor@s4:880E FAR size=72 callers=0
+;   mode 56 movie view deleting destructor
 4:880E  c81c0000             enter 0x1c, 0
 4:8812  668b4606             mov eax, dword ptr [bp + 6]
 4:8816  05d200               add ax, 0xd2
 4:8819  6650                 push eax
-4:881B  9ac4572c88           lcall 0x882c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:881B  9ac4572c88           lcall 0x882c, 0x57c4  ; List::~List@s2:57C4
 4:8820  c45e06               les bx, ptr [bp + 6]
 4:8823  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8828  26c747023a88         mov word ptr es:[bx + 2], 0x883a  ; SEGMENT s2:0000
@@ -12450,12 +12807,13 @@ loc_884B:
 4:8852  ca0600               retf 6
 4:8855  db 00
 
-; ---------------- sub_s4:8856 FAR size=72 callers=0
+; ---------------- MovieView58::scalar_dtor@s4:8856 FAR size=72 callers=0
+;   mode 58 movie view deleting destructor
 4:8856  c81c0000             enter 0x1c, 0
 4:885A  668b4606             mov eax, dword ptr [bp + 6]
 4:885E  05d200               add ax, 0xd2
 4:8861  6650                 push eax
-4:8863  9ac4577488           lcall 0x8874, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8863  9ac4577488           lcall 0x8874, 0x57c4  ; List::~List@s2:57C4
 4:8868  c45e06               les bx, ptr [bp + 6]
 4:886B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8870  26c747028288         mov word ptr es:[bx + 2], 0x8882  ; SEGMENT s2:0000
@@ -12473,12 +12831,13 @@ loc_8893:
 4:889A  ca0600               retf 6
 4:889D  db 00
 
-; ---------------- sub_s4:889E FAR size=72 callers=0
+; ---------------- MovieView59::scalar_dtor@s4:889E FAR size=72 callers=0
+;   mode 59 movie view deleting destructor
 4:889E  c81c0000             enter 0x1c, 0
 4:88A2  668b4606             mov eax, dword ptr [bp + 6]
 4:88A6  05d200               add ax, 0xd2
 4:88A9  6650                 push eax
-4:88AB  9ac457bc88           lcall 0x88bc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:88AB  9ac457bc88           lcall 0x88bc, 0x57c4  ; List::~List@s2:57C4
 4:88B0  c45e06               les bx, ptr [bp + 6]
 4:88B3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:88B8  26c74702ca88         mov word ptr es:[bx + 2], 0x88ca  ; SEGMENT s2:0000
@@ -12496,12 +12855,13 @@ loc_88DB:
 4:88E2  ca0600               retf 6
 4:88E5  db 00
 
-; ---------------- sub_s4:88E6 FAR size=72 callers=0
+; ---------------- MovieView60::scalar_dtor@s4:88E6 FAR size=72 callers=0
+;   mode 60 movie view deleting destructor
 4:88E6  c81c0000             enter 0x1c, 0
 4:88EA  668b4606             mov eax, dword ptr [bp + 6]
 4:88EE  05d200               add ax, 0xd2
 4:88F1  6650                 push eax
-4:88F3  9ac4570489           lcall 0x8904, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:88F3  9ac4570489           lcall 0x8904, 0x57c4  ; List::~List@s2:57C4
 4:88F8  c45e06               les bx, ptr [bp + 6]
 4:88FB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8900  26c747021289         mov word ptr es:[bx + 2], 0x8912  ; SEGMENT s2:0000
@@ -12519,12 +12879,13 @@ loc_8923:
 4:892A  ca0600               retf 6
 4:892D  db 00
 
-; ---------------- sub_s4:892E FAR size=72 callers=0
+; ---------------- MovieView61::scalar_dtor@s4:892E FAR size=72 callers=0
+;   mode 61 movie view deleting destructor
 4:892E  c81c0000             enter 0x1c, 0
 4:8932  668b4606             mov eax, dword ptr [bp + 6]
 4:8936  05d200               add ax, 0xd2
 4:8939  6650                 push eax
-4:893B  9ac4574c89           lcall 0x894c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:893B  9ac4574c89           lcall 0x894c, 0x57c4  ; List::~List@s2:57C4
 4:8940  c45e06               les bx, ptr [bp + 6]
 4:8943  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8948  26c747025a89         mov word ptr es:[bx + 2], 0x895a  ; SEGMENT s2:0000
@@ -12542,12 +12903,13 @@ loc_896B:
 4:8972  ca0600               retf 6
 4:8975  db 00
 
-; ---------------- sub_s4:8976 FAR size=72 callers=0
+; ---------------- MovieView62::scalar_dtor@s4:8976 FAR size=72 callers=0
+;   mode 62 movie view deleting destructor
 4:8976  c81c0000             enter 0x1c, 0
 4:897A  668b4606             mov eax, dword ptr [bp + 6]
 4:897E  05d200               add ax, 0xd2
 4:8981  6650                 push eax
-4:8983  9ac4579489           lcall 0x8994, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8983  9ac4579489           lcall 0x8994, 0x57c4  ; List::~List@s2:57C4
 4:8988  c45e06               les bx, ptr [bp + 6]
 4:898B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8990  26c74702a289         mov word ptr es:[bx + 2], 0x89a2  ; SEGMENT s2:0000
@@ -12565,12 +12927,13 @@ loc_89B3:
 4:89BA  ca0600               retf 6
 4:89BD  db 00
 
-; ---------------- sub_s4:89BE FAR size=72 callers=0
+; ---------------- MovieView63::scalar_dtor@s4:89BE FAR size=72 callers=0
+;   mode 63 movie view deleting destructor
 4:89BE  c81c0000             enter 0x1c, 0
 4:89C2  668b4606             mov eax, dword ptr [bp + 6]
 4:89C6  05d200               add ax, 0xd2
 4:89C9  6650                 push eax
-4:89CB  9ac457dc89           lcall 0x89dc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:89CB  9ac457dc89           lcall 0x89dc, 0x57c4  ; List::~List@s2:57C4
 4:89D0  c45e06               les bx, ptr [bp + 6]
 4:89D3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:89D8  26c74702ea89         mov word ptr es:[bx + 2], 0x89ea  ; SEGMENT s2:0000
@@ -12588,12 +12951,13 @@ loc_89FB:
 4:8A02  ca0600               retf 6
 4:8A05  db 00
 
-; ---------------- sub_s4:8A06 FAR size=72 callers=0
+; ---------------- MovieView64::scalar_dtor@s4:8A06 FAR size=72 callers=0
+;   mode 64 movie view deleting destructor
 4:8A06  c81c0000             enter 0x1c, 0
 4:8A0A  668b4606             mov eax, dword ptr [bp + 6]
 4:8A0E  05d200               add ax, 0xd2
 4:8A11  6650                 push eax
-4:8A13  9ac457248a           lcall 0x8a24, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8A13  9ac457248a           lcall 0x8a24, 0x57c4  ; List::~List@s2:57C4
 4:8A18  c45e06               les bx, ptr [bp + 6]
 4:8A1B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8A20  26c74702328a         mov word ptr es:[bx + 2], 0x8a32  ; SEGMENT s2:0000
@@ -12611,12 +12975,13 @@ loc_8A43:
 4:8A4A  ca0600               retf 6
 4:8A4D  db 00
 
-; ---------------- sub_s4:8A4E FAR size=72 callers=0
+; ---------------- MovieView65::scalar_dtor@s4:8A4E FAR size=72 callers=0
+;   mode 65 movie view deleting destructor
 4:8A4E  c81c0000             enter 0x1c, 0
 4:8A52  668b4606             mov eax, dword ptr [bp + 6]
 4:8A56  05d200               add ax, 0xd2
 4:8A59  6650                 push eax
-4:8A5B  9ac4576c8a           lcall 0x8a6c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8A5B  9ac4576c8a           lcall 0x8a6c, 0x57c4  ; List::~List@s2:57C4
 4:8A60  c45e06               les bx, ptr [bp + 6]
 4:8A63  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8A68  26c747027a8a         mov word ptr es:[bx + 2], 0x8a7a  ; SEGMENT s2:0000
@@ -12634,12 +12999,13 @@ loc_8A8B:
 4:8A92  ca0600               retf 6
 4:8A95  db 00
 
-; ---------------- sub_s4:8A96 FAR size=72 callers=0
+; ---------------- MovieView66::scalar_dtor@s4:8A96 FAR size=72 callers=0
+;   mode 66 movie view deleting destructor
 4:8A96  c81c0000             enter 0x1c, 0
 4:8A9A  668b4606             mov eax, dword ptr [bp + 6]
 4:8A9E  05d200               add ax, 0xd2
 4:8AA1  6650                 push eax
-4:8AA3  9ac457b48a           lcall 0x8ab4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8AA3  9ac457b48a           lcall 0x8ab4, 0x57c4  ; List::~List@s2:57C4
 4:8AA8  c45e06               les bx, ptr [bp + 6]
 4:8AAB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8AB0  26c74702c28a         mov word ptr es:[bx + 2], 0x8ac2  ; SEGMENT s2:0000
@@ -12657,12 +13023,13 @@ loc_8AD3:
 4:8ADA  ca0600               retf 6
 4:8ADD  db 00
 
-; ---------------- sub_s4:8ADE FAR size=72 callers=0
+; ---------------- MovieView67::scalar_dtor@s4:8ADE FAR size=72 callers=0
+;   mode 67 movie view deleting destructor
 4:8ADE  c81c0000             enter 0x1c, 0
 4:8AE2  668b4606             mov eax, dword ptr [bp + 6]
 4:8AE6  05d200               add ax, 0xd2
 4:8AE9  6650                 push eax
-4:8AEB  9ac457fc8a           lcall 0x8afc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8AEB  9ac457fc8a           lcall 0x8afc, 0x57c4  ; List::~List@s2:57C4
 4:8AF0  c45e06               les bx, ptr [bp + 6]
 4:8AF3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8AF8  26c747020a8b         mov word ptr es:[bx + 2], 0x8b0a  ; SEGMENT s2:0000
@@ -12680,12 +13047,13 @@ loc_8B1B:
 4:8B22  ca0600               retf 6
 4:8B25  db 00
 
-; ---------------- sub_s4:8B26 FAR size=72 callers=0
+; ---------------- MovieView68::scalar_dtor@s4:8B26 FAR size=72 callers=0
+;   mode 68 movie view deleting destructor
 4:8B26  c81c0000             enter 0x1c, 0
 4:8B2A  668b4606             mov eax, dword ptr [bp + 6]
 4:8B2E  05d200               add ax, 0xd2
 4:8B31  6650                 push eax
-4:8B33  9ac457448b           lcall 0x8b44, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8B33  9ac457448b           lcall 0x8b44, 0x57c4  ; List::~List@s2:57C4
 4:8B38  c45e06               les bx, ptr [bp + 6]
 4:8B3B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8B40  26c74702528b         mov word ptr es:[bx + 2], 0x8b52  ; SEGMENT s2:0000
@@ -12703,12 +13071,13 @@ loc_8B63:
 4:8B6A  ca0600               retf 6
 4:8B6D  db 00
 
-; ---------------- sub_s4:8B6E FAR size=72 callers=0
+; ---------------- MovieView69::scalar_dtor@s4:8B6E FAR size=72 callers=0
+;   mode 69 movie view deleting destructor
 4:8B6E  c81c0000             enter 0x1c, 0
 4:8B72  668b4606             mov eax, dword ptr [bp + 6]
 4:8B76  05d200               add ax, 0xd2
 4:8B79  6650                 push eax
-4:8B7B  9ac4578c8b           lcall 0x8b8c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8B7B  9ac4578c8b           lcall 0x8b8c, 0x57c4  ; List::~List@s2:57C4
 4:8B80  c45e06               les bx, ptr [bp + 6]
 4:8B83  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8B88  26c747029a8b         mov word ptr es:[bx + 2], 0x8b9a  ; SEGMENT s2:0000
@@ -12726,12 +13095,13 @@ loc_8BAB:
 4:8BB2  ca0600               retf 6
 4:8BB5  db 00
 
-; ---------------- sub_s4:8BB6 FAR size=72 callers=0
+; ---------------- MovieView70::scalar_dtor@s4:8BB6 FAR size=72 callers=0
+;   mode 70 movie view deleting destructor
 4:8BB6  c81c0000             enter 0x1c, 0
 4:8BBA  668b4606             mov eax, dword ptr [bp + 6]
 4:8BBE  05d200               add ax, 0xd2
 4:8BC1  6650                 push eax
-4:8BC3  9ac457d48b           lcall 0x8bd4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8BC3  9ac457d48b           lcall 0x8bd4, 0x57c4  ; List::~List@s2:57C4
 4:8BC8  c45e06               les bx, ptr [bp + 6]
 4:8BCB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8BD0  26c74702e28b         mov word ptr es:[bx + 2], 0x8be2  ; SEGMENT s2:0000
@@ -12749,12 +13119,13 @@ loc_8BF3:
 4:8BFA  ca0600               retf 6
 4:8BFD  db 00
 
-; ---------------- sub_s4:8BFE FAR size=72 callers=0
+; ---------------- MovieView71::scalar_dtor@s4:8BFE FAR size=72 callers=0
+;   mode 71 movie view deleting destructor
 4:8BFE  c81c0000             enter 0x1c, 0
 4:8C02  668b4606             mov eax, dword ptr [bp + 6]
 4:8C06  05d200               add ax, 0xd2
 4:8C09  6650                 push eax
-4:8C0B  9ac4571c8c           lcall 0x8c1c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8C0B  9ac4571c8c           lcall 0x8c1c, 0x57c4  ; List::~List@s2:57C4
 4:8C10  c45e06               les bx, ptr [bp + 6]
 4:8C13  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8C18  26c747022a8c         mov word ptr es:[bx + 2], 0x8c2a  ; SEGMENT s2:0000
@@ -12772,12 +13143,13 @@ loc_8C3B:
 4:8C42  ca0600               retf 6
 4:8C45  db 00
 
-; ---------------- sub_s4:8C46 FAR size=72 callers=0
+; ---------------- MovieView72::scalar_dtor@s4:8C46 FAR size=72 callers=0
+;   mode 72 movie view deleting destructor
 4:8C46  c81c0000             enter 0x1c, 0
 4:8C4A  668b4606             mov eax, dword ptr [bp + 6]
 4:8C4E  05d200               add ax, 0xd2
 4:8C51  6650                 push eax
-4:8C53  9ac457648c           lcall 0x8c64, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8C53  9ac457648c           lcall 0x8c64, 0x57c4  ; List::~List@s2:57C4
 4:8C58  c45e06               les bx, ptr [bp + 6]
 4:8C5B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8C60  26c74702728c         mov word ptr es:[bx + 2], 0x8c72  ; SEGMENT s2:0000
@@ -12795,12 +13167,13 @@ loc_8C83:
 4:8C8A  ca0600               retf 6
 4:8C8D  db 00
 
-; ---------------- sub_s4:8C8E FAR size=72 callers=0
+; ---------------- MovieView73::scalar_dtor@s4:8C8E FAR size=72 callers=0
+;   mode 73 movie view deleting destructor
 4:8C8E  c81c0000             enter 0x1c, 0
 4:8C92  668b4606             mov eax, dword ptr [bp + 6]
 4:8C96  05d200               add ax, 0xd2
 4:8C99  6650                 push eax
-4:8C9B  9ac457ac8c           lcall 0x8cac, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8C9B  9ac457ac8c           lcall 0x8cac, 0x57c4  ; List::~List@s2:57C4
 4:8CA0  c45e06               les bx, ptr [bp + 6]
 4:8CA3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8CA8  26c74702ba8c         mov word ptr es:[bx + 2], 0x8cba  ; SEGMENT s2:0000
@@ -12818,12 +13191,13 @@ loc_8CCB:
 4:8CD2  ca0600               retf 6
 4:8CD5  db 00
 
-; ---------------- sub_s4:8CD6 FAR size=72 callers=0
+; ---------------- MovieView74::scalar_dtor@s4:8CD6 FAR size=72 callers=0
+;   mode 74 movie view deleting destructor
 4:8CD6  c81c0000             enter 0x1c, 0
 4:8CDA  668b4606             mov eax, dword ptr [bp + 6]
 4:8CDE  05d200               add ax, 0xd2
 4:8CE1  6650                 push eax
-4:8CE3  9ac457f48c           lcall 0x8cf4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8CE3  9ac457f48c           lcall 0x8cf4, 0x57c4  ; List::~List@s2:57C4
 4:8CE8  c45e06               les bx, ptr [bp + 6]
 4:8CEB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8CF0  26c74702028d         mov word ptr es:[bx + 2], 0x8d02  ; SEGMENT s2:0000
@@ -12841,12 +13215,13 @@ loc_8D13:
 4:8D1A  ca0600               retf 6
 4:8D1D  db 00
 
-; ---------------- sub_s4:8D1E FAR size=72 callers=0
+; ---------------- MovieView75::scalar_dtor@s4:8D1E FAR size=72 callers=0
+;   mode 75 movie view deleting destructor
 4:8D1E  c81c0000             enter 0x1c, 0
 4:8D22  668b4606             mov eax, dword ptr [bp + 6]
 4:8D26  05d200               add ax, 0xd2
 4:8D29  6650                 push eax
-4:8D2B  9ac4573c8d           lcall 0x8d3c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8D2B  9ac4573c8d           lcall 0x8d3c, 0x57c4  ; List::~List@s2:57C4
 4:8D30  c45e06               les bx, ptr [bp + 6]
 4:8D33  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8D38  26c747024a8d         mov word ptr es:[bx + 2], 0x8d4a  ; SEGMENT s2:0000
@@ -12864,12 +13239,13 @@ loc_8D5B:
 4:8D62  ca0600               retf 6
 4:8D65  db 00
 
-; ---------------- sub_s4:8D66 FAR size=72 callers=0
+; ---------------- MovieView76::scalar_dtor@s4:8D66 FAR size=72 callers=0
+;   mode 76 movie view deleting destructor
 4:8D66  c81c0000             enter 0x1c, 0
 4:8D6A  668b4606             mov eax, dword ptr [bp + 6]
 4:8D6E  05d200               add ax, 0xd2
 4:8D71  6650                 push eax
-4:8D73  9ac457848d           lcall 0x8d84, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8D73  9ac457848d           lcall 0x8d84, 0x57c4  ; List::~List@s2:57C4
 4:8D78  c45e06               les bx, ptr [bp + 6]
 4:8D7B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8D80  26c74702928d         mov word ptr es:[bx + 2], 0x8d92  ; SEGMENT s2:0000
@@ -12887,12 +13263,13 @@ loc_8DA3:
 4:8DAA  ca0600               retf 6
 4:8DAD  db 00
 
-; ---------------- sub_s4:8DAE FAR size=72 callers=0
+; ---------------- MovieView77::scalar_dtor@s4:8DAE FAR size=72 callers=0
+;   mode 77 movie view deleting destructor
 4:8DAE  c81c0000             enter 0x1c, 0
 4:8DB2  668b4606             mov eax, dword ptr [bp + 6]
 4:8DB6  05d200               add ax, 0xd2
 4:8DB9  6650                 push eax
-4:8DBB  9ac457cc8d           lcall 0x8dcc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8DBB  9ac457cc8d           lcall 0x8dcc, 0x57c4  ; List::~List@s2:57C4
 4:8DC0  c45e06               les bx, ptr [bp + 6]
 4:8DC3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8DC8  26c74702da8d         mov word ptr es:[bx + 2], 0x8dda  ; SEGMENT s2:0000
@@ -12910,12 +13287,13 @@ loc_8DEB:
 4:8DF2  ca0600               retf 6
 4:8DF5  db 00
 
-; ---------------- sub_s4:8DF6 FAR size=72 callers=0
+; ---------------- MovieView78::scalar_dtor@s4:8DF6 FAR size=72 callers=0
+;   mode 78 movie view deleting destructor
 4:8DF6  c81c0000             enter 0x1c, 0
 4:8DFA  668b4606             mov eax, dword ptr [bp + 6]
 4:8DFE  05d200               add ax, 0xd2
 4:8E01  6650                 push eax
-4:8E03  9ac457148e           lcall 0x8e14, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8E03  9ac457148e           lcall 0x8e14, 0x57c4  ; List::~List@s2:57C4
 4:8E08  c45e06               les bx, ptr [bp + 6]
 4:8E0B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8E10  26c74702228e         mov word ptr es:[bx + 2], 0x8e22  ; SEGMENT s2:0000
@@ -12933,12 +13311,13 @@ loc_8E33:
 4:8E3A  ca0600               retf 6
 4:8E3D  db 00
 
-; ---------------- sub_s4:8E3E FAR size=72 callers=0
+; ---------------- MovieView79::scalar_dtor@s4:8E3E FAR size=72 callers=0
+;   mode 79 movie view deleting destructor
 4:8E3E  c81c0000             enter 0x1c, 0
 4:8E42  668b4606             mov eax, dword ptr [bp + 6]
 4:8E46  05d200               add ax, 0xd2
 4:8E49  6650                 push eax
-4:8E4B  9ac4575c8e           lcall 0x8e5c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8E4B  9ac4575c8e           lcall 0x8e5c, 0x57c4  ; List::~List@s2:57C4
 4:8E50  c45e06               les bx, ptr [bp + 6]
 4:8E53  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8E58  26c747026a8e         mov word ptr es:[bx + 2], 0x8e6a  ; SEGMENT s2:0000
@@ -12956,12 +13335,13 @@ loc_8E7B:
 4:8E82  ca0600               retf 6
 4:8E85  db 00
 
-; ---------------- sub_s4:8E86 FAR size=72 callers=0
+; ---------------- MovieView80::scalar_dtor@s4:8E86 FAR size=72 callers=0
+;   mode 80 movie view deleting destructor
 4:8E86  c81c0000             enter 0x1c, 0
 4:8E8A  668b4606             mov eax, dword ptr [bp + 6]
 4:8E8E  05d200               add ax, 0xd2
 4:8E91  6650                 push eax
-4:8E93  9ac457a48e           lcall 0x8ea4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8E93  9ac457a48e           lcall 0x8ea4, 0x57c4  ; List::~List@s2:57C4
 4:8E98  c45e06               les bx, ptr [bp + 6]
 4:8E9B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8EA0  26c74702b28e         mov word ptr es:[bx + 2], 0x8eb2  ; SEGMENT s2:0000
@@ -12979,12 +13359,13 @@ loc_8EC3:
 4:8ECA  ca0600               retf 6
 4:8ECD  db 00
 
-; ---------------- sub_s4:8ECE FAR size=72 callers=0
+; ---------------- MovieView81::scalar_dtor@s4:8ECE FAR size=72 callers=0
+;   mode 81 movie view deleting destructor
 4:8ECE  c81c0000             enter 0x1c, 0
 4:8ED2  668b4606             mov eax, dword ptr [bp + 6]
 4:8ED6  05d200               add ax, 0xd2
 4:8ED9  6650                 push eax
-4:8EDB  9ac457ec8e           lcall 0x8eec, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8EDB  9ac457ec8e           lcall 0x8eec, 0x57c4  ; List::~List@s2:57C4
 4:8EE0  c45e06               les bx, ptr [bp + 6]
 4:8EE3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8EE8  26c74702fa8e         mov word ptr es:[bx + 2], 0x8efa  ; SEGMENT s2:0000
@@ -13002,12 +13383,13 @@ loc_8F0B:
 4:8F12  ca0600               retf 6
 4:8F15  db 00
 
-; ---------------- sub_s4:8F16 FAR size=72 callers=0
+; ---------------- MovieView82::scalar_dtor@s4:8F16 FAR size=72 callers=0
+;   mode 82 movie view deleting destructor
 4:8F16  c81c0000             enter 0x1c, 0
 4:8F1A  668b4606             mov eax, dword ptr [bp + 6]
 4:8F1E  05d200               add ax, 0xd2
 4:8F21  6650                 push eax
-4:8F23  9ac457348f           lcall 0x8f34, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8F23  9ac457348f           lcall 0x8f34, 0x57c4  ; List::~List@s2:57C4
 4:8F28  c45e06               les bx, ptr [bp + 6]
 4:8F2B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8F30  26c74702428f         mov word ptr es:[bx + 2], 0x8f42  ; SEGMENT s2:0000
@@ -13025,12 +13407,13 @@ loc_8F53:
 4:8F5A  ca0600               retf 6
 4:8F5D  db 00
 
-; ---------------- sub_s4:8F5E FAR size=72 callers=0
+; ---------------- MovieView83::scalar_dtor@s4:8F5E FAR size=72 callers=0
+;   mode 83 movie view deleting destructor
 4:8F5E  c81c0000             enter 0x1c, 0
 4:8F62  668b4606             mov eax, dword ptr [bp + 6]
 4:8F66  05d200               add ax, 0xd2
 4:8F69  6650                 push eax
-4:8F6B  9ac4577c8f           lcall 0x8f7c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8F6B  9ac4577c8f           lcall 0x8f7c, 0x57c4  ; List::~List@s2:57C4
 4:8F70  c45e06               les bx, ptr [bp + 6]
 4:8F73  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8F78  26c747028a8f         mov word ptr es:[bx + 2], 0x8f8a  ; SEGMENT s2:0000
@@ -13048,12 +13431,13 @@ loc_8F9B:
 4:8FA2  ca0600               retf 6
 4:8FA5  db 00
 
-; ---------------- sub_s4:8FA6 FAR size=72 callers=0
+; ---------------- MovieViewUnused::scalar_dtor@s4:8FA6 FAR size=72 callers=0
+;   movie view deleting destructor whose class no ctor installs
 4:8FA6  c81c0000             enter 0x1c, 0
 4:8FAA  668b4606             mov eax, dword ptr [bp + 6]
 4:8FAE  05d200               add ax, 0xd2
 4:8FB1  6650                 push eax
-4:8FB3  9ac457c48f           lcall 0x8fc4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8FB3  9ac457c48f           lcall 0x8fc4, 0x57c4  ; List::~List@s2:57C4
 4:8FB8  c45e06               les bx, ptr [bp + 6]
 4:8FBB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:8FC0  26c74702d28f         mov word ptr es:[bx + 2], 0x8fd2  ; SEGMENT s2:0000
@@ -13071,12 +13455,13 @@ loc_8FE3:
 4:8FEA  ca0600               retf 6
 4:8FED  db 00
 
-; ---------------- sub_s4:8FEE FAR size=72 callers=0
+; ---------------- MovieView85::scalar_dtor@s4:8FEE FAR size=72 callers=0
+;   mode 85 movie view deleting destructor
 4:8FEE  c81c0000             enter 0x1c, 0
 4:8FF2  668b4606             mov eax, dword ptr [bp + 6]
 4:8FF6  05d200               add ax, 0xd2
 4:8FF9  6650                 push eax
-4:8FFB  9ac4570c90           lcall 0x900c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:8FFB  9ac4570c90           lcall 0x900c, 0x57c4  ; List::~List@s2:57C4
 4:9000  c45e06               les bx, ptr [bp + 6]
 4:9003  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9008  26c747021a90         mov word ptr es:[bx + 2], 0x901a  ; SEGMENT s2:0000
@@ -13094,12 +13479,13 @@ loc_902B:
 4:9032  ca0600               retf 6
 4:9035  db 00
 
-; ---------------- sub_s4:9036 FAR size=72 callers=0
+; ---------------- MovieView86::scalar_dtor@s4:9036 FAR size=72 callers=0
+;   mode 86 movie view deleting destructor
 4:9036  c81c0000             enter 0x1c, 0
 4:903A  668b4606             mov eax, dword ptr [bp + 6]
 4:903E  05d200               add ax, 0xd2
 4:9041  6650                 push eax
-4:9043  9ac4575490           lcall 0x9054, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:9043  9ac4575490           lcall 0x9054, 0x57c4  ; List::~List@s2:57C4
 4:9048  c45e06               les bx, ptr [bp + 6]
 4:904B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9050  26c747026290         mov word ptr es:[bx + 2], 0x9062  ; SEGMENT s2:0000
@@ -13117,12 +13503,13 @@ loc_9073:
 4:907A  ca0600               retf 6
 4:907D  db 00
 
-; ---------------- sub_s4:907E FAR size=72 callers=0
+; ---------------- MovieView87::scalar_dtor@s4:907E FAR size=72 callers=0
+;   mode 87 movie view deleting destructor
 4:907E  c81c0000             enter 0x1c, 0
 4:9082  668b4606             mov eax, dword ptr [bp + 6]
 4:9086  05d200               add ax, 0xd2
 4:9089  6650                 push eax
-4:908B  9ac4579c90           lcall 0x909c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:908B  9ac4579c90           lcall 0x909c, 0x57c4  ; List::~List@s2:57C4
 4:9090  c45e06               les bx, ptr [bp + 6]
 4:9093  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9098  26c74702aa90         mov word ptr es:[bx + 2], 0x90aa  ; SEGMENT s2:0000
@@ -13140,12 +13527,13 @@ loc_90BB:
 4:90C2  ca0600               retf 6
 4:90C5  db 00
 
-; ---------------- sub_s4:90C6 FAR size=72 callers=0
+; ---------------- MovieView88::scalar_dtor@s4:90C6 FAR size=72 callers=0
+;   mode 88 movie view deleting destructor
 4:90C6  c81c0000             enter 0x1c, 0
 4:90CA  668b4606             mov eax, dword ptr [bp + 6]
 4:90CE  05d200               add ax, 0xd2
 4:90D1  6650                 push eax
-4:90D3  9ac457e490           lcall 0x90e4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:90D3  9ac457e490           lcall 0x90e4, 0x57c4  ; List::~List@s2:57C4
 4:90D8  c45e06               les bx, ptr [bp + 6]
 4:90DB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:90E0  26c74702f290         mov word ptr es:[bx + 2], 0x90f2  ; SEGMENT s2:0000
@@ -13163,12 +13551,13 @@ loc_9103:
 4:910A  ca0600               retf 6
 4:910D  db 00
 
-; ---------------- sub_s4:910E FAR size=72 callers=0
+; ---------------- MovieView89::scalar_dtor@s4:910E FAR size=72 callers=0
+;   mode 89 movie view deleting destructor
 4:910E  c81c0000             enter 0x1c, 0
 4:9112  668b4606             mov eax, dword ptr [bp + 6]
 4:9116  05d200               add ax, 0xd2
 4:9119  6650                 push eax
-4:911B  9ac4572c91           lcall 0x912c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:911B  9ac4572c91           lcall 0x912c, 0x57c4  ; List::~List@s2:57C4
 4:9120  c45e06               les bx, ptr [bp + 6]
 4:9123  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9128  26c747023a91         mov word ptr es:[bx + 2], 0x913a  ; SEGMENT s2:0000
@@ -13186,12 +13575,13 @@ loc_914B:
 4:9152  ca0600               retf 6
 4:9155  db 00
 
-; ---------------- sub_s4:9156 FAR size=72 callers=0
+; ---------------- MovieView90::scalar_dtor@s4:9156 FAR size=72 callers=0
+;   mode 90 movie view deleting destructor
 4:9156  c81c0000             enter 0x1c, 0
 4:915A  668b4606             mov eax, dword ptr [bp + 6]
 4:915E  05d200               add ax, 0xd2
 4:9161  6650                 push eax
-4:9163  9ac4577491           lcall 0x9174, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:9163  9ac4577491           lcall 0x9174, 0x57c4  ; List::~List@s2:57C4
 4:9168  c45e06               les bx, ptr [bp + 6]
 4:916B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9170  26c747028291         mov word ptr es:[bx + 2], 0x9182  ; SEGMENT s2:0000
@@ -13209,12 +13599,13 @@ loc_9193:
 4:919A  ca0600               retf 6
 4:919D  db 00
 
-; ---------------- sub_s4:919E FAR size=72 callers=0
+; ---------------- MovieView91::scalar_dtor@s4:919E FAR size=72 callers=0
+;   mode 91 movie view deleting destructor
 4:919E  c81c0000             enter 0x1c, 0
 4:91A2  668b4606             mov eax, dword ptr [bp + 6]
 4:91A6  05d200               add ax, 0xd2
 4:91A9  6650                 push eax
-4:91AB  9ac457bc91           lcall 0x91bc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:91AB  9ac457bc91           lcall 0x91bc, 0x57c4  ; List::~List@s2:57C4
 4:91B0  c45e06               les bx, ptr [bp + 6]
 4:91B3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:91B8  26c74702ca91         mov word ptr es:[bx + 2], 0x91ca  ; SEGMENT s2:0000
@@ -13232,12 +13623,13 @@ loc_91DB:
 4:91E2  ca0600               retf 6
 4:91E5  db 00
 
-; ---------------- sub_s4:91E6 FAR size=72 callers=0
+; ---------------- MovieView92::scalar_dtor@s4:91E6 FAR size=72 callers=0
+;   mode 92 movie view deleting destructor
 4:91E6  c81c0000             enter 0x1c, 0
 4:91EA  668b4606             mov eax, dword ptr [bp + 6]
 4:91EE  05d200               add ax, 0xd2
 4:91F1  6650                 push eax
-4:91F3  9ac4570492           lcall 0x9204, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:91F3  9ac4570492           lcall 0x9204, 0x57c4  ; List::~List@s2:57C4
 4:91F8  c45e06               les bx, ptr [bp + 6]
 4:91FB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9200  26c747021292         mov word ptr es:[bx + 2], 0x9212  ; SEGMENT s2:0000
@@ -13255,12 +13647,13 @@ loc_9223:
 4:922A  ca0600               retf 6
 4:922D  db 00
 
-; ---------------- sub_s4:922E FAR size=72 callers=0
+; ---------------- MovieView93::scalar_dtor@s4:922E FAR size=72 callers=0
+;   mode 93 movie view deleting destructor
 4:922E  c81c0000             enter 0x1c, 0
 4:9232  668b4606             mov eax, dword ptr [bp + 6]
 4:9236  05d200               add ax, 0xd2
 4:9239  6650                 push eax
-4:923B  9ac4574c92           lcall 0x924c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:923B  9ac4574c92           lcall 0x924c, 0x57c4  ; List::~List@s2:57C4
 4:9240  c45e06               les bx, ptr [bp + 6]
 4:9243  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9248  26c747025a92         mov word ptr es:[bx + 2], 0x925a  ; SEGMENT s2:0000
@@ -13278,12 +13671,13 @@ loc_926B:
 4:9272  ca0600               retf 6
 4:9275  db 00
 
-; ---------------- sub_s4:9276 FAR size=72 callers=0
+; ---------------- MovieView94::scalar_dtor@s4:9276 FAR size=72 callers=0
+;   mode 94 movie view deleting destructor
 4:9276  c81c0000             enter 0x1c, 0
 4:927A  668b4606             mov eax, dword ptr [bp + 6]
 4:927E  05d200               add ax, 0xd2
 4:9281  6650                 push eax
-4:9283  9ac4579492           lcall 0x9294, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:9283  9ac4579492           lcall 0x9294, 0x57c4  ; List::~List@s2:57C4
 4:9288  c45e06               les bx, ptr [bp + 6]
 4:928B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9290  26c74702a292         mov word ptr es:[bx + 2], 0x92a2  ; SEGMENT s2:0000
@@ -13301,12 +13695,13 @@ loc_92B3:
 4:92BA  ca0600               retf 6
 4:92BD  db 00
 
-; ---------------- sub_s4:92BE FAR size=72 callers=0
+; ---------------- MovieView95::scalar_dtor@s4:92BE FAR size=72 callers=0
+;   mode 95 movie view deleting destructor
 4:92BE  c81c0000             enter 0x1c, 0
 4:92C2  668b4606             mov eax, dword ptr [bp + 6]
 4:92C6  05d200               add ax, 0xd2
 4:92C9  6650                 push eax
-4:92CB  9ac457dc92           lcall 0x92dc, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:92CB  9ac457dc92           lcall 0x92dc, 0x57c4  ; List::~List@s2:57C4
 4:92D0  c45e06               les bx, ptr [bp + 6]
 4:92D3  26c7070a38           mov word ptr es:[bx], 0x380a
 4:92D8  26c74702ea92         mov word ptr es:[bx + 2], 0x92ea  ; SEGMENT s2:0000
@@ -13324,12 +13719,13 @@ loc_92FB:
 4:9302  ca0600               retf 6
 4:9305  db 00
 
-; ---------------- sub_s4:9306 FAR size=72 callers=0
+; ---------------- MovieView96::scalar_dtor@s4:9306 FAR size=72 callers=0
+;   mode 96 movie view deleting destructor
 4:9306  c81c0000             enter 0x1c, 0
 4:930A  668b4606             mov eax, dword ptr [bp + 6]
 4:930E  05d200               add ax, 0xd2
 4:9311  6650                 push eax
-4:9313  9ac4572493           lcall 0x9324, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:9313  9ac4572493           lcall 0x9324, 0x57c4  ; List::~List@s2:57C4
 4:9318  c45e06               les bx, ptr [bp + 6]
 4:931B  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9320  26c747023293         mov word ptr es:[bx + 2], 0x9332  ; SEGMENT s2:0000
@@ -13347,12 +13743,13 @@ loc_9343:
 4:934A  ca0600               retf 6
 4:934D  db 00
 
-; ---------------- sub_s4:934E FAR size=72 callers=0
+; ---------------- MovieView97::scalar_dtor@s4:934E FAR size=72 callers=0
+;   mode 97 movie view deleting destructor
 4:934E  c81c0000             enter 0x1c, 0
 4:9352  668b4606             mov eax, dword ptr [bp + 6]
 4:9356  05d200               add ax, 0xd2
 4:9359  6650                 push eax
-4:935B  9ac4576c93           lcall 0x936c, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:935B  9ac4576c93           lcall 0x936c, 0x57c4  ; List::~List@s2:57C4
 4:9360  c45e06               les bx, ptr [bp + 6]
 4:9363  26c7070a38           mov word ptr es:[bx], 0x380a
 4:9368  26c747027a93         mov word ptr es:[bx + 2], 0x937a  ; SEGMENT s2:0000
@@ -13370,12 +13767,13 @@ loc_938B:
 4:9392  ca0600               retf 6
 4:9395  db 00
 
-; ---------------- sub_s4:9396 FAR size=12396 callers=0
+; ---------------- MovieView_vtables@s4:9396 FAR size=12396 callers=0
+;   DATA, not code: the 78 movie views' vtables (39 slots each)
 4:9396  c81c0000             enter 0x1c, 0
 4:939A  668b4606             mov eax, dword ptr [bp + 6]
 4:939E  05d200               add ax, 0xd2
 4:93A1  6650                 push eax
-4:93A3  9ac457b493           lcall 0x93b4, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:93A3  9ac457b493           lcall 0x93b4, 0x57c4  ; List::~List@s2:57C4
 4:93A8  c45e06               les bx, ptr [bp + 6]
 4:93AB  26c7070a38           mov word ptr es:[bx], 0x380a
 4:93B0  26c74702c293         mov word ptr es:[bx + 2], 0x93c2  ; SEGMENT s2:0000
@@ -14163,7 +14561,8 @@ loc_93D3:
 4:C3ED  db c3 c4 9c f4 c3 e0 9c f8 c3 8e 62 fc c3 28 63 00
 4:C3FD  db c4 2c 63 d0 c2
 
-; ---------------- sub_s4:C402 FAR size=278 callers=15
+; ---------------- StoryPage::StoryPage@s4:C402 FAR size=278 callers=15
+;   story page base (on s5:0762): strings, picture, voice, ms, next command
 4:C402  c8180000             enter 0x18, 0
 4:C406  66ff761c             push dword ptr [bp + 0x1c]
 4:C40A  66ff7618             push dword ptr [bp + 0x18]
@@ -14171,7 +14570,7 @@ loc_93D3:
 4:C412  66ff7610             push dword ptr [bp + 0x10]
 4:C416  ff760e               push word ptr [bp + 0xe]
 4:C419  66ff7606             push dword ptr [bp + 6]
-4:C41D  9a62070c6a           lcall 0x6a0c, 0x762  ; sub_s5:0762
+4:C41D  9a62070c6a           lcall 0x6a0c, 0x762  ; StoryView::StoryView@s5:0762
 4:C422  33c0                 xor ax, ax
 4:C424  c45e06               les bx, ptr [bp + 6]
 4:C427  268987f600           mov word ptr es:[bx + 0xf6], ax
@@ -14190,7 +14589,7 @@ loc_93D3:
 4:C46E  8d8f0001             lea cx, [bx + 0x100]
 4:C472  06                   push es
 4:C473  51                   push cx
-4:C474  9a0649d193           lcall 0x93d1, 0x4906  ; sub_s1:4906
+4:C474  9a0649d193           lcall 0x93d1, 0x4906  ; _fmemset@s1:4906
 4:C479  83c408               add sp, 8
 4:C47C  837e0c00             cmp word ptr [bp + 0xc], 0
 4:C480  7416                 je 0xc498
@@ -14198,7 +14597,7 @@ loc_93D3:
 4:C486  7510                 jne 0xc498
 4:C488  ff760c               push word ptr [bp + 0xc]
 4:C48B  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:C490  9aac84c5c4           lcall 0xc4c5, 0x84ac  ; sub_s3:84AC
+4:C490  9aac84c5c4           lcall 0xc4c5, 0x84ac  ; LoadStringDup@s3:84AC
 4:C495  eb17                 jmp 0xc4ae
 4:C497  db 90
 loc_C498:
@@ -14208,7 +14607,7 @@ loc_C498:
 4:C4A0  6a00                 push 0
 4:C4A2  ff760a               push word ptr [bp + 0xa]
 4:C4A5  50                   push ax
-4:C4A6  9ad85f0bc5           lcall 0xc50b, 0x5fd8  ; sub_s2:5FD8
+4:C4A6  9ad85f0bc5           lcall 0xc50b, 0x5fd8  ; joinResourceStrings@s2:5FD8
 4:C4AB  83c406               add sp, 6
 loc_C4AE:
 4:C4AE  c45e06               les bx, ptr [bp + 6]
@@ -14217,7 +14616,7 @@ loc_C4AE:
 loc_C4BB:
 4:C4BB  6a48                 push 0x48
 4:C4BD  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:C4C2  9aba20ea6a           lcall 0x6aea, 0x20ba  ; sub_s3:20BA
+4:C4C2  9aba20ea6a           lcall 0x6aea, 0x20ba  ; Registry_get@s3:20BA
 4:C4C7  8ec2                 mov es, dx
 4:C4C9  8bd8                 mov bx, ax
 4:C4CB  8946fc               mov word ptr [bp - 4], ax
@@ -14241,15 +14640,16 @@ loc_C4BB:
 4:C4FF  668b46fc             mov eax, dword ptr [bp - 4]
 4:C503  050e00               add ax, 0xe
 4:C506  6650                 push eax
-4:C508  9a943e6cc3           lcall 0xc36c, 0x3e94  ; sub_s2:3E94
+4:C508  9a943e6cc3           lcall 0xc36c, 0x3e94  ; Pos3::getXY@s2:3E94
 4:C50D  8b4606               mov ax, word ptr [bp + 6]
 4:C510  8b5608               mov dx, word ptr [bp + 8]
 4:C513  c9                   leave
 4:C514  ca1a00               retf 0x1a
 4:C517  db 00
 
-; ---------------- sub_s4:C518 FAR size=96 callers=16
+; ---------------- StoryPage::~StoryPage@s4:C518 FAR size=96 callers=16
 ;   apis: USER.DestroyWindow, USER.IsWindow
+;   dtor
 4:C518  c8080000             enter 8, 0
 4:C51C  c45e06               les bx, ptr [bp + 6]
 4:C51F  26c707bcc8           mov word ptr es:[bx], 0xc8bc
@@ -14272,19 +14672,20 @@ loc_C4BB:
 4:C563  26c78712010000       mov word ptr es:[bx + 0x112], 0
 loc_C56A:
 4:C56A  66ff7606             push dword ptr [bp + 6]
-4:C56E  9a2c0220c4           lcall 0xc420, 0x22c  ; sub_s5:022C
+4:C56E  9a2c0220c4           lcall 0xc420, 0x22c  ; TimedView::~TimedView@s5:022C
 4:C573  c9                   leave
 4:C574  ca0400               retf 4
 4:C577  db 00
 
-; ---------------- sub_s4:C578 FAR size=458 callers=0
+; ---------------- StoryPage::paint@s4:C578 FAR size=458 callers=0
 ;   apis: GDI.CreateSolidBrush, GDI.DeleteObject, USER.BeginPaint, USER.EndPaint, USER.FillRect, USER.PostMessage, USER.SelectPalette
+;   (vslot 13) background, text, voice on the first paint, mars.mid
 4:C578  c84c0000             enter 0x4c, 0
 4:C57C  57                   push di
 4:C57D  56                   push si
 4:C57E  6a02                 push 2
 4:C580  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:C585  9aba2093c4           lcall 0xc493, 0x20ba  ; sub_s3:20BA
+4:C585  9aba2093c4           lcall 0xc493, 0x20ba  ; Registry_get@s3:20BA
 4:C58A  8946dc               mov word ptr [bp - 0x24], ax
 4:C58D  8956de               mov word ptr [bp - 0x22], dx
 4:C590  c45edc               les bx, ptr [bp - 0x24]
@@ -14326,7 +14727,7 @@ loc_C5DE:
 4:C5FC  06                   push es
 4:C5FD  50                   push ax
 4:C5FE  66ff36a002           push dword ptr [0x2a0]
-4:C603  9a9e5c1bc6           lcall 0xc61b, 0x5c9e  ; sub_s2:5C9E
+4:C603  9a9e5c1bc6           lcall 0xc61b, 0x5c9e  ; SoundMgr::playVoicePair@s2:5C9E
 loc_C608:
 4:C608  c41ea002             les bx, ptr [0x2a0]
 4:C60C  26837f1200           cmp word ptr es:[bx + 0x12], 0
@@ -14334,7 +14735,7 @@ loc_C608:
 4:C613  68d301               push 0x1d3
 4:C616  06                   push es
 4:C617  53                   push bx
-4:C618  9a5c5ca4c6           lcall 0xc6a4, 0x5c5c  ; sub_s2:5C5C
+4:C618  9a5c5ca4c6           lcall 0xc6a4, 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 loc_C61D:
 4:C61D  c45e06               les bx, ptr [bp + 6]
 4:C620  26ff7708             push word ptr es:[bx + 8]
@@ -14378,7 +14779,7 @@ loc_C61D:
 4:C696  26ff5f08             lcall es:[bx + 8]
 4:C69A  8946c8               mov word ptr [bp - 0x38], ax
 4:C69D  66ff76ca             push dword ptr [bp - 0x36]
-4:C6A1  9a7247a9c4           lcall 0xc4a9, 0x4772  ; sub_s2:4772
+4:C6A1  9a7247a9c4           lcall 0xc4a9, 0x4772  ; DIB::rect@s2:4772
 4:C6A6  8ec2                 mov es, dx
 4:C6A8  8bd8                 mov bx, ax
 4:C6AA  8946c4               mov word ptr [bp - 0x3c], ax
@@ -14420,7 +14821,7 @@ loc_C61D:
 4:C70C  66ff7606             push dword ptr [bp + 6]
 4:C710  90                   nop
 4:C711  0e                   push cs
-4:C712  e82d00               call 0xc742  ; sub_s4:C742
+4:C712  e82d00               call 0xc742  ; StoryPage::drawText@s4:C742
 4:C715  ff76d8               push word ptr [bp - 0x28]
 4:C718  ff76c8               push word ptr [bp - 0x38]
 4:C71B  6a00                 push 0
@@ -14439,8 +14840,9 @@ loc_C61D:
 4:C73E  c9                   leave
 4:C73F  ca0400               retf 4
 
-; ---------------- sub_s4:C742 FAR size=340 callers=3
+; ---------------- StoryPage::drawText@s4:C742 FAR size=340 callers=3
 ;   apis: GDI.SetBkColor, GDI.SetTextColor, USER.DrawText
+;   DrawText in the 400x30 box
 4:C742  c81a0000             enter 0x1a, 0
 4:C746  c45e06               les bx, ptr [bp + 6]
 4:C749  662683bf080100       cmp dword ptr es:[bx + 0x108], 0
@@ -14537,13 +14939,14 @@ loc_C892:
 4:C892  c9                   leave
 4:C893  ca0800               retf 8
 
-; ---------------- sub_s4:C896 FAR size=194 callers=0
+; ---------------- StoryPage::scalar_dtor@s4:C896 FAR size=194 callers=0
+;   deleting destructor
 4:C896  55                   push bp
 4:C897  8bec                 mov bp, sp
 4:C899  66ff7606             push dword ptr [bp + 6]
 4:C89D  90                   nop
 4:C89E  0e                   push cs
-4:C89F  e876fc               call 0xc518  ; sub_s4:C518
+4:C89F  e876fc               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:C8A2  f6460a01             test byte ptr [bp + 0xa], 1
 4:C8A6  7409                 je 0xc8b1
 4:C8A8  66ff7606             push dword ptr [bp + 6]
@@ -14564,7 +14967,8 @@ loc_C8B1:
 4:C93B  db c9 30 9c 42 c9 86 9c 46 c9 c4 9c 4a c9 e0 9c 52
 4:C94B  db c9 ae 02 71 c5 28 63 56 c9 2c 63 06 c6
 
-; ---------------- sub_s4:C958 FAR size=78 callers=1
+; ---------------- StoryPage38::StoryPage38@s4:C958 FAR size=78 callers=1
+;   story page, mode 38: picture 241, voice 141, 8000 ms, then command 154
 4:C958  c8040000             enter 4, 0
 4:C95C  66ff760c             push dword ptr [bp + 0xc]
 4:C960  ff760a               push word ptr [bp + 0xa]
@@ -14573,7 +14977,7 @@ loc_C8B1:
 4:C96F  8d46fc               lea ax, [bp - 4]
 4:C972  16                   push ss
 4:C973  50                   push ax
-4:C974  9a1a94c2c8           lcall 0xc8c2, 0x941a  ; sub_s2:941A
+4:C974  9a1a94c2c8           lcall 0xc8c2, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:C979  52                   push dx
 4:C97A  50                   push ax
 4:C97B  66682600401f         push 0x1f400026
@@ -14581,7 +14985,7 @@ loc_C8B1:
 4:C987  66ff7606             push dword ptr [bp + 6]
 4:C98B  90                   nop
 4:C98C  0e                   push cs
-4:C98D  e872fa               call 0xc402  ; sub_s4:C402
+4:C98D  e872fa               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:C990  c45e06               les bx, ptr [bp + 6]
 4:C993  26c7075adc           mov word ptr es:[bx], 0xdc5a
 4:C998  26c74702bec8         mov word ptr es:[bx + 2], 0xc8be  ; SEGMENT s4:0000
@@ -14590,7 +14994,8 @@ loc_C8B1:
 4:C9A2  c9                   leave
 4:C9A3  ca0a00               retf 0xa
 
-; ---------------- sub_s4:C9A6 FAR size=78 callers=1
+; ---------------- StoryPage39::StoryPage39@s4:C9A6 FAR size=78 callers=1
+;   story page, mode 39: picture 242, voice 142, 7000 ms, then command 160
 4:C9A6  c8040000             enter 4, 0
 4:C9AA  66ff760c             push dword ptr [bp + 0xc]
 4:C9AE  ff760a               push word ptr [bp + 0xa]
@@ -14599,7 +15004,7 @@ loc_C8B1:
 4:C9BD  8d46fc               lea ax, [bp - 4]
 4:C9C0  16                   push ss
 4:C9C1  50                   push ax
-4:C9C2  9a1a9477c9           lcall 0xc977, 0x941a  ; sub_s2:941A
+4:C9C2  9a1a9477c9           lcall 0xc977, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:C9C7  52                   push dx
 4:C9C8  50                   push ax
 4:C9C9  66682700581b         push 0x1b580027
@@ -14607,7 +15012,7 @@ loc_C8B1:
 4:C9D5  66ff7606             push dword ptr [bp + 6]
 4:C9D9  90                   nop
 4:C9DA  0e                   push cs
-4:C9DB  e824fa               call 0xc402  ; sub_s4:C402
+4:C9DB  e824fa               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:C9DE  c45e06               les bx, ptr [bp + 6]
 4:C9E1  26c707ded6           mov word ptr es:[bx], 0xd6de
 4:C9E6  26c747029cc9         mov word ptr es:[bx + 2], 0xc99c  ; SEGMENT s4:0000
@@ -14616,7 +15021,8 @@ loc_C8B1:
 4:C9F0  c9                   leave
 4:C9F1  ca0a00               retf 0xa
 
-; ---------------- sub_s4:C9F4 FAR size=84 callers=1
+; ---------------- StoryPage40::StoryPage40@s4:C9F4 FAR size=84 callers=1
+;   story page, mode 40: picture 243, voice 143, 13000 ms, then command 166
 4:C9F4  c8040000             enter 4, 0
 4:C9F8  66ff760c             push dword ptr [bp + 0xc]
 4:C9FC  ff760a               push word ptr [bp + 0xa]
@@ -14625,7 +15031,7 @@ loc_C8B1:
 4:CA0B  8d46fc               lea ax, [bp - 4]
 4:CA0E  16                   push ss
 4:CA0F  50                   push ax
-4:CA10  9a1a94c5c9           lcall 0xc9c5, 0x941a  ; sub_s2:941A
+4:CA10  9a1a94c5c9           lcall 0xc9c5, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CA15  52                   push dx
 4:CA16  50                   push ax
 4:CA17  66682800c832         push 0x32c80028
@@ -14633,7 +15039,7 @@ loc_C8B1:
 4:CA23  66ff7606             push dword ptr [bp + 6]
 4:CA27  90                   nop
 4:CA28  0e                   push cs
-4:CA29  e8d6f9               call 0xc402  ; sub_s4:C402
+4:CA29  e8d6f9               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CA2C  c45e06               les bx, ptr [bp + 6]
 4:CA2F  26c70786da           mov word ptr es:[bx], 0xda86
 4:CA34  26c74702eac9         mov word ptr es:[bx + 2], 0xc9ea  ; SEGMENT s4:0000
@@ -14643,7 +15049,8 @@ loc_C8B1:
 4:CA44  c9                   leave
 4:CA45  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CA48 FAR size=78 callers=1
+; ---------------- StoryPage41::StoryPage41@s4:CA48 FAR size=78 callers=1
+;   story page, mode 41: picture 244, voice 144, 14000 ms, then command 161
 4:CA48  c8040000             enter 4, 0
 4:CA4C  66ff760c             push dword ptr [bp + 0xc]
 4:CA50  ff760a               push word ptr [bp + 0xa]
@@ -14652,7 +15059,7 @@ loc_C8B1:
 4:CA5F  8d46fc               lea ax, [bp - 4]
 4:CA62  16                   push ss
 4:CA63  50                   push ax
-4:CA64  9a1a9413ca           lcall 0xca13, 0x941a  ; sub_s2:941A
+4:CA64  9a1a9413ca           lcall 0xca13, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CA69  52                   push dx
 4:CA6A  50                   push ax
 4:CA6B  66682900b036         push 0x36b00029
@@ -14660,7 +15067,7 @@ loc_C8B1:
 4:CA77  66ff7606             push dword ptr [bp + 6]
 4:CA7B  90                   nop
 4:CA7C  0e                   push cs
-4:CA7D  e882f9               call 0xc402  ; sub_s4:C402
+4:CA7D  e882f9               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CA80  c45e06               les bx, ptr [bp + 6]
 4:CA83  26c7070ad5           mov word ptr es:[bx], 0xd50a
 4:CA88  26c7470238ca         mov word ptr es:[bx + 2], 0xca38  ; SEGMENT s4:0000
@@ -14669,7 +15076,8 @@ loc_C8B1:
 4:CA92  c9                   leave
 4:CA93  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CA96 FAR size=84 callers=1
+; ---------------- StoryPage42::StoryPage42@s4:CA96 FAR size=84 callers=1
+;   story page, mode 42: picture 245, voice 146, 26000 ms, then command 191
 4:CA96  c8040000             enter 4, 0
 4:CA9A  66ff760c             push dword ptr [bp + 0xc]
 4:CA9E  ff760a               push word ptr [bp + 0xa]
@@ -14678,7 +15086,7 @@ loc_C8B1:
 4:CAAD  8d46fc               lea ax, [bp - 4]
 4:CAB0  16                   push ss
 4:CAB1  50                   push ax
-4:CAB2  9a1a9467ca           lcall 0xca67, 0x941a  ; sub_s2:941A
+4:CAB2  9a1a9467ca           lcall 0xca67, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CAB7  52                   push dx
 4:CAB8  50                   push ax
 4:CAB9  66682a009065         push 0x6590002a
@@ -14686,7 +15094,7 @@ loc_C8B1:
 4:CAC5  66ff7606             push dword ptr [bp + 6]
 4:CAC9  90                   nop
 4:CACA  0e                   push cs
-4:CACB  e834f9               call 0xc402  ; sub_s4:C402
+4:CACB  e834f9               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CACE  c45e06               les bx, ptr [bp + 6]
 4:CAD1  26c707b2d8           mov word ptr es:[bx], 0xd8b2
 4:CAD6  26c747028cca         mov word ptr es:[bx + 2], 0xca8c  ; SEGMENT s4:0000
@@ -14696,7 +15104,8 @@ loc_C8B1:
 4:CAE6  c9                   leave
 4:CAE7  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CAEA FAR size=78 callers=1
+; ---------------- StoryPage43::StoryPage43@s4:CAEA FAR size=78 callers=1
+;   story page, mode 43: picture 246, voice 147, 9000 ms, then command 147
 4:CAEA  c8040000             enter 4, 0
 4:CAEE  66ff760c             push dword ptr [bp + 0xc]
 4:CAF2  ff760a               push word ptr [bp + 0xa]
@@ -14705,7 +15114,7 @@ loc_C8B1:
 4:CB01  8d46fc               lea ax, [bp - 4]
 4:CB04  16                   push ss
 4:CB05  50                   push ax
-4:CB06  9a1a94b5ca           lcall 0xcab5, 0x941a  ; sub_s2:941A
+4:CB06  9a1a94b5ca           lcall 0xcab5, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CB0B  52                   push dx
 4:CB0C  50                   push ax
 4:CB0D  66682b002823         push 0x2328002b
@@ -14713,7 +15122,7 @@ loc_C8B1:
 4:CB19  66ff7606             push dword ptr [bp + 6]
 4:CB1D  90                   nop
 4:CB1E  0e                   push cs
-4:CB1F  e8e0f8               call 0xc402  ; sub_s4:C402
+4:CB1F  e8e0f8               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CB22  c45e06               les bx, ptr [bp + 6]
 4:CB25  26c707bedb           mov word ptr es:[bx], 0xdbbe
 4:CB2A  26c74702daca         mov word ptr es:[bx + 2], 0xcada  ; SEGMENT s4:0000
@@ -14722,7 +15131,8 @@ loc_C8B1:
 4:CB34  c9                   leave
 4:CB35  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CB38 FAR size=78 callers=1
+; ---------------- StoryPage44::StoryPage44@s4:CB38 FAR size=78 callers=1
+;   story page, mode 44: picture 247, voice 148, 13000 ms, then command 148
 4:CB38  c8040000             enter 4, 0
 4:CB3C  66ff760c             push dword ptr [bp + 0xc]
 4:CB40  ff760a               push word ptr [bp + 0xa]
@@ -14731,7 +15141,7 @@ loc_C8B1:
 4:CB4F  8d46fc               lea ax, [bp - 4]
 4:CB52  16                   push ss
 4:CB53  50                   push ax
-4:CB54  9a1a9409cb           lcall 0xcb09, 0x941a  ; sub_s2:941A
+4:CB54  9a1a9409cb           lcall 0xcb09, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CB59  52                   push dx
 4:CB5A  50                   push ax
 4:CB5B  66682c00c832         push 0x32c8002c
@@ -14739,7 +15149,7 @@ loc_C8B1:
 4:CB67  66ff7606             push dword ptr [bp + 6]
 4:CB6B  90                   nop
 4:CB6C  0e                   push cs
-4:CB6D  e892f8               call 0xc402  ; sub_s4:C402
+4:CB6D  e892f8               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CB70  c45e06               les bx, ptr [bp + 6]
 4:CB73  26c70742d6           mov word ptr es:[bx], 0xd642
 4:CB78  26c747022ecb         mov word ptr es:[bx + 2], 0xcb2e  ; SEGMENT s4:0000
@@ -14748,7 +15158,8 @@ loc_C8B1:
 4:CB82  c9                   leave
 4:CB83  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CB86 FAR size=84 callers=1
+; ---------------- StoryPage45::StoryPage45@s4:CB86 FAR size=84 callers=1
+;   story page, mode 45: picture 248, voice 150, 9000 ms, then command 194
 4:CB86  c8040000             enter 4, 0
 4:CB8A  66ff760c             push dword ptr [bp + 0xc]
 4:CB8E  ff760a               push word ptr [bp + 0xa]
@@ -14757,7 +15168,7 @@ loc_C8B1:
 4:CB9D  8d46fc               lea ax, [bp - 4]
 4:CBA0  16                   push ss
 4:CBA1  50                   push ax
-4:CBA2  9a1a9457cb           lcall 0xcb57, 0x941a  ; sub_s2:941A
+4:CBA2  9a1a9457cb           lcall 0xcb57, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CBA7  52                   push dx
 4:CBA8  50                   push ax
 4:CBA9  66682d002823         push 0x2328002d
@@ -14765,7 +15176,7 @@ loc_C8B1:
 4:CBB5  66ff7606             push dword ptr [bp + 6]
 4:CBB9  90                   nop
 4:CBBA  0e                   push cs
-4:CBBB  e844f8               call 0xc402  ; sub_s4:C402
+4:CBBB  e844f8               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CBBE  c45e06               les bx, ptr [bp + 6]
 4:CBC1  26c707ead9           mov word ptr es:[bx], 0xd9ea
 4:CBC6  26c747027ccb         mov word ptr es:[bx + 2], 0xcb7c  ; SEGMENT s4:0000
@@ -14775,7 +15186,8 @@ loc_C8B1:
 4:CBD6  c9                   leave
 4:CBD7  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CBDA FAR size=78 callers=1
+; ---------------- StoryPage46::StoryPage46@s4:CBDA FAR size=78 callers=1
+;   story page, mode 46: picture 249, voice 151, 11000 ms, then command 197
 4:CBDA  c8040000             enter 4, 0
 4:CBDE  66ff760c             push dword ptr [bp + 0xc]
 4:CBE2  ff760a               push word ptr [bp + 0xa]
@@ -14784,7 +15196,7 @@ loc_C8B1:
 4:CBF1  8d46fc               lea ax, [bp - 4]
 4:CBF4  16                   push ss
 4:CBF5  50                   push ax
-4:CBF6  9a1a94a5cb           lcall 0xcba5, 0x941a  ; sub_s2:941A
+4:CBF6  9a1a94a5cb           lcall 0xcba5, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CBFB  52                   push dx
 4:CBFC  50                   push ax
 4:CBFD  66682e00f82a         push 0x2af8002e
@@ -14792,7 +15204,7 @@ loc_C8B1:
 4:CC09  66ff7606             push dword ptr [bp + 6]
 4:CC0D  90                   nop
 4:CC0E  0e                   push cs
-4:CC0F  e8f0f7               call 0xc402  ; sub_s4:C402
+4:CC0F  e8f0f7               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CC12  c45e06               les bx, ptr [bp + 6]
 4:CC15  26c7076ed4           mov word ptr es:[bx], 0xd46e
 4:CC1A  26c74702cacb         mov word ptr es:[bx + 2], 0xcbca  ; SEGMENT s4:0000
@@ -14801,7 +15213,8 @@ loc_C8B1:
 4:CC24  c9                   leave
 4:CC25  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CC28 FAR size=78 callers=1
+; ---------------- StoryPage47::StoryPage47@s4:CC28 FAR size=78 callers=1
+;   story page, mode 47: picture 250, voice 152, 10000 ms, then command 163
 4:CC28  c8040000             enter 4, 0
 4:CC2C  66ff760c             push dword ptr [bp + 0xc]
 4:CC30  ff760a               push word ptr [bp + 0xa]
@@ -14810,7 +15223,7 @@ loc_C8B1:
 4:CC3F  8d46fc               lea ax, [bp - 4]
 4:CC42  16                   push ss
 4:CC43  50                   push ax
-4:CC44  9a1a94f9cb           lcall 0xcbf9, 0x941a  ; sub_s2:941A
+4:CC44  9a1a94f9cb           lcall 0xcbf9, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CC49  52                   push dx
 4:CC4A  50                   push ax
 4:CC4B  66682f001027         push 0x2710002f
@@ -14818,7 +15231,7 @@ loc_C8B1:
 4:CC57  66ff7606             push dword ptr [bp + 6]
 4:CC5B  90                   nop
 4:CC5C  0e                   push cs
-4:CC5D  e8a2f7               call 0xc402  ; sub_s4:C402
+4:CC5D  e8a2f7               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CC60  c45e06               les bx, ptr [bp + 6]
 4:CC63  26c70716d8           mov word ptr es:[bx], 0xd816
 4:CC68  26c747021ecc         mov word ptr es:[bx + 2], 0xcc1e  ; SEGMENT s4:0000
@@ -14827,7 +15240,8 @@ loc_C8B1:
 4:CC72  c9                   leave
 4:CC73  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CC76 FAR size=78 callers=1
+; ---------------- StoryPage48::StoryPage48@s4:CC76 FAR size=78 callers=1
+;   story page, mode 48: picture 251, voice 153, 25000 ms, then command 168
 4:CC76  c8040000             enter 4, 0
 4:CC7A  66ff760c             push dword ptr [bp + 0xc]
 4:CC7E  ff760a               push word ptr [bp + 0xa]
@@ -14836,7 +15250,7 @@ loc_C8B1:
 4:CC8D  8d46fc               lea ax, [bp - 4]
 4:CC90  16                   push ss
 4:CC91  50                   push ax
-4:CC92  9a1a9447cc           lcall 0xcc47, 0x941a  ; sub_s2:941A
+4:CC92  9a1a9447cc           lcall 0xcc47, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CC97  52                   push dx
 4:CC98  50                   push ax
 4:CC99  66683000a861         push 0x61a80030
@@ -14844,7 +15258,7 @@ loc_C8B1:
 4:CCA5  66ff7606             push dword ptr [bp + 6]
 4:CCA9  90                   nop
 4:CCAA  0e                   push cs
-4:CCAB  e854f7               call 0xc402  ; sub_s4:C402
+4:CCAB  e854f7               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CCAE  c45e06               les bx, ptr [bp + 6]
 4:CCB1  26c70722db           mov word ptr es:[bx], 0xdb22
 4:CCB6  26c747026ccc         mov word ptr es:[bx + 2], 0xcc6c  ; SEGMENT s4:0000
@@ -14853,7 +15267,8 @@ loc_C8B1:
 4:CCC0  c9                   leave
 4:CCC1  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CCC4 FAR size=78 callers=1
+; ---------------- StoryPage49::StoryPage49@s4:CCC4 FAR size=78 callers=1
+;   story page, mode 49: picture 252, voice 155, 23000 ms, then command 169
 4:CCC4  c8040000             enter 4, 0
 4:CCC8  66ff760c             push dword ptr [bp + 0xc]
 4:CCCC  ff760a               push word ptr [bp + 0xa]
@@ -14862,7 +15277,7 @@ loc_C8B1:
 4:CCDB  8d46fc               lea ax, [bp - 4]
 4:CCDE  16                   push ss
 4:CCDF  50                   push ax
-4:CCE0  9a1a9495cc           lcall 0xcc95, 0x941a  ; sub_s2:941A
+4:CCE0  9a1a9495cc           lcall 0xcc95, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CCE5  52                   push dx
 4:CCE6  50                   push ax
 4:CCE7  66683100d859         push 0x59d80031
@@ -14870,7 +15285,7 @@ loc_C8B1:
 4:CCF3  66ff7606             push dword ptr [bp + 6]
 4:CCF7  90                   nop
 4:CCF8  0e                   push cs
-4:CCF9  e806f7               call 0xc402  ; sub_s4:C402
+4:CCF9  e806f7               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CCFC  c45e06               les bx, ptr [bp + 6]
 4:CCFF  26c707a6d5           mov word ptr es:[bx], 0xd5a6
 4:CD04  26c74702bacc         mov word ptr es:[bx + 2], 0xccba  ; SEGMENT s4:0000
@@ -14879,7 +15294,8 @@ loc_C8B1:
 4:CD0E  c9                   leave
 4:CD0F  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CD12 FAR size=78 callers=1
+; ---------------- StoryPage50::StoryPage50@s4:CD12 FAR size=78 callers=1
+;   story page, mode 50: picture 253, voice 156, 10000 ms, then command 124
 4:CD12  c8040000             enter 4, 0
 4:CD16  66ff760c             push dword ptr [bp + 0xc]
 4:CD1A  ff760a               push word ptr [bp + 0xa]
@@ -14888,7 +15304,7 @@ loc_C8B1:
 4:CD29  8d46fc               lea ax, [bp - 4]
 4:CD2C  16                   push ss
 4:CD2D  50                   push ax
-4:CD2E  9a1a94e3cc           lcall 0xcce3, 0x941a  ; sub_s2:941A
+4:CD2E  9a1a94e3cc           lcall 0xcce3, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CD33  52                   push dx
 4:CD34  50                   push ax
 4:CD35  666832001027         push 0x27100032
@@ -14896,7 +15312,7 @@ loc_C8B1:
 4:CD41  66ff7606             push dword ptr [bp + 6]
 4:CD45  90                   nop
 4:CD46  0e                   push cs
-4:CD47  e8b8f6               call 0xc402  ; sub_s4:C402
+4:CD47  e8b8f6               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CD4A  c45e06               les bx, ptr [bp + 6]
 4:CD4D  26c7074ed9           mov word ptr es:[bx], 0xd94e
 4:CD52  26c7470208cd         mov word ptr es:[bx + 2], 0xcd08  ; SEGMENT s4:0000
@@ -14905,7 +15321,8 @@ loc_C8B1:
 4:CD5C  c9                   leave
 4:CD5D  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CD60 FAR size=72 callers=1
+; ---------------- StoryPage51::StoryPage51@s4:CD60 FAR size=72 callers=1
+;   story page, mode 51: picture 254, 10000 ms, then command 201
 4:CD60  c8040000             enter 4, 0
 4:CD64  66ff760c             push dword ptr [bp + 0xc]
 4:CD68  ff760a               push word ptr [bp + 0xa]
@@ -14914,7 +15331,7 @@ loc_C8B1:
 4:CD74  8d46fc               lea ax, [bp - 4]
 4:CD77  16                   push ss
 4:CD78  50                   push ax
-4:CD79  9a1a9431cd           lcall 0xcd31, 0x941a  ; sub_s2:941A
+4:CD79  9a1a9431cd           lcall 0xcd31, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CD7E  52                   push dx
 4:CD7F  50                   push ax
 4:CD80  666833001027         push 0x27100033
@@ -14922,7 +15339,7 @@ loc_C8B1:
 4:CD89  66ff7606             push dword ptr [bp + 6]
 4:CD8D  90                   nop
 4:CD8E  0e                   push cs
-4:CD8F  e870f6               call 0xc402  ; sub_s4:C402
+4:CD8F  e870f6               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CD92  c45e06               les bx, ptr [bp + 6]
 4:CD95  26c707d2d3           mov word ptr es:[bx], 0xd3d2
 4:CD9A  26c7470256cd         mov word ptr es:[bx + 2], 0xcd56  ; SEGMENT s4:0000
@@ -14931,12 +15348,13 @@ loc_C8B1:
 4:CDA4  c9                   leave
 4:CDA5  ca0a00               retf 0xa
 
-; ---------------- sub_s4:CDA8 size=460 callers=0
+; ---------------- StoryPage51::paint@s4:CDA8 size=460 callers=0
 ;   apis: GDI.CreateSolidBrush, GDI.DeleteObject, USER.BeginPaint, USER.EndPaint, USER.FillRect, USER.PostMessage, USER.SelectPalette
+;   (vslot 13) the last page's paint
 4:CDA8  c84c0000             enter 0x4c, 0
 4:CDAC  6a02                 push 2
 4:CDAE  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:CDB3  9aba2088c5           lcall 0xc588, 0x20ba  ; sub_s3:20BA
+4:CDB3  9aba2088c5           lcall 0xc588, 0x20ba  ; Registry_get@s3:20BA
 4:CDB8  8946dc               mov word ptr [bp - 0x24], ax
 4:CDBB  8956de               mov word ptr [bp - 0x22], dx
 4:CDBE  c45edc               les bx, ptr [bp - 0x24]
@@ -14972,14 +15390,14 @@ loc_CE0A:
 4:CE15  26c787f0000100       mov word ptr es:[bx + 0xf0], 1
 4:CE1C  68f301               push 0x1f3
 4:CE1F  66ff36a002           push dword ptr [0x2a0]
-4:CE24  9a5c5c3cce           lcall 0xce3c, 0x5c5c  ; sub_s2:5C5C
+4:CE24  9a5c5c3cce           lcall 0xce3c, 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 4:CE29  c41ea002             les bx, ptr [0x2a0]
 4:CE2D  26837f1200           cmp word ptr es:[bx + 0x12], 0
 4:CE32  750a                 jne 0xce3e
 4:CE34  68d301               push 0x1d3
 4:CE37  06                   push es
 4:CE38  53                   push bx
-4:CE39  9a5c5cc1ce           lcall 0xcec1, 0x5c5c  ; sub_s2:5C5C
+4:CE39  9a5c5cc1ce           lcall 0xcec1, 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 loc_CE3E:
 4:CE3E  c45e06               les bx, ptr [bp + 6]
 4:CE41  26ff7708             push word ptr es:[bx + 8]
@@ -15021,7 +15439,7 @@ loc_CE3E:
 4:CEB3  26ff5f08             lcall es:[bx + 8]
 4:CEB7  8946c8               mov word ptr [bp - 0x38], ax
 4:CEBA  66ff76ca             push dword ptr [bp - 0x36]
-4:CEBE  9a72477ccd           lcall 0xcd7c, 0x4772  ; sub_s2:4772
+4:CEBE  9a72477ccd           lcall 0xcd7c, 0x4772  ; DIB::rect@s2:4772
 4:CEC3  8ec2                 mov es, dx
 4:CEC5  8bd8                 mov bx, ax
 4:CEC7  8946c4               mov word ptr [bp - 0x3c], ax
@@ -15071,7 +15489,7 @@ loc_CF10:
 4:CF40  66ff7606             push dword ptr [bp + 6]
 4:CF44  90                   nop
 4:CF45  0e                   push cs
-4:CF46  e8f9f7               call 0xc742  ; sub_s4:C742
+4:CF46  e8f9f7               call 0xc742  ; StoryPage::drawText@s4:C742
 4:CF49  ff76d8               push word ptr [bp - 0x28]
 4:CF4C  ff76c8               push word ptr [bp - 0x38]
 4:CF4F  6a00                 push 0
@@ -15088,7 +15506,8 @@ loc_CF10:
 4:CF70  c9                   leave
 4:CF71  ca0400               retf 4
 
-; ---------------- sub_s4:CF74 FAR size=76 callers=1
+; ---------------- StoryPage52::StoryPage52@s4:CF74 FAR size=76 callers=1
+;   story page, mode 52: picture 254, voice 128, 10000 ms, then command 207 (after the landing site)
 4:CF74  c8040000             enter 4, 0
 4:CF78  66ff760c             push dword ptr [bp + 0xc]
 4:CF7C  ff760a               push word ptr [bp + 0xa]
@@ -15097,7 +15516,7 @@ loc_CF10:
 4:CF8B  8d46fc               lea ax, [bp - 4]
 4:CF8E  16                   push ss
 4:CF8F  50                   push ax
-4:CF90  9a1a9427ce           lcall 0xce27, 0x941a  ; sub_s2:941A
+4:CF90  9a1a9427ce           lcall 0xce27, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:CF95  52                   push dx
 4:CF96  50                   push ax
 4:CF97  666834001027         push 0x27100034
@@ -15105,7 +15524,7 @@ loc_CF10:
 4:CFA0  66ff7606             push dword ptr [bp + 6]
 4:CFA4  90                   nop
 4:CFA5  0e                   push cs
-4:CFA6  e859f4               call 0xc402  ; sub_s4:C402
+4:CFA6  e859f4               call 0xc402  ; StoryPage::StoryPage@s4:C402
 4:CFA9  c45e06               les bx, ptr [bp + 6]
 4:CFAC  26c7077ad7           mov word ptr es:[bx], 0xd77a
 4:CFB1  26c747029ecd         mov word ptr es:[bx + 2], 0xcd9e  ; SEGMENT s4:0000
@@ -15115,12 +15534,13 @@ loc_CF10:
 4:CFBC  ca0a00               retf 0xa
 4:CFBF  db 00
 
-; ---------------- sub_s4:CFC0 FAR size=472 callers=0
+; ---------------- StoryPage52::paint@s4:CFC0 FAR size=472 callers=0
 ;   apis: GDI.CreateSolidBrush, GDI.DeleteObject, USER.BeginPaint, USER.EndPaint, USER.FillRect, USER.PostMessage, USER.SelectPalette
+;   the landing page's paint
 4:CFC0  c84e0000             enter 0x4e, 0
 4:CFC4  6a02                 push 2
 4:CFC6  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:CFCB  9aba20b6cd           lcall 0xcdb6, 0x20ba  ; sub_s3:20BA
+4:CFCB  9aba20b6cd           lcall 0xcdb6, 0x20ba  ; Registry_get@s3:20BA
 4:CFD0  8946dc               mov word ptr [bp - 0x24], ax
 4:CFD3  8956de               mov word ptr [bp - 0x22], dx
 4:CFD6  c45edc               les bx, ptr [bp - 0x24]
@@ -15160,14 +15580,14 @@ loc_D022:
 4:D040  06                   push es
 4:D041  50                   push ax
 4:D042  66ff36a002           push dword ptr [0x2a0]
-4:D047  9a9e5c5fd0           lcall 0xd05f, 0x5c9e  ; sub_s2:5C9E
+4:D047  9a9e5c5fd0           lcall 0xd05f, 0x5c9e  ; SoundMgr::playVoicePair@s2:5C9E
 4:D04C  c41ea002             les bx, ptr [0x2a0]
 4:D050  26837f1200           cmp word ptr es:[bx + 0x12], 0
 4:D055  750a                 jne 0xd061
 4:D057  68d301               push 0x1d3
 4:D05A  06                   push es
 4:D05B  53                   push bx
-4:D05C  9a5c5ce4d0           lcall 0xd0e4, 0x5c5c  ; sub_s2:5C5C
+4:D05C  9a5c5ce4d0           lcall 0xd0e4, 0x5c5c  ; SoundMgr::playCatalog@s2:5C5C
 loc_D061:
 4:D061  c45e06               les bx, ptr [bp + 6]
 4:D064  26ff7708             push word ptr es:[bx + 8]
@@ -15209,7 +15629,7 @@ loc_D061:
 4:D0D6  26ff5f08             lcall es:[bx + 8]
 4:D0DA  8946c8               mov word ptr [bp - 0x38], ax
 4:D0DD  66ff76ca             push dword ptr [bp - 0x36]
-4:D0E1  9a724793cf           lcall 0xcf93, 0x4772  ; sub_s2:4772
+4:D0E1  9a724793cf           lcall 0xcf93, 0x4772  ; DIB::rect@s2:4772
 4:D0E6  8ec2                 mov es, dx
 4:D0E8  8bd8                 mov bx, ax
 4:D0EA  8946c4               mov word ptr [bp - 0x3c], ax
@@ -15259,7 +15679,7 @@ loc_D133:
 4:D163  66ff7606             push dword ptr [bp + 6]
 4:D167  90                   nop
 4:D168  0e                   push cs
-4:D169  e8d6f5               call 0xc742  ; sub_s4:C742
+4:D169  e8d6f5               call 0xc742  ; StoryPage::drawText@s4:C742
 4:D16C  ff76d8               push word ptr [bp - 0x28]
 4:D16F  ff76c8               push word ptr [bp - 0x38]
 4:D172  6a00                 push 0
@@ -15277,12 +15697,13 @@ loc_D133:
 4:D194  ca0400               retf 4
 4:D197  db 00
 
-; ---------------- sub_s4:D198 FAR size=38 callers=0
+; ---------------- StoryPage38::scalar_dtor@s4:D198 FAR size=38 callers=0
+;   mode 38 story page deleting destructor
 4:D198  c8040000             enter 4, 0
 4:D19C  66ff7606             push dword ptr [bp + 6]
 4:D1A0  90                   nop
 4:D1A1  0e                   push cs
-4:D1A2  e873f3               call 0xc518  ; sub_s4:C518
+4:D1A2  e873f3               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D1A5  f6460a01             test byte ptr [bp + 0xa], 1
 4:D1A9  7409                 je 0xd1b4
 4:D1AB  66ff7606             push dword ptr [bp + 6]
@@ -15293,12 +15714,13 @@ loc_D1B4:
 4:D1BA  c9                   leave
 4:D1BB  ca0600               retf 6
 
-; ---------------- sub_s4:D1BE size=38 callers=0
+; ---------------- StoryPage39::scalar_dtor@s4:D1BE size=38 callers=0
+;   mode 39 story page deleting destructor
 4:D1BE  c8040000             enter 4, 0
 4:D1C2  66ff7606             push dword ptr [bp + 6]
 4:D1C6  90                   nop
 4:D1C7  0e                   push cs
-4:D1C8  e84df3               call 0xc518  ; sub_s4:C518
+4:D1C8  e84df3               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D1CB  f6460a01             test byte ptr [bp + 0xa], 1
 4:D1CF  7409                 je 0xd1da
 4:D1D1  66ff7606             push dword ptr [bp + 6]
@@ -15309,12 +15731,13 @@ loc_D1DA:
 4:D1E0  c9                   leave
 4:D1E1  ca0600               retf 6
 
-; ---------------- sub_s4:D1E4 size=38 callers=0
+; ---------------- StoryPage40::scalar_dtor@s4:D1E4 size=38 callers=0
+;   mode 40 story page deleting destructor
 4:D1E4  c8040000             enter 4, 0
 4:D1E8  66ff7606             push dword ptr [bp + 6]
 4:D1EC  90                   nop
 4:D1ED  0e                   push cs
-4:D1EE  e827f3               call 0xc518  ; sub_s4:C518
+4:D1EE  e827f3               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D1F1  f6460a01             test byte ptr [bp + 0xa], 1
 4:D1F5  7409                 je 0xd200
 4:D1F7  66ff7606             push dword ptr [bp + 6]
@@ -15325,12 +15748,13 @@ loc_D200:
 4:D206  c9                   leave
 4:D207  ca0600               retf 6
 
-; ---------------- sub_s4:D20A size=38 callers=0
+; ---------------- StoryPage41::scalar_dtor@s4:D20A size=38 callers=0
+;   mode 41 story page deleting destructor
 4:D20A  c8040000             enter 4, 0
 4:D20E  66ff7606             push dword ptr [bp + 6]
 4:D212  90                   nop
 4:D213  0e                   push cs
-4:D214  e801f3               call 0xc518  ; sub_s4:C518
+4:D214  e801f3               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D217  f6460a01             test byte ptr [bp + 0xa], 1
 4:D21B  7409                 je 0xd226
 4:D21D  66ff7606             push dword ptr [bp + 6]
@@ -15341,12 +15765,13 @@ loc_D226:
 4:D22C  c9                   leave
 4:D22D  ca0600               retf 6
 
-; ---------------- sub_s4:D230 size=38 callers=0
+; ---------------- StoryPage42::scalar_dtor@s4:D230 size=38 callers=0
+;   mode 42 story page deleting destructor
 4:D230  c8040000             enter 4, 0
 4:D234  66ff7606             push dword ptr [bp + 6]
 4:D238  90                   nop
 4:D239  0e                   push cs
-4:D23A  e8dbf2               call 0xc518  ; sub_s4:C518
+4:D23A  e8dbf2               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D23D  f6460a01             test byte ptr [bp + 0xa], 1
 4:D241  7409                 je 0xd24c
 4:D243  66ff7606             push dword ptr [bp + 6]
@@ -15357,12 +15782,13 @@ loc_D24C:
 4:D252  c9                   leave
 4:D253  ca0600               retf 6
 
-; ---------------- sub_s4:D256 size=38 callers=0
+; ---------------- StoryPage43::scalar_dtor@s4:D256 size=38 callers=0
+;   mode 43 story page deleting destructor
 4:D256  c8040000             enter 4, 0
 4:D25A  66ff7606             push dword ptr [bp + 6]
 4:D25E  90                   nop
 4:D25F  0e                   push cs
-4:D260  e8b5f2               call 0xc518  ; sub_s4:C518
+4:D260  e8b5f2               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D263  f6460a01             test byte ptr [bp + 0xa], 1
 4:D267  7409                 je 0xd272
 4:D269  66ff7606             push dword ptr [bp + 6]
@@ -15373,12 +15799,13 @@ loc_D272:
 4:D278  c9                   leave
 4:D279  ca0600               retf 6
 
-; ---------------- sub_s4:D27C size=38 callers=0
+; ---------------- StoryPage44::scalar_dtor@s4:D27C size=38 callers=0
+;   mode 44 story page deleting destructor
 4:D27C  c8040000             enter 4, 0
 4:D280  66ff7606             push dword ptr [bp + 6]
 4:D284  90                   nop
 4:D285  0e                   push cs
-4:D286  e88ff2               call 0xc518  ; sub_s4:C518
+4:D286  e88ff2               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D289  f6460a01             test byte ptr [bp + 0xa], 1
 4:D28D  7409                 je 0xd298
 4:D28F  66ff7606             push dword ptr [bp + 6]
@@ -15389,12 +15816,13 @@ loc_D298:
 4:D29E  c9                   leave
 4:D29F  ca0600               retf 6
 
-; ---------------- sub_s4:D2A2 size=38 callers=0
+; ---------------- StoryPage45::scalar_dtor@s4:D2A2 size=38 callers=0
+;   mode 45 story page deleting destructor
 4:D2A2  c8040000             enter 4, 0
 4:D2A6  66ff7606             push dword ptr [bp + 6]
 4:D2AA  90                   nop
 4:D2AB  0e                   push cs
-4:D2AC  e869f2               call 0xc518  ; sub_s4:C518
+4:D2AC  e869f2               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D2AF  f6460a01             test byte ptr [bp + 0xa], 1
 4:D2B3  7409                 je 0xd2be
 4:D2B5  66ff7606             push dword ptr [bp + 6]
@@ -15405,12 +15833,13 @@ loc_D2BE:
 4:D2C4  c9                   leave
 4:D2C5  ca0600               retf 6
 
-; ---------------- sub_s4:D2C8 size=38 callers=0
+; ---------------- StoryPage46::scalar_dtor@s4:D2C8 size=38 callers=0
+;   mode 46 story page deleting destructor
 4:D2C8  c8040000             enter 4, 0
 4:D2CC  66ff7606             push dword ptr [bp + 6]
 4:D2D0  90                   nop
 4:D2D1  0e                   push cs
-4:D2D2  e843f2               call 0xc518  ; sub_s4:C518
+4:D2D2  e843f2               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D2D5  f6460a01             test byte ptr [bp + 0xa], 1
 4:D2D9  7409                 je 0xd2e4
 4:D2DB  66ff7606             push dword ptr [bp + 6]
@@ -15421,12 +15850,13 @@ loc_D2E4:
 4:D2EA  c9                   leave
 4:D2EB  ca0600               retf 6
 
-; ---------------- sub_s4:D2EE size=38 callers=0
+; ---------------- StoryPage47::scalar_dtor@s4:D2EE size=38 callers=0
+;   mode 47 story page deleting destructor
 4:D2EE  c8040000             enter 4, 0
 4:D2F2  66ff7606             push dword ptr [bp + 6]
 4:D2F6  90                   nop
 4:D2F7  0e                   push cs
-4:D2F8  e81df2               call 0xc518  ; sub_s4:C518
+4:D2F8  e81df2               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D2FB  f6460a01             test byte ptr [bp + 0xa], 1
 4:D2FF  7409                 je 0xd30a
 4:D301  66ff7606             push dword ptr [bp + 6]
@@ -15437,12 +15867,13 @@ loc_D30A:
 4:D310  c9                   leave
 4:D311  ca0600               retf 6
 
-; ---------------- sub_s4:D314 size=38 callers=0
+; ---------------- StoryPage48::scalar_dtor@s4:D314 size=38 callers=0
+;   mode 48 story page deleting destructor
 4:D314  c8040000             enter 4, 0
 4:D318  66ff7606             push dword ptr [bp + 6]
 4:D31C  90                   nop
 4:D31D  0e                   push cs
-4:D31E  e8f7f1               call 0xc518  ; sub_s4:C518
+4:D31E  e8f7f1               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D321  f6460a01             test byte ptr [bp + 0xa], 1
 4:D325  7409                 je 0xd330
 4:D327  66ff7606             push dword ptr [bp + 6]
@@ -15453,12 +15884,13 @@ loc_D330:
 4:D336  c9                   leave
 4:D337  ca0600               retf 6
 
-; ---------------- sub_s4:D33A size=38 callers=0
+; ---------------- StoryPage49::scalar_dtor@s4:D33A size=38 callers=0
+;   mode 49 story page deleting destructor
 4:D33A  c8040000             enter 4, 0
 4:D33E  66ff7606             push dword ptr [bp + 6]
 4:D342  90                   nop
 4:D343  0e                   push cs
-4:D344  e8d1f1               call 0xc518  ; sub_s4:C518
+4:D344  e8d1f1               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D347  f6460a01             test byte ptr [bp + 0xa], 1
 4:D34B  7409                 je 0xd356
 4:D34D  66ff7606             push dword ptr [bp + 6]
@@ -15469,12 +15901,13 @@ loc_D356:
 4:D35C  c9                   leave
 4:D35D  ca0600               retf 6
 
-; ---------------- sub_s4:D360 size=38 callers=0
+; ---------------- StoryPage50::scalar_dtor@s4:D360 size=38 callers=0
+;   mode 50 story page deleting destructor
 4:D360  c8040000             enter 4, 0
 4:D364  66ff7606             push dword ptr [bp + 6]
 4:D368  90                   nop
 4:D369  0e                   push cs
-4:D36A  e8abf1               call 0xc518  ; sub_s4:C518
+4:D36A  e8abf1               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D36D  f6460a01             test byte ptr [bp + 0xa], 1
 4:D371  7409                 je 0xd37c
 4:D373  66ff7606             push dword ptr [bp + 6]
@@ -15485,12 +15918,13 @@ loc_D37C:
 4:D382  c9                   leave
 4:D383  ca0600               retf 6
 
-; ---------------- sub_s4:D386 size=38 callers=0
+; ---------------- StoryPage51::scalar_dtor@s4:D386 size=38 callers=0
+;   deleting destructor
 4:D386  c8040000             enter 4, 0
 4:D38A  66ff7606             push dword ptr [bp + 6]
 4:D38E  90                   nop
 4:D38F  0e                   push cs
-4:D390  e885f1               call 0xc518  ; sub_s4:C518
+4:D390  e885f1               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D393  f6460a01             test byte ptr [bp + 0xa], 1
 4:D397  7409                 je 0xd3a2
 4:D399  66ff7606             push dword ptr [bp + 6]
@@ -15501,12 +15935,13 @@ loc_D3A2:
 4:D3A8  c9                   leave
 4:D3A9  ca0600               retf 6
 
-; ---------------- sub_s4:D3AC size=2378 callers=0
+; ---------------- StoryPage_vtables@s4:D3AC size=2378 callers=0
+;   DATA, not code: the story pages' vtables
 4:D3AC  c8040000             enter 4, 0
 4:D3B0  66ff7606             push dword ptr [bp + 6]
 4:D3B4  90                   nop
 4:D3B5  0e                   push cs
-4:D3B6  e85ff1               call 0xc518  ; sub_s4:C518
+4:D3B6  e85ff1               call 0xc518  ; StoryPage::~StoryPage@s4:C518
 4:D3B9  f6460a01             test byte ptr [bp + 0xa], 1
 4:D3BD  7409                 je 0xd3c8
 4:D3BF  66ff7606             push dword ptr [bp + 6]
@@ -15664,7 +16099,8 @@ loc_D3C8:
 4:DCE2  db c4 9c e8 dc e0 9c f0 dc ae 02 c8 db 28 63 f4 dc
 4:DCF2  db 2c 63 c4 db
 
-; ---------------- sub_s4:DCF6 FAR size=40 callers=3
+; ---------------- BuildingSprite::BuildingSprite@s4:DCF6 FAR size=40 callers=3
+;   a building's picture on the map (vtable DF3C)
 4:DCF6  c8040000             enter 4, 0
 4:DCFA  c45e06               les bx, ptr [bp + 6]
 4:DCFD  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -15677,12 +16113,13 @@ loc_D3C8:
 4:DD1A  c9                   leave
 4:DD1B  ca0400               retf 4
 
-; ---------------- sub_s4:DD1E FAR size=94 callers=2
+; ---------------- BuildingSprite::make@s4:DD1E FAR size=94 callers=2
+;   picture and animation of a building type
 4:DD1E  c80c0000             enter 0xc, 0
 4:DD22  ff760e               push word ptr [bp + 0xe]
 4:DD25  666a00               push 0
 4:DD28  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:DD2D  9af681cecf           lcall 0xcfce, 0x81f6  ; sub_s3:81F6
+4:DD2D  9af681cecf           lcall 0xcfce, 0x81f6  ; ResLibr::buildingPicture@s3:81F6
 4:DD32  8946fc               mov word ptr [bp - 4], ax
 4:DD35  8956fe               mov word ptr [bp - 2], dx
 4:DD38  6a46                 push 0x46
@@ -15697,7 +16134,7 @@ loc_D3C8:
 4:DD54  ff760a               push word ptr [bp + 0xa]
 4:DD57  ff76f6               push word ptr [bp - 0xa]
 4:DD5A  50                   push ax
-4:DD5B  9acc8770dd           lcall 0xdd70, 0x87cc  ; sub_s2:87CC
+4:DD5B  9acc8770dd           lcall 0xdd70, 0x87cc  ; AnimOverlay::AnimOverlay@s2:87CC
 4:DD60  eb03                 jmp 0xdd65
 loc_DD62:
 4:DD62  33c0                 xor ax, ax
@@ -15707,13 +16144,14 @@ loc_DD65:
 4:DD68  8956fa               mov word ptr [bp - 6], dx
 4:DD6B  52                   push dx
 4:DD6C  50                   push ax
-4:DD6D  9ac68b06dd           lcall 0xdd06, 0x8bc6  ; sub_s2:8BC6
+4:DD6D  9ac68b06dd           lcall 0xdd06, 0x8bc6  ; AnimOverlay::drawFrame@s2:8BC6
 4:DD72  8b46f8               mov ax, word ptr [bp - 8]
 4:DD75  8b56fa               mov dx, word ptr [bp - 6]
 4:DD78  c9                   leave
 4:DD79  ca0a00               retf 0xa
 
-; ---------------- sub_s4:DD7C FAR size=404 callers=1
+; ---------------- BuildingSprite::forObject@s4:DD7C FAR size=404 callers=1
+;   picture of a map object (underground empty cells: terrain 7, 8, 9)
 4:DD7C  c82e0000             enter 0x2e, 0
 4:DD80  662bc0               sub eax, eax
 4:DD83  668946fc             mov dword ptr [bp - 4], eax
@@ -15723,7 +16161,7 @@ loc_DD65:
 4:DD90  66c746f200000000     mov dword ptr [bp - 0xe], 0
 4:DD98  6a2f                 push 0x2f
 4:DD9A  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:DD9F  9aba20e6dd           lcall 0xdde6, 0x20ba  ; sub_s3:20BA
+4:DD9F  9aba20e6dd           lcall 0xdde6, 0x20ba  ; Registry_get@s3:20BA
 4:DDA4  8946f6               mov word ptr [bp - 0xa], ax
 4:DDA7  8956f8               mov word ptr [bp - 8], dx
 4:DDAA  c45ef6               les bx, ptr [bp - 0xa]
@@ -15751,7 +16189,7 @@ loc_DDD9:
 loc_DDDB:
 4:DDDB  666a00               push 0
 4:DDDE  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:DDE3  9af681c3de           lcall 0xdec3, 0x81f6  ; sub_s3:81F6
+4:DDE3  9af681c3de           lcall 0xdec3, 0x81f6  ; ResLibr::buildingPicture@s3:81F6
 4:DDE8  8946f2               mov word ptr [bp - 0xe], ax
 4:DDEB  8956f4               mov word ptr [bp - 0xc], dx
 4:DDEE  8bc2                 mov ax, dx
@@ -15769,7 +16207,7 @@ loc_DDDB:
 4:DE13  66ff760a             push dword ptr [bp + 0xa]
 4:DE17  ff76e8               push word ptr [bp - 0x18]
 4:DE1A  50                   push ax
-4:DE1B  9acc87f2de           lcall 0xdef2, 0x87cc  ; sub_s2:87CC
+4:DE1B  9acc87f2de           lcall 0xdef2, 0x87cc  ; AnimOverlay::AnimOverlay@s2:87CC
 4:DE20  eb0b                 jmp 0xde2d
 loc_DE22:
 4:DE22  c746ee0700           mov word ptr [bp - 0x12], 7
@@ -15829,7 +16267,7 @@ loc_DEAA:
 4:DEB6  50                   push ax
 4:DEB7  66ff76e2             push dword ptr [bp - 0x1e]
 4:DEBB  66ff36cc14           push dword ptr [0x14cc]  ; g_hInstRes
-4:DEC0  9af68130dd           lcall 0xdd30, 0x81f6  ; sub_s3:81F6
+4:DEC0  9af68130dd           lcall 0xdd30, 0x81f6  ; ResLibr::buildingPicture@s3:81F6
 4:DEC5  8946da               mov word ptr [bp - 0x26], ax
 4:DEC8  8956dc               mov word ptr [bp - 0x24], dx
 4:DECB  6a46                 push 0x46
@@ -15844,7 +16282,7 @@ loc_DEAA:
 4:DEE7  66ff760a             push dword ptr [bp + 0xa]
 4:DEEB  ff76e8               push word ptr [bp - 0x18]
 4:DEEE  50                   push ax
-4:DEEF  9acc8704df           lcall 0xdf04, 0x87cc  ; sub_s2:87CC
+4:DEEF  9acc8704df           lcall 0xdf04, 0x87cc  ; AnimOverlay::AnimOverlay@s2:87CC
 4:DEF4  eb03                 jmp 0xdef9
 loc_DEF6:
 4:DEF6  33c0                 xor ax, ax
@@ -15854,14 +16292,15 @@ loc_DEF9:
 4:DEFC  8956fe               mov word ptr [bp - 2], dx
 4:DEFF  52                   push dx
 4:DF00  50                   push ax
-4:DF01  9ac68b5edd           lcall 0xdd5e, 0x8bc6  ; sub_s2:8BC6
+4:DF01  9ac68b5edd           lcall 0xdd5e, 0x8bc6  ; AnimOverlay::drawFrame@s2:8BC6
 loc_DF06:
 4:DF06  8b46fc               mov ax, word ptr [bp - 4]
 4:DF09  8b56fe               mov dx, word ptr [bp - 2]
 4:DF0C  c9                   leave
 4:DF0D  ca0c00               retf 0xc
 
-; ---------------- sub_s4:DF10 size=48 callers=0
+; ---------------- BuildingSprite::scalar_dtor@s4:DF10 size=48 callers=0
+;   deleting destructor
 4:DF10  c8080000             enter 8, 0
 4:DF14  c45e06               les bx, ptr [bp + 6]
 4:DF17  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -15877,10 +16316,11 @@ loc_DF31:
 4:DF38  ca0600               retf 6
 4:DF3B  db 90 10 df 14 dd
 
-; ---------------- sub_s4:DF40 FAR size=82 callers=0
+; ---------------- Mode5View::create@s4:DF40 FAR size=82 callers=0
+;   creates the window and its painter
 4:DF40  c8040000             enter 4, 0
 4:DF44  66ff7606             push dword ptr [bp + 6]
-4:DF48  9a609720df           lcall 0xdf20, 0x9760  ; sub_s2:9760
+4:DF48  9a609720df           lcall 0xdf20, 0x9760  ; SOLWnd::create@s2:9760
 4:DF4D  6a0a                 push 0xa
 4:DF4F  9a9c172fdf           lcall 0xdf2f, 0x179c  ; operator_new@s1:179C
 4:DF54  83c402               add sp, 2
@@ -15893,7 +16333,7 @@ loc_DF31:
 4:DF68  50                   push ax
 4:DF69  90                   nop
 4:DF6A  0e                   push cs
-4:DF6B  e89201               call 0xe100  ; sub_s4:E100
+4:DF6B  e89201               call 0xe100  ; Mode5Painter::Mode5Painter@s4:E100
 4:DF6E  c45e06               les bx, ptr [bp + 6]
 4:DF71  268987e200           mov word ptr es:[bx + 0xe2], ax
 4:DF76  268997e400           mov word ptr es:[bx + 0xe4], dx
@@ -15907,11 +16347,12 @@ loc_DF80:
 4:DF8E  ca0400               retf 4
 4:DF91  db 00
 
-; ---------------- sub_s4:DF92 FAR size=66 callers=0
+; ---------------- Mode5View::destroy@s4:DF92 FAR size=66 callers=0
+;   destroys the painter
 4:DF92  c8080000             enter 8, 0
 4:DF96  56                   push si
 4:DF97  66ff7606             push dword ptr [bp + 6]
-4:DF9B  9a8e624bdf           lcall 0xdf4b, 0x628e  ; sub_s2:628E
+4:DF9B  9a8e624bdf           lcall 0xdf4b, 0x628e  ; DanWnd::destroy@s2:628E
 4:DFA0  c45e06               les bx, ptr [bp + 6]
 4:DFA3  268b87e200           mov ax, word ptr es:[bx + 0xe2]
 4:DFA8  268b97e400           mov dx, word ptr es:[bx + 0xe4]
@@ -15933,36 +16374,38 @@ loc_DFC1:
 4:DFD0  ca0400               retf 4
 4:DFD3  db 00
 
-; ---------------- sub_s4:DFD4 FAR size=72 callers=0
+; ---------------- Mode5View::onShow@s4:DFD4 FAR size=72 callers=0
+;   opens the destination window (registry 0x36)
 4:DFD4  c80a0000             enter 0xa, 0
 4:DFD8  c45e06               les bx, ptr [bp + 6]
 4:DFDB  6626ffb7e200         push dword ptr es:[bx + 0xe2]
 4:DFE1  90                   nop
 4:DFE2  0e                   push cs
-4:DFE3  e88601               call 0xe16c  ; sub_s4:E16C
+4:DFE3  e88601               call 0xe16c  ; Mode5Painter::paint@s4:E16C
 4:DFE6  c45e06               les bx, ptr [bp + 6]
 4:DFE9  2683bfe60000         cmp word ptr es:[bx + 0xe6], 0
 4:DFEF  7526                 jne 0xe017
 4:DFF1  26c787e6000100       mov word ptr es:[bx + 0xe6], 1
 4:DFF8  6a36                 push 0x36
 4:DFFA  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:DFFF  9aba20a2dd           lcall 0xdda2, 0x20ba  ; sub_s3:20BA
+4:DFFF  9aba20a2dd           lcall 0xdda2, 0x20ba  ; Registry_get@s3:20BA
 4:E004  6a08                 push 8
 4:E006  c45e06               les bx, ptr [bp + 6]
 4:E009  26ff7708             push word ptr es:[bx + 8]
 4:E00D  66ff367c5b           push dword ptr [0x5b7c]
-4:E012  9a40afb067           lcall 0x67b0, 0xaf40  ; sub_s8:AF40
+4:E012  9a40afb067           lcall 0x67b0, 0xaf40  ; DialogCtr::open@s8:AF40
 loc_E017:
 4:E017  c9                   leave
 4:E018  ca0400               retf 4
 4:E01B  db 00
 
-; ---------------- sub_s4:E01C FAR size=228 callers=0
+; ---------------- Mode5View::scalar_dtor@s4:E01C FAR size=228 callers=0
+;   deleting destructor
 4:E01C  c8180000             enter 0x18, 0
 4:E020  668b4606             mov eax, dword ptr [bp + 6]
 4:E024  05d200               add ax, 0xd2
 4:E027  6650                 push eax
-4:E029  9ac4573ae0           lcall 0xe03a, 0x57c4  ; ListIter::~ListIter@s2:57C4
+4:E029  9ac4573ae0           lcall 0xe03a, 0x57c4  ; List::~List@s2:57C4
 4:E02E  c45e06               les bx, ptr [bp + 6]
 4:E031  26c7070a38           mov word ptr es:[bx], 0x380a
 4:E036  26c7470248e0         mov word ptr es:[bx + 2], 0xe048  ; SEGMENT s2:0000
@@ -15989,7 +16432,8 @@ loc_E059:
 4:E0E3  db e0 30 9c ea e0 86 9c ee e0 c4 9c f2 e0 e0 9c fa
 4:E0F3  db e0 92 df 3e df 28 63 fe e0 2c 63 2c e0
 
-; ---------------- sub_s4:E100 FAR size=108 callers=1
+; ---------------- Mode5Painter::Mode5Painter@s4:E100 FAR size=108 callers=1
+;   painter of the mode 5 view
 4:E100  c8100000             enter 0x10, 0
 4:E104  c45e06               les bx, ptr [bp + 6]
 4:E107  26c7079a38           mov word ptr es:[bx], 0x389a
@@ -16008,7 +16452,7 @@ loc_E059:
 4:E146  26c7470266e0         mov word ptr es:[bx + 2], 0xe066  ; SEGMENT s4:0000
 4:E14C  6a36                 push 0x36
 4:E14E  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E153  9aba2002e0           lcall 0xe002, 0x20ba  ; sub_s3:20BA
+4:E153  9aba2002e0           lcall 0xe002, 0x20ba  ; Registry_get@s3:20BA
 4:E158  c45e06               les bx, ptr [bp + 6]
 4:E15B  26894706             mov word ptr es:[bx + 6], ax
 4:E15F  26895708             mov word ptr es:[bx + 8], dx
@@ -16018,8 +16462,9 @@ loc_E059:
 4:E168  ca0600               retf 6
 4:E16B  db 00
 
-; ---------------- sub_s4:E16C FAR size=130 callers=1
+; ---------------- Mode5Painter::paint@s4:E16C FAR size=130 callers=1
 ;   apis: GDI.DeleteObject, USER.BeginPaint, USER.EndPaint, USER.SelectPalette
+;   draws the picture
 4:E16C  c8300000             enter 0x30, 0
 4:E170  57                   push di
 4:E171  56                   push si
@@ -16071,7 +16516,8 @@ loc_E059:
 4:E1EA  ca0400               retf 4
 4:E1ED  db 00
 
-; ---------------- sub_s4:E1EE FAR size=66 callers=0
+; ---------------- Mode5Painter::scalar_dtor@s4:E1EE FAR size=66 callers=0
+;   deleting destructor
 4:E1EE  c8100000             enter 0x10, 0
 4:E1F2  c45e06               les bx, ptr [bp + 6]
 4:E1F5  26c707b03a           mov word ptr es:[bx], 0x3ab0  ; '0.020'
@@ -16090,14 +16536,15 @@ loc_E21D:
 4:E224  ca0600               retf 6
 4:E227  db 90 ee e1 4a e1 10 3a fe e1
 
-; ---------------- sub_s4:E230 FAR size=112 callers=1
+; ---------------- Mode4View::Mode4View@s4:E230 FAR size=112 callers=1
+;   mode 4 view: the voyage (posted 198 by the ship screen)
 4:E230  55                   push bp
 4:E231  8bec                 mov bp, sp
 4:E233  66ff760c             push dword ptr [bp + 0xc]
 4:E237  ff760a               push word ptr [bp + 0xa]
 4:E23A  6a04                 push 4
 4:E23C  66ff7606             push dword ptr [bp + 6]
-4:E240  9a7a7f64dc           lcall 0xdc64, 0x7f7a  ; sub_s5:7F7A
+4:E240  9a7a7f64dc           lcall 0xdc64, 0x7f7a  ; ScreenView::ScreenView@s5:7F7A
 4:E245  c45e06               les bx, ptr [bp + 6]
 4:E248  662bc0               sub eax, eax
 4:E24B  66268987ee00         mov dword ptr es:[bx + 0xee], eax
@@ -16108,7 +16555,7 @@ loc_E21D:
 4:E269  26c787e4002ae2       mov word ptr es:[bx + 0xe4], 0xe22a  ; SEGMENT s4:0000
 4:E270  6a26                 push 0x26
 4:E272  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E277  9aba2056e1           lcall 0xe156, 0x20ba  ; sub_s3:20BA
+4:E277  9aba2056e1           lcall 0xe156, 0x20ba  ; Registry_get@s3:20BA
 4:E27C  c45e06               les bx, ptr [bp + 6]
 4:E27F  268987f200           mov word ptr es:[bx + 0xf2], ax
 4:E284  268997f400           mov word ptr es:[bx + 0xf4], dx
@@ -16120,7 +16567,8 @@ loc_E21D:
 4:E29C  c9                   leave
 4:E29D  ca0a00               retf 0xa
 
-; ---------------- sub_s4:E2A0 FAR size=44 callers=1
+; ---------------- Mode4View::~Mode4View@s4:E2A0 FAR size=44 callers=1
+;   dtor
 4:E2A0  55                   push bp
 4:E2A1  8bec                 mov bp, sp
 4:E2A3  c45e06               les bx, ptr [bp + 6]
@@ -16129,11 +16577,12 @@ loc_E21D:
 4:E2B1  26c787e200eae4       mov word ptr es:[bx + 0xe2], 0xe4ea
 4:E2B8  26c787e40060e2       mov word ptr es:[bx + 0xe4], 0xe260  ; SEGMENT s4:0000
 4:E2BF  66ff7606             push dword ptr [bp + 6]
-4:E2C3  9a8e8043e2           lcall 0xe243, 0x808e  ; sub_s5:808E
+4:E2C3  9a8e8043e2           lcall 0xe243, 0x808e  ; ScreenView::~ScreenView@s5:808E
 4:E2C8  c9                   leave
 4:E2C9  ca0400               retf 4
 
-; ---------------- sub_s4:E2CC size=184 callers=0
+; ---------------- Mode4View::onShow@s4:E2CC size=184 callers=0
+;   (vslot 13) says fem122, adds its controls
 4:E2CC  c80c0000             enter 0xc, 0
 4:E2D0  c45e06               les bx, ptr [bp + 6]
 4:E2D3  662683bfee0000       cmp dword ptr es:[bx + 0xee], 0
@@ -16153,12 +16602,12 @@ loc_E2EE:
 4:E306  8d4efc               lea cx, [bp - 4]
 4:E309  16                   push ss
 4:E30A  51                   push cx
-4:E30B  9a1a941de3           lcall 0xe31d, 0x941a  ; sub_s2:941A
+4:E30B  9a1a941de3           lcall 0xe31d, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:E310  8d46fc               lea ax, [bp - 4]
 4:E313  16                   push ss
 4:E314  50                   push ax
 4:E315  66ff36a002           push dword ptr [0x2a0]
-4:E31A  9a9e5c70e3           lcall 0xe370, 0x5c9e  ; sub_s2:5C9E
+4:E31A  9a9e5c70e3           lcall 0xe370, 0x5c9e  ; SoundMgr::playVoicePair@s2:5C9E
 4:E31F  c45e06               les bx, ptr [bp + 6]
 4:E322  268987ec00           mov word ptr es:[bx + 0xec], ax
 4:E327  681201               push 0x112
@@ -16174,7 +16623,7 @@ loc_E2EE:
 4:E345  53                   push bx
 4:E346  26ffb7cc00           push word ptr es:[bx + 0xcc]
 4:E34B  66ff76f4             push dword ptr [bp - 0xc]
-4:E34F  9a4436c6e2           lcall 0xe2c6, 0x3644  ; sub_s5:3644
+4:E34F  9a4436c6e2           lcall 0xe2c6, 0x3644  ; StarMapWnd::StarMapWnd@s5:3644
 4:E354  8946f8               mov word ptr [bp - 8], ax
 4:E357  8956fa               mov word ptr [bp - 6], dx
 4:E35A  eb07                 jmp 0xe363
@@ -16186,7 +16635,7 @@ loc_E363:
 4:E366  50                   push ax
 4:E367  6a00                 push 0
 4:E369  66ff7606             push dword ptr [bp + 6]
-4:E36D  9a78692ee2           lcall 0xe22e, 0x6978  ; sub_s2:6978
+4:E36D  9a78692ee2           lcall 0xe22e, 0x6978  ; SOLChildWnd::addChild@s2:6978
 4:E372  6a05                 push 5
 4:E374  c45ef8               les bx, ptr [bp - 8]
 4:E377  06                   push es
@@ -16197,16 +16646,17 @@ loc_E380:
 4:E380  c9                   leave
 4:E381  ca0400               retf 4
 
-; ---------------- sub_s4:E384 size=100 callers=0
+; ---------------- Mode4View::create@s4:E384 size=100 callers=0
+;   (vslot 2)
 4:E384  c8040000             enter 4, 0
 4:E388  66ff7606             push dword ptr [bp + 6]
-4:E38C  9a60970ee3           lcall 0xe30e, 0x9760  ; sub_s2:9760
+4:E38C  9a60970ee3           lcall 0xe30e, 0x9760  ; SOLWnd::create@s2:9760
 4:E391  c45e06               les bx, ptr [bp + 6]
 4:E394  26ff7708             push word ptr es:[bx + 8]
 4:E398  6626ffb7f200         push dword ptr es:[bx + 0xf2]
 4:E39E  90                   nop
 4:E39F  0e                   push cs
-4:E3A0  e80d6a               call 0x14db0  ; sub_s4:4DB0
+4:E3A0  e80d6a               call 0x14db0  ; CmdTarget::getDC@s4:4DB0
 4:E3A3  6a18                 push 0x18
 4:E3A5  9a9c172de3           lcall 0xe32d, 0x179c  ; operator_new@s1:179C
 4:E3AA  83c402               add sp, 2
@@ -16219,7 +16669,7 @@ loc_E380:
 4:E3BE  50                   push ax
 4:E3BF  90                   nop
 4:E3C0  0e                   push cs
-4:E3C1  e82e01               call 0xe4f2  ; sub_s4:E4F2
+4:E3C1  e82e01               call 0xe4f2  ; Mode4Layer::Mode4Layer@s4:E4F2
 4:E3C4  c45e06               les bx, ptr [bp + 6]
 4:E3C7  268987ee00           mov word ptr es:[bx + 0xee], ax
 4:E3CC  268997f000           mov word ptr es:[bx + 0xf0], dx
@@ -16233,7 +16683,8 @@ loc_E3D6:
 4:E3E4  ca0400               retf 4
 4:E3E7  db 00
 
-; ---------------- sub_s4:E3E8 FAR size=50 callers=0
+; ---------------- Mode4View::destroy@s4:E3E8 FAR size=50 callers=0
+;   (vslot 36)
 4:E3E8  c8080000             enter 8, 0
 4:E3EC  c45e06               les bx, ptr [bp + 6]
 4:E3EF  268b87ee00           mov ax, word ptr es:[bx + 0xee]
@@ -16250,23 +16701,25 @@ loc_E3D6:
 4:E40A  26ff1f               lcall es:[bx]
 loc_E40D:
 4:E40D  66ff7606             push dword ptr [bp + 6]
-4:E411  9a8e628fe3           lcall 0xe38f, 0x628e  ; sub_s2:628E
+4:E411  9a8e628fe3           lcall 0xe38f, 0x628e  ; DanWnd::destroy@s2:628E
 4:E416  c9                   leave
 4:E417  ca0400               retf 4
 
-; ---------------- sub_s4:E41A FAR size=14 callers=0
+; ---------------- Mode4View::thunk_dtor@s4:E41A FAR size=14 callers=0
+;   this-adjusting thunk
 4:E41A  8bdc                 mov bx, sp
 4:E41C  36816f04e200         sub word ptr ss:[bx + 4], 0xe2
 4:E422  e90300               jmp 0xe428
 4:E425  db 90 90 00
 
-; ---------------- sub_s4:E428 FAR size=202 callers=0
+; ---------------- Mode4View::scalar_dtor@s4:E428 FAR size=202 callers=0
+;   deleting destructor
 4:E428  55                   push bp
 4:E429  8bec                 mov bp, sp
 4:E42B  66ff7606             push dword ptr [bp + 6]
 4:E42F  90                   nop
 4:E430  0e                   push cs
-4:E431  e86cfe               call 0xe2a0  ; sub_s4:E2A0
+4:E431  e86cfe               call 0xe2a0  ; Mode4View::~Mode4View@s4:E2A0
 4:E434  f6460a01             test byte ptr [bp + 0xa], 1
 4:E438  7409                 je 0xe443
 4:E43A  66ff7606             push dword ptr [bp + 6]
@@ -16288,18 +16741,19 @@ loc_E443:
 4:E4DD  db e4 e8 e3 af e2 28 63 14 e4 28 81 52 e3 1a e4 50
 4:E4ED  db e4 10 3a 54 e4
 
-; ---------------- sub_s4:E4F2 FAR size=136 callers=1
+; ---------------- Mode4Layer::Mode4Layer@s4:E4F2 FAR size=136 callers=1
+;   its picture layer
 4:E4F2  c80c0000             enter 0xc, 0
 4:E4F6  66ff7608             push dword ptr [bp + 8]
 4:E4FA  ff7606               push word ptr [bp + 6]
-4:E4FD  9a1c926de5           lcall 0xe56d, 0x921c  ; sub_s5:921C
+4:E4FD  9a1c926de5           lcall 0xe56d, 0x921c  ; Layer::Layer@s5:921C
 4:E502  c45e06               les bx, ptr [bp + 6]
 4:E505  6626c7471400000000   mov dword ptr es:[bx + 0x14], 0
 4:E50E  26c707d0e5           mov word ptr es:[bx], 0xe5d0
 4:E513  26c74702ece4         mov word ptr es:[bx + 2], 0xe4ec  ; SEGMENT s4:0000
 4:E519  6a26                 push 0x26
 4:E51B  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E520  9aba207ae2           lcall 0xe27a, 0x20ba  ; sub_s3:20BA
+4:E520  9aba207ae2           lcall 0xe27a, 0x20ba  ; Registry_get@s3:20BA
 4:E525  c45e06               les bx, ptr [bp + 6]
 4:E528  26894714             mov word ptr es:[bx + 0x14], ax
 4:E52C  26895716             mov word ptr es:[bx + 0x16], dx
@@ -16322,14 +16776,15 @@ loc_E443:
 4:E564  26894712             mov word ptr es:[bx + 0x12], ax
 4:E568  06                   push es
 4:E569  53                   push bx
-4:E56A  9a64938ce4           lcall 0xe48c, 0x9364  ; sub_s5:9364
+4:E56A  9a64938ce4           lcall 0xe48c, 0x9364  ; Layer::drawFrame@s5:9364
 4:E56F  8b4606               mov ax, word ptr [bp + 6]
 4:E572  8b5608               mov dx, word ptr [bp + 8]
 4:E575  c9                   leave
 4:E576  ca0600               retf 6
 4:E579  db 00
 
-; ---------------- sub_s4:E57A FAR size=48 callers=1
+; ---------------- Mode4Layer::~Mode4Layer@s4:E57A FAR size=48 callers=1
+;   dtor
 4:E57A  55                   push bp
 4:E57B  8bec                 mov bp, sp
 4:E57D  c45e06               les bx, ptr [bp + 6]
@@ -16338,20 +16793,21 @@ loc_E443:
 4:E58B  6626837f1400         cmp dword ptr es:[bx + 0x14], 0
 4:E591  740a                 je 0xe59d
 4:E593  6626ff7714           push dword ptr es:[bx + 0x14]
-4:E598  9ada1d23e5           lcall 0xe523, 0x1dda  ; sub_s3:1DDA
+4:E598  9ada1d23e5           lcall 0xe523, 0x1dda  ; RegObj::makeCurrent@s3:1DDA
 loc_E59D:
 4:E59D  66ff7606             push dword ptr [bp + 6]
-4:E5A1  9ac49200e5           lcall 0xe500, 0x92c4  ; sub_s5:92C4
+4:E5A1  9ac49200e5           lcall 0xe500, 0x92c4  ; Layer::~Layer@s5:92C4
 4:E5A6  c9                   leave
 4:E5A7  ca0400               retf 4
 
-; ---------------- sub_s4:E5AA FAR size=50 callers=0
+; ---------------- Mode4Layer::scalar_dtor@s4:E5AA FAR size=50 callers=0
+;   deleting destructor
 4:E5AA  55                   push bp
 4:E5AB  8bec                 mov bp, sp
 4:E5AD  66ff7606             push dword ptr [bp + 6]
 4:E5B1  90                   nop
 4:E5B2  0e                   push cs
-4:E5B3  e8c4ff               call 0xe57a  ; sub_s4:E57A
+4:E5B3  e8c4ff               call 0xe57a  ; Mode4Layer::~Mode4Layer@s4:E57A
 4:E5B6  f6460a01             test byte ptr [bp + 0xa], 1
 4:E5BA  7409                 je 0xe5c5
 4:E5BC  66ff7606             push dword ptr [bp + 6]
@@ -16363,14 +16819,15 @@ loc_E5C5:
 4:E5CC  ca0600               retf 6
 4:E5CF  db 90 aa e5 89 e5 10 3a f0 e4 12 93 a4 e5
 
-; ---------------- sub_s4:E5DC FAR size=112 callers=1
+; ---------------- Mode9View::Mode9View@s4:E5DC FAR size=112 callers=1
+;   mode 9 view: after Destination Launch
 4:E5DC  55                   push bp
 4:E5DD  8bec                 mov bp, sp
 4:E5DF  66ff760c             push dword ptr [bp + 0xc]
 4:E5E3  ff760a               push word ptr [bp + 0xa]
 4:E5E6  6a09                 push 9
 4:E5E8  66ff7606             push dword ptr [bp + 6]
-4:E5EC  9a7a7fdae5           lcall 0xe5da, 0x7f7a  ; sub_s5:7F7A
+4:E5EC  9a7a7fdae5           lcall 0xe5da, 0x7f7a  ; ScreenView::ScreenView@s5:7F7A
 4:E5F1  c45e06               les bx, ptr [bp + 6]
 4:E5F4  662bc0               sub eax, eax
 4:E5F7  66268987ee00         mov dword ptr es:[bx + 0xee], eax
@@ -16381,7 +16838,7 @@ loc_E5C5:
 4:E615  26c787e400d2e5       mov word ptr es:[bx + 0xe4], 0xe5d2  ; SEGMENT s4:0000
 4:E61C  6a0a                 push 0xa
 4:E61E  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E623  9aba209be5           lcall 0xe59b, 0x20ba  ; sub_s3:20BA
+4:E623  9aba209be5           lcall 0xe59b, 0x20ba  ; Registry_get@s3:20BA
 4:E628  c45e06               les bx, ptr [bp + 6]
 4:E62B  268987f200           mov word ptr es:[bx + 0xf2], ax
 4:E630  268997f400           mov word ptr es:[bx + 0xf4], dx
@@ -16393,7 +16850,8 @@ loc_E5C5:
 4:E648  c9                   leave
 4:E649  ca0a00               retf 0xa
 
-; ---------------- sub_s4:E64C FAR size=44 callers=1
+; ---------------- Mode9View::~Mode9View@s4:E64C FAR size=44 callers=1
+;   dtor
 4:E64C  55                   push bp
 4:E64D  8bec                 mov bp, sp
 4:E64F  c45e06               les bx, ptr [bp + 6]
@@ -16402,11 +16860,12 @@ loc_E5C5:
 4:E65D  26c787e2002ce8       mov word ptr es:[bx + 0xe2], 0xe82c
 4:E664  26c787e4000ce6       mov word ptr es:[bx + 0xe4], 0xe60c  ; SEGMENT s4:0000
 4:E66B  66ff7606             push dword ptr [bp + 6]
-4:E66F  9a8e80efe5           lcall 0xe5ef, 0x808e  ; sub_s5:808E
+4:E66F  9a8e80efe5           lcall 0xe5ef, 0x808e  ; ScreenView::~ScreenView@s5:808E
 4:E674  c9                   leave
 4:E675  ca0400               retf 4
 
-; ---------------- sub_s4:E678 size=78 callers=0
+; ---------------- Mode9View::onShow@s4:E678 size=78 callers=0
+;   (vslot 13) opens window mode 21 (Interstellar Launch System, dialog 318)
 4:E678  c8060000             enter 6, 0
 4:E67C  c45e06               les bx, ptr [bp + 6]
 4:E67F  268b87f000           mov ax, word ptr es:[bx + 0xf0]
@@ -16425,21 +16884,22 @@ loc_E69D:
 4:E6B1  c45e06               les bx, ptr [bp + 6]
 4:E6B4  26ff7708             push word ptr es:[bx + 8]
 4:E6B8  66ff367c5b           push dword ptr [0x5b7c]
-4:E6BD  9a40af15e0           lcall 0xe015, 0xaf40  ; sub_s8:AF40
+4:E6BD  9a40af15e0           lcall 0xe015, 0xaf40  ; DialogCtr::open@s8:AF40
 loc_E6C2:
 4:E6C2  c9                   leave
 4:E6C3  ca0400               retf 4
 
-; ---------------- sub_s4:E6C6 size=100 callers=0
+; ---------------- Mode9View::create@s4:E6C6 size=100 callers=0
+;   (vslot 2)
 4:E6C6  c8040000             enter 4, 0
 4:E6CA  66ff7606             push dword ptr [bp + 6]
-4:E6CE  9a6097d6e5           lcall 0xe5d6, 0x9760  ; sub_s2:9760
+4:E6CE  9a6097d6e5           lcall 0xe5d6, 0x9760  ; SOLWnd::create@s2:9760
 4:E6D3  c45e06               les bx, ptr [bp + 6]
 4:E6D6  26ff7708             push word ptr es:[bx + 8]
 4:E6DA  6626ffb7f200         push dword ptr es:[bx + 0xf2]
 4:E6E0  90                   nop
 4:E6E1  0e                   push cs
-4:E6E2  e8cb66               call 0x14db0  ; sub_s4:4DB0
+4:E6E2  e8cb66               call 0x14db0  ; CmdTarget::getDC@s4:4DB0
 4:E6E5  6a18                 push 0x18
 4:E6E7  9a9c17c3e5           lcall 0xe5c3, 0x179c  ; operator_new@s1:179C
 4:E6EC  83c402               add sp, 2
@@ -16452,7 +16912,7 @@ loc_E6C2:
 4:E700  50                   push ax
 4:E701  90                   nop
 4:E702  0e                   push cs
-4:E703  e82e01               call 0xe834  ; sub_s4:E834
+4:E703  e82e01               call 0xe834  ; Mode9Layer::Mode9Layer@s4:E834
 4:E706  c45e06               les bx, ptr [bp + 6]
 4:E709  268987ee00           mov word ptr es:[bx + 0xee], ax
 4:E70E  268997f000           mov word ptr es:[bx + 0xf0], dx
@@ -16466,7 +16926,8 @@ loc_E718:
 4:E726  ca0400               retf 4
 4:E729  db 00
 
-; ---------------- sub_s4:E72A FAR size=50 callers=0
+; ---------------- Mode9View::destroy@s4:E72A FAR size=50 callers=0
+;   (vslot 36)
 4:E72A  c8080000             enter 8, 0
 4:E72E  c45e06               les bx, ptr [bp + 6]
 4:E731  268b87ee00           mov ax, word ptr es:[bx + 0xee]
@@ -16483,23 +16944,25 @@ loc_E718:
 4:E74C  26ff1f               lcall es:[bx]
 loc_E74F:
 4:E74F  66ff7606             push dword ptr [bp + 6]
-4:E753  9a8e62d1e6           lcall 0xe6d1, 0x628e  ; sub_s2:628E
+4:E753  9a8e62d1e6           lcall 0xe6d1, 0x628e  ; DanWnd::destroy@s2:628E
 4:E758  c9                   leave
 4:E759  ca0400               retf 4
 
-; ---------------- sub_s4:E75C FAR size=14 callers=0
+; ---------------- Mode9View::thunk_dtor@s4:E75C FAR size=14 callers=0
+;   this-adjusting thunk
 4:E75C  8bdc                 mov bx, sp
 4:E75E  36816f04e200         sub word ptr ss:[bx + 4], 0xe2
 4:E764  e90300               jmp 0xe76a
 4:E767  db 90 90 00
 
-; ---------------- sub_s4:E76A FAR size=202 callers=0
+; ---------------- Mode9View::scalar_dtor@s4:E76A FAR size=202 callers=0
+;   deleting destructor
 4:E76A  55                   push bp
 4:E76B  8bec                 mov bp, sp
 4:E76D  66ff7606             push dword ptr [bp + 6]
 4:E771  90                   nop
 4:E772  0e                   push cs
-4:E773  e8d6fe               call 0xe64c  ; sub_s4:E64C
+4:E773  e8d6fe               call 0xe64c  ; Mode9View::~Mode9View@s4:E64C
 4:E776  f6460a01             test byte ptr [bp + 0xa], 1
 4:E77A  7409                 je 0xe785
 4:E77C  66ff7606             push dword ptr [bp + 6]
@@ -16521,18 +16984,19 @@ loc_E785:
 4:E81F  db e8 2a e7 5b e6 28 63 56 e7 28 81 72 e6 5c e7 92
 4:E82F  db e7 10 3a 96 e7
 
-; ---------------- sub_s4:E834 FAR size=136 callers=1
+; ---------------- Mode9Layer::Mode9Layer@s4:E834 FAR size=136 callers=1
+;   its picture layer
 4:E834  c80c0000             enter 0xc, 0
 4:E838  66ff7608             push dword ptr [bp + 8]
 4:E83C  ff7606               push word ptr [bp + 6]
-4:E83F  9a1c92afe8           lcall 0xe8af, 0x921c  ; sub_s5:921C
+4:E83F  9a1c92afe8           lcall 0xe8af, 0x921c  ; Layer::Layer@s5:921C
 4:E844  c45e06               les bx, ptr [bp + 6]
 4:E847  6626c7471400000000   mov dword ptr es:[bx + 0x14], 0
 4:E850  26c70712e9           mov word ptr es:[bx], 0xe912
 4:E855  26c747022ee8         mov word ptr es:[bx + 2], 0xe82e  ; SEGMENT s4:0000
 4:E85B  6a0a                 push 0xa
 4:E85D  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E862  9aba2026e6           lcall 0xe626, 0x20ba  ; sub_s3:20BA
+4:E862  9aba2026e6           lcall 0xe626, 0x20ba  ; Registry_get@s3:20BA
 4:E867  c45e06               les bx, ptr [bp + 6]
 4:E86A  26894714             mov word ptr es:[bx + 0x14], ax
 4:E86E  26895716             mov word ptr es:[bx + 0x16], dx
@@ -16555,14 +17019,15 @@ loc_E785:
 4:E8A6  26894712             mov word ptr es:[bx + 0x12], ax
 4:E8AA  06                   push es
 4:E8AB  53                   push bx
-4:E8AC  9a6493cee7           lcall 0xe7ce, 0x9364  ; sub_s5:9364
+4:E8AC  9a6493cee7           lcall 0xe7ce, 0x9364  ; Layer::drawFrame@s5:9364
 4:E8B1  8b4606               mov ax, word ptr [bp + 6]
 4:E8B4  8b5608               mov dx, word ptr [bp + 8]
 4:E8B7  c9                   leave
 4:E8B8  ca0600               retf 6
 4:E8BB  db 00
 
-; ---------------- sub_s4:E8BC FAR size=48 callers=1
+; ---------------- Mode9Layer::~Mode9Layer@s4:E8BC FAR size=48 callers=1
+;   dtor
 4:E8BC  55                   push bp
 4:E8BD  8bec                 mov bp, sp
 4:E8BF  c45e06               les bx, ptr [bp + 6]
@@ -16571,20 +17036,21 @@ loc_E785:
 4:E8CD  6626837f1400         cmp dword ptr es:[bx + 0x14], 0
 4:E8D3  740a                 je 0xe8df
 4:E8D5  6626ff7714           push dword ptr es:[bx + 0x14]
-4:E8DA  9ada1d65e8           lcall 0xe865, 0x1dda  ; sub_s3:1DDA
+4:E8DA  9ada1d65e8           lcall 0xe865, 0x1dda  ; RegObj::makeCurrent@s3:1DDA
 loc_E8DF:
 4:E8DF  66ff7606             push dword ptr [bp + 6]
-4:E8E3  9ac49242e8           lcall 0xe842, 0x92c4  ; sub_s5:92C4
+4:E8E3  9ac49242e8           lcall 0xe842, 0x92c4  ; Layer::~Layer@s5:92C4
 4:E8E8  c9                   leave
 4:E8E9  ca0400               retf 4
 
-; ---------------- sub_s4:E8EC FAR size=50 callers=0
+; ---------------- Mode9Layer::scalar_dtor@s4:E8EC FAR size=50 callers=0
+;   deleting destructor
 4:E8EC  55                   push bp
 4:E8ED  8bec                 mov bp, sp
 4:E8EF  66ff7606             push dword ptr [bp + 6]
 4:E8F3  90                   nop
 4:E8F4  0e                   push cs
-4:E8F5  e8c4ff               call 0xe8bc  ; sub_s4:E8BC
+4:E8F5  e8c4ff               call 0xe8bc  ; Mode9Layer::~Mode9Layer@s4:E8BC
 4:E8F8  f6460a01             test byte ptr [bp + 0xa], 1
 4:E8FC  7409                 je 0xe907
 4:E8FE  66ff7606             push dword ptr [bp + 6]
@@ -16596,13 +17062,14 @@ loc_E907:
 4:E90E  ca0600               retf 6
 4:E911  db 90 ec e8 cb e8 10 3a 32 e8 12 93 e6 e8
 
-; ---------------- sub_s4:E91E FAR size=192 callers=1
+; ---------------- Mode3View::Mode3View@s4:E91E FAR size=192 callers=1
+;   mode 3 view: the ship screen
 4:E91E  c8040000             enter 4, 0
 4:E922  66ff760c             push dword ptr [bp + 0xc]
 4:E926  ff760a               push word ptr [bp + 0xa]
 4:E929  6a03                 push 3
 4:E92B  66ff7606             push dword ptr [bp + 6]
-4:E92F  9a7a7f1ce9           lcall 0xe91c, 0x7f7a  ; sub_s5:7F7A
+4:E92F  9a7a7f1ce9           lcall 0xe91c, 0x7f7a  ; ScreenView::ScreenView@s5:7F7A
 4:E934  c45e06               les bx, ptr [bp + 6]
 4:E937  662bc0               sub eax, eax
 4:E93A  66268987ee00         mov dword ptr es:[bx + 0xee], eax
@@ -16614,7 +17081,7 @@ loc_E907:
 4:E95E  26c787e40014e9       mov word ptr es:[bx + 0xe4], 0xe914  ; SEGMENT s4:0000
 4:E965  6a28                 push 0x28
 4:E967  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E96C  9aba2097e9           lcall 0xe997, 0x20ba  ; sub_s3:20BA
+4:E96C  9aba2097e9           lcall 0xe997, 0x20ba  ; Registry_get@s3:20BA
 4:E971  c45e06               les bx, ptr [bp + 6]
 4:E974  268987f200           mov word ptr es:[bx + 0xf2], ax
 4:E979  268997f400           mov word ptr es:[bx + 0xf4], dx
@@ -16623,7 +17090,7 @@ loc_E907:
 4:E988  268997e800           mov word ptr es:[bx + 0xe8], dx
 4:E98D  6a32                 push 0x32
 4:E98F  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:E994  9aba20dde8           lcall 0xe8dd, 0x20ba  ; sub_s3:20BA
+4:E994  9aba20dde8           lcall 0xe8dd, 0x20ba  ; Registry_get@s3:20BA
 4:E999  c45e06               les bx, ptr [bp + 6]
 4:E99C  268987f600           mov word ptr es:[bx + 0xf6], ax
 4:E9A1  268997f800           mov word ptr es:[bx + 0xf8], dx
@@ -16652,7 +17119,8 @@ loc_E9BB:
 4:E9DA  c9                   leave
 4:E9DB  ca0a00               retf 0xa
 
-; ---------------- sub_s4:E9DE FAR size=44 callers=1
+; ---------------- Mode3View::~Mode3View@s4:E9DE FAR size=44 callers=1
+;   dtor
 4:E9DE  55                   push bp
 4:E9DF  8bec                 mov bp, sp
 4:E9E1  c45e06               les bx, ptr [bp + 6]
@@ -16661,12 +17129,13 @@ loc_E9BB:
 4:E9EF  26c787e2006cec       mov word ptr es:[bx + 0xe2], 0xec6c
 4:E9F6  26c787e40055e9       mov word ptr es:[bx + 0xe4], 0xe955  ; SEGMENT s4:0000
 4:E9FD  66ff7606             push dword ptr [bp + 6]
-4:EA01  9a8e8032e9           lcall 0xe932, 0x808e  ; sub_s5:808E
+4:EA01  9a8e8032e9           lcall 0xe932, 0x808e  ; ScreenView::~ScreenView@s5:808E
 4:EA06  c9                   leave
 4:EA07  ca0400               retf 4
 
-; ---------------- sub_s4:EA0A size=34 callers=0
+; ---------------- Mode3View::onCommand@s4:EA0A size=34 callers=0
 ;   apis: USER.PostMessage
+;   (vslot 16) command 0xED (Launch): posts 198 (mode 4)
 4:EA0A  c8080000             enter 8, 0
 4:EA0E  817e0aed00           cmp word ptr [bp + 0xa], 0xed
 4:EA13  7512                 jne 0xea27
@@ -16679,7 +17148,8 @@ loc_EA27:
 4:EA28  ca0600               retf 6
 4:EA2B  db 00
 
-; ---------------- sub_s4:EA2C FAR size=58 callers=0
+; ---------------- Mode3View::onNotify@s4:EA2C FAR size=58 callers=0
+;   (vslot 40) mirrors a value into its layer
 4:EA2C  c8080000             enter 8, 0
 4:EA30  8b460a               mov ax, word ptr [bp + 0xa]
 4:EA33  eb25                 jmp 0xea5a
@@ -16704,7 +17174,8 @@ loc_EA5A:
 4:EA62  c9                   leave
 4:EA63  ca0600               retf 6
 
-; ---------------- sub_s4:EA66 size=116 callers=0
+; ---------------- Mode3View::onShow@s4:EA66 size=116 callers=0
+;   (vslot 13) add9 and window id 8 (Ship Configuration) once
 4:EA66  c8040000             enter 4, 0
 4:EA6A  c45e06               les bx, ptr [bp + 6]
 4:EA6D  662683bfee0000       cmp dword ptr es:[bx + 0xee], 0
@@ -16724,33 +17195,34 @@ loc_EA88:
 4:EA9F  8d46fc               lea ax, [bp - 4]
 4:EAA2  16                   push ss
 4:EAA3  50                   push ax
-4:EAA4  9a1a94b6ea           lcall 0xeab6, 0x941a  ; sub_s2:941A
+4:EAA4  9a1a94b6ea           lcall 0xeab6, 0x941a  ; Pair::Pair(a,b)@s2:941A
 4:EAA9  8d46fc               lea ax, [bp - 4]
 4:EAAC  16                   push ss
 4:EAAD  50                   push ax
 4:EAAE  66ff36a002           push dword ptr [0x2a0]
-4:EAB3  9a9e5c18e9           lcall 0xe918, 0x5c9e  ; sub_s2:5C9E
+4:EAB3  9a9e5c18e9           lcall 0xe918, 0x5c9e  ; SoundMgr::playVoicePair@s2:5C9E
 4:EAB8  c45e06               les bx, ptr [bp + 6]
 4:EABB  268987ec00           mov word ptr es:[bx + 0xec], ax
 4:EAC0  666a00               push 0
 4:EAC3  666800000800         push 0x80000
 4:EAC9  6a00                 push 0
 4:EACB  6626ffb7f600         push dword ptr es:[bx + 0xf6]
-4:EAD1  9a00736fe9           lcall 0xe96f, 0x7300  ; sub_s3:7300
+4:EAD1  9a00736fe9           lcall 0xe96f, 0x7300  ; BuildingWindows::open@s3:7300
 loc_EAD6:
 4:EAD6  c9                   leave
 4:EAD7  ca0400               retf 4
 
-; ---------------- sub_s4:EADA size=100 callers=0
+; ---------------- Mode3View::create@s4:EADA size=100 callers=0
+;   (vslot 2)
 4:EADA  c8040000             enter 4, 0
 4:EADE  66ff7606             push dword ptr [bp + 6]
-4:EAE2  9a6097a7ea           lcall 0xeaa7, 0x9760  ; sub_s2:9760
+4:EAE2  9a6097a7ea           lcall 0xeaa7, 0x9760  ; SOLWnd::create@s2:9760
 4:EAE7  c45e06               les bx, ptr [bp + 6]
 4:EAEA  26ff7708             push word ptr es:[bx + 8]
 4:EAEE  6626ffb7f200         push dword ptr es:[bx + 0xf2]
 4:EAF4  90                   nop
 4:EAF5  0e                   push cs
-4:EAF6  e8b762               call 0x14db0  ; sub_s4:4DB0
+4:EAF6  e8b762               call 0x14db0  ; CmdTarget::getDC@s4:4DB0
 4:EAF9  6a28                 push 0x28
 4:EAFB  9a9c1705e9           lcall 0xe905, 0x179c  ; operator_new@s1:179C
 4:EB00  83c402               add sp, 2
@@ -16763,7 +17235,7 @@ loc_EAD6:
 4:EB14  50                   push ax
 4:EB15  90                   nop
 4:EB16  0e                   push cs
-4:EB17  e85a01               call 0xec74  ; sub_s4:EC74
+4:EB17  e85a01               call 0xec74  ; ShipLayer::ShipLayer@s4:EC74
 4:EB1A  c45e06               les bx, ptr [bp + 6]
 4:EB1D  268987ee00           mov word ptr es:[bx + 0xee], ax
 4:EB22  268997f000           mov word ptr es:[bx + 0xf0], dx
@@ -16777,7 +17249,8 @@ loc_EB2C:
 4:EB3A  ca0400               retf 4
 4:EB3D  db 00
 
-; ---------------- sub_s4:EB3E FAR size=94 callers=0
+; ---------------- Mode3View::destroy@s4:EB3E FAR size=94 callers=0
+;   (vslot 36)
 4:EB3E  c80c0000             enter 0xc, 0
 4:EB42  c45e06               les bx, ptr [bp + 6]
 4:EB45  268b87ee00           mov ax, word ptr es:[bx + 0xee]
@@ -16810,27 +17283,29 @@ loc_EB81:
 4:EB81  52                   push dx
 4:EB82  50                   push ax
 4:EB83  6626ffb7f600         push dword ptr es:[bx + 0xf6]
-4:EB89  9aa61ed4ea           lcall 0xead4, 0x1ea6  ; sub_s3:1EA6
+4:EB89  9aa61ed4ea           lcall 0xead4, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 loc_EB8E:
 4:EB8E  66ff7606             push dword ptr [bp + 6]
-4:EB92  9a8e62e5ea           lcall 0xeae5, 0x628e  ; sub_s2:628E
+4:EB92  9a8e62e5ea           lcall 0xeae5, 0x628e  ; DanWnd::destroy@s2:628E
 4:EB97  c9                   leave
 4:EB98  ca0400               retf 4
 4:EB9B  db 00
 
-; ---------------- sub_s4:EB9C FAR size=14 callers=0
+; ---------------- Mode3View::thunk_dtor@s4:EB9C FAR size=14 callers=0
+;   this-adjusting thunk
 4:EB9C  8bdc                 mov bx, sp
 4:EB9E  36816f04e200         sub word ptr ss:[bx + 4], 0xe2
 4:EBA4  e90300               jmp 0xebaa
 4:EBA7  db 90 90 00
 
-; ---------------- sub_s4:EBAA FAR size=202 callers=0
+; ---------------- Mode3View::scalar_dtor@s4:EBAA FAR size=202 callers=0
+;   deleting destructor
 4:EBAA  55                   push bp
 4:EBAB  8bec                 mov bp, sp
 4:EBAD  66ff7606             push dword ptr [bp + 6]
 4:EBB1  90                   nop
 4:EBB2  0e                   push cs
-4:EBB3  e828fe               call 0xe9de  ; sub_s4:E9DE
+4:EBB3  e828fe               call 0xe9de  ; Mode3View::~Mode3View@s4:E9DE
 4:EBB6  f6460a01             test byte ptr [bp + 0xa], 1
 4:EBBA  7409                 je 0xebc5
 4:EBBC  66ff7606             push dword ptr [bp + 6]
@@ -16852,13 +17327,14 @@ loc_EBC5:
 4:EC5F  db ec 3e eb ed e9 28 63 95 eb 28 81 04 ea 9c eb 72
 4:EC6F  db ec 2c ea d2 eb
 
-; ---------------- sub_s4:EC74 FAR size=292 callers=1
+; ---------------- ShipLayer::ShipLayer@s4:EC74 FAR size=292 callers=1
+;   the ship picture layer (registry 0x28 picture)
 4:EC74  c8180000             enter 0x18, 0
 4:EC78  57                   push di
 4:EC79  56                   push si
 4:EC7A  66ff7608             push dword ptr [bp + 8]
 4:EC7E  ff7606               push word ptr [bp + 6]
-4:EC81  9a1c92c3ec           lcall 0xecc3, 0x921c  ; sub_s5:921C
+4:EC81  9a1c92c3ec           lcall 0xecc3, 0x921c  ; Layer::Layer@s5:921C
 4:EC86  c45e06               les bx, ptr [bp + 6]
 4:EC89  6626c7471400000000   mov dword ptr es:[bx + 0x14], 0
 4:EC92  8d4718               lea ax, [bx + 0x18]
@@ -16866,18 +17342,18 @@ loc_EBC5:
 4:EC96  50                   push ax
 4:EC97  8bf0                 mov si, ax
 4:EC99  8cc7                 mov di, es
-4:EC9B  9a383eacec           lcall 0xecac, 0x3e38  ; sub_s2:3E38
+4:EC9B  9a383eacec           lcall 0xecac, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:ECA0  668b4606             mov eax, dword ptr [bp + 6]
 4:ECA4  051e00               add ax, 0x1e
 4:ECA7  6650                 push eax
-4:ECA9  9a383e71ed           lcall 0xed71, 0x3e38  ; sub_s2:3E38
+4:ECA9  9a383e71ed           lcall 0xed71, 0x3e38  ; Pos3::Pos3@s2:3E38
 4:ECAE  c45e06               les bx, ptr [bp + 6]
 4:ECB1  6626c7472400000000   mov dword ptr es:[bx + 0x24], 0
 4:ECBA  26c707cc01           mov word ptr es:[bx], 0x1cc
 4:ECBF  26c7470252ed         mov word ptr es:[bx + 2], 0xed52  ; SEGMENT s5:0000
 4:ECC5  6a28                 push 0x28
 4:ECC7  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:ECCC  9aba2007ed           lcall 0xed07, 0x20ba  ; sub_s3:20BA
+4:ECCC  9aba2007ed           lcall 0xed07, 0x20ba  ; Registry_get@s3:20BA
 4:ECD1  c45e06               les bx, ptr [bp + 6]
 4:ECD4  26894714             mov word ptr es:[bx + 0x14], ax
 4:ECD8  26895716             mov word ptr es:[bx + 0x16], dx
@@ -16895,10 +17371,10 @@ loc_EBC5:
 4:ECFD  57                   push di
 4:ECFE  56                   push si
 4:ECFF  6626ff7714           push dword ptr es:[bx + 0x14]
-4:ED04  9a502b14ed           lcall 0xed14, 0x2b50  ; sub_s3:2B50
+4:ED04  9a502b14ed           lcall 0xed14, 0x2b50  ; PictureCache::origin@s3:2B50
 4:ED09  c45e06               les bx, ptr [bp + 6]
 4:ED0C  6626ff7714           push dword ptr es:[bx + 0x14]
-4:ED11  9a662b5eed           lcall 0xed5e, 0x2b66  ; sub_s3:2B66
+4:ED11  9a662b5eed           lcall 0xed5e, 0x2b66  ; PictureCache::current@s3:2B66
 4:ED16  c45e06               les bx, ptr [bp + 6]
 4:ED19  26894724             mov word ptr es:[bx + 0x24], ax
 4:ED1D  26895726             mov word ptr es:[bx + 0x26], dx
@@ -16918,17 +17394,17 @@ loc_EBC5:
 4:ED49  26894712             mov word ptr es:[bx + 0x12], ax
 4:ED4D  06                   push es
 4:ED4E  53                   push bx
-4:ED4F  9a64930eec           lcall 0xec0e, 0x9364  ; sub_s5:9364
+4:ED4F  9a64930eec           lcall 0xec0e, 0x9364  ; Layer::drawFrame@s5:9364
 4:ED54  6a48                 push 0x48
 4:ED56  66ff36d00e           push dword ptr [0xed0]  ; g_registry
-4:ED5B  9aba208ceb           lcall 0xeb8c, 0x20ba  ; sub_s3:20BA
+4:ED5B  9aba208ceb           lcall 0xeb8c, 0x20ba  ; Registry_get@s3:20BA
 4:ED60  050e00               add ax, 0xe
 4:ED63  52                   push dx
 4:ED64  50                   push ax
 4:ED65  668b4606             mov eax, dword ptr [bp + 6]
 4:ED69  051e00               add ax, 0x1e
 4:ED6C  6650                 push eax
-4:ED6E  9a623f89ed           lcall 0xed89, 0x3f62  ; sub_s2:3F62
+4:ED6E  9a623f89ed           lcall 0xed89, 0x3f62  ; Pos3::assign@s2:3F62
 4:ED73  8b4606               mov ax, word ptr [bp + 6]
 4:ED76  8b5608               mov dx, word ptr [bp + 8]
 4:ED79  051e00               add ax, 0x1e
@@ -16938,7 +17414,7 @@ loc_EBC5:
 4:ED81  051800               add ax, 0x18
 4:ED84  52                   push dx
 4:ED85  50                   push ax
-4:ED86  9a323fd6eb           lcall 0xebd6, 0x3f32  ; sub_s2:3F32
+4:ED86  9a323fd6eb           lcall 0xebd6, 0x3f32  ; Pos3::add@s2:3F32
 4:ED8B  8b4606               mov ax, word ptr [bp + 6]
 4:ED8E  8b5608               mov dx, word ptr [bp + 8]
 4:ED91  5e                   pop si
@@ -16947,7 +17423,8 @@ loc_EBC5:
 4:ED94  ca0600               retf 6
 4:ED97  db 00
 
-; ---------------- sub_s4:ED98 FAR size=64 callers=1
+; ---------------- ShipLayer::~ShipLayer@s4:ED98 FAR size=64 callers=1
+;   dtor
 4:ED98  55                   push bp
 4:ED99  8bec                 mov bp, sp
 4:ED9B  c45e06               les bx, ptr [bp + 6]
@@ -16958,19 +17435,20 @@ loc_EBC5:
 4:EDB1  06                   push es
 4:EDB2  53                   push bx
 4:EDB3  6626ff7714           push dword ptr es:[bx + 0x14]
-4:EDB8  9aa61ec8ed           lcall 0xedc8, 0x1ea6  ; sub_s3:1EA6
+4:EDB8  9aa61ec8ed           lcall 0xedc8, 0x1ea6  ; RegObj::removeListener@s3:1EA6
 4:EDBD  c45e06               les bx, ptr [bp + 6]
 4:EDC0  6626ff7714           push dword ptr es:[bx + 0x14]
-4:EDC5  9ada1dcfec           lcall 0xeccf, 0x1dda  ; sub_s3:1DDA
+4:EDC5  9ada1dcfec           lcall 0xeccf, 0x1dda  ; RegObj::makeCurrent@s3:1DDA
 loc_EDCA:
 4:EDCA  66ff7606             push dword ptr [bp + 6]
-4:EDCE  9ac49284ec           lcall 0xec84, 0x92c4  ; sub_s5:92C4
+4:EDCE  9ac49284ec           lcall 0xec84, 0x92c4  ; Layer::~Layer@s5:92C4
 4:EDD3  c9                   leave
 4:EDD4  ca0400               retf 4
 4:EDD7  db 00
 
-; ---------------- sub_s4:EDD8 FAR size=146 callers=0
+; ---------------- ShipLayer::onNotify@s4:EDD8 FAR size=146 callers=0
 ;   apis: USER.InvalidateRect
+;   (vslot 1) redraws the current picture
 4:EDD8  c8140000             enter 0x14, 0
 4:EDDC  8b460a               mov ax, word ptr [bp + 0xa]
 4:EDDF  eb7d                 jmp 0xee5e
@@ -16990,15 +17468,15 @@ loc_EDF2:
 4:EDFC  668b5606             mov edx, dword ptr [bp + 6]
 4:EE00  83c218               add dx, 0x18
 4:EE03  6652                 push edx
-4:EE05  9a943e22ee           lcall 0xee22, 0x3e94  ; sub_s2:3E94
+4:EE05  9a943e22ee           lcall 0xee22, 0x3e94  ; Pos3::getXY@s2:3E94
 4:EE0A  c45e06               les bx, ptr [bp + 6]
 4:EE0D  6626ff7714           push dword ptr es:[bx + 0x14]
-4:EE12  9a662bbbed           lcall 0xedbb, 0x2b66  ; sub_s3:2B66
+4:EE12  9a662bbbed           lcall 0xedbb, 0x2b66  ; PictureCache::current@s3:2B66
 4:EE17  8946f8               mov word ptr [bp - 8], ax
 4:EE1A  8956fa               mov word ptr [bp - 6], dx
 4:EE1D  52                   push dx
 4:EE1E  50                   push ax
-4:EE1F  9a72479eec           lcall 0xec9e, 0x4772  ; sub_s2:4772
+4:EE1F  9a72479eec           lcall 0xec9e, 0x4772  ; DIB::rect@s2:4772
 4:EE24  8946f4               mov word ptr [bp - 0xc], ax
 4:EE27  8956f6               mov word ptr [bp - 0xa], dx
 4:EE2A  8b46fe               mov ax, word ptr [bp - 2]

@@ -1,0 +1,177 @@
+# Segment 1: Microsoft C 8 (VC++ 1.5) runtime + MicroQuill SmartHeap.
+# addr	name	purpose   ("?" = library routine identified by behaviour, exact CRT name uncertain)
+s1:0016	SH_MemPoolSize?	SmartHeap: checks pool signature 0xBEAD, walks the pool (error 10 on a bad pool)
+s1:0052	SH_poolWalk	SmartHeap internal: walks a pool's pages
+s1:010C	SH_MemPoolFreeAll?	SmartHeap: frees a pool's pages (called from MemPoolInit)
+s1:01B0	SH_pageAlloc	SmartHeap internal: allocates a new page for a pool (GlobalAlloc/realloc)
+s1:0308	SH_pageGet	SmartHeap internal: gets a free page, allocating one if needed
+s1:0368	SH_pageUnlink	SmartHeap internal: unlinks a page from a pool list
+s1:03C6	SH_blockAlloc	SmartHeap internal: allocates a block from a page
+s1:0510	SH_pageRelease	SmartHeap internal: releases an empty page
+s1:05B4	SH_pageInitFixed	SmartHeap internal: initialises a fixed-size page header
+s1:05E2	SH_allocFixedInternal	SmartHeap internal: fixed-size block allocation
+s1:0670	SH_reallocLarge	SmartHeap internal: grows/shrinks a large (GlobalAlloc) block
+s1:0782	SH_pageInitVar	SmartHeap internal: initialises a variable-size page header
+s1:07AC	SH_pageFormat	SmartHeap internal: formats the free list of a new page
+s1:07FC	SH_MemAllocFS	SmartHeap MemAllocFS(pool): fixed-size block from a pool (checks 0xBEAD)
+s1:0838	SH_allocFS	SmartHeap internal behind MemAllocFS
+s1:093A	SH_MemFreeFS	SmartHeap MemFreeFS(ptr): frees a fixed-size block (page signature 0xCAD1)
+s1:09CA	SH_freeListFix	SmartHeap internal: free-list maintenance
+s1:0A48	SH_MemAllocPtr_core	SmartHeap internal: variable-size allocation used by MemAllocPtr/malloc
+s1:0B20	SH_allocVar	SmartHeap internal: variable-size block search
+s1:0C32	SH_allocVarSplit	SmartHeap internal: splits a free block
+s1:0DC6	SH_MemFreePtr	SmartHeap MemFreePtr(ptr)
+s1:0ED4	SH_MemReAllocPtr	SmartHeap MemReAllocPtr(ptr, size, flags)
+s1:0FB8	SH_reallocInternal	SmartHeap internal behind MemReAllocPtr
+s1:115C	SH_reallocInPlace	SmartHeap internal: grows a block in place
+s1:1284	SH_MemSizePtr	SmartHeap MemSizePtr(ptr): size of a block (page signature 0xCAD0)
+s1:131C	SH_globalAllocPage	SmartHeap: GlobalAlloc + GlobalLock + GlobalPageLock for a page
+s1:13CE	SH_globalFree	SmartHeap: GlobalHandle + GlobalFree
+s1:1408	SH_globalReAlloc	SmartHeap: GlobalReAlloc of a large block
+s1:14F2	SH_globalReAllocChecked	SmartHeap: GlobalReAlloc with size check
+s1:1532	SH_globalSize	SmartHeap: GlobalHandle + GlobalSize
+s1:1558	SH_dosAlloc	SmartHeap: GlobalDOSAlloc (fixed low memory)
+s1:15CE	SH_dosFree	SmartHeap: GlobalDOSFree of a chain
+s1:160A	SH_DefaultPool	SmartHeap: creates the default pool on first use
+s1:167A	_fmalloc	C runtime malloc (SmartHeap default pool)
+s1:1708	SH_MemAllocPtr	SmartHeap MemAllocPtr(pool, size, flags)
+s1:179C	operator_new	C++ operator new (SmartHeap default pool)
+s1:17CE	operator_delete	C++ operator delete
+s1:183C	_nmalloc?	C runtime near malloc through SmartHeap
+s1:18EC	SH_MemPoolInitDefault	SmartHeap MemPoolInit(flags) wrapper
+s1:1902	SH_MemPoolInit	SmartHeap MemPoolInit: creates a pool (WinMain creates the game pool)
+s1:1A54	SH_MemPoolSetPageSize	SmartHeap MemPoolSetPageSize (validates 0x1000/0x2000)
+s1:1AB0	SH_roundPageSize	SmartHeap internal: rounds a page size
+s1:1AFE	SH_MemPoolSetBlockSizeFS	SmartHeap: sets a pool's fixed block size
+s1:1B68	SH_MemPoolFree	SmartHeap MemPoolFree(pool) (WinMain at exit)
+s1:1B9A	SH_poolFreeInternal	SmartHeap internal: frees every page of a pool
+s1:1DFA	SH_errorRecord	SmartHeap internal: fills the error record
+s1:1E61	SH_error	SmartHeap error trampoline (into _SHI_INVOKEERRORHANDLER1)
+s1:1E70	_SHI_INVOKEERRORHANDLER1	SmartHeap exported error-handler dispatcher
+s1:1F24	SH_errorCount	SmartHeap internal: counts repeated errors
+s1:1F68	SH_errorReset	SmartHeap internal: resets the error nesting counter
+s1:1F7E	SH_errorText	SmartHeap internal: formats an error message
+s1:1FD2	SH_errorString	SmartHeap internal: error number -> message string
+s1:1FEA	SH_MemRegisterTask	SmartHeap MemRegisterTask/error-handler setup (WinMain start)
+s1:20A2	SH_MemUnregisterTask	SmartHeap internal: task cleanup
+s1:2146	SH_hookTrue	SmartHeap stub hook (returns 1)
+s1:214A	SH_hookNop	SmartHeap stub hook (returns)
+s1:214C	SH_defaultErrorHandler	SmartHeap default error handler: MessageBeep + MessageBox, abort
+s1:21B6	SH_invokeHandler	SmartHeap internal: calls the installed error handler
+s1:2242	_exit_hook	C runtime: exit path (calls _cexit)
+s1:2300	__astart	C runtime start: InitTask, WaitEvent, InitApp, _cinit, WinMain, exit
+s1:23BE	__callWinMain	C runtime: pushes hInstance/hPrev/lpCmdLine/nCmdShow and calls WinMain (s2:54AA)
+s1:23EA	_cinit	C runtime init: _C_FILE_INFO inheritance, runs the initialiser table
+s1:24CD	exit	C runtime exit(code)
+s1:24DB	_doexit	C runtime: runs atexit/terminators, restores vectors, terminates
+s1:256B	_ctermsub	C runtime: restores DOS interrupt vectors
+s1:2594	_initterm	C runtime: calls a table of far function pointers
+s1:25A8	_FF_MSGBANNER	C runtime: writes the run-time error banner
+s1:25F2	_chkstk	C runtime stack probe / alloca
+s1:262C	_setargv	C runtime: builds argv from the command line (GetModuleFileName)
+s1:27D6	_setenvp	C runtime: builds the environment (GetDOSEnvironment), FatalAppExit on failure
+s1:28DC	_NMSG_TEXT	C runtime: run-time message number -> text
+s1:2913	_NMSG_WRITE	C runtime: writes a run-time message
+s1:2950	_malloc_crt	C runtime internal allocation (exits on failure)
+s1:29AF	_dosmaperr_far	C runtime: DOS error -> errno (far entry)
+s1:29B5	_dosmaperr	C runtime: DOS error -> errno
+s1:29DC	_getDGROUP	C runtime: returns the data segment
+s1:29EC	___EXPORTEDSTUB	exported prologue stub
+s1:2B02	_fsopen	C runtime: opens a FILE stream with a share mode
+s1:2B3C	fopen	C runtime fopen (used for the debug log simres.out)
+s1:2B5C	fprintf	C runtime fprintf
+s1:2BB6	_flsbuf	C runtime: flushes a full stream buffer
+s1:2CE8	_getbuf	C runtime: allocates a stream buffer
+s1:2D34	_openfile	C runtime: parses the fopen mode and opens the file
+s1:2E74	_stbuf	C runtime: temporary buffering for console streams
+s1:2F00	_ftbuf	C runtime: ends temporary buffering
+s1:2F48	fflush	C runtime fflush (NULL flushes every stream)
+s1:2FA4	_flush	C runtime: writes a stream's buffer
+s1:3038	_flsall	C runtime: flushes all streams
+s1:30B4	_output	C runtime printf formatting engine
+s1:34CF	_output_getint	C runtime _output helper: next int argument
+s1:34D8	_output_getlong	C runtime _output helper: next long argument
+s1:34E6	_output_getptr	C runtime _output helper: next pointer argument
+s1:3503	_output_putc	C runtime _output helper: writes one character
+s1:3534	_output_putstr	C runtime _output helper: writes a string
+s1:3552	_output_pad	C runtime _output helper: writes padding
+s1:356E	_output_cvtnum	C runtime _output helper: number to digits
+s1:35AA	_getstream	C runtime: finds a free FILE slot
+s1:3636	_lseek	C runtime _lseek (DOS 42h)
+s1:370A	_sopen	C runtime _open/_sopen (DOS 3Dh/3Ch)
+s1:39E1	_umaskval	C runtime: applies the umask to open flags
+s1:39F2	_write	C runtime _write (text-mode LF->CRLF)
+s1:3AD9	_write_text	C runtime _write helper for text mode
+s1:3BAC	_stackavail?	C runtime: stack-space helper used by _write and qsort
+s1:3CEA	_fstrcat	C runtime _fstrcat
+s1:3D3E	_fstrcpy	C runtime _fstrcpy
+s1:3D7A	_fstrcmp	C runtime _fstrcmp
+s1:3DA4	_fstrlen	C runtime _fstrlen
+s1:3DBE	_fstrncpy	C runtime _fstrncpy
+s1:3DE8	_fstrncmp?	C runtime: bounded string compare (getenv, save tags)
+s1:3E24	_fatoi	C runtime atoi (jumps into atol)
+s1:3E28	_fatol	C runtime atol
+s1:3E9E	abort	C runtime abort: FatalAppExit "ABNORMAL PROGRAM TERMINATION"
+s1:3EC0	getenv	C runtime getenv
+s1:3F9C	_fsprintf	C runtime sprintf
+s1:400A	_commit_flush?	C runtime: flush with commit (DOS 68h via _commit)
+s1:42DE	_validdrive?	C runtime: DOS drive call used by _getdcwd
+s1:435C	time	C runtime time() (DOS date/time; WinMain seeds srand with it)
+s1:43F0	__tzset	C runtime: runs _tzset once
+s1:440C	_tzset	C runtime _tzset (reads TZ via getenv)
+s1:455A	_isindst	C runtime: daylight-saving test
+s1:462E	__loctotime_t	C runtime: DOS date/time -> time_t
+s1:472C	_fstrchr	C runtime _fstrchr
+s1:475E	_fstricmp	C runtime case-insensitive compare
+s1:47A4	_fstrtok	C runtime _fstrtok
+s1:484C	_fmemcmp	C runtime _fmemcmp
+s1:48A8	_fmemcpy	C runtime _fmemcpy/_fmemmove (DIB copies)
+s1:4906	_fmemset	C runtime _fmemset
+s1:49B2	abs	C runtime abs
+s1:49C6	bsearch	C runtime bsearch (SparseTable::find)
+s1:4AEA	qsort	C runtime qsort (Microsoft C, huge-pointer swap)
+s1:4CEB	qsort_swap	qsort helper: swaps two elements
+s1:4D0C	srand	C runtime srand
+s1:4D24	rand	C runtime rand (seed*0x343FD+0x269EC3)
+s1:4D58	_splitpath	C runtime _splitpath
+s1:4F1A	_purecall	C++ pure virtual call -> run-time error R6025
+s1:4F2E	_chdir	C runtime _chdir (file dialog)
+s1:4F94	_getcurdir	C runtime: DOS 47h current directory
+s1:5008	_getcwd	C runtime _getcwd
+s1:5026	_getdcwd	C runtime _getdcwd
+s1:5174	_commit	C runtime _commit (DOS 68h)
+s1:51AA	_stat?	C runtime file status (DOS find/attributes)
+s1:52BE	__aFlmul	C runtime 32-bit multiply helper
+s1:52F0	__aFldiv	C runtime 32-bit divide helper
+s1:5390	__aFuldiv	C runtime 32-bit unsigned divide helper
+s1:545A	_fstricmp2	C runtime case-insensitive compare (second copy)
+s1:54A0	_fmemchr	C runtime _fmemchr
+s1:54E8	_fstrlwr?	C runtime string helper used by the custom controls
+s1:5586	__vec_ctor	C++ vector constructor iterator: calls a ctor for each array element
+s1:55AC	_nullcheck	C runtime: empty hook
+s1:55B1	_amsg_exit_R6020	C runtime: run-time error R6020
+# Found by the improved disassembler (2026-10-22): reached only through far pointers or after padding.
+s1:16AA	_frealloc	C runtime realloc (malloc when NULL)
+s1:16EE	_ffree	C runtime free
+s1:17E8	_set_new_handler	swaps the new-handler (DGROUP 0x5F34)
+s1:180C	_nmalloc_pool	malloc from the default pool
+s1:188E	_nrealloc_pool	realloc in the default pool
+s1:18D2	_nfree_pool	free in the default pool
+s1:21D2	SH_reportError	SmartHeap: records an error, may exit
+s1:22C0	SH_fatalExit	SmartHeap: terminates after a fatal error
+s1:2A00	fclose	C runtime fclose (flush, free the buffer, close, remove a temp file)
+s1:2BA0	_endstdio	C runtime: flushes and closes the streams at exit
+s1:2CB0	_freebuf	C runtime: frees a stream buffer
+s1:3024	flushall	C runtime flushall
+s1:35FE	_close	C runtime _close (DOS 3Eh)
+s1:3E82	_itoa	C runtime _itoa
+s1:3F5C	_fcloseall	C runtime _fcloseall
+s1:407A	_hfree	C runtime huge free (GlobalUnlock/GlobalFree)
+s1:40AF	_halloc	C runtime huge alloc (GlobalAlloc + GlobalLock)
+s1:41E0	_hfind	huge-block handle table lookup
+s1:422A	_hadd	huge-block handle table insert
+s1:4FBE	_chdrive	C runtime _chdrive (DOS 0Eh/19h)
+s1:514E	remove	C runtime remove (DOS 41h)
+s1:5224	__aFldiv_signed	C runtime signed 32-bit divide
+s1:53F0	__aFlrem	C runtime 32-bit remainder
+s1:5512	__aFlmuladd	C runtime 32-bit multiply-accumulate helper
